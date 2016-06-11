@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>云管理后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- STYLESHEETS -->
+    <!--[if lt IE 9]>
+    <script src="js/flot/excanvas.min.js"></script><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/css/cloud-admin.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/css/themes/default.css")" id="skin-switcher">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/css/responsive.css")">
+    <link href="@Url.Content("/font-awesome/css/font-awesome.min.css")" rel="stylesheet">
+    <!-- DATE RANGE PICKER
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/bootstrap-daterangepicker/daterangepicker-bs3.css")" />-->
+    @RenderSection("mycss", required: false)
+    <!-- FONTS -->
+    <link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="navbar clearfix" id="header">
+        <div class="container">
+            <div class="navbar-brand">
+                <!-- COMPANY LOGO -->
+                <a href="index.html">
+                    <img src="@Url.Content("/img/logo/logo.png")" alt="Cloud Admin Logo" class="img-responsive" height="30" width="120">
+                </a>
+                <!-- /COMPANY LOGO -->
+                <!-- TEAM STATUS FOR MOBILE -->
+                <!--<div class="visible-xs">
+                    <a href="#" class="team-status-toggle switcher btn dropdown-toggle">
+                        <i class="fa fa-users"></i>
+                    </a>
+                </div>-->
+                <!-- /TEAM STATUS FOR MOBILE -->
+                <!-- SIDEBAR COLLAPSE -->
+                <div id="sidebar-collapse" class="sidebar-collapse btn">
+                    <i class="fa fa-bars"
+                       data-icon1="fa fa-bars"
+                       data-icon2="fa fa-bars"></i>
+                </div>
+                <!-- /SIDEBAR COLLAPSE -->
+            </div>
+            <!-- NAVBAR LEFT -->
+            <ul class="nav navbar-nav pull-right hidden-xs" id="navbar-left">
+                <!--<li class="dropdown">
+                    <a href="#" class="team-status-toggle dropdown-toggle tip-bottom" data-toggle="tooltip" title="Toggle Team View">
+                        <i class="fa fa-users"></i>
+                        <span class="name">Team Status</span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                </li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-cog"></i>
+                        <span class="name">Skins</span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu skins">
+                        <li class="dropdown-title">
+                            <span><i class="fa fa-leaf"></i> Theme Skins</span>
+                        </li>
+                        <li><a href="#" data-skin="default">Subtle (default)</a></li>
+                        <li><a href="#" data-skin="night">Night</a></li>
+                        <li><a href="#" data-skin="earth">Earth</a></li>
+                        <li><a href="#" data-skin="utopia">Utopia</a></li>
+                        <li><a href="#" data-skin="nature">Nature</a></li>
+                        <li><a href="#" data-skin="graphite">Graphite</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /NAVBAR LEFT -->
+            <!-- BEGIN TOP NAVIGATION MENU -->
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN NOTIFICATION DROPDOWN -->
+                <li class="dropdown" id="header-notification">
+                   @* @Html.Action("Notification", "IndexPub", new { area = "" })*@
+                </li>
+                <!-- END NOTIFICATION DROPDOWN -->
+                <!-- BEGIN INBOX DROPDOWN -->
+                <li class="dropdown" id="header-message">
+                   @* @Html.Action("Message", "IndexPub", new { area = "" })*@
+                </li>
+                <!-- END INBOX DROPDOWN -->
+                <!-- BEGIN TODO DROPDOWN -->
+                <li class="dropdown" id="header-tasks">
+                   @* @Html.Action("AdminTask", "IndexPub", new { area = "" })*@
+                </li>
+                <!-- END TODO DROPDOWN -->
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+                <li class="dropdown user" id="header-user">
+                   @* @Html.Action("UserInfo", "IndexPub", new { area = "" })*@
+                </li>
+                <!-- END USER LOGIN DROPDOWN -->
+            </ul>
+            <!-- END TOP NAVIGATION MENU -->
+        </div>
+    </header>
+    <!--/HEADER -->
+    <!-- PAGE -->
+    <section id="page">
+        <!-- SIDEBAR -->
+       @* @Html.Action("Menu", "IndexPub", new { area = "", currentpage = ViewBag.PageTitle })*@
+        <!-- /SIDEBAR -->
+        <div id="main-content">
+            @RenderBody()
+        </div>
+    </section>
+    <!--/PAGE -->
+    <!-- JAVASCRIPTS -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JQUERY -->
+    <script src="@Url.Content("/js/jquery/jquery-1.9.1.min.js")"></script>
+    <!-- BOOTSTRAP  -->
+    <script src="@Url.Content("/bootstrap-dist/js/bootstrap.min.js")"></script>
+    @RenderSection("scriptfiles", required: false)
+    <!-- COOKIE -->
+    <script type="text/javascript" src="@Url.Content("/js/jQuery-Cookie/jquery.cookie.min.js")"></script>
+    <!-- CUSTOM SCRIPT  -->
+    <script src="@Url.Content("/js/script.js")"></script>
+    <!-- My SCRIPT -->
+    @*<script src="/js/js.js"></script>*@
+    @*  <script>
+            jQuery(document).ready(function() {
+                App.init(); //Initialise plugins and elements
+            });
+        </script>*@
+    @RenderSection("myscript", required: false)
+    <!-- /JAVASCRIPTS -->
+</body>
+</html>

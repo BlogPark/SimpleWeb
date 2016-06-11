@@ -1,0 +1,106 @@
+﻿@model  SimpleWeb.Models.LoginViewModel
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>@ViewBag.Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="@ViewBag.Description">
+        <!-- STYLESHEETS -->
+        <!--[if lt IE 9]>
+        <script src="js/flot/excanvas.min.js"></script>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" type="text/css" href="@Url.Content("/css/cloud-admin.css")">
+        <link href="@Url.Content("/font-awesome/css/font-awesome.min.css")" rel="stylesheet">
+        <!-- DATE RANGE PICKER -->
+        <link rel="stylesheet" type="text/css" href="@Url.Content("/js/bootstrap-daterangepicker/daterangepicker-bs3.css")" />
+        <!-- UNIFORM -->
+        <link rel="stylesheet" type="text/css" href="@Url.Content("/js/uniform/css/uniform.default.min.css")" />
+        <!-- ANIMATE -->
+        <link rel="stylesheet" type="text/css" href="@Url.Content("/css/animatecss/animate.min.css")" />
+        <!-- FONTS -->
+        <link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body class="login">
+        <!-- PAGE -->
+        <section id="page">
+            <!-- HEADER -->
+            <header>
+                <!-- NAV-BAR -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div id="logo">
+                                <a href="index.html">
+                                    <img src="@Url.Content("/img/logo/logo-alt.png")" height="40" alt="logo name" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/NAV-BAR -->
+            </header>
+            <!--/HEADER -->
+            <!-- LOGIN -->
+            <section id="login" class="visible">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="login-box-plain">
+                                <h2 class="bigintro">@ViewBag.Title</h2>
+                                <div class="divide-40"></div>
+                                @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+                                {
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">登录名</label>
+                                        <i class="fa fa-user"></i>
+                                        @Html.TextBoxFor(m => m.LoginId, htmlAttributes: new { @placeholder = "输入管理账号", @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">密码</label>
+                                        <i class="fa fa-lock"></i>
+                                        @Html.PasswordFor(m => m.Pass, htmlAttributes: new { @placeholder = "输入管理密码", @class = "form-control" })
+                                    </div>
+                                    <div class="form-actions">
+                                        @if (!string.IsNullOrWhiteSpace(Model.loginresult))
+                                        {
+                                            <div class="center">
+                                                <strong class="text-danger">@Model.loginresult</strong>
+                                            </div>
+                                        }
+                                        <button type="submit" class="btn btn-danger" onclick="document.getElementsByTagName('form')[0].submit();return false;">登   录</button>
+                                    </div>
+                                    @Html.HiddenFor(m => m.returnurl)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/LOGIN -->
+        </section>
+        <!--/PAGE -->
+        <!-- JAVASCRIPTS -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- JQUERY -->
+        <script src="@Url.Content("/js/jquery/jquery-2.0.3.min.js")"></script>
+        <!-- JQUERY UI-->
+        <script src="@Url.Content("/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js")"></script>
+        <!-- BOOTSTRAP -->
+        <script src="@Url.Content("/bootstrap-dist/js/bootstrap.min.js")"></script>
+        <!-- UNIFORM -->
+        <script type="text/javascript" src="@Url.Content("/js/uniform/jquery.uniform.min.js")"></script>
+        <!-- CUSTOM SCRIPT -->
+        <script src="@Url.Content("/js/script.js")"></script>
+        <script>
+            jQuery(document).ready(function () {
+                App.setPage("login");  //Set current page
+                App.init(); //Initialise plugins and elements
+            });
+        </script>
+        <!-- /JAVASCRIPTS -->
+    </body>
+</html>
