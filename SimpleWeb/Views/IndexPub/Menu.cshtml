@@ -1,0 +1,50 @@
+﻿@model  SimpleWeb.Models.MenuViewModel
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-menu nav-collapse">
+        <div class="divide-20"></div>
+        <!-- SIDEBAR MENU -->
+        <ul>
+            <li>
+                <a href="@Url.Action("Index", "Home")">
+                    <i class="fa fa-dashboard fa-fw"></i><span class="menu-text">首页</span>
+                </a>
+            </li>
+            @{
+                if (Model.firstlist != null && Model.firstlist.Any())
+                {
+                    foreach (SimpleWeb.DataModels.SysAdminMenuModel item in Model.firstlist)
+                    {
+                        List<SimpleWeb.DataModels.SysAdminMenuModel> list = Model.sublist.Where(p => p.FatherID == item.ID).ToList();
+                        if (list.Count > 0)
+                        {
+                            string page = Model.Currentpage;
+                            var result = list.Where(m => m.MenuName == page).ToList();                        
+                        
+                <li class="has-sub @(result.Count > 0 ? "active" : "")">
+                    <a href="javascript:;" class="">
+                        <i class="fa @(item.MenuIcon) fa-fw"></i><span class="menu-text">@item.MenuName</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">
+                        @foreach (SimpleWeb.DataModels.SysAdminMenuModel subitem in list)
+                        {
+                            <li class="@(subitem.MenuName == page ? "current" : "")"><a class="" href="@Url.Action(subitem.ActionName, subitem.ControllerName, new { area = subitem.AreaName })"><span class="sub-menu-text">@subitem.MenuName</span></a></li>
+                        }
+                    </ul>
+                </li>
+                        }
+                        else
+                        { 
+                <li>
+                    <a href="@Url.Action(item.ActionName, item.ControllerName, new { area = item.AreaName })">
+                        <i class="fa @(item.MenuIcon) fa-fw"></i><span class="menu-text">@item.MenuName</span>
+                    </a>
+                </li>
+                        }
+                    }
+                }
+            }
+        </ul>
+        <!-- /SIDEBAR MENU -->
+    </div>
+</div>

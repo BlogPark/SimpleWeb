@@ -1,0 +1,169 @@
+﻿@model SimpleWeb.Areas.AdminArea.Models.AddMemberViewModel
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">会员管理</a>
+                            </li>
+                            <li>添加会员</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">添加会员</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("AddMember", "MemberOpera", new { area = "AdminArea" }, FormMethod.Post, new { @id = "wizForm", @class = "form-horizontal", @role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">真实姓名</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">性&nbsp;&nbsp;&nbsp;别</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                    男
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                    女
+                                </label>
+                                @Html.HiddenFor(m => m.member.Sex)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">手机号码</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">固定电话</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.TelPhone, new { @placeholder = "固定电话", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">会员邮箱</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.Email, new { @placeholder = "会员邮箱", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">身份证号</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.IdentificationID, new { @placeholder = "身份证号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属地</label>
+                            <div class="col-sm-2">
+                                @{
+                                    <select class="form-control" id="drpprovince">
+                                        <option value="0">--请选择--</option>
+                                        @foreach (var item in Model.regintable)
+                                        {
+                                            <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="drpcity">
+                                    <option value="0">--请选择--</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="drparea">
+                                    <option value="0">--请选择--</option>
+                                </select>
+                            </div>
+                            @Html.HiddenFor(m => m.member.Province)
+                            @Html.HiddenFor(m => m.member.City)
+                            @Html.HiddenFor(m => m.member.Area)
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">详细地址</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.Address, new { @placeholder = "详细地址", @class = "form-control" })
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">微信账号</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.WeixinNum, new { @placeholder = "微信账号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">支付宝账号</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.AliPayName, new { @placeholder = "支付宝账号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">支付宝ID</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.AliPayNum, new { @placeholder = "支付宝ID", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密保问题</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.SecurityQuestion, new { @placeholder = "密保问题", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密保答案</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.SecurityAnswer, new { @placeholder = "密保答案", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="modal-footer center">
+                            <a class="btn btn-lg btn-default" href="#">取 消</a>
+                            <button type="submit" class="btn btn-lg btn-primary" onclick="checkform()">保  存</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section mycss{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/bootstrap-wizard/wizard.css")" />
+}
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootstrap-wizard/jquery.bootstrap.wizard.min.js")"></script>
+    <script src="@Url.Content("/js/jquery-validate/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("/js/jquery-validate/additional-methods.min.js")"></script>
+}
+@section myscript{
+    <script type="text/javascript" charset="utf-8" src="@Url.Content("/js/bootstrap-wizard/form-wizard.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements
+            FormWizard.init();
+            $('#wizForm').reset();
+        })
+    </script>
+}

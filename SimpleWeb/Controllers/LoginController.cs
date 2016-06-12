@@ -46,7 +46,7 @@ namespace SimpleWeb.Controllers
                 SessionLoginModel sessionmodel = new SessionLoginModel();
                 sessionmodel.User = result;
                 sessionmodel.UserMenus = usermenu;
-                Session[AppContext.SESSION_LOGIN_NAME] = sessionmodel;
+                Session[AppContent.SESSION_LOGIN_NAME] = sessionmodel;
                 string url = Url.Action("LoginOut", "IndexPub");
                 if (!string.IsNullOrWhiteSpace(model.returnurl) && !model.returnurl.Contains(url))
                 {
@@ -67,7 +67,7 @@ namespace SimpleWeb.Controllers
         [HttpPost]
         public ActionResult updateskin(string skinname)
         {
-            SessionLoginModel user = Session[AppContext.SESSION_LOGIN_NAME] as SessionLoginModel;
+            SessionLoginModel user = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
             int rowcount = bll.UpdateUserWebSkin(user.User.ID, skinname);
             if (rowcount > 0)
             {

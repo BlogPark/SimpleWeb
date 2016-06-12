@@ -1,0 +1,12 @@
+﻿@model SimpleWeb.DataModels.SysAdminUserModel
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <img alt="" src="@Model.HeaderImg" />
+    <span class="username">@Model.TruethName</span>
+    <i class="fa fa-angle-down"></i>
+</a>
+<ul class="dropdown-menu">
+@*    <li><a href="#"><i class="fa fa-user"></i> 个人中心</a></li>
+    <li><a href="#"><i class="fa fa-cog"></i> 个人设置</a></li>
+    <li><a href="#"><i class="fa fa-eye"></i> 隐私设置</a></li>*@
+    <li><a href="@Url.Action("LoginOut", "IndexPub")"><i class="fa fa-power-off"></i> 退 出</a></li>
+</ul>

@@ -21,7 +21,6 @@
     @RenderSection("mycss", required: false)
     <!-- FONTS -->
     <link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-
 </head>
 <body>
     <!-- HEADER -->
@@ -43,8 +42,8 @@
                 <!-- SIDEBAR COLLAPSE -->
                 <div id="sidebar-collapse" class="sidebar-collapse btn">
                     <i class="fa fa-bars"
-                       data-icon1="fa fa-bars"
-                       data-icon2="fa fa-bars"></i>
+                        data-icon1="fa fa-bars"
+                        data-icon2="fa fa-bars"></i>
                 </div>
                 <!-- /SIDEBAR COLLAPSE -->
             </div>
@@ -65,7 +64,7 @@
                     </a>
                     <ul class="dropdown-menu skins">
                         <li class="dropdown-title">
-                            <span><i class="fa fa-leaf"></i> Theme Skins</span>
+                            <span><i class="fa fa-leaf"></i>Theme Skins</span>
                         </li>
                         <li><a href="#" data-skin="default">Subtle (default)</a></li>
                         <li><a href="#" data-skin="night">Night</a></li>
@@ -81,22 +80,22 @@
             <ul class="nav navbar-nav pull-right">
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
                 <li class="dropdown" id="header-notification">
-                   @* @Html.Action("Notification", "IndexPub", new { area = "" })*@
+                    @Html.Action("Notification", "IndexPub", new { area = "" })
                 </li>
                 <!-- END NOTIFICATION DROPDOWN -->
                 <!-- BEGIN INBOX DROPDOWN -->
                 <li class="dropdown" id="header-message">
-                   @* @Html.Action("Message", "IndexPub", new { area = "" })*@
+                    @Html.Action("Message", "IndexPub", new { area = "" })
                 </li>
                 <!-- END INBOX DROPDOWN -->
                 <!-- BEGIN TODO DROPDOWN -->
                 <li class="dropdown" id="header-tasks">
-                   @* @Html.Action("AdminTask", "IndexPub", new { area = "" })*@
+                    @Html.Action("AdminTask", "IndexPub", new { area = "" })
                 </li>
                 <!-- END TODO DROPDOWN -->
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown user" id="header-user">
-                   @* @Html.Action("UserInfo", "IndexPub", new { area = "" })*@
+                    @Html.Action("UserInfo", "IndexPub", new { area = "" })
                 </li>
                 <!-- END USER LOGIN DROPDOWN -->
             </ul>
@@ -107,7 +106,7 @@
     <!-- PAGE -->
     <section id="page">
         <!-- SIDEBAR -->
-       @* @Html.Action("Menu", "IndexPub", new { area = "", currentpage = ViewBag.PageTitle })*@
+        @Html.Action("Menu", "IndexPub", new { area = "", currentpage = ViewBag.PageTitle })
         <!-- /SIDEBAR -->
         <div id="main-content">
             @RenderBody()

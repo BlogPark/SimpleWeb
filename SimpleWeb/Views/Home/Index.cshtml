@@ -1,6 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Index";
     Layout = "~/Views/_Layout.cshtml";
 }
 
 <h2>Index</h2>
+@section  myscript{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init(); //Initialise plugins and elements
+        });
+    </script>
+}

@@ -40,9 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="MvcPager">
+      <HintPath>..\SimpleWeb.Common\lib\MvcPager.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SimpleWeb.Common\lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -112,17 +115,28 @@
   <ItemGroup>
     <Compile Include="Areas\AdminArea\AdminAreaAreaRegistration.cs" />
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\MemberOperaController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
+    <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\SysUserMenuViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\WebFrontAreaAreaRegistration.cs" />
-    <Compile Include="Controllers\AppContext.cs" />
+    <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
+    <Compile Include="Models\partMessageViewModel.cs" />
     <Compile Include="Models\SessionLoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ueditor\net\App_Code\Config.cs" />
@@ -315,12 +329,14 @@
     <Content Include="js\bootstrap-wizard\jquery.bootstrap.wizard.js" />
     <Content Include="js\bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
     <Content Include="js\bootstrap-wizard\wizard.css" />
+    <Content Include="js\charts.js" />
     <Content Include="js\gritter\css\jquery.gritter.css" />
     <Content Include="js\gritter\images\gritter-light.png" />
     <Content Include="js\gritter\images\gritter-long.png" />
     <Content Include="js\gritter\images\gritter.png" />
     <Content Include="js\gritter\images\ie-spacer.gif" />
     <Content Include="js\gritter\js\jquery.gritter.min.js" />
+    <Content Include="js\inbox.js" />
     <Content Include="js\jQuery-Cookie\jquery.cookie.min.js" />
     <Content Include="js\jquery-ui-1.10.3.custom\css\custom-theme\images\animated-overlay.gif" />
     <Content Include="js\jquery-ui-1.10.3.custom\css\custom-theme\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
@@ -372,6 +388,8 @@
     <Content Include="js\jquery\jquery-1.9.1.min.js" />
     <Content Include="js\jquery\jquery-2.0.3.min.js" />
     <Content Include="js\jquery\jquery-migrate-1.2.1.min.js" />
+    <Content Include="js\js.js" />
+    <Content Include="js\script.js" />
     <Content Include="js\select2\select2-spinner.gif" />
     <Content Include="js\select2\select2.min.css" />
     <Content Include="js\select2\select2.min.js" />
@@ -810,6 +828,42 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\SysSettings\AdminUser.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Menu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Notification.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\AdminTask.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Message.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\UserInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SysSettings\SysConfigs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SysSettings\Menu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SysSettings\SysAdminGroup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SysSettings\GroupAndMenu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SysSettings\AddPermissions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\MemberOpera\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\MemberOpera\AddMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

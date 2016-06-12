@@ -27,7 +27,10 @@ var FormWizard = function () {
 					email: {
                         required: true,
                         email: true
-                    },
+					},
+					member_TruethName:{
+                        required:true
+					},
                     password: {
                         minlength: 3,
                         required: true

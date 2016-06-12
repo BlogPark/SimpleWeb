@@ -1,0 +1,283 @@
+﻿@model SimpleWeb.Areas.AdminArea.Models.SysMenuIndexViewModel
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加菜单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    @using (Html.BeginForm("Update", "SysSettings", FormMethod.Post, new { @role = "form", @class = "form-horizontal", @id = "form1" }))
+                    {
+                        @Html.HiddenFor(m => m.SingleMenu.Type)
+                        @Html.HiddenFor(m => m.SingleMenu.ID)
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单名称：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.MenuName, new { @class = "form-control", @placeholder = "菜单名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单描述：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.MenuAlt, new { @class = "form-control", @placeholder = "菜单描述" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">上级菜单：</label>
+                            <div class="col-sm-7">
+                                @{
+                        var mlist = Model.MenuLists.Where(p => p.FatherID == 0).ToList();
+                                    <select class="form-control" id="fathermenu">
+                                        <option value="0">--顶级菜单--</option>
+                                        @foreach (var item in mlist)
+                                        {
+                                            <option value="@item.ID">@item.MenuName</option>
+                                        }
+                                    </select>
+                                }
+                                @Html.HiddenFor(m => m.SingleMenu.FatherID)
+                                @Html.HiddenFor(m => m.SingleMenu.FatherName)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单状态：</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                    启用 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="0">
+                                    禁用 </label>
+                                @Html.HiddenFor(m => m.SingleMenu.MenuStatus)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单类型：</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios2" value="1" checked>
+                                    菜单 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios2" value="2">
+                                    按钮 </label>
+                                @Html.HiddenFor(m => m.SingleMenu.MenuType)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">链接地址：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.LinkUrl, new { @class = "form-control", @placeholder = "目标地址" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">区域名称：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.AreaName, new { @class = "form-control", @placeholder = "区域名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">控制器名称：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.ControllerName, new { @class = "form-control", @placeholder = "控制器名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Action名称：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.ActionName, new { @class = "form-control", @placeholder = "Action名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜单图标：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.MenuIcon, new { @class = "form-control", @placeholder = "图标名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">排序编号：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.SingleMenu.SortIndex, new { @class = "form-control", @placeholder = "排序编号" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="javascript: document.getElementById('form1').submit(); return false;">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">系统设置</a>
+                            </li>
+                            <li>系统菜单</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">系统菜单管理</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /PAGE HEADER -->
+            <div class="row">
+                <div class="col-sm-11">
+                    <div class="btn-group hidden-xs pull-right invoice-btn-group">
+                        <p class="btn-toolbar">
+                            <a class="btn btn-primary" data-toggle="modal" href="#box-config" id="addnew"><i class="fa fa-plus"></i>添加新菜单</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="tabdiv">
+                        <table class="table table-striped table-bordered" id="menutab">
+                            <thead>
+                                <tr>
+                                    <th>菜单编号</th>
+                                    <th>菜单名称</th>
+                                    <th>上级ID</th>
+                                    <th>上级菜单名称</th>
+                                    <th>菜单描述</th>
+                                    <th>菜单链接</th>
+                                    <th>菜单状态</th>
+                                    <th>排序</th>
+                                    <th>菜单类型</th>
+                                    <th>区域名称</th>
+                                    <th>控制器名称</th>
+                                    <th>Action名称</th>
+                                    <th>菜单Icon</th>
+                                    <th>编  辑</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.MenuLists)
+                                {
+                                    <tr id="tr@(item.ID)">
+                                        <td>@item.ID</td>
+                                        <td>@item.MenuName</td>
+                                        <td>@item.FatherID</td>
+                                        <td>@item.FatherName</td>
+                                        <td>@item.MenuAlt</td>
+                                        <td>@item.LinkUrl</td>
+                                        <td name="@item.MenuStatus">
+                                            <lable class="tip-bottom" data-original-title="@(item.MenuStatus == 0 ? "禁用" : "启用")">@item.MenuStatus</lable>
+                                        </td>
+                                        <td>@item.SortIndex</td>
+                                        <td name="@item.MenuType">
+                                            <lable class="tip-bottom" data-original-title="@(item.MenuType == 1 ? "菜单" : "按钮")">@item.MenuType</lable>
+                                        </td>
+                                        <td>@item.AreaName</td>
+                                        <td>@item.ControllerName</td>
+                                        <td>@item.ActionName</td>
+                                        <td>@item.MenuIcon</td>
+                                        <td>
+                                            <p class="btn-toolbar">
+                                                <a class="btn btn-warning" data-toggle="modal" href="#box-config" onclick="updatemassage(@item.ID)">修改</a>
+                                                @*<button class="btn btn-danger">删除</button>*@
+                                            </p>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+                App.init(); //Initialise plugins and elements
+            $("#fathermenu").change(function () {
+                var changetext = $("#fathermenu").find("option:selected").text();
+                var changeval = $("#fathermenu").val();
+                $("#SingleMenu_FatherID").val(changeval);
+                $("#SingleMenu_FatherName").val(changetext);
+            });
+            $("#SingleMenu_MenuStatus").val($("input:radio[name=optionsRadios1]:checked").val());
+            $("input:radio[name=optionsRadios1]").change(function () {
+                var raval = $("input:radio[name=optionsRadios1]:checked").val();
+                $("#SingleMenu_MenuStatus").val(raval);
+            });
+            $("#SingleMenu_MenuType").val($("input:radio[name=optionsRadios2]:checked").val());
+            $("input:radio[name=optionsRadios2]").change(function () {
+                var raval = $("input:radio[name=optionsRadios2]:checked").val();
+                $("#SingleMenu_MenuType").val(raval);
+            });
+            $("#addnew").click(function () {
+                $("#SingleMenu_Type").val(0);
+                document.getElementById('form1').reset();
+                $("#fathermenu").val(0);
+                $("input:radio[name=optionsRadios1][value=1]").attr("checked", true);
+                $("input:radio[name=optionsRadios2][value=1]").attr("checked", true);                
+            });
+        });
+        function updatemassage(id) {
+            $("#SingleMenu_Type").val(1);
+            var dtr = $("#tr" + id).children('td');
+            if (dtr) {
+                var menuid = dtr.eq(0).html();
+                var menuname = dtr.eq(1).html();
+                var menufaid = dtr.eq(2).html();
+                var menufaname = dtr.eq(3).html();
+                var menualt = dtr.eq(4).html();
+                var menulink = dtr.eq(5).html();
+                var menustatus = dtr.eq(6).attr("name");
+                var menusort = dtr.eq(7).html();
+                var menutype = dtr.eq(8).attr("name");
+                var menuarea = dtr.eq(9).html();
+                var menucon = dtr.eq(10).html();
+                var menuaction = dtr.eq(11).html();
+                var menuicon = dtr.eq(12).html();
+                $("#SingleMenu_ID").val(menuid);
+                $("#SingleMenu_MenuName").val(menuname);
+                $("#SingleMenu_MenuAlt").val(menualt);
+                $("#SingleMenu_FatherID").val(menufaid);
+                $("#SingleMenu_FatherName").val(menufaname);
+                $("#SingleMenu_MenuStatus").val(menustatus);
+                $("#SingleMenu_MenuType").val(menutype);
+                $("#SingleMenu_LinkUrl").val(menulink);
+                $("#SingleMenu_AreaName").val(menuarea);
+                $("#SingleMenu_ControllerName").val(menucon);
+                $("#SingleMenu_ActionName").val(menuaction);
+                $("#SingleMenu_MenuIcon").val(menuicon);
+                $("#SingleMenu_SortIndex").val(menusort);
+                $("#fathermenu option[value=" + menufaid + "]").attr("selected", true);
+                $("input:radio[name=optionsRadios1][value=" + menustatus + "]").attr("checked", true);
+                $("input:radio[name=optionsRadios2][value=" + menutype + "]").attr("checked", true);
+            }
+        }
+    </script>
+}

@@ -1,0 +1,158 @@
+﻿@model SimpleWeb.Areas.AdminArea.Models.SysAdminGroupViewModel
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加用户组</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    @using (Html.BeginForm("Auadmingroup", "SysSettings", FormMethod.Post, new { @role = "form", @class = "form-horizontal", @id = "form1" }))
+                    {
+                        @Html.HiddenFor(m => m.AdminGroup.Type)
+                        @Html.HiddenFor(m => m.AdminGroup.ID)
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户组名称：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.AdminGroup.GroupName, new { @class = "form-control", @placeholder = "用户组名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户组描述：</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.AdminGroup.GroupAlt, new { @class = "form-control", @placeholder = "用户组描述" })
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户组状态：</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline"> <input type="radio" class="uniform" name="optionsRadios1" value="1" checked> 启用 </label>
+                                <label class="radio-inline"> <input type="radio" class="uniform" name="optionsRadios1" value="0"> 禁用 </label>
+                                @Html.HiddenFor(m => m.AdminGroup.GroupStatus)
+                            </div>
+                        </div>        
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" onclick="javascript: document.getElementById('form1').submit(); return false;">保  存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">系统设置</a>
+                            </li>
+                            <li>系统权限管理</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">系统用户组管理</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /PAGE HEADER -->
+            <div class="row">
+                <div class="col-sm-11">
+                    <div class="btn-group hidden-xs pull-right invoice-btn-group">
+                        <p class="btn-toolbar">
+                            <a class="btn btn-primary" data-toggle="modal" href="#box-config" id="addnew"><i class="fa fa-plus"></i> 添加用户组</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="tabdiv">
+                        <table class="table table-striped table-bordered" id="menutab">
+                            <thead>
+                                <tr>
+                                    <th>用户组编号</th>
+                                    <th>用户组名称</th>
+                                    <th>用户组描述</th>
+                                    <th>用户组状态</th>
+                                    <th>创建时间</th>                                    
+                                    <th>编  辑</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.AdminGroupLists)
+                                {
+                                    <tr id="tr@(item.ID)">
+                                        <td>@item.ID</td>
+                                        <td>@item.GroupName</td>
+                                        <td>@item.GroupAlt</td>
+                                        <td name="@item.GroupStatus"><lable class="tip-bottom" data-original-title="@(item.GroupStatus == 0 ? "禁用" : "启用")">@item.GroupStatus</lable></td>
+                                        <td>@item.Addtime.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            <p class="btn-toolbar">
+                                                <a class="btn btn-warning" data-toggle="modal" href="#box-config" onclick="updatemassage(@item.ID)">修改</a>
+                                                @*<button class="btn btn-danger">删除</button>*@
+                                            </p>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+                App.init(); //Initialise plugins and elements
+            $("#AdminGroup_GroupStatus").val($("input:radio[name=optionsRadios1]:checked").val());
+            $("input:radio[name=optionsRadios1]").change(function () {
+                var raval = $("input:radio[name=optionsRadios1]:checked").val();
+                $("#AdminGroup_GroupStatus").val(raval);
+            });
+            $("#addnew").click(function () {
+                $("#AdminGroup_Type").val(0);
+                $("input:radio[name=optionsRadios1][value=1]").attr("checked", true);
+                document.getElementById('form1').reset();
+            });
+        });
+        function updatemassage(id) {
+            $("#AdminGroup_Type").val(1);
+            var dtr = $("#tr" + id).children('td');
+            if (dtr) {
+                var groupid = dtr.eq(0).html();
+                var groupname = dtr.eq(1).html();
+                var groupalt = dtr.eq(2).html();
+                var groupstatus = dtr.eq(3).attr("name");
+                $("#AdminGroup_ID").val(groupid);
+                $("#AdminGroup_GroupName").val(groupname);
+                $("#AdminGroup_GroupAlt").val(groupalt);
+                $("#AdminGroup_GroupStatus").val(groupstatus);
+                $("input:radio[name=optionsRadios1][value=" + groupstatus + "]").attr("checked", true);
+            }
+        }
+    </script>
+}
+

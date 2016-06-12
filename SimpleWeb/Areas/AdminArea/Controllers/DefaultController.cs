@@ -42,7 +42,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         {
             SysAdminUserModel user = new SysAdminUserModel();
             user.LoginName = model.LoginId;
-            user.UserPwd = DESEncrypt.Encrypt(model.Pass,AppContext.SecrectStr);//加密密码
+            user.UserPwd = DESEncrypt.Encrypt(model.Pass,AppContent.SecrectStr);//加密密码
             user.LastLoginTime = DateTime.Now;
             user.LastLoginIP = ComClass.GetIP();
             SysAdminUserModel result = bll.GetUserForLogin(user);
@@ -61,7 +61,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 SessionLoginModel sessionmodel = new SessionLoginModel();
                 sessionmodel.User = result;
                 sessionmodel.UserMenus = usermenu;
-                Session[AppContext.SESSION_LOGIN_NAME] = sessionmodel;
+                Session[AppContent.SESSION_LOGIN_NAME] = sessionmodel;
                 string url = Url.Action("LoginOut", "IndexPub");
                 if (!string.IsNullOrWhiteSpace(model.returnurl) && !model.returnurl.Contains(url))
                 {
@@ -76,6 +76,25 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             this.ViewBag.Description = SysAdminConfigHelper.GetConfigValue("管理后台登陆页描述");
             return View(model);
         }
+        /// <summary>
+        /// 更改用户皮肤配置
+        /// </summary>
+        /// <param name="skinname"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult updateskin(string skinname)
+        {
+            SessionLoginModel user = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
+            int rowcount = bll.UpdateUserWebSkin(user.User.ID, skinname);
+            if (rowcount > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
 
+        }
     }
 }

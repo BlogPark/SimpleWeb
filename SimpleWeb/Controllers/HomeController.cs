@@ -14,11 +14,11 @@ namespace SimpleWeb.Controllers
 
         public ActionResult Index()
         {
-            //SessionLoginModel user = Session[AppContext.SESSION_LOGIN_NAME] as SessionLoginModel;
-            //if (user == null)
-            //{
-            //    return RedirectToAction("Index", "Login", new { area = "" });
-            //}
+            SessionLoginModel user = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Default", new { area = "AdminArea" });
+            }
             return View();
         }
 

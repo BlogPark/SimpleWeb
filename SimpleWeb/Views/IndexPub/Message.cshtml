@@ -1,0 +1,59 @@
+﻿@model SimpleWeb.Models.partMessageViewModel
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-envelope"></i>
+    @if (Model.newcount > 0)
+    { 
+        <span class="badge">@Model.newcount</span>
+    }
+</a>
+<ul class="dropdown-menu inbox">
+    <li class="dropdown-title">
+        <span><i class="fa fa-envelope-o"></i>@(Model.newcount.ToString()) 条未读</span>
+        <span class="compose pull-right tip-right" title="Compose message"><i class="fa fa-pencil-square-o"></i></span>
+    </li>
+    @if (Model.newmsglist != null && Model.newmsglist.Any())
+    {
+        foreach (var item in Model.newmsglist)
+        {
+        <li>
+            <a href="@Url.Action("NewsView", "SiteMsg", new { area = "AdminArea", nid = item.ID })">
+                @*<img src="img/avatars/avatar8.jpg" alt="" />*@
+                <span class="body">
+                    <span class="from">@item.SendUserName</span>
+                    <span class="message">@(item.SContent.Length > 20 ? item.SContent.Substring(0, 20) : item.SContent) ...
+                    </span>
+                    <span class="time">
+                        <i class="fa fa-clock-o"></i>
+                        <span>@item.SAddTime.ToString("MM-dd HH:mm")</span>
+                    </span>
+                </span>
+
+            </a>
+        </li>
+        }
+    }
+    @if (Model.oldmsglist != null && Model.oldmsglist.Any())
+    {
+        foreach (var item in Model.oldmsglist)
+        {
+        <li>
+            <a href="@Url.Action("NewsView", "SiteMsg", new { area = "AdminArea", nid = item.ID })">
+                @*<img src="img/avatars/avatar8.jpg" alt="" />*@
+                <span class="body">
+                    <span class="from text-muted">@item.SendUserName</span>
+                    <span class="message text-muted">@(item.SContent.Length > 20 ? item.SContent.Substring(0, 20) : item.SContent) ...
+                    </span>
+                    <span class="time text-muted">
+                        <i class="fa fa-clock-o"></i>
+                        <span>@item.SAddTime.ToString("MM-dd HH:mm")</span>
+                    </span>
+                </span>
+
+            </a>
+        </li>
+        }
+    }
+    <li class="footer">
+        <a href="@Url.Action("Index", "SiteMsg", new { area = "AdminArea" })">查看所有消息 <i class="fa fa-arrow-circle-right"></i></a>
+    </li>
+</ul>
