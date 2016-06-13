@@ -32,7 +32,7 @@
             <div class="well well-sm">
                 <div class="row">
                     <div class="col-sm-12">
-                        @using (Html.BeginForm("Index", "Product", FormMethod.Get, new { @id = "form1" }))
+                        @using (Html.BeginForm("Index", "MemberOpera", FormMethod.Get, new { @id = "form1" }))
                         {
                             <div class="form-group">
                                 <label  class="pull-left control-label">编号</label>
@@ -112,18 +112,18 @@
                                         </td>
                                         <td>
                                             <p class="btn-toolbar">
-                                                <button class="btn btn-danger" data-toggle="modal" onclick="delpro(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 激&nbsp; &nbsp; 活</button>
+                                                <a class="btn btn-info"  href="@Url.Action("EditMember", "MemberOpera", new { area = "AdminArea", mid = item.ID })" ><i class="fa fa-edit"></i>&nbsp; 编&nbsp; &nbsp; 辑</a>
                                                 @if (item.MStatus == 1)
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="delpro(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 激&nbsp; &nbsp; 活</button>
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,2)" ><i class="fa fa-times-circle"></i>&nbsp; 激&nbsp; &nbsp; 活</button>
                                                 }
                                                 else if (item.MStatus == 2)
                                                 { 
-                                                <button class="btn btn-danger" data-toggle="modal" onclick="delpro(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp;冻 &nbsp; &nbsp; 结</button>
+                                                <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,3)" ><i class="fa fa-times-circle"></i>&nbsp;冻 &nbsp; &nbsp; 结</button>
                                                 }
                                                 else
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="delpro(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 解&nbsp; &nbsp; 冻</button> 
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,2)" ><i class="fa fa-times-circle"></i>&nbsp; 解&nbsp; &nbsp; 冻</button> 
                                                 }                                                
                                             </p>
                                         </td>
@@ -157,36 +157,15 @@
                 }
             });
         });
-        function setcommend(commend) {
-            var idlist = '';
-            $("input[type='checkbox'][name='proList']").each(function () {
-                if ($(this).prop("checked")) {
-                    idlist = idlist + $(this).val() + ",";
-                }
-            });
-            $.ajax({
-                url: '@Url.Action("setcommend", "Product", new { area = "AdminArea" })',
-                dataType: 'Json',
-                data: { 'ids': idlist, 'commend': commend },
-                type: 'POST',
-                async: false,
-                success: function (data) {
-                    if (data == "1") {
-                        location.reload();
-                    }
-                    else {
-                        bootbox.alert("操作失败");
-                    }
-                }
-            });
+        function edit(id) {
+            window.location("AdminArea/MemberOpera/EditMember?id=" + id);
         }
-        function delpro(id) {
+        function update(id, status) {
             $.ajax({
-                url: '@Url.Action("delepro", "Product", new { area = "AdminArea" })',
+                url: '@Url.Action("updatesta", "MemberOpera", new { area = "AdminArea" })',
                 dataType: 'Json',
-                data: { 'pid': id },
+                data: { 'id': id, 'status': status },
                 type: 'POST',
-                async: false,
                 success: function (data) {
                     if (data == "1") {
                         location.reload();

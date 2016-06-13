@@ -61,5 +61,14 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetReginTableListModel(parentid);
         }
+        /// <summary>
+        /// 得到会员的直荐名单
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public List<ReMemberRelationModel> GetRecommdMemberModel(int rmid)
+        {
+            return dal.GetRecommdMemberModel(rmid);
+        }
     }
 }

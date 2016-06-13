@@ -120,6 +120,7 @@
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
@@ -864,6 +865,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\MemberOpera\AddMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\MemberOpera\EditMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

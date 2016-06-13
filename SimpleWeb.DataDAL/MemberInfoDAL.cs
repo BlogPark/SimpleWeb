@@ -21,11 +21,11 @@ namespace SimpleWeb.DataDAL
             strSql.Append("insert into MemberInfo(");
             strSql.Append("Area,Address,WeixinNum,AliPayName,AliPayNum,SecurityQuestion,SecurityAnswer,LogPwd,MStatus,AddTime,TruethName,Sex,TelPhone,MobileNum,Email,IdentificationID,Province,City");
             strSql.Append(") values (");
-            strSql.Append("@Area,@Address,@WeixinNum,@AliPayName,@AliPayNum,@SecurityQuestion,@SecurityAnswer,@LogPwd,@MStatus,@AddTime,@TruethName,@Sex,@TelPhone,@MobileNum,@Email,@IdentificationID,@Province,@City");
+            strSql.Append("@Area,@Address,@WeixinNum,@AliPayName,@AliPayNum,@SecurityQuestion,@SecurityAnswer,@LogPwd,@MStatus,GETDATE(),@TruethName,@Sex,@TelPhone,@MobileNum,@Email,@IdentificationID,@Province,@City");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
-			            new SqlParameter("@Area", SqlDbType.Int) ,            
+			            new SqlParameter("@Area", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Address", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WeixinNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AliPayName", SqlDbType.NVarChar) ,            
@@ -33,16 +33,15 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@SecurityQuestion", SqlDbType.NVarChar) ,            
                         new SqlParameter("@SecurityAnswer", SqlDbType.NVarChar) ,            
                         new SqlParameter("@LogPwd", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MStatus", SqlDbType.Int) ,            
-                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@MStatus", SqlDbType.Int) ,                   
                         new SqlParameter("@TruethName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Sex", SqlDbType.Int) ,            
                         new SqlParameter("@TelPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MobileNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Email", SqlDbType.NVarChar) ,            
                         new SqlParameter("@IdentificationID", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@Province", SqlDbType.Int) ,            
-                        new SqlParameter("@City", SqlDbType.Int)    
+                        new SqlParameter("@Province", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@City", SqlDbType.NVarChar)    
             };
             parameters[0].Value = model.Area;
             parameters[1].Value = model.Address;
@@ -53,15 +52,14 @@ namespace SimpleWeb.DataDAL
             parameters[6].Value = model.SecurityAnswer;
             parameters[7].Value = model.LogPwd;
             parameters[8].Value = model.MStatus;
-            parameters[9].Value = model.AddTime;
-            parameters[10].Value = model.TruethName;
-            parameters[11].Value = model.Sex;
-            parameters[12].Value = model.TelPhone;
-            parameters[13].Value = model.MobileNum;
-            parameters[14].Value = model.Email;
-            parameters[15].Value = model.IdentificationID;
-            parameters[16].Value = model.Province;
-            parameters[17].Value = model.City;
+            parameters[9].Value = model.TruethName;
+            parameters[10].Value = model.Sex;
+            parameters[11].Value = model.TelPhone;
+            parameters[12].Value = model.MobileNum;
+            parameters[13].Value = model.Email;
+            parameters[14].Value = model.IdentificationID;
+            parameters[15].Value = model.Province;
+            parameters[16].Value = model.City;
 
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -90,9 +88,6 @@ namespace SimpleWeb.DataDAL
             strSql.Append(" AliPayNum = @AliPayNum , ");
             strSql.Append(" SecurityQuestion = @SecurityQuestion , ");
             strSql.Append(" SecurityAnswer = @SecurityAnswer , ");
-            strSql.Append(" LogPwd = @LogPwd , ");
-            strSql.Append(" MStatus = @MStatus , ");
-            strSql.Append(" AddTime = @AddTime , ");
             strSql.Append(" TruethName = @TruethName , ");
             strSql.Append(" Sex = @Sex , ");
             strSql.Append(" TelPhone = @TelPhone , ");
@@ -104,24 +99,21 @@ namespace SimpleWeb.DataDAL
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@ID", SqlDbType.Int) ,            
-                        new SqlParameter("@Area", SqlDbType.Int) ,            
+                        new SqlParameter("@Area", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Address", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WeixinNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AliPayName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AliPayNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@SecurityQuestion", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@SecurityAnswer", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@LogPwd", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MStatus", SqlDbType.Int) ,            
-                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@SecurityAnswer", SqlDbType.NVarChar) ,
                         new SqlParameter("@TruethName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Sex", SqlDbType.Int) ,            
                         new SqlParameter("@TelPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MobileNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Email", SqlDbType.NVarChar) ,            
                         new SqlParameter("@IdentificationID", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@Province", SqlDbType.Int) ,            
-                        new SqlParameter("@City", SqlDbType.Int)         
+                        new SqlParameter("@Province", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@City", SqlDbType.NVarChar)         
             };
             parameters[0].Value = model.ID;
             parameters[1].Value = model.Area;
@@ -131,17 +123,14 @@ namespace SimpleWeb.DataDAL
             parameters[5].Value = model.AliPayNum;
             parameters[6].Value = model.SecurityQuestion;
             parameters[7].Value = model.SecurityAnswer;
-            parameters[8].Value = model.LogPwd;
-            parameters[9].Value = model.MStatus;
-            parameters[10].Value = model.AddTime;
-            parameters[11].Value = model.TruethName;
-            parameters[12].Value = model.Sex;
-            parameters[13].Value = model.TelPhone;
-            parameters[14].Value = model.MobileNum;
-            parameters[15].Value = model.Email;
-            parameters[16].Value = model.IdentificationID;
-            parameters[17].Value = model.Province;
-            parameters[18].Value = model.City;
+            parameters[8].Value = model.TruethName;
+            parameters[9].Value = model.Sex;
+            parameters[10].Value = model.TelPhone;
+            parameters[11].Value = model.MobileNum;
+            parameters[12].Value = model.Email;
+            parameters[13].Value = model.IdentificationID;
+            parameters[14].Value = model.Province;
+            parameters[15].Value = model.City;
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -327,9 +316,7 @@ namespace SimpleWeb.DataDAL
                 }
             }
             return list;
-
         }
-
         /// <summary>
         /// 得到行政区域列表
         /// </summary>
@@ -371,6 +358,62 @@ namespace SimpleWeb.DataDAL
                     }
                     model.REGION_NAME_EN = item["REGION_NAME_EN"].ToString();
                     model.REGION_SHORTNAME_EN = item["REGION_SHORTNAME_EN"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 得到会员的直荐名单
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public List<ReMemberRelationModel> GetRecommdMemberModel(int rmid)
+        {
+            List<ReMemberRelationModel> list = new List<ReMemberRelationModel>();
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, MemberID, MemberPhone, MemberTruthName, RecommMID, RecommMPhone, RecommMTruthName, RStatus, AddTime  ");
+            strSql.Append("  from ReMemberRelation ");
+            strSql.Append(" where RecommMID=@rmid");
+            SqlParameter[] parameters = {
+					new SqlParameter("@rmid", SqlDbType.Int)
+			};
+            parameters[0].Value = rmid;
+
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    ReMemberRelationModel model = new ReMemberRelationModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberTruthName = item["MemberTruthName"].ToString();
+                    if (item["RecommMID"].ToString() != "")
+                    {
+                        model.RecommMID = int.Parse(item["RecommMID"].ToString());
+                    }
+                    model.RecommMPhone = item["RecommMPhone"].ToString();
+                    model.RecommMTruthName = item["RecommMTruthName"].ToString();
+                    if (item["RStatus"].ToString() != "")
+                    {
+                        model.RStatus = int.Parse(item["RStatus"].ToString());
+                    }
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
                     list.Add(model);
                 }
                 return list;

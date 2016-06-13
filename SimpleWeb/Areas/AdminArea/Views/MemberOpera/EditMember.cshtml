@@ -1,4 +1,4 @@
-﻿@model SimpleWeb.Areas.AdminArea.Models.AddMemberViewModel
+﻿@model SimpleWeb.Areas.AdminArea.Models.EditMemberViewModel
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
@@ -18,11 +18,11 @@
                             <li>
                                 <a href="#">会员管理</a>
                             </li>
-                            <li>添加会员</li>
+                            <li>编辑会员</li>
                         </ul>
                         <!-- /BREADCRUMBS -->
                         <div class="clearfix">
-                            <h3 class="content-title pull-left">添加会员</h3>
+                            <h3 class="content-title pull-left">编辑会员</h3>
                         </div>
                         <div class="description"></div>
                     </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("AddMember", "MemberOpera", new { area = "AdminArea" }, FormMethod.Post, new { @id = "wizForm", @class = "form-horizontal", @role = "form" }))
+                    @using (Html.BeginForm("EditMember", "MemberOpera", new { area = "AdminArea" }, FormMethod.Post, new { @id = "wizForm", @class = "form-horizontal", @role = "form" }))
                     {
                         <div class="form-group">
                             <label class="col-sm-3 control-label">真实姓名<span style="color: red">*</span></label>
@@ -42,14 +42,15 @@
                             <label class="col-sm-3 control-label">性&nbsp;&nbsp;&nbsp;别</label>
                             <div class="col-sm-7">
                                 <label class="radio-inline">
-                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" @(Model.member.Sex == 1 ? "checked" : "")>
                                     男
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="2"  @(Model.member.Sex == 2 ? "checked" : "")>
                                     女
                                 </label>
                                 @Html.HiddenFor(m => m.member.Sex)
+                                @Html.HiddenFor(m => m.member.ID)
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,19 +85,19 @@
                                         <option value="0"></option>
                                         @foreach (var item in Model.regintable)
                                         {
-                                            <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                            <option value="@item.REGION_ID" @(Model.member.Province == item.REGION_NAME ? "selected" : "")>@item.REGION_NAME</option>
                                         }
                                     </select>
                                 }
                             </div>
                             <div class="col-sm-2">
                                 <select class="form-control" id="drpcity" name="drpcity">
-                                    <option value="0"></option>
+                                    <option value="0" selected>@Model.member.City</option>
                                 </select>
                             </div>
                             <div class="col-sm-2">
                                 <select class="form-control" id="drparea" name="drparea">
-                                    <option value="0"></option>
+                                    <option value="0" selected>@Model.member.Area</option>
                                 </select>
                             </div>
                             @Html.HiddenFor(m => m.member.Province)
@@ -199,8 +200,9 @@
                         optionstr = optionstr + '<option value="' + item.REGION_ID + '">' + item.REGION_NAME + '</option>';
                     });
                     $("#" + control).html('');
-                    $("#" + control).html(optionstr);                    
-                    if (control == 'drpcity') {$("#member_City").val('');
+                    $("#" + control).html(optionstr);
+                    if (control == 'drpcity') {
+                        $("#member_City").val('');
                         $("#drparea").html('<option value="0"></option>');
                         $("#member_Area").val('');
                     }
