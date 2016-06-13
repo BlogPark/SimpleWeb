@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminSiteNewsModel.cs" />
+    <Compile Include="HelpeOrderModel.cs" />
     <Compile Include="LogModels.cs" />
+    <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberInfoModel.cs" />
     <Compile Include="PageProModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

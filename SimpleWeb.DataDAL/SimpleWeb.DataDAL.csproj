@@ -44,7 +44,9 @@
     <Compile Include="AdminConfigs.cs" />
     <Compile Include="AdminSiteNewsDal.cs" />
     <Compile Include="DbHelperSQL.cs" />
+    <Compile Include="HelpeOrderDAL.cs" />
     <Compile Include="MemberInfoDAL.cs" />
+    <Compile Include="OperateLogDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicHelperDAL.cs" />
     <Compile Include="SysAdminConfigDAL.cs" />
