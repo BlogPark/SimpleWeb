@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using SimpleWeb.DataModels;
 
 namespace SimpleWeb.DataDAL
@@ -150,14 +151,14 @@ namespace SimpleWeb.DataDAL
                 {
                     where += @" AND MemberPhone Like '%" + model.MemberPhone + "%'";
                 }
-                //if (!string.IsNullOrWhiteSpace(model.TruethName) && string.IsNullOrWhiteSpace(where))
-                //{
-                //    where += @" TruethName ='" + model.TruethName + "'";
-                //}
-                //else if (!string.IsNullOrWhiteSpace(model.TruethName) && !string.IsNullOrWhiteSpace(where))
-                //{
-                //    where += @" AND TruethName ='" + model.TruethName + "'";
-                //}
+                if (!string.IsNullOrWhiteSpace(model.MemberName) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberName ='" + model.MemberName + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(model.MemberName) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberName ='" + model.MemberName + "'";
+                }
                 if (model.HStatus > 0 && string.IsNullOrWhiteSpace(where))
                 {
                     where += @" HStatus =" + model.HStatus;
@@ -169,10 +170,10 @@ namespace SimpleWeb.DataDAL
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
-            page.orderby = "ID";
+            page.orderby = "SortIndex";
             page.pageindex = model.PageIndex;
             page.pagesize = model.PageSize;
-            page.tablename = @"dbo.MemberInfo";
+            page.tablename = @"dbo.HelpeOrder";
             page.where = where;
             DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
             foreach (DataRow item in dt.Rows)
@@ -218,6 +219,156 @@ namespace SimpleWeb.DataDAL
                 list.Add(model);
             }
             return list;
+        }
+
+        /// <summary>
+        /// 添加提供帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public int InsertHelperOrder(HelpeOrderModel model)
+        {
+            int result = 0;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //插入帮助订单表
+                StringBuilder strSql = new StringBuilder();
+                strSql.Append("insert into HelpeOrder(");
+                strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus");
+                strSql.Append(") values (");
+                strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus");
+                strSql.Append(") ");
+                strSql.Append(";select @@IDENTITY");
+                SqlParameter[] parameters = {
+			            new SqlParameter("@MatchedAmount", SqlDbType.Decimal) ,            
+                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@SortIndex", SqlDbType.Int) ,            
+                        new SqlParameter("@OrderCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberID", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@Amount", SqlDbType.Decimal) ,            
+                        new SqlParameter("@Interest", SqlDbType.Decimal) ,            
+                        new SqlParameter("@PayType", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@HStatus", SqlDbType.Int)
+            };
+                parameters[0].Value = model.MatchedAmount;
+                parameters[1].Value = model.AddTime;
+                parameters[2].Value = model.SortIndex;
+                parameters[3].Value = model.OrderCode;
+                parameters[4].Value = model.MemberID;
+                parameters[5].Value = model.MemberPhone;
+                parameters[6].Value = model.MemberName;
+                parameters[7].Value = model.Amount;
+                parameters[8].Value = model.Interest;
+                parameters[9].Value = model.PayType;
+                parameters[10].Value = model.HStatus;
+                int obj = int.Parse(helper.GetSingle(strSql.ToString(), parameters).ToString());
+                //修改会员的资金表
+                string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticCapital = @Amount ,
+                TotalStaticCapital = TotalStaticCapital + @StaticCapital
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  StaticCapital ,
+                  TotalStaticCapital
+                )
+        VALUES  ( @MemberID ,
+                  @Amount ,
+                  @Amount
+                )
+    END";
+                int rowcount = helper.ExecuteSql(sqltxt, parameters);
+                //插入日志记录表
+                string sql = @"INSERT  INTO SimpleWebDataBase.dbo.AmountChangeLog
+        ( MemberID ,
+          MemberPhone ,
+          MemberName ,
+          ProduceMoney ,
+          Remark ,
+          AddTime ,
+          OrderID ,
+          [Type] ,
+          OrderCode
+        )
+VALUES  ( @MemberID ,
+          @MemberPhone ,
+          @MemberName ,
+          @ProduceMoney ,
+          @Remark ,
+          GETDATE() ,
+          @OrderID ,
+          1 ,
+          @OrderCode
+        )";
+                SqlParameter[] paramter ={
+                                             new SqlParameter("@MemberID",SqlDbType.Int),
+                                             new SqlParameter("@MemberPhone",SqlDbType.NVarChar),
+                                             new SqlParameter("@MemberName",SqlDbType.NVarChar),
+                                             new SqlParameter("@ProduceMoney",SqlDbType.Decimal),
+                                             new SqlParameter("@Remark",SqlDbType.NVarChar),
+                                             new SqlParameter("@OrderID",SqlDbType.Int),
+                                             new SqlParameter("@OrderCode",SqlDbType.NVarChar)
+                                         };
+                paramter[0].Value = model.MemberID;
+                paramter[1].Value = model.MemberPhone;
+                paramter[2].Value = model.MemberName;
+                paramter[3].Value = model.Amount;
+                paramter[4].Value = "会员"+model.MemberPhone+"提供帮助";
+                paramter[5].Value = obj;
+                paramter[6].Value = model.OrderCode;
+                rowcount = helper.ExecuteSql(sql,paramter);
+                scope.Complete();
+                result = 1;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 更改状态
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateStatus(int oid,int status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update HelpeOrder set ");
+            strSql.Append(" HStatus = @HStatus  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,            
+                        new SqlParameter("@HStatus", SqlDbType.Int) 
+            };
+            parameters[0].Value = oid;
+            parameters[1].Value = status;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
+        }
+        /// <summary>
+        /// 更改置顶
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateSortindex(int oid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update HelpeOrder set ");
+            strSql.Append(" SortIndex = 100  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int)
+            };
+            parameters[0].Value = oid;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
         }
     }
 }

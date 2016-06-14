@@ -20,17 +20,16 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into AmountChangeLog(");
-            strSql.Append("MemberID,MemberPhone,MemberName,ProduceMoney,BalanceMoney,Remark,AddTime");
+            strSql.Append("MemberID,MemberPhone,MemberName,ProduceMoney,Remark,AddTime");
             strSql.Append(") values (");
-            strSql.Append("@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@BalanceMoney,@Remark,GETDATE()");
+            strSql.Append("@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@Remark,GETDATE()");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
                         new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@ProduceMoney", SqlDbType.Decimal) ,            
-                        new SqlParameter("@BalanceMoney", SqlDbType.Decimal) ,            
+                        new SqlParameter("@ProduceMoney", SqlDbType.Decimal) ,         
                         new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AddTime", SqlDbType.DateTime)           
             };
@@ -38,8 +37,7 @@ namespace SimpleWeb.DataDAL
             parameters[1].Value = model.MemberPhone;
             parameters[2].Value = model.MemberName;
             parameters[3].Value = model.ProduceMoney;
-            parameters[4].Value = model.BalanceMoney;
-            parameters[5].Value = model.Remark;
+            parameters[4].Value = model.Remark;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {

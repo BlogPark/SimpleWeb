@@ -39,8 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptHelpOrderBLL.cs" />
     <Compile Include="AdminSiteNewsBll.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="HelpeOrderBLL.cs" />
     <Compile Include="MemberInfoBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysAdminConfigBLL.cs" />

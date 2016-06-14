@@ -41,10 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptHelpOrderDAL.cs" />
     <Compile Include="AdminConfigs.cs" />
     <Compile Include="AdminSiteNewsDal.cs" />
     <Compile Include="DbHelperSQL.cs" />
     <Compile Include="HelpeOrderDAL.cs" />
+    <Compile Include="MemberCapitalDetailDAL.cs" />
     <Compile Include="MemberInfoDAL.cs" />
     <Compile Include="OperateLogDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

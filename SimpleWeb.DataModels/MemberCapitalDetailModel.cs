@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SimpleWeb.DataModels
 {
+    /// <summary>
+    /// 会员资金明细
+    /// </summary>
     [Serializable]
     [DataContract]
     public class MemberCapitalDetailModel
