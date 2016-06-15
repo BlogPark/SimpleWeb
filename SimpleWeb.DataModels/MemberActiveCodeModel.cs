@@ -7,24 +7,26 @@ using System.Threading.Tasks;
 
 namespace SimpleWeb.DataModels
 {
-    /// <summary>
-    /// 提供帮助列表
-    /// </summary>
     [Serializable]
     [DataContract]
-    public class HelpeOrderModel
+    public class MemberActiveCodeModel
     {
         #region 原始字段
         /// <summary>
-        /// ID
+        /// 自增主键
         /// </summary>       
         [DataMember]
         public int ID { get; set; }
         /// <summary>
-        /// 单据编号
+        /// 激活码
         /// </summary>       
         [DataMember]
-        public string OrderCode { get; set; }
+        public string ActiveCode { get; set; }
+        /// <summary>
+        /// 激活码类型（1 激活码 2 排单码）
+        /// </summary>       
+        [DataMember]
+        public int AMType { get; set; }
         /// <summary>
         /// 会员ID
         /// </summary>       
@@ -41,40 +43,15 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public string MemberName { get; set; }
         /// <summary>
-        /// 申请数量
+        /// 激活码使用状态(1 未使用 2 已使用 3 已过期)
         /// </summary>       
         [DataMember]
-        public decimal Amount { get; set; }
-        /// <summary>
-        /// 利息
-        /// </summary>       
-        [DataMember]
-        public decimal Interest { get; set; }
-        /// <summary>
-        /// 支付方式
-        /// </summary>       
-        [DataMember]
-        public string PayType { get; set; }
-        /// <summary>
-        /// 状态（0 未匹配 1 部分匹配 2 全部成交 3 已撤销 ）
-        /// </summary>       
-        [DataMember]
-        public int HStatus { get; set; }
-        /// <summary>
-        /// 已匹配金额
-        /// </summary>       
-        [DataMember]
-        public decimal MatchedAmount { get; set; }
+        public int AMStatus { get; set; }
         /// <summary>
         /// 添加时间
         /// </summary>       
         [DataMember]
-        public DateTime AddTime { get; set; }
-        /// <summary>
-        /// 排序字段
-        /// </summary>       
-        [DataMember]
-        public int SortIndex { get; set; } 
+        public DateTime Addtime { get; set; } 
         #endregion
 
         #region 扩展字段
@@ -82,7 +59,7 @@ namespace SimpleWeb.DataModels
         /// 状态名称
         /// </summary>
         [DataMember]
-        public string HStatusName { get; set; }
+        public string AMStatusName { get; set; }
         /// <summary>
         /// 页容量
         /// </summary>
@@ -93,11 +70,6 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int PageIndex { get; set; }
-        /// <summary>
-        /// 差异天数
-        /// </summary>
-        [DataMember]
-        public int DiffDay { get; set; }
         #endregion
     }
 }

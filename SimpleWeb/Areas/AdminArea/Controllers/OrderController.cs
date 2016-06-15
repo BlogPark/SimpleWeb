@@ -69,7 +69,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult updatestatus(int oid)
         {
-            int row = bll.UpdateStatus(oid,3);
+            int row = bll.UpdateStatus(oid, 3);
             if (row > 0)
             {
                 return Json("1");
@@ -97,14 +97,19 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json("0");
             }
         }
-
+        /// <summary>
+        /// 接受帮助列表
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult accepthelp(AcceptHelpOrderModel order,int page=1)
+        public ActionResult accepthelp(AcceptHelpOrderModel order, int page = 1)
         {
             int totalrowcount = 0;
             order.PageIndex = page;
             order.PageSize = PageSize;
-            List<AcceptHelpOrderModel> orderlist = abll.GetAllHelpeOrderListForPage(order, out totalrowcount);
+            List<AcceptHelpOrderModel> orderlist = abll.GetAllAcceptOrderListForPage(order, out totalrowcount);
             PagedList<AcceptHelpOrderModel> pageList = null;
             if (orderlist != null)
             {
@@ -117,6 +122,38 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             model.pagesize = PageSize;
             model.currentpage = page;
             ViewBag.PageTitle = "订单列表";
+            return View(model);
+        }
+        /// <summary>
+        /// 匹配页面
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult matchedmanage(int page = 1, int pageindex=1)
+        {
+            int totalrowcount = 0;
+            AcceptHelpOrderModel aorder = new AcceptHelpOrderModel();
+            aorder.PageIndex = page;
+            aorder.PageSize = PageSize;
+            HelpeOrderModel horder = new HelpeOrderModel();
+            horder.PageIndex = pageindex;
+            horder.PageSize = PageSize;
+            List<AcceptHelpOrderModel> waitorderlist = abll.GetWaitAcceptOrderListForPage(aorder, out totalrowcount);
+            List<HelpeOrderModel> helporderlist = bll.GetWaitHelpeOrderListForPage(horder, out totalrowcount);
+            PagedList<AcceptHelpOrderModel> acceptList = null;
+            PagedList<HelpeOrderModel> helpList = null;
+            if (waitorderlist != null)
+            {
+                acceptList = new PagedList<AcceptHelpOrderModel>(waitorderlist, page, PageSize, totalrowcount);
+            }
+            if (helporderlist != null)
+            {
+                helpList = new PagedList<HelpeOrderModel>(helporderlist, pageindex, PageSize, totalrowcount);
+            }
+            MatchedManageViewModel model = new MatchedManageViewModel();
+            model.acceptorderlist = acceptList;
+            model.helporderlist = helpList;
             return View(model);
         }
     }

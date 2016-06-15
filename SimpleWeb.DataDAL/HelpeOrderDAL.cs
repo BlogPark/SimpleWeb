@@ -370,5 +370,68 @@ VALUES  ( @MemberID ,
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
         }
+        /// <summary>
+        /// 查询所有的待匹配的帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public List<HelpeOrderModel> GetWaitHelpeOrderListForPage(HelpeOrderModel model, out int totalrowcount)
+        {
+            List<HelpeOrderModel> list = new List<HelpeOrderModel>();
+            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS HStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday";
+            string where = " HStatus=0";           
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "DATEDIFF(DAY,AddTime,GETDATE())";
+            page.pageindex = model.PageIndex;
+            page.pagesize = model.PageSize;
+            page.tablename = @"dbo.HelpeOrder";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                HelpeOrderModel helpeordermodel = new HelpeOrderModel();
+                if (item["ID"].ToString() != "")
+                {
+                    helpeordermodel.ID = int.Parse(item["ID"].ToString());
+                }
+                if (item["MatchedAmount"].ToString() != "")
+                {
+                    helpeordermodel.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
+                }
+                if (item["AddTime"].ToString() != "")
+                {
+                    helpeordermodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                }
+                if (item["SortIndex"].ToString() != "")
+                {
+                    helpeordermodel.SortIndex = int.Parse(item["SortIndex"].ToString());
+                }
+                helpeordermodel.OrderCode = item["OrderCode"].ToString();
+                if (item["MemberID"].ToString() != "")
+                {
+                    helpeordermodel.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                helpeordermodel.MemberPhone = item["MemberPhone"].ToString();
+                helpeordermodel.MemberName = item["MemberName"].ToString();
+                if (item["Amount"].ToString() != "")
+                {
+                    helpeordermodel.Amount = decimal.Parse(item["Amount"].ToString());
+                }
+                if (item["Interest"].ToString() != "")
+                {
+                    helpeordermodel.Interest = decimal.Parse(item["Interest"].ToString());
+                }
+                helpeordermodel.PayType = item["PayType"].ToString();
+                if (item["HStatus"].ToString() != "")
+                {
+                    helpeordermodel.HStatus = int.Parse(item["HStatus"].ToString());
+                }
+                helpeordermodel.HStatusName = item["HStatusName"].ToString();
+                helpeordermodel.DiffDay = int.Parse(item["diffday"].ToString());
+                list.Add(model);
+            }
+            return list;
+        }
+
     }
 }

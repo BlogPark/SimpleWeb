@@ -93,6 +93,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int PageIndex { get; set; }
+        /// <summary>
+        /// 差异天数
+        /// </summary>
+        [DataMember]
+        public int DissDay { get; set; }
         #endregion
     }
 }

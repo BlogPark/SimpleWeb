@@ -11,7 +11,7 @@ namespace SimpleWeb.DataDAL
 {
     public class MemberInfoDAL
     {
-        DbHelperSQL helper = new DbHelperSQL();
+        static DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
         /// 增加一条数据
         /// </summary>
@@ -422,6 +422,29 @@ namespace SimpleWeb.DataDAL
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 得到会员信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static MemberInfoModel GetMember(string phone)
+        {
+            string sqltxt = @"SELECT  ID ,
+        TruethName ,
+        MobileNum
+FROM    dbo.MemberInfo
+WHERE   MobileNum = @MobileNum";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MobileNum",phone)
+                                      };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            MemberInfoModel model = new MemberInfoModel();
+            model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+            model.TruethName = dt.Rows[0]["TruethName"].ToString();
+            model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+            return model;
         }
     }
 }

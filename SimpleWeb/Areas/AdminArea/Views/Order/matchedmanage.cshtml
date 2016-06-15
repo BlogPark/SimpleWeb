@@ -1,0 +1,154 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model SimpleWeb.Areas.AdminArea.Models.MatchedManageViewModel
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">会员管理</a>
+                            </li>
+                            <li>会员列表</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">会员列表</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <input type="checkbox" id="achk_all" /></th>
+                                            <th class="text-center">单据编号</th>
+                                            <th class="text-center">真实姓名</th>
+                                            <th class="text-center">手机号</th>
+                                            <th class="text-center">申请金额</th>
+                                            <th class="text-center">支付方式</th>
+                                            <th class="text-center">已匹金额</th>
+                                            <th class="text-center">申请时间</th>
+                                            <th class="text-center">状        态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.acceptorderlist)
+                                        {
+                                            <tr id="atr@(item.ID)" class="text-center">
+                                                <td>
+                                                    <input type="checkbox" name="aproList" value="@item.ID" /></td>
+                                                <td  name="@(item.ID)">@item.OrderCode</td>
+                                                <td  name="@(item.MemberID)">@item.MemberName</td>
+                                                <td>@item.MemberPhone</td>
+                                                <td>@item.Amount</td>
+                                                <td>@item.PayType</td>
+                                                <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
+                                                <td name="@(item.AStatus)">
+                                                    @item.AStatusName
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row center col-xs-12 mycss">
+                                @Html.Pager(Model.acceptorderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row" id="tabdiv">
+                                <table class="table table-striped table-bordered" id="menutab">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <input type="checkbox" id="hchk_all" /></th>
+                                            <th class="text-center">单据编号</th>
+                                            <th class="text-center">真实姓名</th>
+                                            <th class="text-center">手机号</th>
+                                            <th class="text-center">申请金额</th>
+                                            <th class="text-center">支付方式</th>
+                                            <th class="text-center">已匹金额</th>
+                                            <th class="text-center">申请时间</th>
+                                            <th class="text-center">状        态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.helporderlist)
+                                        {
+                                            <tr id="htr@(item.ID)" class="text-center">
+                                                <td>
+                                                    <input type="checkbox" name="hproList" value="@item.ID" /></td>
+                                                <td  name="@(item.ID)">@item.OrderCode</td>
+                                                <td  name="@(item.MemberID)">@item.MemberName</td>
+                                                <td>@item.MemberPhone</td>
+                                                <td>@item.Amount</td>
+                                                <td>@item.PayType</td>
+                                                <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
+                                                <td name="@(item.HStatus)">
+                                                    @item.HStatusName
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row center col-xs-12 mycss">
+                                @Html.Pager(Model.helporderlist, new PagerOptions { PageIndexParameterName = "pageindex", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+}
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements
+            //全选
+            $("#achk_all").click(function () {
+                if ($("#achk_all").is(":checked")) {
+                    $("input[type='checkbox'][name='aproList']").prop("checked", true);
+                }
+                else {
+                    $("input[type='checkbox'][name='aproList']").prop("checked", false);
+                }
+            });
+            //全选
+            $("#hchk_all").click(function () {
+                if ($("#achk_all").is(":checked")) {
+                    $("input[type='checkbox'][name='hproList']").prop("checked", true);
+                }
+                else {
+                    $("input[type='checkbox'][name='hproList']").prop("checked", false);
+                }
+            });
+        });
+    </script>
+}

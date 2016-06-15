@@ -41,9 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptHelpOrderModel.cs" />
+    <Compile Include="ActiveCodeModel.cs" />
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="HelpeOrderModel.cs" />
     <Compile Include="LogModels.cs" />
+    <Compile Include="MemberActiveCodeModel.cs" />
     <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberInfoModel.cs" />
     <Compile Include="PageProModel.cs" />

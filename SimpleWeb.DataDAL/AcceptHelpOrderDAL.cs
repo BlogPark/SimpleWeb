@@ -125,7 +125,7 @@ namespace SimpleWeb.DataDAL
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public List<AcceptHelpOrderModel> GetAllHelpeOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
+        public List<AcceptHelpOrderModel> GetAllAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             string columms = @"ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName ";
@@ -206,6 +206,66 @@ namespace SimpleWeb.DataDAL
                 }
                 model.TurnOutOrder = item["TurnOutOrder"].ToString();
                 model.AStatusName = item["AStatusName"].ToString();
+                list.Add(model);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 查询所有的待匹配的接受帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public List<AcceptHelpOrderModel> GetWaitAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
+        {
+            List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
+            string columms = @"ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
+            string where = " AStatus =0 ";
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "DATEDIFF(DAY,AddTime,GETDATE())";
+            page.pageindex = model.PageIndex;
+            page.pagesize = model.PageSize;
+            page.tablename = @"dbo.AcceptHelpOrder";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                AcceptHelpOrderModel acceptordermodel = new AcceptHelpOrderModel();
+                if (item["ID"].ToString() != "")
+                {
+                    acceptordermodel.ID = int.Parse(item["ID"].ToString());
+                }
+                if (item["AddTime"].ToString() != "")
+                {
+                    acceptordermodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                }
+                if (item["AStatus"].ToString() != "")
+                {
+                    acceptordermodel.AStatus = int.Parse(item["AStatus"].ToString());
+                }
+                if (item["SortIndex"].ToString() != "")
+                {
+                    acceptordermodel.SortIndex = int.Parse(item["SortIndex"].ToString());
+                }
+                acceptordermodel.OrderCode = item["OrderCode"].ToString();
+                if (item["MemberID"].ToString() != "")
+                {
+                    acceptordermodel.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                acceptordermodel.MemberPhone = item["MemberPhone"].ToString();
+                acceptordermodel.MemberName = item["MemberName"].ToString();
+                if (item["Amount"].ToString() != "")
+                {
+                    acceptordermodel.Amount = decimal.Parse(item["Amount"].ToString());
+                }
+                acceptordermodel.PayType = item["PayType"].ToString();
+                if (item["MatchedAmount"].ToString() != "")
+                {
+                    acceptordermodel.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
+                }
+                acceptordermodel.TurnOutOrder = item["TurnOutOrder"].ToString();
+                acceptordermodel.AStatusName = item["AStatusName"].ToString();
+                acceptordermodel.DissDay = int.Parse(item["diffday"].ToString());
                 list.Add(model);
             }
             return list;

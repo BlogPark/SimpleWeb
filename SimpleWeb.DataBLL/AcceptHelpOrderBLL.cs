@@ -30,9 +30,17 @@ namespace SimpleWeb.DataBLL
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public List<AcceptHelpOrderModel> GetAllHelpeOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
+        public List<AcceptHelpOrderModel> GetAllAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
-            return dal.GetAllHelpeOrderListForPage(model,out totalrowcount);
+            return dal.GetAllAcceptOrderListForPage(model, out totalrowcount);
+        }
+        /// <summary>
+        /// 查询所有的待匹配的接受帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public List<AcceptHelpOrderModel> GetWaitAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
+        {
+            return dal.GetWaitAcceptOrderListForPage(model,out totalrowcount);
         }
     }
 }

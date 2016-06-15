@@ -62,5 +62,13 @@ namespace SimpleWeb.DataBLL
         {
             return dal.UpdateSortindex(oid);
         }
+         /// <summary>
+        /// 查询所有的待匹配的帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public List<HelpeOrderModel> GetWaitHelpeOrderListForPage(HelpeOrderModel model, out int totalrowcount)
+        {
+            return dal.GetWaitHelpeOrderListForPage(model,out totalrowcount);
+        }
     }
 }
