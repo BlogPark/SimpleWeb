@@ -55,6 +55,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int PageIndex { get; set; }
+        /// <summary>
+        /// 状态名称
+        /// </summary>
+        [DataMember]
+        public string ATypeName { get; set; }
         #endregion
     }
 }

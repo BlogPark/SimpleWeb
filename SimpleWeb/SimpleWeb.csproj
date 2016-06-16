@@ -120,12 +120,14 @@
     <Compile Include="Areas\AdminArea\Controllers\OrderController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
     <Compile Include="Areas\AdminArea\Models\AcceptHelperViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\ActiveCodeIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\HelperOrderViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MatchedManageViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MemberActiveIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
@@ -882,6 +884,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\Order\matchedmanage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\ActiveCode\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\ActiveCode\memberactivecode.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

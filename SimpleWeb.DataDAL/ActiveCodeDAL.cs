@@ -71,7 +71,10 @@ ELSE
             string where = "";
             if (model != null)
             {
-                where += " AStatus=20 ";
+                if (model.AStatus > 0)
+                {
+                    where += " AStatus= "+model.AStatus;
+                }
                 if (!string.IsNullOrWhiteSpace(model.ActivationCode) && string.IsNullOrWhiteSpace(where))
                 {
                     where += @" ActivationCode Like '%" + model.ActivationCode + "%'";
@@ -101,25 +104,25 @@ ELSE
             {
                 foreach (DataRow item in dt.Rows)
                 {
-                    ActiveCodeModel memberModel = new ActiveCodeModel();
+                    ActiveCodeModel active = new ActiveCodeModel();
                     if (item["ID"].ToString() != "")
                     {
-                        model.ID = int.Parse(item["ID"].ToString());
+                        active.ID = int.Parse(item["ID"].ToString());
                     }
-                    model.ActivationCode = item["ActivationCode"].ToString();
+                    active.ActivationCode = item["ActivationCode"].ToString();
                     if (item["AType"].ToString() != "")
                     {
-                        model.AType = int.Parse(item["AType"].ToString());
+                        active.AType = int.Parse(item["AType"].ToString());
                     }
                     if (item["AStatus"].ToString() != "")
                     {
-                        model.AStatus = int.Parse(item["AStatus"].ToString());
+                        active.AStatus = int.Parse(item["AStatus"].ToString());
                     }
                     if (item["AddTime"].ToString() != "")
                     {
-                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                        active.AddTime = DateTime.Parse(item["AddTime"].ToString());
                     }
-                    list.Add(memberModel);
+                    list.Add(active);
                 }
             }
             return list;
@@ -313,6 +316,94 @@ WHERE   MobileNum = @MobileNum";
                 result += Convert.ToInt32(helper.ExecuteSql(strSql.ToString(), parameters));
             }
             return result;
+        }
+        /// <summary>
+        /// 得到分页数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(MemberActiveCodeModel model, out int totalrowcount)
+        {
+            List<MemberActiveCodeModel> list = new List<MemberActiveCodeModel>();
+            string columms = @"ID ,ActiveCode ,AMType,CASE AMType WHEN 1 THEN '激活账户' WHEN 2 THEN '排单专用' END AMTypeName ,MemberID ,MemberPhone ,MemberName ,AMStatus ,Addtime,CASE AMStatus WHEN 1 THEN '未使用' WHEN 2 THEN '已使用'  WHEN 3 THEN '已过期' END AMStatusName";
+            string where = "";
+            if (model != null)
+            {
+                if (model.AMStatus > 0)
+                {
+                    where += " AMStatus= " + model.AMStatus;
+                }
+                if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberPhone Like '%" + model.MemberPhone + "%'";
+                }
+                else if (!string.IsNullOrWhiteSpace(model.MemberPhone) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberPhone Like '%" + model.MemberPhone + "%'";
+                }
+                if (!string.IsNullOrWhiteSpace(model.ActiveCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" ActiveCode ='" + model.ActiveCode+"'";
+                }
+                else if (!string.IsNullOrWhiteSpace(model.ActiveCode) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND ActiveCode ='" + model.ActiveCode+"'";
+                }
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "Addtime";
+            page.pageindex = model.PageIndex;
+            page.pagesize = model.PageSize;
+            page.tablename = @"dbo.MemberActiveCode";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberActiveCodeModel memberactive = new MemberActiveCodeModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        memberactive.ID = int.Parse(item["ID"].ToString());
+                    }
+                    memberactive.ActiveCode = item["ActiveCode"].ToString();
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        memberactive.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    memberactive.MemberPhone = item["MemberPhone"].ToString();
+                    memberactive.MemberName = item["MemberName"].ToString();
+                    if (item["AMStatus"].ToString() != "")
+                    {
+                        memberactive.AMStatus = int.Parse(item["AMStatus"].ToString());
+                    }
+                    if (item["Addtime"].ToString() != "")
+                    {
+                        memberactive.Addtime = DateTime.Parse(item["Addtime"].ToString());
+                    }
+                    memberactive.AMStatusName = item["AMStatusName"].ToString();
+                    memberactive.AMTypeName = item["AMTypeName"].ToString();
+                    list.Add(memberactive);
+                }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 修改会员激活码状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int UpdateMemberActive(int id)
+        {
+            string sqltxt = @"UPDATE  MemberActiveCode
+SET     AMStatus = 3
+WHERE   ID = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",id)
+                                      };
+            return helper.ExecuteSql(sqltxt,paramter);
         }
     }
 }

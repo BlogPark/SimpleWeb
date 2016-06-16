@@ -77,5 +77,24 @@ namespace SimpleWeb.DataBLL
         {
             return dal.AssignedCode(codes,memberphone);
         }
+        /// <summary>
+        /// 得到分页数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(MemberActiveCodeModel model, out int totalrowcount)
+        {
+            return dal.GetMemberActiveCodeListForPage(model,out totalrowcount);
+        }
+        /// <summary>
+        /// 修改会员激活码状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int UpdateMemberActive(int id)
+        {
+            return dal.UpdateMemberActive(id);
+        }
     }
 }
