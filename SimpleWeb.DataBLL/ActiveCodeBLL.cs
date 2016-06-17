@@ -33,7 +33,7 @@ namespace SimpleWeb.DataBLL
             for (int i = 0; i < count; i++)
             {
                 ActiveCodeModel model = new ActiveCodeModel();
-                model.ActivationCode = Guid.NewGuid().ToString("N").ToUpper().Substring(0,16);
+                model.ActivationCode = Guid.NewGuid().ToString("N").ToUpper();
                 model.AType = type;
                 list.Add(model);
             }

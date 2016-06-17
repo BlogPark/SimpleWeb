@@ -16,10 +16,9 @@ namespace SimpleWeb.Controllers
         // GET: /Login/
         private SysMenuAndUserBLL bll = new SysMenuAndUserBLL();
         [HttpGet]
-        public ActionResult Index(string returnurl)
+        public ActionResult Index()
         {
             LoginViewModel model = new LoginViewModel();
-            model.returnurl = returnurl;
             return View(model);
         }
         [HttpPost]
@@ -78,6 +77,39 @@ namespace SimpleWeb.Controllers
                 return Json("0");
             }
 
+        }
+        /// <summary>
+        /// 产生验证码图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetImg()
+        {
+            int width = 100;
+            int height =  40;
+            int fontsize =  20;
+            string code = string.Empty;
+            byte[] bytes = ValidateCode.CreateValidateGraphic(out code, 4, width, height, fontsize);
+            Session[AppContent.VALICODE] = code;
+            return File(bytes, @"image/jpeg");
+        }
+        /// <summary>
+        /// 验证码对比
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult valitecode(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return Json("请填写验证码");
+            }
+            string soucecode = Session[AppContent.VALICODE].ToString();
+            if (code.Trim() != soucecode)
+            {
+                return Json("验证码不正确");
+            }
+            return Json("1");
         }
     }
 }

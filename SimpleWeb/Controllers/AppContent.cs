@@ -12,6 +12,7 @@ namespace SimpleWeb.Controllers
         /// 存储用户信息的session名称
         /// </summary>
         public static readonly string SESSION_LOGIN_NAME = "SESSION_LOGIN_NAME";
+        public static readonly string VALICODE = "VALICODE";
         /// <summary>
         /// 图片上传路径
         /// </summary>

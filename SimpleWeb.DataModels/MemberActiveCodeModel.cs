@@ -51,7 +51,29 @@ namespace SimpleWeb.DataModels
         /// 添加时间
         /// </summary>       
         [DataMember]
-        public DateTime Addtime { get; set; } 
+        public DateTime Addtime { get; set; }
+
+        private string _UseCode = "";
+        /// <summary>
+        /// 使用单号/用户名
+        /// </summary>
+        [DataMember]
+        public string UseCode
+        {
+            get { return _UseCode; }
+            set { _UseCode = value; }
+        }
+
+        private DateTime _UserTime;
+        /// <summary>
+        /// 使用时间
+        /// </summary>
+        [DataMember]
+        public DateTime UserTime
+        {
+            get { return _UserTime; }
+            set { _UserTime = value; }
+        }
         #endregion
 
         #region 扩展字段
