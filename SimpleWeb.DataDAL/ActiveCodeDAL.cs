@@ -73,7 +73,7 @@ ELSE
             {
                 if (model.AStatus > 0)
                 {
-                    where += " AStatus= "+model.AStatus;
+                    where += " AStatus= " + model.AStatus;
                 }
                 if (!string.IsNullOrWhiteSpace(model.ActivationCode) && string.IsNullOrWhiteSpace(where))
                 {
@@ -233,11 +233,43 @@ WHERE   MobileNum = @MobileNum";
                                       new SqlParameter("@MobileNum",phone)
                                       };
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
-            MemberInfoModel model = new MemberInfoModel();
-            model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
-            model.TruethName = dt.Rows[0]["TruethName"].ToString();
-            model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
-            return model;
+            if (dt.Rows.Count > 0)
+            {
+                MemberInfoModel model = new MemberInfoModel();
+                model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                model.TruethName = dt.Rows[0]["TruethName"].ToString();
+                model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                return model;
+            }
+            else
+                return null;
+        }
+        /// <summary>
+        /// 得到会员信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public MemberInfoModel GetMember(int mid)
+        {
+            string sqltxt = @"SELECT  ID ,
+        TruethName ,
+        MobileNum
+FROM    dbo.MemberInfo
+WHERE   ID = @Mid";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@Mid",mid)
+                                      };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                MemberInfoModel model = new MemberInfoModel();
+                model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                model.TruethName = dt.Rows[0]["TruethName"].ToString();
+                model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                return model;
+            }
+            else
+                return null;
         }
         /// <summary>
         /// 分配激活码
@@ -344,11 +376,11 @@ WHERE   MobileNum = @MobileNum";
                 }
                 if (!string.IsNullOrWhiteSpace(model.ActiveCode) && string.IsNullOrWhiteSpace(where))
                 {
-                    where += @" ActiveCode ='" + model.ActiveCode+"'";
+                    where += @" ActiveCode ='" + model.ActiveCode + "'";
                 }
                 else if (!string.IsNullOrWhiteSpace(model.ActiveCode) && !string.IsNullOrWhiteSpace(where))
                 {
-                    where += @" AND ActiveCode ='" + model.ActiveCode+"'";
+                    where += @" AND ActiveCode ='" + model.ActiveCode + "'";
                 }
             }
             PageProModel page = new PageProModel();
@@ -403,7 +435,112 @@ WHERE   ID = @id";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@id",id)
                                       };
-            return helper.ExecuteSql(sqltxt,paramter);
+            return helper.ExecuteSql(sqltxt, paramter);
         }
+
+        /// <summary>
+        /// 会员间赠送激活码
+        /// </summary>
+        /// <param name="soucememberID">原始会员ID</param>
+        /// <param name="type">赠送激活码类型</param>
+        /// <param name="acceptMemberPhone">接受会员电话</param>
+        /// <param name="count">赠送数量</param>
+        /// <returns>返回值（-1 接受会员不存在 -2 没有足够的激活币赠送 0 数据库操作失败 1 成功）</returns>
+        public int GiveActiveCodeFromMember(int soucememberID, int type, string acceptMemberPhone, int count)
+        {
+            int result = 0;
+            //读取接受会员信息
+            MemberInfoModel member = GetMember(acceptMemberPhone);
+            if (member == null)
+            {
+                return -1;
+            }
+            //开启事务
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //查询该会员名下可用类型的激活码数量
+                List<MemberActiveCodeModel> aclist = GetMemberActiveCodeList(soucememberID, type);
+                if (aclist.Count < count)
+                {
+                    return -2;
+                }
+                //修改激活码的所有者信息
+                string sqltxt = @"UPDATE TOP ( @count)
+        MemberActiveCode
+SET     MemberID = @memberid ,
+        MemberPhone = @MemberPhone ,
+        MemberName = @MemberName
+WHERE   MemberID = @soucemid
+        AND AMStatus = 1
+        AND AMType = @AMType";
+                SqlParameter[] paramter = {
+                                              new SqlParameter("@memberid",member.ID),
+                                              new SqlParameter("@MemberPhone",member.MobileNum),
+                                              new SqlParameter("@MemberName",member.TruethName),
+                                              new SqlParameter("@soucemid",soucememberID),
+                                              new SqlParameter("@AMType",type),
+                                              new SqlParameter("@count",count)
+                                        };
+                int row = helper.ExecuteSql(sqltxt,paramter);
+                if (row < 0)
+                {
+                    return 0;
+                }
+                //记录转出者名下日志
+                MemberInfoModel sourcemodel=GetMember(soucememberID);
+                ActiveCodeLogModel souce = new ActiveCodeLogModel();
+                souce.MemberID = soucememberID;
+                souce.MemberName = sourcemodel.TruethName;
+                souce.MemberPhone = sourcemodel.MobileNum;
+                souce.ActiveCode = "";
+                souce.AID = 0;
+                souce.Remark = "为会员："+member.TruethName+ " 手机号："+member.MobileNum+" 转账"+count.ToString()+"个"+(type==1?"激活币":"排单币");
+                row = OperateLogDAL.AddActiveCodeLog(souce);
+                if (row < 0)
+                {
+                    return 0;
+                }
+                //记录转入者名下日志
+                ActiveCodeLogModel accept = new ActiveCodeLogModel();
+                accept.MemberID = soucememberID;
+                accept.MemberName = sourcemodel.TruethName;
+                accept.MemberPhone = sourcemodel.MobileNum;
+                accept.ActiveCode = "";
+                accept.AID = 0;
+                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + count.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                row = OperateLogDAL.AddActiveCodeLog(accept);
+                if (row < 0)
+                {
+                    return 0;
+                }
+                //记录系统操作日志(暂无)
+                scope.Complete();
+                result = 1;
+            }
+            return result;
+        }
+        public List<MemberActiveCodeModel> GetMemberActiveCodeList(int memberid, int type)
+        {
+            List<MemberActiveCodeModel> list = new List<MemberActiveCodeModel>();
+            string sqltxt = @"SELECT  ActiveCode
+FROM    SimpleWebDataBase.dbo.MemberActiveCode
+WHERE   AMType = @type
+        AND MemberID = @memberid
+        AND AMStatus = 1";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@type",type),
+                                          new SqlParameter("@memberid",memberid)
+                                      };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            foreach (DataRow item in dt.Rows)
+            {
+                MemberActiveCodeModel model = new MemberActiveCodeModel();
+                model.ActiveCode = item["ActiveCode"].ToString();
+                list.Add(model);
+            }
+            return list;
+        }
+
+
     }
 }

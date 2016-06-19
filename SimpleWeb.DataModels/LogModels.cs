@@ -15,7 +15,7 @@ namespace SimpleWeb.DataModels
     public class UserBehaviorLogModel
     {
         /// <summary>
-        /// 自增组件
+        /// 自增主键
         /// </summary>       
         [DataMember]
         public int ID { get; set; }
@@ -94,4 +94,6 @@ namespace SimpleWeb.DataModels
         public DateTime AddTime { get; set; }
 
     }
+
+
 }

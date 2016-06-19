@@ -138,6 +138,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public DateTime? endtime { get; set; }
+        /// <summary>
+        /// 推荐会员电话
+        /// </summary>
+        [DataMember]
+        public string MemberPhone { get; set; }
         #endregion
     }
 }

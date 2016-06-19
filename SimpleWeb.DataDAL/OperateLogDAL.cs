@@ -85,5 +85,48 @@ namespace SimpleWeb.DataDAL
             }
 
         }
+        /// <summary>
+        /// 添加激活码操作记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int AddActiveCodeLog(ActiveCodeLogModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into ActiveCodeLog(");
+            strSql.Append("MemberID,MemberName,MemberPhone,ActiveCode,AID,Remark,Addtime");
+            strSql.Append(") values (");
+            strSql.Append("@MemberID,@MemberName,@MemberPhone,@ActiveCode,@AID,@Remark,GETDATE");
+            strSql.Append(") ");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@ActiveCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@AID", SqlDbType.Int) ,            
+                        new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@Addtime", SqlDbType.DateTime)             
+              
+            };
+
+            parameters[0].Value = model.MemberID;
+            parameters[1].Value = model.MemberName;
+            parameters[2].Value = model.MemberPhone;
+            parameters[3].Value = model.ActiveCode;
+            parameters[4].Value = model.AID;
+            parameters[5].Value = model.Remark;
+            parameters[6].Value = model.Addtime;
+
+            object obj = helper.GetSingle(strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }	
+        }
     }
 }

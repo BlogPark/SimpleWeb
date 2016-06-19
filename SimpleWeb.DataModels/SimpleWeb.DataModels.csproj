@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptHelpOrderModel.cs" />
+    <Compile Include="ActiveCodeLogModel.cs" />
     <Compile Include="ActiveCodeModel.cs" />
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="HelpeOrderModel.cs" />

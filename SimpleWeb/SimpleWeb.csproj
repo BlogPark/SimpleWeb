@@ -133,6 +133,8 @@
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysUserMenuViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\RegisterViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\WebFrontAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1572,8 +1574,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
-    <Folder Include="Areas\WebFrontArea\Controllers\" />
-    <Folder Include="Areas\WebFrontArea\Models\" />
     <Folder Include="Areas\WebFrontArea\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -1769,6 +1769,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\_WebLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\Register.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
