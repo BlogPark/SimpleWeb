@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using SimpleWeb.DataDAL;
 using SimpleWeb.DataModels;
 
@@ -12,13 +13,51 @@ namespace SimpleWeb.DataBLL
     {
         private MemberInfoDAL dal = new MemberInfoDAL();
         /// <summary>
-        /// 增加一条数据
+        ///注册会员（已追加注册返还金额功能）
         /// </summary>
         public int AddMemberInfo(MemberInfoModel model)
         {
-            return dal.AddMemberInfo(model);
+            int result = 0;
+            string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额            
+            using (TransactionScope scope = new TransactionScope())
+            {
+                int memberid = dal.AddMemberInfo(model);
+                if (memberid < 1)
+                {
+                    return 0;
+                }
+                decimal amont = 0;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+
+                    if (!decimal.TryParse(value, out amont))
+                    {
+                        return 0;
+                    }
+                    int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont);
+                    if (row < 1)
+                    {
+                        return 0;
+                    }
+                }
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = memberid;
+                logmodel.MemberName = model.TruethName;
+                logmodel.MemberPhone = model.MobileNum;
+                logmodel.ProduceMoney = amont;
+                logmodel.Remark = "会员注册赠送" + amont.ToString() + "元";
+                int rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                scope.Complete();
+                result = 1;
+            }
+            return result;
         }
-         /// <summary>
+
+        /// <summary>
         /// 更新一条数据
         /// </summary>
         public bool UpdateMemberInfo(MemberInfoModel model)
@@ -32,7 +71,7 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetModel(ID);
         }
-         /// <summary>
+        /// <summary>
         /// 更新数据状态
         /// </summary>
         /// <param name="mid"></param>
@@ -40,9 +79,9 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int UpdateStatus(int mid, int status)
         {
-            return dal.UpdateStatus(mid,status);
+            return dal.UpdateStatus(mid, status);
         }
-         /// <summary>
+        /// <summary>
         /// 得到分页数据
         /// </summary>
         /// <param name="model"></param>
@@ -50,7 +89,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<MemberInfoModel> GetMemberInfoListForPage(MemberInfoModel model, out int totalrowcount)
         {
-            return dal.GetMemberInfoListForPage(model,out totalrowcount);
+            return dal.GetMemberInfoListForPage(model, out totalrowcount);
         }
         /// <summary>
         /// 得到行政区域列表

@@ -74,7 +74,22 @@ namespace SimpleWeb.DataModels
         /// 排序字段
         /// </summary>       
         [DataMember]
-        public int SortIndex { get; set; } 
+        public int SortIndex { get; set; }
+        /// <summary>
+        /// 单据状态（1 新提交  2 已打款  3 已完成）
+        /// </summary>       
+        [DataMember]
+        public int OStatus { get; set; }
+        /// <summary>
+        /// 使用激活码
+        /// </summary>		
+        private string _activecode;
+        [DataMember]
+        public string ActiveCode
+        {
+            get { return _activecode; }
+            set { _activecode = value; }
+        }        
         #endregion
 
         #region 扩展字段
@@ -98,6 +113,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int DiffDay { get; set; }
+        /// <summary>
+        /// 激活码ID
+        /// </summary>
+        [DataMember]
+        public int ActiveCodeID { get; set; }
         #endregion
     }
 }

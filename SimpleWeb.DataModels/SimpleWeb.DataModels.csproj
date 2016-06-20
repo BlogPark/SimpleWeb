@@ -46,8 +46,10 @@
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="HelpeOrderModel.cs" />
     <Compile Include="LogModels.cs" />
+    <Compile Include="MatchOrderModel.cs" />
     <Compile Include="MemberActiveCodeModel.cs" />
     <Compile Include="MemberCapitalDetailModel.cs" />
+    <Compile Include="MemberExtendInfoModel.cs" />
     <Compile Include="MemberInfoModel.cs" />
     <Compile Include="PageProModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="SysAdminUserGroupModel.cs" />
     <Compile Include="SysAdminUserModel.cs" />
     <Compile Include="UploadFileModel.cs" />
+    <Compile Include="WebContactMessageModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

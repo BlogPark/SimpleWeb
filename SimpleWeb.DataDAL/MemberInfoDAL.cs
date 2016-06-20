@@ -423,7 +423,6 @@ namespace SimpleWeb.DataDAL
                 return null;
             }
         }
-
         /// <summary>
         /// 得到会员信息
         /// </summary>

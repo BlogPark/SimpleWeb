@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SimpleWeb.DataDAL;
 using SimpleWeb.DataModels;
+using System.Transactions;
 
 namespace SimpleWeb.DataBLL
 {
@@ -12,11 +13,78 @@ namespace SimpleWeb.DataBLL
     {
         private HelpeOrderDAL dal = new HelpeOrderDAL();
         /// <summary>
-        /// 增加一条数据
+        /// 添加一条提供帮助单据
         /// </summary>
         public int AddHelpeOrder(HelpeOrderModel model)
         {
-            return dal.AddHelpeOrder(model);
+            int result = 0;
+            string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
+            using (TransactionScope scope = new TransactionScope())
+            { 
+                //更改激活码的使用状态
+                int rowcount = ActiveCodeDAL.UpdateStatus(model.ActiveCodeID,10);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                rowcount = ActiveCodeDAL.UpdateMemberActiveToUse(model.MemberID, model.OrderCode, model.ActiveCode);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //插入激活码的使用日志
+                ActiveCodeLogModel aclogmodel = new ActiveCodeLogModel();
+                aclogmodel.ActiveCode = model.ActiveCode;
+                aclogmodel.AID = model.ActiveCodeID;
+                aclogmodel.MemberID = model.MemberID;
+                aclogmodel.MemberName = model.MemberName;
+                aclogmodel.MemberPhone = model.MemberPhone;
+                aclogmodel.Remark = "会员:" + model.MemberName + " 使用排单币:" + model.ActiveCode + " 进行排单";
+                rowcount = OperateLogDAL.AddActiveCodeLog(aclogmodel);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //更改会员的资金信息和利率
+                decimal dinterest = 1;
+                if (!string.IsNullOrWhiteSpace(interest))
+                {
+                    if (!decimal.TryParse(interest, out dinterest))
+                    {
+                        return 0;
+                    }
+                }
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount,dinterest);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //插入表记录
+                int orderid = dal.AddHelpeOrder(model);
+                if (orderid < 1)
+                {
+                    return 0;
+                }
+                //更新会员的统计信息
+                rowcount = MemberExtendInfoDAL.Update(model.MemberID,model.Amount);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //插入会员的资金变动纪录
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = model.MemberID;
+                logmodel.MemberName = model.MemberName;
+                logmodel.MemberPhone = model.MemberPhone;
+                logmodel.OrderCode = model.OrderCode;
+                logmodel.OrderID = orderid;
+                logmodel.ProduceMoney =model.Amount;
+                logmodel.Remark = "会员:" + model.MemberPhone + " 申请提供帮助 " + model.Amount.ToString() + "元";
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                scope.Complete();
+                result = 1;
+            }
+            return result; 
         }
         /// <summary>
         /// 查询所有的帮助订单
@@ -38,6 +106,7 @@ namespace SimpleWeb.DataBLL
         /// 添加提供帮助订单
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public int InsertHelperOrder(HelpeOrderModel model)
         {
             return dal.InsertHelperOrder(model);

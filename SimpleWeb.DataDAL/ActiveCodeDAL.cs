@@ -12,7 +12,7 @@ namespace SimpleWeb.DataDAL
 {
     public class ActiveCodeDAL
     {
-        public DbHelperSQL helper = new DbHelperSQL();
+        public static DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
         /// 产生新的激活码
         /// </summary>
@@ -165,6 +165,24 @@ ELSE
                                           };
                 result += helper.ExecuteSql(sqltxt, paramter);
             }
+            return result;
+        }
+        /// <summary>
+        /// 更改状态
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static int UpdateStatus(int id, int status)
+        {
+            int result = 0;
+            string sqltxt = @"UPDATE ActiveCode
+  SET AStatus=@AStatus
+  WHERE ID=@id ";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@id",id),
+                                          new SqlParameter("@AStatus",status)
+                                          };
+            result = helper.ExecuteSql(sqltxt, paramter);
             return result;
         }
         /// <summary>
@@ -350,7 +368,7 @@ WHERE   ID = @Mid";
             return result;
         }
         /// <summary>
-        /// 得到分页数据
+        /// 得到会员的激活码信息
         /// </summary>
         /// <param name="model"></param>
         /// <param name="totalrowcount"></param>
@@ -437,7 +455,44 @@ WHERE   ID = @id";
                                       };
             return helper.ExecuteSql(sqltxt, paramter);
         }
-
+        /// <summary>
+        /// 修改会员激活码状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status">状态值（1 未使用 2 已使用 3 过期）</param>
+        /// <returns></returns>
+        public static int UpdateMemberActiveStatus(int id,int status)
+        {
+            string sqltxt = @"UPDATE  MemberActiveCode
+SET     AMStatus = @status
+WHERE   ID = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",id),
+                                      new SqlParameter("@status",status)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 修改会员激活码为使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int UpdateMemberActiveToUse(int memberid,string ordercode,string activecode)
+        {
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberActiveCode
+SET     AMStatus = 2 ,
+        UseCode = @usecode ,
+        UserTime = GETDATE()
+WHERE   MemberID = @memberid
+        AND ActiveCode = @activecode
+        AND AMType=2";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",memberid),
+                                      new SqlParameter("@usecode",ordercode),
+                                      new SqlParameter("@activecode",activecode)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
         /// <summary>
         /// 会员间赠送激活码
         /// </summary>
@@ -481,20 +536,20 @@ WHERE   MemberID = @soucemid
                                               new SqlParameter("@AMType",type),
                                               new SqlParameter("@count",count)
                                         };
-                int row = helper.ExecuteSql(sqltxt,paramter);
+                int row = helper.ExecuteSql(sqltxt, paramter);
                 if (row < 0)
                 {
                     return 0;
                 }
                 //记录转出者名下日志
-                MemberInfoModel sourcemodel=GetMember(soucememberID);
+                MemberInfoModel sourcemodel = GetMember(soucememberID);
                 ActiveCodeLogModel souce = new ActiveCodeLogModel();
                 souce.MemberID = soucememberID;
                 souce.MemberName = sourcemodel.TruethName;
                 souce.MemberPhone = sourcemodel.MobileNum;
                 souce.ActiveCode = "";
                 souce.AID = 0;
-                souce.Remark = "为会员："+member.TruethName+ " 手机号："+member.MobileNum+" 转账"+count.ToString()+"个"+(type==1?"激活币":"排单币");
+                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + count.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(souce);
                 if (row < 0)
                 {
@@ -541,6 +596,59 @@ WHERE   AMType = @type
             return list;
         }
 
+        /// <summary>
+        /// 得到会员的激活码使用信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<ActiveCodeLogModel> GetActiveCodeLogListForPage(int memberid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            List<ActiveCodeLogModel> list = new List<ActiveCodeLogModel>();
+            string columms = @"ID ,MemberID ,MemberName ,MemberPhone ,ActiveCode ,AID ,Remark ,Addtime";
+            string where = "";
+            if (memberid > 0)
+            {
+                where = " MemberID=" + memberid.ToString();
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "Addtime";
+            page.pageindex = pageindex;
+            page.pagesize = pagesize;
+            page.tablename = @"dbo.ActiveCodeLog";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    ActiveCodeLogModel activelog = new ActiveCodeLogModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        activelog.ID = int.Parse(item["ID"].ToString());
+                    }
+                    activelog.ActiveCode = item["ActiveCode"].ToString();
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        activelog.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    activelog.MemberPhone = item["MemberPhone"].ToString();
+                    activelog.MemberName = item["MemberName"].ToString();
+                    if (item["AID"].ToString() != "")
+                    {
+                        activelog.AID = int.Parse(item["AID"].ToString());
+                    }
+                    if (item["Addtime"].ToString() != "")
+                    {
+                        activelog.Addtime = DateTime.Parse(item["Addtime"].ToString());
+                    }
+                    activelog.Remark = item["Remark"].ToString();
+                    list.Add(activelog);
+                }
+            }
+            return list;
+        }
 
     }
 }

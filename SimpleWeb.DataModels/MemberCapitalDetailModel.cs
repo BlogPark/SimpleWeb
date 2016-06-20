@@ -16,58 +16,123 @@ namespace SimpleWeb.DataModels
     {
         /// <summary>
         /// 会员ID
-        /// </summary>       
+        /// </summary>		
+        private int _memberid;
         [DataMember]
-        public int MemberID { get; set; }
+        public int MemberID
+        {
+            get { return _memberid; }
+            set { _memberid = value; }
+        }
         /// <summary>
         /// 静态资金
-        /// </summary>       
+        /// </summary>		
+        private decimal _staticcapital;
         [DataMember]
-        public decimal StaticCapital { get; set; }
+        public decimal StaticCapital
+        {
+            get { return _staticcapital; }
+            set { _staticcapital = value; }
+        }
         /// <summary>
         /// 动态资金
-        /// </summary>       
+        /// </summary>		
+        private decimal _dynamicfunds;
         [DataMember]
-        public decimal DynamicFunds { get; set; }
+        public decimal DynamicFunds
+        {
+            get { return _dynamicfunds; }
+            set { _dynamicfunds = value; }
+        }
         /// <summary>
         /// 静态利息
-        /// </summary>       
+        /// </summary>		
+        private decimal _staticinterest;
         [DataMember]
-        public decimal StaticInterest { get; set; }
+        public decimal StaticInterest
+        {
+            get { return _staticinterest; }
+            set { _staticinterest = value; }
+        }
         /// <summary>
         /// 动态利息
-        /// </summary>       
+        /// </summary>		
+        private decimal _dynamicinterest;
         [DataMember]
-        public decimal DynamicInterest { get; set; }
+        public decimal DynamicInterest
+        {
+            get { return _dynamicinterest; }
+            set { _dynamicinterest = value; }
+        }
         /// <summary>
         /// 静态惩罚金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _staticpunishmoney;
         [DataMember]
-        public decimal StaticPunishMoney { get; set; }
+        public decimal StaticPunishMoney
+        {
+            get { return _staticpunishmoney; }
+            set { _staticpunishmoney = value; }
+        }
         /// <summary>
         /// 动态惩罚金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _dynamicpunishmoney;
         [DataMember]
-        public decimal DynamicPunishMoney { get; set; }
+        public decimal DynamicPunishMoney
+        {
+            get { return _dynamicpunishmoney; }
+            set { _dynamicpunishmoney = value; }
+        }
         /// <summary>
         /// 静态冻结金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _staticfreezemoney;
         [DataMember]
-        public decimal StaticFreezeMoney { get; set; }
+        public decimal StaticFreezeMoney
+        {
+            get { return _staticfreezemoney; }
+            set { _staticfreezemoney = value; }
+        }
         /// <summary>
         /// 动态冻结金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _dynamicfreezemoney;
         [DataMember]
-        public decimal DynamicFreezeMoney { get; set; }
+        public decimal DynamicFreezeMoney
+        {
+            get { return _dynamicfreezemoney; }
+            set { _dynamicfreezemoney = value; }
+        }
         /// <summary>
         /// 静态总金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _totalstaticcapital;
         [DataMember]
-        public decimal TotalStaticCapital { get; set; }
+        public decimal TotalStaticCapital
+        {
+            get { return _totalstaticcapital; }
+            set { _totalstaticcapital = value; }
+        }
         /// <summary>
         /// 动态总金额
-        /// </summary>       
+        /// </summary>		
+        private decimal _totaldynamicfunds;
         [DataMember]
-        public decimal TotalDynamicFunds { get; set; }
+        public decimal TotalDynamicFunds
+        {
+            get { return _totaldynamicfunds; }
+            set { _totaldynamicfunds = value; }
+        }
+        /// <summary>
+        /// 当前利率
+        /// </summary>		
+        private decimal _interest;
+        [DataMember]
+        public decimal Interest
+        {
+            get { return _interest; }
+            set { _interest = value; }
+        }        
     }
 }

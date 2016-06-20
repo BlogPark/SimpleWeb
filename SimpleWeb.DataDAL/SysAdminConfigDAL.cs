@@ -11,7 +11,7 @@ namespace SimpleWeb.DataDAL
 {
     public class SysAdminConfigDAL
     {
-        DbHelperSQL helper = new DbHelperSQL();
+       static  DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
         /// 得到所有的系统配置
         /// </summary>
@@ -273,6 +273,29 @@ ELSE
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 根据ID得到配置信息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static string GetConfigsByID(int id)
+        {
+            string result = "";
+            string sqltxt = @"SELECT  ConfigValue
+FROM    SimpleWebDataBase.dbo.SysAdminConfigs
+WHERE   ID = @id
+        AND ConfigStatus = 1";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",id)
+                                      };
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                result = dt.Rows[0]["ConfigValue"].ToString();
+            }
+            return result;
         }
     }
 }

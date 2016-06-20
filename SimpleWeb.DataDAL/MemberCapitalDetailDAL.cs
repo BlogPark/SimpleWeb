@@ -11,9 +11,9 @@ namespace SimpleWeb.DataDAL
 {
     public class MemberCapitalDetailDAL
     {
-        public DbHelperSQL helper = new DbHelperSQL();
+        public static DbHelperSQL helper = new DbHelperSQL();
 
-        public bool UpdateMemberCapitalDetail(MemberCapitalDetailModel model)
+        public static bool UpdateMemberCapitalDetail(MemberCapitalDetailModel model)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update MemberCapitalDetail set ");
@@ -62,6 +62,286 @@ namespace SimpleWeb.DataDAL
             {
                 return false;
             }
+        }
+        /// <summary>
+        /// 更新会员的静态冻结金额
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateMemberStaticFreezeMoney(int memberid, decimal amont)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticFreezeMoney=@Amount
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  StaticFreezeMoney
+                )
+        VALUES  ( @MemberID ,
+                  @Amount
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态冻结金额
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateMemberDynamicFreezeMoney(int memberid, decimal amont)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicFreezeMoney=@Amount
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  DynamicFreezeMoney
+                )
+        VALUES  ( @MemberID ,
+                  @Amount
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的静态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateMemberStaticCapital(int memberid, decimal amont)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticCapital=@Amount,
+                   TotalStaticCapital=TotalStaticCapital+@Amount
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  StaticCapital,
+                  TotalStaticCapital
+                )
+        VALUES  ( @MemberID ,
+                  @Amount,
+                  @Amount
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的静态资金和利率
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateMemberStaticCapital(int memberid, decimal amont, decimal interest)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticCapital=@Amount,
+                   TotalStaticCapital=TotalStaticCapital+@Amount,
+                   Interest=@interest
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  StaticCapital,
+                  TotalStaticCapital,
+                  Interest
+                )
+        VALUES  ( @MemberID ,
+                  @Amount,
+                  @Amount,
+                  @interest
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont),
+                                      new SqlParameter("@interest",interest)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateMemberDynamicFunds(int memberid, decimal amont)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicFunds=@Amount,
+                   TotalDynamicFunds=TotalDynamicFunds+@Amount
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,
+                  DynamicFunds,
+                  TotalDynamicFunds
+                )
+        VALUES  ( @MemberID ,
+                  @Amount,
+                  @Amount
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 扣减会员的静态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int DeductionMemberStaticCapital(int memberid, decimal amont)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticCapital=StaticCapital+@Amount
+        WHERE   MemberID = @MemberID
+    ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 扣减会员的静态资金和利率
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int DeductionMemberStaticCapital(int memberid, decimal amont, decimal interest)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticCapital=StaticCapital+@Amount,Interest=@interest
+        WHERE   MemberID = @MemberID
+    ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont),
+                                      new SqlParameter("@interest",interest)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int DeductionMemberDynamicFunds(int memberid, decimal amont)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicFunds=DynamicFunds+@Amount
+        WHERE   MemberID = @MemberID
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态资金和利率
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int DeductionMemberDynamicFunds(int memberid, decimal amont, decimal interest)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicFunds=DynamicFunds+@Amount,,Interest=@interest
+        WHERE   MemberID = @MemberID
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",amont),
+                                      new SqlParameter("@interest",interest)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的当前利率
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="interest"></param>
+        /// <returns></returns>
+        public static int UpdateMemberInterest(int memberid, decimal interest)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     interest=@interest
+        WHERE   MemberID = @MemberID
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@interest",interest)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
         }
     }
 }

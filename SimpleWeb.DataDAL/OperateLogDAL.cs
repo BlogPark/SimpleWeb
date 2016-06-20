@@ -20,24 +20,31 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into AmountChangeLog(");
-            strSql.Append("MemberID,MemberPhone,MemberName,ProduceMoney,Remark,AddTime");
+            strSql.Append("Type,OrderCode,MemberID,MemberPhone,MemberName,ProduceMoney,Remark,AddTime,OrderID");
             strSql.Append(") values (");
-            strSql.Append("@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@Remark,GETDATE()");
+            strSql.Append("@Type,@OrderCode,@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@Remark,@AddTime,@OrderID");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
-			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
+			            new SqlParameter("@Type", SqlDbType.Int) ,            
+                        new SqlParameter("@OrderCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberID", SqlDbType.Int) ,            
                         new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@ProduceMoney", SqlDbType.Decimal) ,         
+                        new SqlParameter("@ProduceMoney", SqlDbType.Decimal) ,            
                         new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@AddTime", SqlDbType.DateTime)           
+                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@OrderID", SqlDbType.Int)      
             };
-            parameters[0].Value = model.MemberID;
-            parameters[1].Value = model.MemberPhone;
-            parameters[2].Value = model.MemberName;
-            parameters[3].Value = model.ProduceMoney;
-            parameters[4].Value = model.Remark;
+            parameters[0].Value = model.Type;
+            parameters[1].Value = model.OrderCode;
+            parameters[2].Value = model.MemberID;
+            parameters[3].Value = model.MemberPhone;
+            parameters[4].Value = model.MemberName;
+            parameters[5].Value = model.ProduceMoney;
+            parameters[6].Value = model.Remark;
+            parameters[7].Value = model.AddTime;
+            parameters[8].Value = model.OrderID;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -46,8 +53,7 @@ namespace SimpleWeb.DataDAL
             else
             {
                 return Convert.ToInt32(obj);
-            }
-
+            }			   
         }
         /// <summary>
         /// 增加用户行为日志
@@ -96,7 +102,7 @@ namespace SimpleWeb.DataDAL
             strSql.Append("insert into ActiveCodeLog(");
             strSql.Append("MemberID,MemberName,MemberPhone,ActiveCode,AID,Remark,Addtime");
             strSql.Append(") values (");
-            strSql.Append("@MemberID,@MemberName,@MemberPhone,@ActiveCode,@AID,@Remark,GETDATE");
+            strSql.Append("@MemberID,@MemberName,@MemberPhone,@ActiveCode,@AID,@Remark,GETDATE()");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {

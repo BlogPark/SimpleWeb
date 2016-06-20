@@ -194,3 +194,7 @@ h1 span.title-highlight, h2 span.title-highlight, h3 span.title-highlight, h4 sp
 .btn-view-over-the-town-5.active, .btn-view-over-the-town-5:active { background-image: none; -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); color: #817c83 !important; }
 /* end .btn-view-over-the-town-5 */
 
+.form-horizontal{}
+.center{text-align:center;}
+.form-group{margin-bottom:20px;display: table;}
+.control-label{text-align:right;font-size:16px;}

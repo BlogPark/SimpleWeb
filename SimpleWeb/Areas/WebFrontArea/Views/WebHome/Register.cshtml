@@ -1,5 +1,268 @@
-﻿@{
-    Layout = "~/Views/_WebLayout.cshtml";
-}
+﻿@model SimpleWeb.Areas.WebFrontArea.Models.RegisterViewModel
+<!DOCTYPE html>
+<!-- START HEAD -->
+<head>
+    <meta charset="UTF-8" />
+    <!-- this line will appear only if the website is visited with an iPad -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.2, user-scalable=yes" />
+    <title>Libra | Just another Your Inspiration Themes site</title>
+    <!-- RESET STYLESHEET -->
+    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("css/reset.css")" />
+    <!-- BOOTSTRAP STYLESHEET -->
+    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("css/bootstrap.css")" />
+    <!-- MAIN THEME STYLESHEET -->
+    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("css/style.css")" />
+    <!-- [favicon] begin -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x.png" />
+    <link rel='stylesheet' id='thickbox-css' href='@Url.Content("/js/thickbox/thickbox.css")' type='text/css' media='all' />
+    <link rel='stylesheet' id='featurestab-css' href='@Url.Content("/css/featurestab.css")' type='text/css' media='all' />
+    <link rel='stylesheet' id='responsive-css' href='@Url.Content("/css/responsive.new.css")' type='text/css' media='all' />
+    <link rel='stylesheet' id='ahortcodes-css' href='@Url.Content("/css/shortcodes.css")' type='text/css' media='all' />
+    <link rel='stylesheet' id='custom-css' href='@Url.Content("/css/custom.css")' type='text/css' media='all' />
+    <style type="text/css">
+        body
+        {
+            background-color: #ffffff;
+            background-image: url('images/bg-pattern.png');
+            background-repeat: repeat;
+            background-position: top left;
+            background-attachment: scroll;
+        }
+    </style>
+    <script type='text/javascript' src='@Url.Content("/js/jquery/jquery.js")'></script>
 
-<h2>Register</h2>
+
+</head>
+<!-- END HEAD -->
+<!-- START BODY -->
+<body class="home page no_js responsive stretched">
+
+    <!-- START BG SHADOW -->
+    <div class="bg-shadow">
+
+        <!-- START WRAPPER -->
+        <div id="wrapper" class="container group">
+
+            <!-- START TOP BAR -->
+            <div id="topbar">
+                <div class="container">
+                    <div class="row">
+                        <div id="nav" class="span12 light">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END TOP BAR -->
+
+            <!-- START HEADER -->
+            <div id="header" class="group margin-bottom">
+
+                <div class="group container">
+                    <div class="row" id="logo-headersidebar-container">
+                        <!-- START LOGO -->
+                        <div id="logo" class="span6 group">
+                            <a id="logo-img" href="index.html" title="Libra">
+                                <img src="images/libra-logo1.png" title="Libra" alt="Libra" />
+                            </a>
+                            <p id='tagline'>Just another Your Inspiration Themes site</p>
+                        </div>
+                        <!-- END LOGO -->
+                    </div>
+                </div>
+            </div>
+            <!-- END HEADER -->
+            <!-- START PRIMARY -->
+            <div id="primary" class="sidebar-right">
+                <div class="container group">
+                    <div class="row">
+                        <!-- START CONTENT -->
+                        <div id="content-home" class="span12 content group">
+                            <div class="page type-page status-publish group">
+                                <div class="row">
+                                    <div id="features-tab-libra" class="features-tab-container  group span12 margin-bottom">
+                                        <div class="row">
+                                            <div class="span12 center">
+                                                <h1>新会员注册</h1>
+                                            </div>
+                                            @using (Html.BeginForm("Register", "WebHome", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "wizForm", @class = "form-horizontal", @role = "form" }))
+                                            {
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">真实姓名<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">性&nbsp;&nbsp;&nbsp;别</label>
+                                                    <div class="span7">
+                                                        <label class="radio-inline">
+                                                            <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                                            男
+                                                        </label>
+                                                        <label class="radio-inline">
+                                                            <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                                            女
+                                                        </label>
+                                                        @Html.HiddenFor(m => m.member.Sex)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">手机号码<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">登陆密码<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        <input type="text" class="form-control" placeholder="登陆密码" id="pwd" name="pwd">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">确认密码<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.LogPwd, new { @placeholder = "确认密码", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">固定电话</label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.TelPhone, new { @placeholder = "固定电话", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">会员邮箱<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.Email, new { @placeholder = "会员邮箱", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">身份证号</label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.IdentificationID, new { @placeholder = "身份证号", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">所属地<span style="color: red">*</span></label>
+                                                    <div class="span2">
+                                                        @{
+                                                            <select class="form-control" id="drpprovince" name="drpprovince">
+                                                                <option value="0"></option>
+                                                                @foreach (var item in Model.regintable)
+                                                                {
+                                                                    <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                                                }
+                                                            </select>
+                                                        }
+                                                    </div>
+                                                    <div class="span2">
+                                                        <select class="form-control" id="drpcity" name="drpcity">
+                                                            <option value="0"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="span2">
+                                                        <select class="form-control" id="drparea" name="drparea">
+                                                            <option value="0"></option>
+                                                        </select>
+                                                    </div>
+                                                    @Html.HiddenFor(m => m.member.Province)
+                                                    @Html.HiddenFor(m => m.member.City)
+                                                    @Html.HiddenFor(m => m.member.Area)
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">详细地址</label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.Address, new { @placeholder = "详细地址", @class = "form-control" })
+                                                    </div>
+                                                </div>                        
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">微信账号<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.WeixinNum, new { @placeholder = "微信账号", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">支付宝账号<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.AliPayName, new { @placeholder = "支付宝账号", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">支付宝ID<span style="color: red">*</span></label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.AliPayNum, new { @placeholder = "支付宝ID", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">密保问题</label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.SecurityQuestion, new { @placeholder = "密保问题", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="span5 control-label">密保答案</label>
+                                                    <div class="span7">
+                                                        @Html.TextBoxFor(m => m.member.SecurityAnswer, new { @placeholder = "密保答案", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="span12 modal-footer center">
+                                                    <a class="btn btn-lg btn-default" href="#">取 消</a>
+                                                    <button type="submit" class="btn btn-lg btn-primary" onclick="checkform()">保  存</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END CONTENT -->
+                    </div>
+                </div>
+            </div>
+            <!-- END PRIMARY -->
+
+            <!-- START COPYRIGHT -->
+            <div id="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="left span6">
+                            <p>
+                                <a href="http://www.cssmoban.com/">
+                                    <img src="http://yithemes.com/cdn/images/various/footer_yith_grey.png" alt="Your Inspiration Themes" style="position: relative; top: 9px; margin: -22px 5px 0 0;"></a>&nbsp;Copyright 2012 - <strong>Libra theme</strong> by
+                        Your Inspiration Themes
+                            </p>
+                        </div>
+                        <div class="right span6">
+                            <p>
+                                Collect from <a href="http://www.cssmoban.com/" title="网站模板" target="_blank">网站模板</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END COPYRIGHT -->
+        </div>
+        <!-- END WRAPPER -->
+    </div>
+    <!-- END BG SHADOW -->
+    <script type='text/javascript' src='@Url.Content("/js/comment-reply.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/underscore.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.colorbox-min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.easing.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.masonry.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/responsive.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/mobilemenu.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.superfish.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.placeholder.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/contact.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.tipsy.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.cycle.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/hoverIntent.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/media-upload.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("/js/jquery.custom.js")'></script>
+</body>
+<!-- END BODY -->
+</html>

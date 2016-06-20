@@ -13,6 +13,7 @@ namespace SimpleWeb.Controllers
         /// </summary>
         public static readonly string SESSION_LOGIN_NAME = "SESSION_LOGIN_NAME";
         public static readonly string VALICODE = "VALICODE";
+        public static readonly string SESSION_WEB_LOGIN = "SESSION_WEB_LOGIN";
         /// <summary>
         /// 图片上传路径
         /// </summary>

@@ -185,21 +185,17 @@ namespace SimpleWeb.DataDAL
             }
         }
         /// <summary>
-        /// 根据ID得到一个对象实体
+        /// 根据ID得到对象实体
         /// </summary>
         public List<AdminSiteNewsModel> GetModelListByUserID(int userid)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus, SAddTime  ");
+            strSql.Append("select TOP 100  ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus, SAddTime  ");
             strSql.Append("  from AdminSiteNews ");
-            strSql.Append(" where ReceiveUserID=@userID AND SStatus IN (1,2) ");
-            strSql.Append(" ORDER BY  IsTop DESC,ID DESC ");
-            SqlParameter[] parameters = {
-					new SqlParameter("@userID", SqlDbType.Int)
-			};
-            parameters[0].Value = userid;
+            strSql.Append(" where ReceiveUserID IN ("+userid.ToString()+",0) ");
+            strSql.Append(" ORDER BY  IsUrgent DESC,IsTop DESC,ID DESC ");          
             List<AdminSiteNewsModel> list = new List<AdminSiteNewsModel>();
-            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            DataSet ds = helper.Query(strSql.ToString());
             if (ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow item in ds.Tables[0].Rows)
@@ -300,6 +296,103 @@ namespace SimpleWeb.DataDAL
                 }
             }
             return list;
+        }
+        /// <summary>
+        /// 查询会员的留言信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public List<WebContactMessageModel> GetContractMessage(int userid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, ReplyTime, MemberID, MemberName, MemberPhone, MessageTitle, MessageContent, AddTime, MStatus, ReplyContent  ");
+            strSql.Append("  from WebContactMessage ");
+            strSql.Append(" where MemberID=@MemberID");
+            strSql.Append(" Order By ID Desc ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberID", SqlDbType.Int)
+			};
+            parameters[0].Value = userid;
+            List<WebContactMessageModel> list = new List<WebContactMessageModel>();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    WebContactMessageModel model = new WebContactMessageModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["ReplyTime"].ToString() != "")
+                    {
+                        model.ReplyTime = DateTime.Parse(item["ReplyTime"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MessageTitle = item["MessageTitle"].ToString();
+                    model.MessageContent = item["MessageContent"].ToString();
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    if (item["MStatus"].ToString() != "")
+                    {
+                        model.MStatus = int.Parse(item["MStatus"].ToString());
+                    }
+                    model.ReplyContent = item["ReplyContent"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 添加留言信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public int AddContactMessage(WebContactMessageModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into WebContactMessage(");
+            strSql.Append("ReplyTime,MemberID,MemberName,MemberPhone,MessageTitle,MessageContent,AddTime,MStatus,ReplyContent");
+            strSql.Append(") values (");
+            strSql.Append("@ReplyTime,@MemberID,@MemberName,@MemberPhone,@MessageTitle,@MessageContent,GETDATE(),1,@ReplyContent");
+            strSql.Append(") ");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ReplyTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@MemberID", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MessageTitle", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MessageContent", SqlDbType.NVarChar) , 
+                        new SqlParameter("@ReplyContent", SqlDbType.NVarChar)         
+            };
+            parameters[0].Value = model.ReplyTime;
+            parameters[1].Value = model.MemberID;
+            parameters[2].Value = model.MemberName;
+            parameters[3].Value = model.MemberPhone;
+            parameters[4].Value = model.MessageTitle;
+            parameters[5].Value = model.MessageContent;
+            parameters[6].Value = model.ReplyContent;
+            object obj = helper.GetSingle(strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
         }
     }
 }

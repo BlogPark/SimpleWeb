@@ -15,66 +15,136 @@ namespace SimpleWeb.DataModels
     public class AcceptHelpOrderModel
     {
         #region 原始字段
+        private int _id;
         /// <summary>
         /// ID
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int ID { get; set; }
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private string _ordercode;
         /// <summary>
         /// 单据编号
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string OrderCode { get; set; }
+        public string OrderCode
+        {
+            get { return _ordercode; }
+            set { _ordercode = value; }
+        }
+        private int _memberid;
         /// <summary>
         /// 会员ID
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int MemberID { get; set; }
+        public int MemberID
+        {
+            get { return _memberid; }
+            set { _memberid = value; }
+        }
+        private string _memberphone;
         /// <summary>
         /// 会员电话
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string MemberPhone { get; set; }
+        public string MemberPhone
+        {
+            get { return _memberphone; }
+            set { _memberphone = value; }
+        }
+        private string _membername;
         /// <summary>
         /// 会员名称
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string MemberName { get; set; }
+        public string MemberName
+        {
+            get { return _membername; }
+            set { _membername = value; }
+        }
+        private decimal _amount;
         /// <summary>
         /// 申请金额
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public decimal Amount { get; set; }
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+        private int _sourcetype;
+        /// <summary>
+        /// 来源（1 静态资金 2 动态资金）
+        /// </summary>		
+        [DataMember]
+        public int SourceType
+        {
+            get { return _sourcetype; }
+            set { _sourcetype = value; }
+        }
+        private string _paytype;
         /// <summary>
         /// 支付方式
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string PayType { get; set; }
+        public string PayType
+        {
+            get { return _paytype; }
+            set { _paytype = value; }
+        }
+        private decimal _matchedamount;
         /// <summary>
         /// 已匹配金额
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public decimal MatchedAmount { get; set; }
+        public decimal MatchedAmount
+        {
+            get { return _matchedamount; }
+            set { _matchedamount = value; }
+        }
+        private string _turnoutorder;
         /// <summary>
         /// 对应订单
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string TurnOutOrder { get; set; }
+        public string TurnOutOrder
+        {
+            get { return _turnoutorder; }
+            set { _turnoutorder = value; }
+        }
+        private DateTime _addtime;
         /// <summary>
         /// 添加时间
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public DateTime AddTime { get; set; }
+        public DateTime AddTime
+        {
+            get { return _addtime; }
+            set { _addtime = value; }
+        }
+        private int _astatus;
         /// <summary>
         /// 状态（0 未匹配 1 部分匹配 2 全部完成 3 已撤销）
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int AStatus { get; set; }
+        public int AStatus
+        {
+            get { return _astatus; }
+            set { _astatus = value; }
+        }
+        private int _sortindex;
         /// <summary>
         /// 排序
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int SortIndex { get; set; }
+        public int SortIndex
+        {
+            get { return _sortindex; }
+            set { _sortindex = value; }
+        }  
         #endregion
 
         #region 扩展字段

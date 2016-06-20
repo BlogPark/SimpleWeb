@@ -12,7 +12,7 @@ namespace SimpleWeb.DataDAL
 {
     public class HelpeOrderDAL
     {
-        private DbHelperSQL helper = new DbHelperSQL();
+        private static DbHelperSQL helper = new DbHelperSQL();
 
         /// <summary>
         /// 增加一条数据
@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into HelpeOrder(");
-            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus");
+            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,OStatus,ActiveCode");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus");
+            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@OStatus,@ActiveCode");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -37,7 +37,9 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@Amount", SqlDbType.Decimal) ,            
                         new SqlParameter("@Interest", SqlDbType.Decimal) ,            
                         new SqlParameter("@PayType", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@HStatus", SqlDbType.Int)
+                        new SqlParameter("@HStatus", SqlDbType.Int),
+                        new SqlParameter("@OStatus",SqlDbType.Int),
+                        new SqlParameter("@ActiveCode",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.MatchedAmount;
             parameters[1].Value = model.AddTime;
@@ -50,6 +52,8 @@ namespace SimpleWeb.DataDAL
             parameters[8].Value = model.Interest;
             parameters[9].Value = model.PayType;
             parameters[10].Value = model.HStatus;
+            parameters[11].Value = model.OStatus;
+            parameters[12].Value = model.ActiveCode;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -60,7 +64,6 @@ namespace SimpleWeb.DataDAL
                 return Convert.ToInt32(obj);
             }
         }
-
         /// <summary>
         /// 查询所有的帮助订单
         /// </summary>
@@ -127,7 +130,6 @@ namespace SimpleWeb.DataDAL
                 return null;
             }
         }
-
         /// <summary>
         /// 查询所有的帮助订单
         /// </summary>
@@ -378,7 +380,7 @@ VALUES  ( @MemberID ,
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
             string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS HStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday";
-            string where = " HStatus=0";           
+            string where = " OStatus=1";           
             PageProModel page = new PageProModel();
             page.colums = columms;
             page.orderby = "DATEDIFF(DAY,AddTime,GETDATE())";
@@ -432,6 +434,27 @@ VALUES  ( @MemberID ,
             }
             return list;
         }
-
+        /// <summary>
+        /// 更新提供帮助订单的信息
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public static int UpdateHelpOrderMatch(int orderid,decimal money)
+        {
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.HelpeOrder
+SET     MatchedAmount = @amount ,
+        HStatus = CASE ( Amount - @amount )
+                    WHEN 0 THEN 2
+                    ELSE 1
+                  END
+WHERE   id = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",orderid),
+            new SqlParameter("@amount",money)
+                                      };
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
+        
     }
 }

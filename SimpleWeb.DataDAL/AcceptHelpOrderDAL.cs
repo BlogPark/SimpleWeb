@@ -11,7 +11,7 @@ namespace SimpleWeb.DataDAL
 {
     public class AcceptHelpOrderDAL
     {
-        private DbHelperSQL helper = new DbHelperSQL();
+        private static DbHelperSQL helper = new DbHelperSQL();
 
         /// <summary>
         /// 增加一条数据
@@ -20,9 +20,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into AcceptHelpOrder(");
-            strSql.Append("AddTime,AStatus,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,PayType,MatchedAmount,TurnOutOrder");
+            strSql.Append("AddTime,AStatus,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,PayType,MatchedAmount,TurnOutOrder,SourceType");
             strSql.Append(") values (");
-            strSql.Append("@AddTime,@AStatus,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@PayType,@MatchedAmount,@TurnOutOrder");
+            strSql.Append("@AddTime,@AStatus,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@PayType,@MatchedAmount,@TurnOutOrder,@SourceType");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -36,7 +36,8 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@Amount", SqlDbType.Decimal) ,            
                         new SqlParameter("@PayType", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MatchedAmount", SqlDbType.Decimal) ,            
-                        new SqlParameter("@TurnOutOrder", SqlDbType.NVarChar)   
+                        new SqlParameter("@TurnOutOrder", SqlDbType.NVarChar),
+                        new SqlParameter("@SourceType",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.AddTime;
             parameters[1].Value = model.AStatus;
@@ -49,6 +50,7 @@ namespace SimpleWeb.DataDAL
             parameters[8].Value = model.PayType;
             parameters[9].Value = model.MatchedAmount;
             parameters[10].Value = model.TurnOutOrder;
+            parameters[11].Value = model.SourceType;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -271,5 +273,26 @@ namespace SimpleWeb.DataDAL
             return list;
         }
 
+        /// <summary>
+        /// 更新提供帮助订单的信息
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public static int UpdateAcceptOrderMatch(int orderid, decimal money)
+        {
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.AcceptHelpOrder
+SET     MatchedAmount = @amount ,
+        AStatus = CASE ( Amount - @amount )
+                    WHEN 0 THEN 2
+                    ELSE 1
+                  END
+WHERE   id = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",orderid),
+            new SqlParameter("@amount",money)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
     }
 }
