@@ -17,7 +17,7 @@ namespace SimpleWeb.DataDAL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public int AddMatchOrder(MatchOrderModel model)
+        public static int AddMatchOrder(MatchOrderModel model)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MatchOrder(");

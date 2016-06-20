@@ -455,6 +455,34 @@ WHERE   id = @id";
                                       };
             return helper.ExecuteSql(sqltxt,paramter);
         }
+        /// <summary>
+        /// 根据ID查询提供帮助订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static HelpeOrderModel GetHelpOrderInfo(int id)
+        {
+            string sqltxt=@"select OrderCode,MemberID,MemberPhone,MemberName,Amount from HelpeOrder where ID=@id";
+            SqlParameter[] paramter={
+                                        new SqlParameter("@id",id)
+                                    };
+            DataTable dt=helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                HelpeOrderModel model = new HelpeOrderModel();
+                model.MemberID=Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
+                model.MemberName = dt.Rows[0]["MemberName"].ToString();
+                model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
+                model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
+                model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
         
     }
 }
