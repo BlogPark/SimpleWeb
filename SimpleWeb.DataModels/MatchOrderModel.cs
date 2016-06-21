@@ -100,6 +100,17 @@ namespace SimpleWeb.DataModels
         {
             get { return _matchtime; }
             set { _matchtime = value; }
-        }        
+        }
+
+        private int _MatchStatus;
+        /// <summary>
+        /// 匹配状态（1 匹配 2 取消）
+        /// </summary>
+        [DataMember]
+        public int MatchStatus
+        {
+            get { return _MatchStatus; }
+            set { _MatchStatus = value; }
+        }
     }
 }

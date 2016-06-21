@@ -96,5 +96,36 @@ ELSE
                 return null;
             }
         }
+        /// <summary>
+        /// 取消提供帮助单据后更新统计信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static int CancleHelperOrder(int memberid, int hid)
+        {
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberExtendInfo
+SET     LastHelperTime = ( SELECT TOP 1
+                                    Addtime
+                           FROM     HelpeOrder
+                           WHERE    MemberID = @memberid
+                                    AND id <> @id
+                           ORDER BY Addtime DESC
+                         ) ,
+        MemberHelpCount = MemberHelpCount -1 ,
+        LastHelpMoney =( SELECT TOP 1
+                                    Amount
+                           FROM     HelpeOrder
+                           WHERE    MemberID = @memberid
+                                    AND id <> @id
+                           ORDER BY Addtime DESC
+                         )
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@memberid",memberid),
+                                      new SqlParameter("@id",hid)                                      
+                                      };
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
     }
 }

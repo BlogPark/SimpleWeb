@@ -82,6 +82,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.ProduceMoney = model.Amount;
                 logmodel.Remark = "会员:" + model.MemberPhone + " 申请提供帮助 " + model.Amount.ToString() + "元";
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+
                 scope.Complete();
                 result = 1;
             }
@@ -151,7 +152,7 @@ namespace SimpleWeb.DataBLL
             string value = SysAdminConfigDAL.GetConfigsByID(6);//得到打款后返还金额
             string inteist = SysAdminConfigDAL.GetConfigsByID(7);//得到打款后利率
             HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(hid);
-            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid,0);
+            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改状态为已打款
@@ -163,7 +164,7 @@ namespace SimpleWeb.DataBLL
                 //返还排单币更改会员利率为打款后利率
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value),decimal.Parse(inteist));
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value), decimal.Parse(inteist));
                     if (rowcount < 1)
                     {
                         return 0;
@@ -191,12 +192,12 @@ namespace SimpleWeb.DataBLL
                 {
                     foreach (var item in matchorders)
                     {
-                         rowcount = AcceptHelpOrderDAL.UpdateStatus(item.AcceptOrderID,4);
-                         if (rowcount < 1)
-                         {
-                             return 0;
-                         }
-                    }                   
+                        rowcount = AcceptHelpOrderDAL.UpdateStatus(item.AcceptOrderID, 4);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                    }
                 }
                 scope.Complete();
                 result = 1;
@@ -207,16 +208,86 @@ namespace SimpleWeb.DataBLL
         /// 取消提供帮助的订单
         /// </summary>
         /// <param name="hid"></param>
+        /// <param name="ispipei">单据是否已经匹配</param>
         /// <returns></returns>
-        public int UpdateToCancle(int hid)
+        public int UpdateToCancle(int hid,int ispipei=0)
         {
             int result = 0;
-            using(TransactionScope scope=new TransactionScope())
+            using (TransactionScope scope = new TransactionScope())
             {
                 //更改订单状态
-
-                //返还会员扣除的资金
-
+                int rowcount = HelpeOrderDAL.UpdateStatus(hid, 3);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //返还会员追加的资金
+                HelpeOrderModel model = HelpeOrderDAL.GetHelpOrderInfo(hid);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount));
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //插入会员资金变动日志
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = model.MemberID;
+                logmodel.MemberName = model.MemberName;
+                logmodel.MemberPhone = model.MemberPhone;
+                logmodel.OrderCode = model.OrderCode;
+                logmodel.OrderID = hid;
+                logmodel.ProduceMoney = (0 - model.Amount);
+                logmodel.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减静态资金 " + model.Amount.ToString() + "元";
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                if (model.Interest > 0)
+                {
+                    //从账户扣减本次产生的利息
+                    rowcount = MemberCapitalDetailDAL.UpdateStaticInterest(model.MemberID, (0 - model.Interest));
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    //插入日志
+                    AmountChangeLogModel logmodel1 = new AmountChangeLogModel();
+                    logmodel1.MemberID = model.MemberID;
+                    logmodel1.MemberName = model.MemberName;
+                    logmodel1.MemberPhone = model.MemberPhone;
+                    logmodel1.OrderCode = model.OrderCode;
+                    logmodel1.OrderID = hid;
+                    logmodel1.ProduceMoney = (0 - model.Amount);
+                    logmodel1.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减利息 " + model.Interest.ToString() + "元";
+                    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel1);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                }
+                //更新会员统计信息
+                rowcount = MemberExtendInfoDAL.CancleHelperOrder(model.MemberID,hid);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                if (ispipei == 1)//该单已经匹配
+                {
+                    List<MatchOrderModel> matchs = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
+                    rowcount = MatchOrderDAL.UpdateStatus(hid, 0);//更改状态为取消
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    foreach (var item in matchs)//更改接受帮助订单的状态
+                    {
+                        rowcount = AcceptHelpOrderDAL.CancleOrderForHelp(item.AcceptOrderID, item.MatchedMoney);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                    }
+                }
                 scope.Complete();
                 result = 1;
             }

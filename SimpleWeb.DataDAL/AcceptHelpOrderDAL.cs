@@ -340,5 +340,21 @@ WHERE   id = @id";
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
         }
+        /// <summary>
+        /// 更新接受帮助的订单的状态
+        /// </summary>
+        /// <returns></returns>
+        public static int CancleOrderForHelp(int aid,decimal money)
+        {
+            string sqltxt = @"UPDATE  AcceptHelpOrder
+SET     AStatus = CASE ( MatchedAmount - @money )
+                    WHEN 0 THEN 0
+                    ELSE 1
+                  END ,
+        MatchedAmount = MatchedAmount - @money
+WHERE   id = @id";
+            SqlParameter[] paramter = { new SqlParameter("@id", aid), new SqlParameter("@money",money) };
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
     }
 }

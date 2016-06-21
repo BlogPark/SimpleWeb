@@ -376,5 +376,46 @@ WHERE   MemberID = @id";
             return helper.ExecuteSql(sqltxt, paramter);
         }
 
+        /// <summary>
+        /// 更新会员的静态利息金额
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="interest"></param>
+        /// <returns></returns>
+        public static int UpdateStaticInterest(int memberid, decimal interestmoney)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticInterest=ISNULL(StaticInterest,0)+@StaticInterest
+        WHERE   MemberID = @MemberID
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@StaticInterest",interestmoney)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态利息金额
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="interest"></param>
+        /// <returns></returns>
+        public static int UpdateDynamicInterest(int memberid, decimal interestmoney)
+        {
+            string sqltxt = @"
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicInterest=ISNULL(DynamicInterest,0)+@DynamicInterest
+        WHERE   MemberID = @MemberID
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@DynamicInterest",interestmoney)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+
     }
 }

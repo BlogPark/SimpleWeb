@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MatchOrder(");
-            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime");
+            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus");
             strSql.Append(") values (");
-            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE()");
+            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE(),1");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -66,11 +66,11 @@ namespace SimpleWeb.DataDAL
             strSql.Append("  from MatchOrder ");
             if (hid > 0)
             {
-                strSql.Append(" where HelperOrderID=@hid");
+                strSql.Append(" where HelperOrderID=@hid AND MatchStatus=1 ");
             }
             if (aid > 0)
             {
-                strSql.Append(" where AcceptOrderID=@aid");
+                strSql.Append(" where AcceptOrderID=@aid AND MatchStatus=1 ");
             }
             SqlParameter[] parameters = {
 					new SqlParameter("@hid", SqlDbType.Int),
@@ -121,6 +121,33 @@ namespace SimpleWeb.DataDAL
             {
                 return null;
             }
+        }
+        /// <summary>
+        /// 更改匹配订单的信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public static int UpdateStatus(int hid, int aid)
+        {
+            string sqltxt = @" UPDATE MatchOrder 
+  SET MatchStatus=2";
+            if (hid > 0)
+            {
+                sqltxt += " where HelperOrderID=@hid AND MatchStatus=1 ";
+            }
+            if (aid > 0)
+            {
+                sqltxt += " where AcceptOrderID=@aid AND MatchStatus=1 ";
+            }
+            SqlParameter[] parameters = {
+					new SqlParameter("@hid", SqlDbType.Int),
+                    new SqlParameter("@aid", SqlDbType.Int)
+			};
+            parameters[0].Value = hid;
+            parameters[1].Value = aid;
+            return helper.ExecuteSql(sqltxt,parameters);
+
         }
     }
 }

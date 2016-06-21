@@ -459,7 +459,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount from HelpeOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount,Interest from HelpeOrder where ID=@id";
             SqlParameter[] paramter={
                                         new SqlParameter("@id",id)
                                     };
@@ -473,6 +473,7 @@ WHERE   id = @id";
                 model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
                 model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
+                model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
                 return model;
             }
             else
