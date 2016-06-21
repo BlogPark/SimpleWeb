@@ -31,11 +31,11 @@ namespace SimpleWeb.DataBLL
                 int rowcount = 0;
                 if (model.SourceType == 1)
                 {
-                    rowcount = MemberCapitalDetailDAL.DeductionMemberStaticCapital(model.MemberID, 0 - model.Amount,0);
+                    rowcount = MemberCapitalDetailDAL.DeductionMemberStaticCapital(model.MemberID, 0 - model.Amount, 0);
                 }
                 else
                 {
-                    rowcount = MemberCapitalDetailDAL.DeductionMemberDynamicFunds(model.MemberID,0-model.Amount,0);
+                    rowcount = MemberCapitalDetailDAL.DeductionMemberDynamicFunds(model.MemberID, 0 - model.Amount, 0);
                 }
                 if (rowcount < 1)
                 {
@@ -49,7 +49,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderCode = model.OrderCode;
                 logmodel.OrderID = orderid;
                 logmodel.ProduceMoney = 0 - model.Amount;
-                logmodel.Remark = "会员:"+model.MemberPhone+" 申请接受帮助 "+model.Amount.ToString()+"元";
+                logmodel.Remark = "会员:" + model.MemberPhone + " 申请接受帮助 " + model.Amount.ToString() + "元";
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
@@ -82,6 +82,57 @@ namespace SimpleWeb.DataBLL
         public List<AcceptHelpOrderModel> GetWaitAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             return dal.GetWaitAcceptOrderListForPage(model, out totalrowcount);
+        }
+        /// <summary>
+        /// 更新状态为已完成
+        /// </summary>
+        /// <returns></returns>
+        public int UpdateStatusToComplete(int aid)
+        {
+            int result = 0;
+            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //更改当前的状态
+                int rowcount = AcceptHelpOrderDAL.UpdateStatus(aid, 5);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //更改匹配的提供帮助订单的状态
+                foreach (var item in matchorders)
+                {
+                    rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.HelperOrderID);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(item.HelperOrderID);                  
+                    //解冻会员的静态冻结资金
+                    rowcount = MemberCapitalDetailDAL.UpdateStaticThawDetail(order.MemberID);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    //插入会员的资金变动记录
+                    AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                    logmodel.MemberID = order.MemberID;
+                    logmodel.MemberName = order.MemberName;
+                    logmodel.MemberPhone = order.MemberPhone;
+                    logmodel.OrderCode = order.OrderCode;
+                    logmodel.OrderID = item.HelperOrderID;
+                    logmodel.ProduceMoney = 0;
+                    logmodel.Remark = "会员:" + order.MemberPhone + " 所有冻结资金解冻";
+                    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                }
+                scope.Complete();
+                result = 1;
+            }
+            return result;
         }
     }
 }

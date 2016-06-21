@@ -56,7 +56,7 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public string PayType { get; set; }
         /// <summary>
-        /// 状态（0 未匹配 1 部分匹配 2 全部成交 3 已撤销 ）
+        /// 状态（ 0 未匹配 1 部分匹配 2 全部匹配  3 已撤销  4 已打款 5 已确认）
         /// </summary>       
         [DataMember]
         public int HStatus { get; set; }
@@ -118,6 +118,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int ActiveCodeID { get; set; }
+        /// <summary>
+        /// 剩余匹配金额
+        /// </summary>
+        [DataMember]
+        public decimal DiffAmount { get; set; }
         #endregion
     }
 }

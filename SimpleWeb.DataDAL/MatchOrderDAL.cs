@@ -52,5 +52,75 @@ namespace SimpleWeb.DataDAL
                 return Convert.ToInt32(obj);
             }
         }
+        /// <summary>
+        /// 得到匹配的单据信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public static List<MatchOrderModel> GetMatchOrderInfo(int hid, int aid)
+        {
+            List<MatchOrderModel> list = new List<MatchOrderModel>();
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, HelperOrderID, HelperOrderCode, HelperMemberID, AcceptOrderID, AcceptOrderCode, AcceptMemberID, MatchedMoney, MatchTime  ");
+            strSql.Append("  from MatchOrder ");
+            if (hid > 0)
+            {
+                strSql.Append(" where HelperOrderID=@hid");
+            }
+            if (aid > 0)
+            {
+                strSql.Append(" where AcceptOrderID=@aid");
+            }
+            SqlParameter[] parameters = {
+					new SqlParameter("@hid", SqlDbType.Int),
+                    new SqlParameter("@aid", SqlDbType.Int)
+			};
+            parameters[0].Value = hid;
+            parameters[1].Value = aid;
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    MatchOrderModel model = new MatchOrderModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["HelperOrderID"].ToString() != "")
+                    {
+                        model.HelperOrderID = int.Parse(item["HelperOrderID"].ToString());
+                    }
+                    model.HelperOrderCode = item["HelperOrderCode"].ToString();
+                    if (item["HelperMemberID"].ToString() != "")
+                    {
+                        model.HelperMemberID = int.Parse(item["HelperMemberID"].ToString());
+                    }
+                    if (item["AcceptOrderID"].ToString() != "")
+                    {
+                        model.AcceptOrderID = int.Parse(item["AcceptOrderID"].ToString());
+                    }
+                    model.AcceptOrderCode = item["AcceptOrderCode"].ToString();
+                    if (item["AcceptMemberID"].ToString() != "")
+                    {
+                        model.AcceptMemberID = int.Parse(item["AcceptMemberID"].ToString());
+                    }
+                    if (item["MatchedMoney"].ToString() != "")
+                    {
+                        model.MatchedMoney = decimal.Parse(item["MatchedMoney"].ToString());
+                    }
+                    if (item["MatchTime"].ToString() != "")
+                    {
+                        model.MatchTime = DateTime.Parse(item["MatchTime"].ToString());
+                    }
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

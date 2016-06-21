@@ -61,7 +61,6 @@ namespace SimpleWeb.DataDAL
                 return Convert.ToInt32(obj);
             }
         }
-
         /// <summary>
         /// 查询所有的帮助订单
         /// </summary>
@@ -122,7 +121,6 @@ namespace SimpleWeb.DataDAL
                 return null;
             }
         }
-
         /// <summary>
         /// 查询所有的帮助订单
         /// </summary>
@@ -212,7 +210,6 @@ namespace SimpleWeb.DataDAL
             }
             return list;
         }
-
         /// <summary>
         /// 查询所有的待匹配的接受帮助订单
         /// </summary>
@@ -272,7 +269,6 @@ namespace SimpleWeb.DataDAL
             }
             return list;
         }
-
         /// <summary>
         /// 更新提供帮助订单的信息
         /// </summary>
@@ -282,11 +278,11 @@ namespace SimpleWeb.DataDAL
         public static int UpdateAcceptOrderMatch(int orderid, decimal money)
         {
             string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.AcceptHelpOrder
-SET     MatchedAmount = @amount ,
-        AStatus = CASE ( Amount - @amount )
+SET  AStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
-                  END
+                  END,
+          MatchedAmount =ISNULL(MatchedAmount,0)+ @amount
 WHERE   id = @id";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@id",orderid),
@@ -301,7 +297,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static AcceptHelpOrderModel GetAcceptOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount from AcceptHelpOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount  from AcceptHelpOrder where ID=@id";
             SqlParameter[] paramter={
                                         new SqlParameter("@id",id)
                                     };
@@ -314,6 +310,7 @@ WHERE   id = @id";
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
                 model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
                 model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
+                model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 return model;
             }
             else
@@ -321,6 +318,27 @@ WHERE   id = @id";
                 return null;
             }
 
+        }
+        /// <summary>
+        /// 更改状态
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatus(int aid, int status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update AcceptHelpOrder set ");
+            strSql.Append(" AStatus = @AStatus  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,            
+                        new SqlParameter("@AStatus", SqlDbType.Int) 
+            };
+            parameters[0].Value = aid;
+            parameters[1].Value = status;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
         }
     }
 }

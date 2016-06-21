@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into HelpeOrder(");
-            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,OStatus,ActiveCode");
+            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@OStatus,@ActiveCode");
+            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -38,7 +38,6 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@Interest", SqlDbType.Decimal) ,            
                         new SqlParameter("@PayType", SqlDbType.NVarChar) ,            
                         new SqlParameter("@HStatus", SqlDbType.Int),
-                        new SqlParameter("@OStatus",SqlDbType.Int),
                         new SqlParameter("@ActiveCode",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.MatchedAmount;
@@ -52,8 +51,7 @@ namespace SimpleWeb.DataDAL
             parameters[8].Value = model.Interest;
             parameters[9].Value = model.PayType;
             parameters[10].Value = model.HStatus;
-            parameters[11].Value = model.OStatus;
-            parameters[12].Value = model.ActiveCode;
+            parameters[11].Value = model.ActiveCode;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -72,7 +70,7 @@ namespace SimpleWeb.DataDAL
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS HStatusName  ");
+            strSql.Append("select ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName  ");
             strSql.Append("  from HelpeOrder ");
             strSql.Append(" ORDER BY SortIndex DESC ,ID DESC ");
 
@@ -137,7 +135,7 @@ namespace SimpleWeb.DataDAL
         public List<HelpeOrderModel> GetAllHelpeOrderListForPage(HelpeOrderModel model, out int totalrowcount)
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
-            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS HStatusName";
+            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName";
             string where = "";
             if (model != null)
             {
@@ -222,7 +220,6 @@ namespace SimpleWeb.DataDAL
             }
             return list;
         }
-
         /// <summary>
         /// 添加提供帮助订单
         /// </summary>
@@ -338,7 +335,7 @@ VALUES  ( @MemberID ,
         /// <param name="oid"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public int UpdateStatus(int oid,int status)
+        public static int UpdateStatus(int oid,int status)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update HelpeOrder set ");
@@ -379,8 +376,8 @@ VALUES  ( @MemberID ,
         public List<HelpeOrderModel> GetWaitHelpeOrderListForPage(HelpeOrderModel model, out int totalrowcount)
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
-            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS HStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday";
-            string where = " OStatus=1";           
+            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday";
+            string where = " HStatus=1";           
             PageProModel page = new PageProModel();
             page.colums = columms;
             page.orderby = "DATEDIFF(DAY,AddTime,GETDATE())";
@@ -443,11 +440,11 @@ VALUES  ( @MemberID ,
         public static int UpdateHelpOrderMatch(int orderid,decimal money)
         {
             string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.HelpeOrder
-SET     MatchedAmount = @amount ,
-        HStatus = CASE ( Amount - @amount )
+SET   HStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
-                  END
+                  END,
+         MatchedAmount =ISNULL(MatchedAmount,0)+ @amount 
 WHERE   id = @id";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@id",orderid),
@@ -462,7 +459,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt=@"select OrderCode,MemberID,MemberPhone,MemberName,Amount from HelpeOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount from HelpeOrder where ID=@id";
             SqlParameter[] paramter={
                                         new SqlParameter("@id",id)
                                     };
@@ -475,14 +472,34 @@ WHERE   id = @id";
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
                 model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
                 model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
+                model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 return model;
             }
             else
             {
                 return null;
             }
-
         }
-        
+        /// <summary>
+        /// 更改状态
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatusForComplete(int hid)
+        {
+            string sqltxt = @"UPDATE  HelpeOrder
+SET     HStatus = CASE ( Amount - ISNULL(MatchedAmount, 0) )
+                    WHEN 0 THEN 5
+                    ELSE 2
+                  END
+WHERE   id = @id";
+            SqlParameter[] parameters = {
+			            new SqlParameter("@id", SqlDbType.Int) 
+            };
+            parameters[0].Value =hid;
+            int rows = helper.ExecuteSql(sqltxt, parameters);
+            return rows;
+        }
     }
 }

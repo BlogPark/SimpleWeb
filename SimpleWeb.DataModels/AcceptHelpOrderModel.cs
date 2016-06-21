@@ -127,7 +127,7 @@ namespace SimpleWeb.DataModels
         }
         private int _astatus;
         /// <summary>
-        /// 状态（0 未匹配 1 部分匹配 2 全部完成 3 已撤销）
+        /// 状态（0 未匹配 1 部分匹配 2 全部完成 3 已撤销 4 对方已打款  5 确认收款） 
         /// </summary>		
         [DataMember]
         public int AStatus
@@ -168,6 +168,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int DissDay { get; set; }
+        /// <summary>
+        /// 剩余匹配金额
+        /// </summary>
+        [DataMember]
+        public decimal DiffAmount { get; set; }
         #endregion
     }
 }

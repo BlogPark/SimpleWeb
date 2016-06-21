@@ -12,17 +12,31 @@ namespace SimpleWeb.DataBLL
     public class MatchOrderBLL
     {
         /// <summary>
-        /// 单据匹配
+        /// 单据匹配方法
         /// </summary>
         /// <returns></returns>
-        public int OperateMatchOrder(int hid,int aid,decimal money)
+        public int OperateMatchOrder(int hid,int aid)
         {
             int result=0;
+            decimal money = 0;
             HelpeOrderModel help = HelpeOrderDAL.GetHelpOrderInfo(hid);
             AcceptHelpOrderModel accept = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
             if (help == null || accept == null)
             {
                 return 0;
+            }
+            //系统计算匹配金额
+            if (help.DiffAmount < accept.DiffAmount)
+            {
+                money = help.DiffAmount;
+            }
+            else if (help.DiffAmount > accept.DiffAmount)
+            {
+                money = accept.DiffAmount;
+            }
+            else
+            {
+                money = help.DiffAmount;
             }
             using (TransactionScope scope=new TransactionScope())
             {

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SimpleWeb.DataModels;
 
 namespace SimpleWeb.DataDAL
 {
@@ -52,6 +53,48 @@ ELSE
             parameters[1].Value = money;
             int rows = helper.ExecuteSql(sqltxt, parameters);
             return rows;
+        }
+        /// <summary>
+        /// 得到会员的扩展信息
+        /// </summary>
+        /// <param name="MemberID"></param>
+        /// <returns></returns>
+        public static MemberExtendInfoModel GetMemberExtendInfo(int MemberID)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select *  ");
+            strSql.Append("  from MemberExtendInfo ");
+            strSql.Append(" where MemberID=@MemberID ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberID", SqlDbType.Int)			};
+            parameters[0].Value = MemberID;
+            MemberExtendInfoModel model = new MemberExtendInfoModel();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (ds.Tables[0].Rows[0]["MemberID"].ToString() != "")
+                {
+                    model.MemberID = int.Parse(ds.Tables[0].Rows[0]["MemberID"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["LastHelperTime"].ToString() != "")
+                {
+                    model.LastHelperTime = DateTime.Parse(ds.Tables[0].Rows[0]["LastHelperTime"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["MemberHelpCount"].ToString() != "")
+                {
+                    model.MemberHelpCount = int.Parse(ds.Tables[0].Rows[0]["MemberHelpCount"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["LastHelpMoney"].ToString() != "")
+                {
+                    model.LastHelpMoney = decimal.Parse(ds.Tables[0].Rows[0]["LastHelpMoney"].ToString());
+                }
+                return model;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

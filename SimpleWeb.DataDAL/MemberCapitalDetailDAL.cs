@@ -343,5 +343,38 @@ ELSE
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
             return rowcount;
         }
+        /// <summary>
+        /// 解冻会员的静态冻结资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int UpdateStaticThawDetail(int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     StaticCapital = StaticCapital + StaticFreezeMoney ,
+        StaticFreezeMoney = 0
+WHERE   MemberID = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",memberid)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 解冻会员的动态冻结资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int UpdateDynamicThawDetail(int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     DynamicFunds = DynamicFunds + DynamicFreezeMoney ,
+        DynamicFreezeMoney = 0
+WHERE   MemberID = @id";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",memberid)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+
     }
 }
