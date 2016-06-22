@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <div class="bootbox-body">
-                    @using (Html.BeginForm("Update", "SysSettings", FormMethod.Post, new { @role = "form", @class = "form-horizontal", @id = "form1" }))
+                    @using (Html.BeginForm("Update", "SysSettings", new { area = "AdminArea" }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @id = "form1" }))
                     {
                         @Html.HiddenFor(m => m.SingleMenu.Type)
                         @Html.HiddenFor(m => m.SingleMenu.ID)

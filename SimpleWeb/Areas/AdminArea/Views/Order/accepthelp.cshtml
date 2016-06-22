@@ -98,15 +98,16 @@
                                         <td>@item.MemberPhone</td>
                                         <td>@item.Amount</td>
                                         <td>@item.PayType</td>
+                                        <td>@item.MatchedAmount</td>
                                         <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
                                         <td name="@(item.AStatus)">
                                             @item.AStatusName
                                         </td>
                                         <td>
                                             <p class="btn-toolbar">
-                                                @if (item.AStatus != 3)
+                                                @if (item.AStatus < 3)
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 撤&nbsp; &nbsp; 销</button>        
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,@item.AStatus)" ><i class="fa fa-times-circle"></i>&nbsp; 撤&nbsp; &nbsp; 销</button>        
                                                 }
                                                 <button class="btn btn-danger" data-toggle="modal" onclick="updateindex(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 置&nbsp; &nbsp; 顶</button>
                                             </p>
@@ -141,11 +142,11 @@
                 }
             });
         });
-        function update(id) {
+        function update(id,status) {
             $.ajax({
-                url: '@Url.Action("updatestatus", "Order", new { area = "AdminArea" })',
+                url: '@Url.Action("updateastatus", "Order", new { area = "AdminArea" })',
                 dataType: 'Json',
-                data: { 'oid': id },
+                data: { 'oid': id,'status':status },
                 type: 'POST',
                 success: function (data) {
                     if (data == "1") {
@@ -159,7 +160,7 @@
         }
         function updateindex(id) {
             $.ajax({
-                url: '@Url.Action("updatesortindex", "Order", new { area = "AdminArea" })',
+                url: '@Url.Action("updateasortindex", "Order", new { area = "AdminArea" })',
                 dataType: 'Json',
                 data: { 'oid': id },
                 type: 'POST',

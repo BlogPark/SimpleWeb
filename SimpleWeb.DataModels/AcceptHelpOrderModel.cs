@@ -125,7 +125,7 @@ namespace SimpleWeb.DataModels
             get { return _addtime; }
             set { _addtime = value; }
         }
-        private int _astatus;
+        private int _astatus=-10;
         /// <summary>
         /// 状态（0 未匹配 1 部分匹配 2 全部完成 3 已撤销 4 对方已打款  5 确认收款） 
         /// </summary>		

@@ -140,7 +140,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 SingleMenu.FatherName = SingleMenu.FatherID == 0 ? "" : SingleMenu.FatherName;
                 int rowcount = mbll.AddAndUpdateData(SingleMenu);
             }
-            return RedirectToAction("Index", "SysMenu");
+            return RedirectToAction("Menu", "SysSettings", new { area = "AdminArea" });
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 int rowcount = mbll.AddAndUpdateAdminGroup(AdminGroup);
             }
-            return RedirectToAction("SysAdminGroup", "SysMenu", new { area = "AdminMenu" });
+            return RedirectToAction("SysAdminGroup", "SysSettings", new { area = "AdminArea" });
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         public ActionResult GroupAndMenu(SysAdminGrouprMenuModel SinglePermissions)
         {
             int rowcount = mbll.UpdatePermissionByID(SinglePermissions);
-            return RedirectToAction("GroupAndMenu", "SysMenu", new { area = "AdminMenu" });
+            return RedirectToAction("GroupAndMenu", "SysSettings", new { area = "AdminArea" });
         }
 
         [ValidateInput(false)]
@@ -221,7 +221,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 gmodel.GName = model.gname;
                 int rowcount = mbll.AddUserGroupPermission(gmodel);
             }
-            return RedirectToAction("GroupAndMenu", "SysMenu", new { area = "AdminMenu" });
+            return RedirectToAction("GroupAndMenu", "SysSettings", new { area = "AdminArea" });
         }
 
         /// <summary>

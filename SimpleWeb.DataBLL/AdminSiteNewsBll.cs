@@ -60,6 +60,8 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetTop3ModelListByUserID(userid);
         }
+
+
         /// <summary>
         /// 查询会员的留言信息
         /// </summary>
@@ -70,6 +72,15 @@ namespace SimpleWeb.DataBLL
             return dal.GetContractMessage(userid);
         }
         /// <summary>
+        /// 查询所有的会员留言信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public List<WebContactMessageModel> GetAllContractMessage()
+        {
+            return dal.GetAllContractMessage();
+        }
+        /// <summary>
         /// 添加留言信息
         /// </summary>
         /// <param name="model"></param>
@@ -77,6 +88,20 @@ namespace SimpleWeb.DataBLL
         public int AddContactMessage(WebContactMessageModel model)
         {
             return dal.AddContactMessage(model);
+        }
+         /// <summary>
+        /// 回复会员留言
+        /// </summary>
+        public bool UpdateMsg(WebContactMessageModel model)
+        {
+            return dal.UpdateMsg(model);
+        }
+        /// <summary>
+        /// 删除会员留言
+        /// </summary>
+        public bool deleteMsg(int id)
+        {
+            return dal.deleteMsg(id);
         }
     }
 }

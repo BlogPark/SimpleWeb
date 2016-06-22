@@ -190,7 +190,7 @@ namespace SimpleWeb.DataDAL
         public List<AdminSiteNewsModel> GetModelListByUserID(int userid)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP 100  ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus, SAddTime  ");
+            strSql.Append("select TOP 100  ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus,case SStatus  when 1 then '发布' when 2 then '已阅' when 3 then '已删除' end as SStatusName , SAddTime  ");
             strSql.Append("  from AdminSiteNews ");
             strSql.Append(" where ReceiveUserID IN ("+userid.ToString()+",0) ");
             strSql.Append(" ORDER BY  IsUrgent DESC,IsTop DESC,ID DESC ");          
@@ -233,12 +233,12 @@ namespace SimpleWeb.DataDAL
                     {
                         model.SAddTime = DateTime.Parse(item["SAddTime"].ToString());
                     }
+                    model.SStatusName = item["SStatusName"].ToString();
                     list.Add(model);
                 }
             }
             return list;
         }
-
         /// <summary>
         /// 根据ID得到一个对象实体
         /// </summary>
@@ -353,6 +353,59 @@ namespace SimpleWeb.DataDAL
             {
                 return null;
             }
+        }       
+        /// <summary>
+        /// 查询所有的会员留言信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public List<WebContactMessageModel> GetAllContractMessage()
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, ReplyTime, MemberID, MemberName, MemberPhone, MessageTitle, MessageContent, AddTime, MStatus, case MStatus when 1 then '刚提问' when 2 then '已回复' when 3 then '删除' end as MStatusName,ReplyContent  ");
+            strSql.Append("  from WebContactMessage ");
+            strSql.Append(" Order By ID Desc ");
+            List<WebContactMessageModel> list = new List<WebContactMessageModel>();
+            DataSet ds = helper.Query(strSql.ToString());
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    WebContactMessageModel model = new WebContactMessageModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["ReplyTime"].ToString() != "")
+                    {
+                        model.ReplyTime = DateTime.Parse(item["ReplyTime"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MessageTitle = item["MessageTitle"].ToString();
+                    model.MessageContent = item["MessageContent"].ToString();
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    if (item["MStatus"].ToString() != "")
+                    {
+                        model.MStatus = int.Parse(item["MStatus"].ToString());
+                    }
+                    model.ReplyContent = item["ReplyContent"].ToString();
+                    model.MStatusName = item["MStatusName"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// 添加留言信息
@@ -392,6 +445,57 @@ namespace SimpleWeb.DataDAL
             else
             {
                 return Convert.ToInt32(obj);
+            }
+        }
+
+        /// <summary>
+        /// 回复会员留言
+        /// </summary>
+        public bool UpdateMsg(WebContactMessageModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update WebContactMessage set ");
+            strSql.Append(" ReplyTime = GETDATE() , ");
+            strSql.Append(" MStatus = 2 , ");
+            strSql.Append(" ReplyContent = @ReplyContent  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,
+                        new SqlParameter("@ReplyContent", SqlDbType.NVarChar)      
+            };
+            parameters[0].Value = model.ID;
+            parameters[1].Value = model.ReplyContent;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 删除会员留言
+        /// </summary>
+        public bool deleteMsg(int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update WebContactMessage set ");
+            strSql.Append(" MStatus = 3 ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) 
+            };
+            parameters[0].Value = id;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

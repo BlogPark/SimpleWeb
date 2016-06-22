@@ -43,7 +43,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             model.pagesize = PageSize;
             model.currentpage = page;
             ViewBag.PageTitle = "单据列表";
-            this.ViewData["order.HStatus"] = GetStatusListItem(0);
+            this.ViewData["order.HStatus"] = GetStatusListItem(-10);
             return View(model);
         }
         /// <summary>
@@ -54,11 +54,13 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         private List<SelectListItem> GetStatusListItem(int defval = -10)
         {
             List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "全部", Value = "-10", Selected = defval == 0 });
-            items.Add(new SelectListItem { Text = "未匹配", Value = "0", Selected = defval == 1 });
-            items.Add(new SelectListItem { Text = "部分匹配", Value = "1", Selected = defval == 2 });
-            items.Add(new SelectListItem { Text = "全部成交", Value = "2", Selected = defval == 3 });
+            items.Add(new SelectListItem { Text = "全部", Value = "-10", Selected = defval == -10 });
+            items.Add(new SelectListItem { Text = "未匹配", Value = "0", Selected = defval == 0 });
+            items.Add(new SelectListItem { Text = "部分匹配", Value = "1", Selected = defval == 1 });
+            items.Add(new SelectListItem { Text = "全部匹配", Value = "2", Selected = defval == 2 });
             items.Add(new SelectListItem { Text = "已撤销", Value = "3", Selected = defval == 3 });
+            items.Add(new SelectListItem { Text = "已打款", Value = "4", Selected = defval == 4 });
+            items.Add(new SelectListItem { Text = "已完成", Value = "5", Selected = defval == 5 });
             return items;
         }
         /// <summary>
@@ -67,9 +69,13 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// <param name="oid"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult updatestatus(int oid)
+        public ActionResult updatestatus(int oid, int status)
         {
-            int row = bll.UpdateStatus(oid, 3);
+            if (status > 3)
+            {
+                return Json("0");
+            }
+            int row = bll.UpdateToCancle(oid, status > 0 ? 1 : 0);
             if (row > 0)
             {
                 return Json("1");
@@ -115,7 +121,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 pageList = new PagedList<AcceptHelpOrderModel>(orderlist, page, PageSize, totalrowcount);
             }
-            this.ViewData["order.AStatus"] = GetStatusListItem(0);
+            this.ViewData["order.AStatus"] = GetStatusListItem(-10);
             AcceptHelperViewModel model = new AcceptHelperViewModel();
             model.orderlist = pageList;
             model.totalcount = totalrowcount;
@@ -125,12 +131,52 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             return View(model);
         }
         /// <summary>
+        /// 更改接受帮助状态
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult updateastatus(int oid, int status)
+        {
+            if (status > 3)
+            {
+                return Json("0");
+            }
+            int row = abll.UpdateToCancle(oid, status > 0 ? 1 : 0);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 更改接受帮助置顶
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult updateasortindex(int oid)
+        {
+            int row = abll.UpdateSortindex(oid);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
         /// 匹配页面
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult matchedmanage(int page = 1, int pageindex=1)
+        public ActionResult matchedmanage(int page = 1, int pageindex = 1)
         {
             int totalrowcount = 0;
             AcceptHelpOrderModel aorder = new AcceptHelpOrderModel();

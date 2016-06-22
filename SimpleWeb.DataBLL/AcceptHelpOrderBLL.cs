@@ -107,7 +107,7 @@ namespace SimpleWeb.DataBLL
                     {
                         return 0;
                     }
-                    HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(item.HelperOrderID);                  
+                    HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(item.HelperOrderID);
                     //解冻会员的静态冻结资金
                     rowcount = MemberCapitalDetailDAL.UpdateStaticThawDetail(order.MemberID);
                     if (rowcount < 1)
@@ -133,6 +133,82 @@ namespace SimpleWeb.DataBLL
                 result = 1;
             }
             return result;
+        }
+        /// <summary>
+        /// 更新状态为已取消（前端使用）
+        /// </summary>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public int UpdateToCancle(int aid,int ispipei)
+        {
+            int result = 0;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //更改单据状态
+                int rowcount = AcceptHelpOrderDAL.UpdateStatus(aid, 3);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //返还会员对应类型的资金
+                AcceptHelpOrderModel order = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
+                if (order.SourceType == 1)//静态资金
+                {
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID,order.Amount);
+                }
+                else if (order.SourceType == 2)//动态资金
+                {
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(order.MemberID, order.Amount);
+                }
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //插入会员资金变动日志
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = order.MemberID;
+                logmodel.MemberName = order.MemberName;
+                logmodel.MemberPhone = order.MemberPhone;
+                logmodel.OrderCode = order.OrderCode;
+                logmodel.OrderID = aid;
+                logmodel.ProduceMoney = order.Amount;
+                logmodel.Remark = "会员:" + order.MemberPhone + " 取消提供帮助，返还扣减的资金 " + order.Amount.ToString() + "元";
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);                
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                if (ispipei>0)//若已经匹配则取消对应单据的信息
+                {
+                    List<MatchOrderModel> matchs = MatchOrderDAL.GetMatchOrderInfo(0, aid);
+                    rowcount = MatchOrderDAL.UpdateStatus(0, aid);//更改状态为取消
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    foreach (var item in matchs)//更改接受帮助订单的状态
+                    {
+                        rowcount = HelpeOrderDAL.CancleOrderForHelp(item.HelperOrderID, item.MatchedMoney);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                    }
+                }
+                scope.Complete();
+                result = 1;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 更改接受帮助置顶
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateSortindex(int aid)
+        {
+            return dal.UpdateSortindex(aid);
         }
     }
 }

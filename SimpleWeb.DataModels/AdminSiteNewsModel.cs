@@ -68,5 +68,13 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public int IsTop { get; set; }
         #endregion
+
+        #region 扩展字段
+        /// <summary>
+        /// 状态值（1 发布 2 已阅 3 删除）
+        /// </summary>       
+        [DataMember]
+        public string SStatusName { get; set; }
+        #endregion
     }
 }

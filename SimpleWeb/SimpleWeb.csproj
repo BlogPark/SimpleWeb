@@ -118,6 +118,7 @@
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberOperaController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\OrderController.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\SiteMsgController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
     <Compile Include="Areas\AdminArea\Models\AcceptHelperViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\ActiveCodeIndexViewModel.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="Areas\AdminArea\Models\MatchedManageViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberActiveIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MemberMsgViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\SiteMsgIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
@@ -1182,6 +1185,7 @@
     <Content Include="img\sidebar-menu-arrow.png" />
     <Content Include="img\slider\handle.png" />
     <Content Include="img\slider\handlev.png" />
+    <Content Include="js\autosize\jquery.autosize.min.js" />
     <Content Include="js\bootbox\bootbox.min.js" />
     <Content Include="js\bootstrap-daterangepicker\bootstrap-datetimepicker.css" />
     <Content Include="js\bootstrap-daterangepicker\bootstrap-datetimepicker.js" />
@@ -1195,6 +1199,7 @@
     <Content Include="js\comment-reply.js" />
     <Content Include="js\comment-reply.min.js" />
     <Content Include="js\contact.js" />
+    <Content Include="js\countable\jquery.simplyCountable.min.js" />
     <Content Include="js\gritter\css\jquery.gritter.css" />
     <Content Include="js\gritter\images\gritter-light.png" />
     <Content Include="js\gritter\images\gritter-long.png" />
@@ -1272,6 +1277,8 @@
     <Content Include="js\select2\select2.min.js" />
     <Content Include="js\select2\select2.png" />
     <Content Include="js\select2\select2x2.png" />
+    <Content Include="js\typeahead\typeahead.css" />
+    <Content Include="js\typeahead\typeahead.min.js" />
     <Content Include="js\underscore.min.js" />
     <Content Include="js\uniform\css\uniform.default.min.css" />
     <Content Include="js\uniform\images\bg-input-focus.png" />
@@ -1779,6 +1786,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFrontArea\Views\Webnews\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SiteMsg\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SiteMsg\MemberMsg.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

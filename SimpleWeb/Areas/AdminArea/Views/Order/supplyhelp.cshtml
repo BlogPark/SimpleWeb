@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="well well-sm">
+            <!--<div class="well well-sm">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="btn-group hidden-xs pull-left invoice-btn-group">
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row" id="tabdiv">
@@ -87,7 +87,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">
-                                        <input type="checkbox" id="chk_all" /></th>
+                                       <input type="checkbox" id="chk_all" /></th>
                                     <th class="text-center">单据编号</th>
                                     <th class="text-center">真实姓名</th>
                                     <th class="text-center">手机号</th>
@@ -102,24 +102,24 @@
                             <tbody>
                                 @foreach (var item in Model.orderlist)
                                 {
-
                                     <tr id="tr@(item.ID)" class="text-center">
                                         <td>
-                                            <input type="checkbox" name="proList" value="@item.ID" /></td>
+                                           <input type="checkbox" name="proList" value="@item.ID" /></td>
                                         <td  name="@(item.ID)">@item.OrderCode</td>
                                         <td  name="@(item.MemberID)">@item.MemberName</td>
                                         <td>@item.MemberPhone</td>
                                         <td>@item.Amount</td>
                                         <td>@item.PayType</td>
+                                        <td>@item.MatchedAmount</td>
                                         <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
                                         <td name="@(item.HStatus)">
                                             @item.HStatusName
                                         </td>
                                         <td>
                                             <p class="btn-toolbar">
-                                                @if (item.HStatus != 3)
+                                                @if (item.HStatus < 3)
                                                 {
-                                                     <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 撤&nbsp; &nbsp; 销</button>        
+                                                     <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,@item.HStatus)" ><i class="fa fa-times-circle"></i>&nbsp; 撤&nbsp; &nbsp; 销</button>        
                                                 }
                                                 <button class="btn btn-danger" data-toggle="modal" onclick="updateindex(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 置&nbsp; &nbsp; 顶</button>
                                             </p>
@@ -154,11 +154,11 @@
                 }
             });
         });       
-        function update(id) {
+        function update(id,status) {
             $.ajax({
                 url: '@Url.Action("updatestatus", "Order", new { area = "AdminArea" })',
                 dataType: 'Json',
-                data: { 'oid': id },
+                data: { 'oid': id, 'status': status },
                 type: 'POST',
                 success: function (data) {
                     if (data == "1") {
@@ -178,7 +178,7 @@
                 type: 'POST',
                 success: function (data) {
                     if (data == "1") {
-                        location.reload();
+                        location.reload();                       
                     }
                     else {
                         bootbox.alert("操作失败");

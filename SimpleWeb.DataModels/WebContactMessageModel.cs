@@ -62,5 +62,13 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public DateTime ReplyTime { get; set; }
 
+        #region 扩展字段
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [DataMember]
+        public string MStatusName { get; set; }
+        #endregion
+
     }
 }

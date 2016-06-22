@@ -12,7 +12,6 @@ namespace SimpleWeb.DataDAL
     public class AcceptHelpOrderDAL
     {
         private static DbHelperSQL helper = new DbHelperSQL();
-
         /// <summary>
         /// 增加一条数据
         /// </summary>
@@ -217,11 +216,11 @@ namespace SimpleWeb.DataDAL
         public List<AcceptHelpOrderModel> GetWaitAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
-            string columms = @"ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
-            string where = " AStatus =0 ";
+            string columms = @" ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
+            string where = " AStatus <2 ";
             PageProModel page = new PageProModel();
             page.colums = columms;
-            page.orderby = "DATEDIFF(DAY,AddTime,GETDATE())";
+            page.orderby = " (DATEDIFF(DAY,AddTime,GETDATE())) ";
             page.pageindex = model.PageIndex;
             page.pagesize = model.PageSize;
             page.tablename = @"dbo.AcceptHelpOrder";
@@ -265,7 +264,7 @@ namespace SimpleWeb.DataDAL
                 acceptordermodel.TurnOutOrder = item["TurnOutOrder"].ToString();
                 acceptordermodel.AStatusName = item["AStatusName"].ToString();
                 acceptordermodel.DissDay = int.Parse(item["diffday"].ToString());
-                list.Add(model);
+                list.Add(acceptordermodel);
             }
             return list;
         }
@@ -297,20 +296,22 @@ WHERE   id = @id";
         /// <returns></returns>
         public static AcceptHelpOrderModel GetAcceptOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount  from AcceptHelpOrder where ID=@id";
-            SqlParameter[] paramter={
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount,SourceType,MatchedAmount  from AcceptHelpOrder where ID=@id";
+            SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };
-            DataTable dt=helper.Query(sqltxt,paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 AcceptHelpOrderModel model = new AcceptHelpOrderModel();
-                model.MemberID=Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
+                model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
                 model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
                 model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
+                model.SourceType = Convert.ToInt32(dt.Rows[0]["SourceType"].ToString());
+                model.MatchedAmount = Convert.ToDecimal(dt.Rows[0]["MatchedAmount"].ToString());
                 return model;
             }
             else
@@ -344,7 +345,7 @@ WHERE   id = @id";
         /// 更新接受帮助的订单的状态
         /// </summary>
         /// <returns></returns>
-        public static int CancleOrderForHelp(int aid,decimal money)
+        public static int CancleOrderForHelp(int aid, decimal money)
         {
             string sqltxt = @"UPDATE  AcceptHelpOrder
 SET     AStatus = CASE ( MatchedAmount - @money )
@@ -353,8 +354,27 @@ SET     AStatus = CASE ( MatchedAmount - @money )
                   END ,
         MatchedAmount = MatchedAmount - @money
 WHERE   id = @id";
-            SqlParameter[] paramter = { new SqlParameter("@id", aid), new SqlParameter("@money",money) };
-            return helper.ExecuteSql(sqltxt,paramter);
+            SqlParameter[] paramter = { new SqlParameter("@id", aid), new SqlParameter("@money", money) };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改接受帮助置顶
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateSortindex(int aid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update AcceptHelpOrder set ");
+            strSql.Append(" SortIndex = 100  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int)
+            };
+            parameters[0].Value = aid;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
         }
     }
 }
