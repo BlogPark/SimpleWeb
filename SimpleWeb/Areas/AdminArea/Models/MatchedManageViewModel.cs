@@ -15,7 +15,7 @@ namespace SimpleWeb.Areas.AdminArea.Models
         [DataMember]
         public PagedList<AcceptHelpOrderModel> acceptorderlist { get; set; }
 
-        [DataMember]
-        public PagedList<HelpeOrderModel> helporderlist { get; set; }
+        //[DataMember]
+        //public PagedList<HelpeOrderModel> helporderlist { get; set; }
     }
 }

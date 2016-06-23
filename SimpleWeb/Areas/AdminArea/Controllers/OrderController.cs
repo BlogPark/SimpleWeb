@@ -16,7 +16,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         // GET: /AdminArea/Order/
         private HelpeOrderBLL bll = new HelpeOrderBLL();
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
-        private readonly int PageSize = 30;
+        private readonly int PageSize = 2;
         public ActionResult Index()
         {
             return View();
@@ -176,30 +176,30 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult matchedmanage(int page = 1, int pageindex = 1)
+        public ActionResult matchedmanage(int page = 1)
         {
             int totalrowcount = 0;
             AcceptHelpOrderModel aorder = new AcceptHelpOrderModel();
             aorder.PageIndex = page;
             aorder.PageSize = PageSize;
             HelpeOrderModel horder = new HelpeOrderModel();
-            horder.PageIndex = pageindex;
+            horder.PageIndex = 1;
             horder.PageSize = PageSize;
             List<AcceptHelpOrderModel> waitorderlist = abll.GetWaitAcceptOrderListForPage(aorder, out totalrowcount);
-            List<HelpeOrderModel> helporderlist = bll.GetWaitHelpeOrderListForPage(horder, out totalrowcount);
+            //List<HelpeOrderModel> helporderlist = bll.GetWaitHelpeOrderListForPage(horder, out totalrowcount);
             PagedList<AcceptHelpOrderModel> acceptList = null;
-            PagedList<HelpeOrderModel> helpList = null;
+            //PagedList<HelpeOrderModel> helpList = null;
             if (waitorderlist != null)
             {
                 acceptList = new PagedList<AcceptHelpOrderModel>(waitorderlist, page, PageSize, totalrowcount);
             }
-            if (helporderlist != null)
-            {
-                helpList = new PagedList<HelpeOrderModel>(helporderlist, pageindex, PageSize, totalrowcount);
-            }
+            //if (helporderlist != null)
+            //{
+            //    helpList = new PagedList<HelpeOrderModel>(helporderlist, id, PageSize, totalrowcount);
+            //}
             MatchedManageViewModel model = new MatchedManageViewModel();
             model.acceptorderlist = acceptList;
-            model.helporderlist = helpList;
+            //model.helporderlist = helpList;
             return View(model);
         }
     }

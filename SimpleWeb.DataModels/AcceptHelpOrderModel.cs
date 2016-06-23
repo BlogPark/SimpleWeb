@@ -167,7 +167,7 @@ namespace SimpleWeb.DataModels
         /// 差异天数
         /// </summary>
         [DataMember]
-        public int DissDay { get; set; }
+        public int DiffDay { get; set; }
         /// <summary>
         /// 剩余匹配金额
         /// </summary>

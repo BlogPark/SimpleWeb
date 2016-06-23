@@ -263,7 +263,7 @@ namespace SimpleWeb.DataDAL
                 }
                 acceptordermodel.TurnOutOrder = item["TurnOutOrder"].ToString();
                 acceptordermodel.AStatusName = item["AStatusName"].ToString();
-                acceptordermodel.DissDay = int.Parse(item["diffday"].ToString());
+                acceptordermodel.DiffDay = int.Parse(item["diffday"].ToString());
                 list.Add(acceptordermodel);
             }
             return list;
