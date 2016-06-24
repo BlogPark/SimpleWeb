@@ -54,6 +54,7 @@
     <Compile Include="OperateLogDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicHelperDAL.cs" />
+    <Compile Include="ReMemberRelationDAL.cs" />
     <Compile Include="SysAdminConfigDAL.cs" />
     <Compile Include="SysMenuAndUserDAL.cs" />
   </ItemGroup>
