@@ -16,6 +16,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         // GET: /AdminArea/Order/
         private HelpeOrderBLL bll = new HelpeOrderBLL();
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
+        private MatchOrderBLL mbll = new MatchOrderBLL();
         private readonly int PageSize = 2;
         public ActionResult Index()
         {
@@ -175,32 +176,66 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult matchedmanage(int page = 1)
+        public ActionResult matchedmanage(int page = 1,int id=1)
         {
             int totalrowcount = 0;
+            int htotalrowcount = 0;
             AcceptHelpOrderModel aorder = new AcceptHelpOrderModel();
             aorder.PageIndex = page;
             aorder.PageSize = PageSize;
             HelpeOrderModel horder = new HelpeOrderModel();
-            horder.PageIndex = 1;
+            horder.PageIndex = id;
             horder.PageSize = PageSize;
             List<AcceptHelpOrderModel> waitorderlist = abll.GetWaitAcceptOrderListForPage(aorder, out totalrowcount);
-            //List<HelpeOrderModel> helporderlist = bll.GetWaitHelpeOrderListForPage(horder, out totalrowcount);
+            List<HelpeOrderModel> helporderlist = bll.GetWaitHelpeOrderListForPage(horder, out htotalrowcount);
             PagedList<AcceptHelpOrderModel> acceptList = null;
-            //PagedList<HelpeOrderModel> helpList = null;
+            PagedList<HelpeOrderModel> helpList = null;
             if (waitorderlist != null)
             {
                 acceptList = new PagedList<AcceptHelpOrderModel>(waitorderlist, page, PageSize, totalrowcount);
             }
-            //if (helporderlist != null)
-            //{
-            //    helpList = new PagedList<HelpeOrderModel>(helporderlist, id, PageSize, totalrowcount);
-            //}
+            if (helporderlist != null)
+            {
+                helpList = new PagedList<HelpeOrderModel>(helporderlist, id, PageSize, htotalrowcount);
+            }
             MatchedManageViewModel model = new MatchedManageViewModel();
             model.acceptorderlist = acceptList;
-            //model.helporderlist = helpList;
+            model.helporderlist = helpList;
             return View(model);
+        }
+        /// <summary>
+        /// 匹配单据
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="aids"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult matchedorder(string hid, string aids)
+        {
+            if (string.IsNullOrWhiteSpace(hid))
+            {
+                return Json("没有传入提供帮助单据");
+            }
+            if (string.IsNullOrWhiteSpace(aids))
+            {
+                return Json("没有传入接受帮助单据");
+            }
+            List<string> aidlist = aids.TrimEnd(',').Split(',').ToList();
+            if (aidlist.Count < 1)
+            {
+                return Json("没有单据需要处理");
+            }
+            int row = 0;
+            foreach (var item in aidlist)
+            {
+                int aid = int.Parse(item);
+               row+= mbll.OperateMatchOrder(int.Parse(hid), aid);
+            }
+            if (row < aidlist.Count)
+            {
+                return Json("部分单据处理完成");
+            }
+            return Json("1");
         }
     }
 }

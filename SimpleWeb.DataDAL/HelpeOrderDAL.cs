@@ -459,7 +459,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount)) as DiffAmount,Interest from HelpeOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest from HelpeOrder where ID=@id";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };

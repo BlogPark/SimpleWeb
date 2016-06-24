@@ -33,12 +33,15 @@
                 <div class="row">
                     <div class="col-sm-4 center">
                         <h3 class="content-title"><i class="fa fa-rmb"></i>&nbsp;&nbsp;<span class="help">0</span></h3>
+                        <input type="hidden" value="" id="hid">
                     </div>
                     <div class="col-sm-4 center">
-                        <button class="btn btn-lg btn-info" type="button" onclick="setcommend(1)">匹&nbsp;&nbsp;<i class="fa fa-exchange"></i>&nbsp;&nbsp;配</button>
+                        <button class="btn btn-lg btn-info" type="button" id="btnmatch" onclick="setmatched()">匹&nbsp;&nbsp;<i class="fa fa-exchange"></i>&nbsp;&nbsp;配</button>
+                        <button class="btn btn-lg btn-info" type="button" id="hidbtn"><i class="fa fa-spinner fa fa-spin"></i>匹&nbsp;&nbsp;&nbsp;&nbsp;配</button>
                     </div>
                     <div class="col-sm-4 center">
                         <h3 class="content-title"><i class="fa fa-rmb"></i>&nbsp;&nbsp;<span class="accept">0</span></h3>
+                        <input type="hidden" value="" id="aid">
                     </div>
                 </div>
             </div>
@@ -50,8 +53,52 @@
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">
-                                                <input type="checkbox" id="achk_all" /></th>
+                                            <th class="text-center"></th>
+                                            <th class="text-center">提供帮助</th>
+                                            <th class="text-center">真实姓名</th>
+                                            <th class="text-center">手机号</th>
+                                            <th class="text-center">申请金额</th>
+                                            <th class="text-center">支付方式</th>
+                                            <th class="text-center">剩余金额</th>
+                                            <th class="text-center">申请时间</th>
+                                            <th class="text-center">排        队</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.helporderlist)
+                                        {
+                                            <tr id="htr@(item.ID)" class="text-center">
+                                                <td>
+                                                    <input type="checkbox" name="hproList" value="@item.ID" /></td>
+                                                <td  name="@(item.ID)">@item.OrderCode</td>
+                                                <td  name="@(item.MemberID)">@item.MemberName</td>
+                                                <td>@item.MemberPhone</td>
+                                                <td>@item.Amount</td>
+                                                <td>@item.PayType</td>
+                                                <td>@(item.Amount - item.MatchedAmount)</td>
+                                                <td>@item.AddTime.ToString("MM-dd HH:ss")</td>
+                                                <td>
+                                                    @(item.DiffDay)天
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row center col-xs-12 mycss">
+                                @Html.Pager(Model.helporderlist, new PagerOptions { PageIndexParameterName = "id", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center"></th>
                                             <th class="text-center">接受帮助</th>
                                             <th class="text-center">真实姓名</th>
                                             <th class="text-center">手机号</th>
@@ -100,52 +147,72 @@
     <script type="text/javascript">
         $(function () {
             App.init(); //Initialise plugins and elements
-            //全选
-            $("#achk_all").click(function () {
-                if ($("#achk_all").is(":checked")) {
-                    $("input[type='checkbox'][name='aproList']").prop("checked", true);
-                }
-                else {
-                    $("input[type='checkbox'][name='aproList']").prop("checked", false);
-                }
-            });
-            //全选
-            $("#hchk_all").click(function () {
-                if ($("#hchk_all").is(":checked")) {
-                    $("input[type='checkbox'][name='hproList']").prop("checked", true);
-                }
-                else {
-                    $("input[type='checkbox'][name='hproList']").prop("checked", false);
-                }
-            });
+            $("#hidbtn").hide();
             $("input[type='checkbox'][name='hproList']").change(function () {
+                $("input[type='checkbox'][name='hproList']").prop("checked", false);
+                $(this).prop("checked", true);
                 var ch = $(this).is(':checked');
                 var index = $(this).val();
                 var amont = $("#htr" + index).children('td').eq(6).html();
-                var oldamount = $(".help").html();
-                var newamount = 0;
-                if (ch) {
-                    newamount = parseFloat(amont) + parseFloat(oldamount);
-                }
-                else {
-                    newamount = parseFloat(oldamount) - parseFloat(amont);
-                }
-                $(".help").html(newamount);
+                $("#hid").val(index);
+                $(".help").html(amont);
             });
             $("input[type='checkbox'][name='aproList']").change(function () {
                 var ch = $(this).is(':checked');
                 var index = $(this).val();
                 var amont = $("#atr" + index).children('td').eq(6).html();
                 var oldamount = $(".accept").html();
+                var id = index + ",";
                 var newamount = 0;
+                var aids = $("#aid").val();
                 if (ch) {
                     newamount = parseFloat(amont) + parseFloat(oldamount);
+                    aids = aids + id;
                 }
                 else {
                     newamount = parseFloat(oldamount) - parseFloat(amont);
+                    aids = aids.replace(id, "");
                 }
+                $("#aid").val(aids);
                 $(".accept").html(newamount);
             });
         });
+        function setmatched() {
+            $("#btnmatch").hide();
+            $("#hidbtn").show();
+            var amoney = parseFloat($(".accept").html());
+            var hmoney = parseFloat($(".help").html());
+            if (hmoney == 0) {
+                $("#hidbtn").hide();
+                $("#btnmatch").show();
+                bootbox.alert("请选择匹配的单据");
+                return false;
+            }
+            if (amoney != hmoney) {
+                $("#hidbtn").hide();
+                $("#btnmatch").show();
+                bootbox.alert("双方金额不一致,请重新选择");
+                return false;
+            }
+            var aids = $("#aid").val();
+            var hid = $("#hid").val();
+            $.ajax({
+                url: '@Url.Action("matchedorder", "Order", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'hid': hid, 'aids': aids },
+                type: 'POST',
+                async:false,
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert(data);
+                    }
+                }
+            });
+            $("#hidbtn").hide();
+            $("#btnmatch").show();
+        }
     </script>
 }

@@ -51,6 +51,20 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                //插入推荐人信息表
+                MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
+                ReMemberRelationModel remodel = new ReMemberRelationModel();
+                remodel.MemberID = soucemember.ID;
+                remodel.MemberTruthName = soucemember.TruethName;
+                remodel.MemberPhone = soucemember.MobileNum;
+                remodel.RecommMID = memberid;
+                remodel.RecommMPhone = model.TelPhone;
+                remodel.RecommMTruthName = model.TruethName;
+                rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
                 scope.Complete();
                 result = 1;
             }

@@ -14,51 +14,96 @@ namespace SimpleWeb.DataModels
     [DataContract]
     public class ReMemberRelationModel
     {
+        private int _id;
         /// <summary>
         /// 主键自增
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int ID { get; set; }
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private int _memberid;
         /// <summary>
         /// 会员ID
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int MemberID { get; set; }
+        public int MemberID
+        {
+            get { return _memberid; }
+            set { _memberid = value; }
+        }
+        private string _memberphone;
         /// <summary>
         /// 会员手机
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string MemberPhone { get; set; }
+        public string MemberPhone
+        {
+            get { return _memberphone; }
+            set { _memberphone = value; }
+        }
+        private string _membertruthname;
         /// <summary>
         /// 会员真实姓名
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string MemberTruthName { get; set; }
+        public string MemberTruthName
+        {
+            get { return _membertruthname; }
+            set { _membertruthname = value; }
+        }
+        private int _recommmid;
         /// <summary>
         /// 推荐会员ID
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int RecommMID { get; set; }
+        public int RecommMID
+        {
+            get { return _recommmid; }
+            set { _recommmid = value; }
+        }
+        private string _recommmphone;
         /// <summary>
         /// 推荐会员手机
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string RecommMPhone { get; set; }
+        public string RecommMPhone
+        {
+            get { return _recommmphone; }
+            set { _recommmphone = value; }
+        }
+        private string _recommmtruthname;
         /// <summary>
         /// 推荐会员真实名字
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public string RecommMTruthName { get; set; }
+        public string RecommMTruthName
+        {
+            get { return _recommmtruthname; }
+            set { _recommmtruthname = value; }
+        }
+        private int _rstatus;
         /// <summary>
         /// 状态（1 活动 0 禁用）
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public int RStatus { get; set; }
+        public int RStatus
+        {
+            get { return _rstatus; }
+            set { _rstatus = value; }
+        }
+        private DateTime _addtime;
         /// <summary>
         /// 添加时间
-        /// </summary>       
+        /// </summary>		
         [DataMember]
-        public DateTime AddTime { get; set; }
+        public DateTime AddTime
+        {
+            get { return _addtime; }
+            set { _addtime = value; }
+        }        
 
     }
 
