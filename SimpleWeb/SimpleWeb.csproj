@@ -182,28 +182,13 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\cloud-admin.css" />
     <Content Include="css\cloud-admin.min.css" />
-    <Content Include="css\colorbox.css" />
-    <Content Include="css\comments.css" />
-    <Content Include="css\contact_form.css" />
-    <Content Include="css\custom.css" />
-    <Content Include="css\elastislide.css" />
-    <Content Include="css\featurestab.css" />
     <Content Include="css\flags\flags.min.css" />
     <Content Include="css\flags\flags.png" />
-    <Content Include="css\font-awesome-ie7.css" />
-    <Content Include="css\font-awesome.css" />
-    <Content Include="css\fonts.css" />
-    <Content Include="css\iconfont.css" />
     <Content Include="css\inbox.css" />
-    <Content Include="css\login.css" />
-    <Content Include="css\login.min.css" />
-    <Content Include="css\popup.css" />
     <Content Include="css\print.css" />
-    <Content Include="css\reset.css" />
     <Content Include="css\responsive.css" />
     <Content Include="css\responsive.min.css" />
     <Content Include="css\responsive.new.css" />
-    <Content Include="css\shortcodes.css" />
     <Content Include="css\style.css" />
     <Content Include="css\themes\default.css" />
     <Content Include="css\themes\default.min.css" />
@@ -217,9 +202,6 @@
     <Content Include="css\themes\night.min.css" />
     <Content Include="css\themes\utopia.css" />
     <Content Include="css\themes\utopia.min.css" />
-    <Content Include="css\tipsy.css" />
-    <Content Include="css\usquare.css" />
-    <Content Include="css\widgets.css" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
@@ -1196,9 +1178,6 @@
     <Content Include="js\bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
     <Content Include="js\bootstrap-wizard\wizard.css" />
     <Content Include="js\charts.js" />
-    <Content Include="js\comment-reply.js" />
-    <Content Include="js\comment-reply.min.js" />
-    <Content Include="js\contact.js" />
     <Content Include="js\countable\jquery.simplyCountable.min.js" />
     <Content Include="js\gritter\css\jquery.gritter.css" />
     <Content Include="js\gritter\images\gritter-light.png" />
@@ -1206,7 +1185,6 @@
     <Content Include="js\gritter\images\gritter.png" />
     <Content Include="js\gritter\images\ie-spacer.gif" />
     <Content Include="js\gritter\js\jquery.gritter.min.js" />
-    <Content Include="js\hoverIntent.min.js" />
     <Content Include="js\inbox.js" />
     <Content Include="js\jQuery-Cookie\jquery.cookie.min.js" />
     <Content Include="js\jquery-ui-1.10.3.custom\css\custom-theme\images\animated-overlay.gif" />
@@ -1256,21 +1234,10 @@
     <Content Include="js\jquery-validate\additional-methods.min.js" />
     <Content Include="js\jquery-validate\jquery.validate.js" />
     <Content Include="js\jquery-validate\jquery.validate.min.js" />
-    <Content Include="js\jquery.colorbox-min.js" />
-    <Content Include="js\jquery.custom.js" />
-    <Content Include="js\jquery.cycle.min.js" />
-    <Content Include="js\jquery.easing.js" />
-    <Content Include="js\jquery.masonry.js" />
-    <Content Include="js\jquery.placeholder.js" />
-    <Content Include="js\jquery.superfish.js" />
-    <Content Include="js\jquery.tipsy.js" />
     <Content Include="js\jquery\jquery-1.9.1.min.js" />
     <Content Include="js\jquery\jquery-2.0.3.min.js" />
     <Content Include="js\jquery\jquery-migrate-1.2.1.min.js" />
     <Content Include="js\js.js" />
-    <Content Include="js\media-upload.min.js" />
-    <Content Include="js\mobilemenu.js" />
-    <Content Include="js\responsive.js" />
     <Content Include="js\script.js" />
     <Content Include="js\select2\select2-spinner.gif" />
     <Content Include="js\select2\select2.min.css" />
@@ -1279,7 +1246,6 @@
     <Content Include="js\select2\select2x2.png" />
     <Content Include="js\typeahead\typeahead.css" />
     <Content Include="js\typeahead\typeahead.min.js" />
-    <Content Include="js\underscore.min.js" />
     <Content Include="js\uniform\css\uniform.default.min.css" />
     <Content Include="js\uniform\images\bg-input-focus.png" />
     <Content Include="js\uniform\images\bg-input.png" />
@@ -1681,9 +1647,6 @@
     <Content Include="ueditor\third-party\video-js\font\vjs.woff" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\AdminArea\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1792,6 +1755,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\SiteMsg\MemberMsg.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\_Layout.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
