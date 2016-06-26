@@ -1,234 +1,210 @@
-﻿<!DOCTYPE html>
-<!-- START HEAD -->
+﻿
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <!-- this line will appear only if the website is visited with an iPad -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.2, user-scalable=yes" />
-    <title>Libra | Just another Your Inspiration Themes site</title>
-    <!-- RESET STYLESHEET -->
-    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("/css/reset.css")" />
-    <!-- BOOTSTRAP STYLESHEET -->
-    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("/css/bootstrap.css")" />
-    <!-- MAIN THEME STYLESHEET -->
-    <link rel="stylesheet" type="text/css" media="all" href="@Url.Content("/css/style.css")" />
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="ico/favicon.ico">
 
-    <!-- [favicon] begin -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!-- [favicon] end -->
+    <title>Rooster - Multipurpose Business Theme</title>
 
-    <!-- Touch icons more info: http://mathiasbynens.be/notes/touch-icons -->
-    <!-- For iPad3 with retina display: -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x.png" />
-    <!-- For first- and second-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x.png" />
-    <!-- For first- and second-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x.png">
-    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-57x.png" />
+    <!-- Bootstrap core CSS -->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="@Url.Content("/css/wstyle.css")" rel="stylesheet">
+    ><link href="@Url.Content("/css/font-awesome.min.css")" rel="stylesheet">
+    <link href="@Url.Content("/css/animate.css")" rel="stylesheet">
+    <link href='http://fonts.useso.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
 
-    <!--<link rel='stylesheet' id='thickbox-css'  href='js/thickbox/thickbox.css' type='text/css' media='all' />-->
-    <link rel='stylesheet' id='featurestab-css'  href='@Url.Content("/css/featurestab.css")' type='text/css' media='all' />
-    <link rel='stylesheet' id='responsive-css'  href='@Url.Content("/css/responsive.new.css")' type='text/css' media='all' />
-    <link rel='stylesheet' id='ahortcodes-css'  href='@Url.Content("/css/shortcodes.css")' type='text/css' media='all' />
-    <link rel='stylesheet' id='contact-form-css'  href='@Url.Content("/css/contact_form.css")' type='text/css' media='all' />
-    <link rel='stylesheet' id='custom-css'  href='@Url.Content("/css/custom.css")' type='text/css' media='all' />
-    <style type="text/css">
-        body { background-color: #ffffff; background-image: url('images/bg-pattern.png'); background-repeat: repeat; background-position: top left; background-attachment: scroll; }
-    </style>
-    <script type="text/javascript" src="@Url.Content("/js/jquery/jquery-1.9.1.min.js")"></script>
-
-
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<!-- END HEAD -->
-<!-- START BODY -->
-<body class="home page no_js responsive stretched">
 
-<!-- START BG SHADOW -->
-<div class="bg-shadow">
+<body>
 
-<!-- START WRAPPER -->
-    <div id="wrapper" class="container group">
-
-        <!-- START TOP BAR -->
-        <div id="topbar">
-            <div class="container">
-                <div class="row">
-                    <div id="nav" class="span12 light">
-                    </div>
-                </div>
+    <!-- Navigation -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">ROOSTER</a>
             </div>
-        </div>
-         <!-- END TOP BAR -->
-
-    <!-- START HEADER -->
-    <div id="header" class="group margin-bottom">
-
-        <div class="group container">
-            <div class="row" id="logo-headersidebar-container">
-                <!-- START LOGO -->
-                <div id="logo" class="span6 group">
-                    <a id="logo-img" href="index.html" title="Libra">
-                        <img src="images/libra-logo1.png" title="Libra" alt="Libra" />
-                    </a>
-                    <p id='tagline'>Just another Your Inspiration Themes site</p>
-                </div>
-                <!-- END LOGO -->  
-                <div id="header-sidebar" class="span6 group">
-                    <div class="widget-first widget header-text-image">
-                        <div class="text-image" style="text-align:left">
-                            <img src="images/link.png" alt="CUSTOMER SUPPORT" />
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">会员管理</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="portfolio.html">添加会员</a></li>
+                            <li><a href="portfolio-item-1.html">会员列表</a></li>
+                            <li><a href="portfolio-item-1.html">会员动态</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">钱包</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about-us.html">我的钱包</a></li>
+                            <li><a href="coming-soon.html">我的排单币</a></li>
+                            <li><a href="contact-us.html">我的激活码</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">网站公告</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="blog.html">网站公告</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="shop.html">修改资料</a></li>
+                            <li><a href="shop-item.html">退出系统</a></li>
+                        </ul>
+                    </li>
+                    <!-- Navbar Search -->
+                    <li class="hidden-xs" id="navbar-search">
+                        <a href="#">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <div class="hidden" id="navbar-search-box">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-style btn-k btn-primary" type="button">Go!</button>
+                                </span>
+                            </div>
                         </div>
-                        <div class="text-content">
-                            <h3>推广链接</h3>
-                            <a href="">www.baidu.comwww.baidu.comwww.baidu.comwww.baidu.com</a>
-                        </div>
+                    </li>
+                </ul>
+                <!-- Mobile Search -->
+                <form class="navbar-form navbar-right visible-xs" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn btn-blue" type="button">Search!</button>
+                        </span>
                     </div>
-                </div>					
-            </div>
+                </form>
+            </div><!--/.nav-collapse -->
         </div>
-    </div>
-    <!-- END HEADER -->
-   
-    <!-- START PRIMARY -->
-    <div id="primary" class="sidebar-right">
-        <div class="container group">
-            <div class="row">			
-                <!-- START CONTENT -->
-                <div id="content-home" class="span12 content group">
-                    <div class="page type-page status-publish group">
+    </div> <!-- / .navigation -->
+    <span id="header_shadow" style="width: 100%; top: 30px;"></span>
+
+    <!-- Wrapper -->
+    <div class="wrapper">
+    @RenderBody()
+    </div> <!-- / .wrapper -->
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+
+                <!-- Contact Us -->
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <h4>Contact Us</h4>
+                    <p>
+                        051 Ave C South Saskatoon, 10 Elizabeth <br />
+                        Street Mountain Road, CA United States.
+                        <br /><br />
+                        Phone : 92 026 365 2569<br />
+                        Fax   : 92 026 365 2570
+                        <br /><br />
+                        <a href="mailto:#">supportcenter@mail.com</a>
+                    </p>
+                </div><!-- / .Contact Us -->
+                <!-- Useful Links -->
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <h4>Useful Links</h4>
+                    <p>
+                        <a href="#">Simple and clean blog design </a><br />
+                        <a href="#">We bring good to online presence  </a><br />
+                        <a href="#">Fully responsive creative design  </a><br />
+                        <a href="#">Creative homepage design </a><br />
+                        <a href="#">Our services are most nifty  </a><br />
+                        <a href="#">Most flexible theme </a><br />
+                    </p>
+                </div><!-- / .Useful Links -->
+                <!-- Recent Tweets -->
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <h4>Gallery</h4>
+                    <div class="gallery clearfix">
+                        <ul class="list-unstyled">
+                            <li><a href="#"><img src="img/avatar-1.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-2.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-3.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-4.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-5.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-6.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-7.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                            <li><a href="#"><img src="img/avatar-8.jpg" style="width:60px;height:60px;" alt="..."></a></li>
+                        </ul>
+                    </div>
+                </div><!-- / .Recent Tweets -->
+                <!-- Newsletter -->
+                <div class="col-xs-12 col-sm-3 col-md-3">
+                    <h4>Newsletter</h4>
+                    <p>
+                        By subscribing to our mailing list you will get the latest news from us.
+                    </p>
+                    <form class="form" role="form">
                         <div class="row">
-                            <div id="features-tab-libra" class="features-tab-container  group span12 margin-bottom">
-                                <div class="row">
-                                    <img src="http://demo.yithemes.com/libra/wp-content/themes/libra/theme/assets/images/features-tab-shadow.png" class="shadow" />
-                                    <div class="span3">
-									<div class="profile-picture">                
-
-                <div class="stats-label text-color">
-                    <span class="font-extra-bold font-uppercase">13100000000</span>
-                    <div>
-                        <h4 class="font-extra-bold m-b-xs">
-                            1050.00 静态
-                        </h4>
-                               <small class="text-muted">推荐人：13954223807</small><br>
-                               <small class="text-muted">报单中心：13800000000 </small>
-                    </div>
-					<br/>
-					<div>
-					<a class="btn btn-large  btn-view-over-the-town-5 " href="#">提供帮助</a>
-					<a class="btn btn-large  btn-indian-night-5  " href="#">获得利益</a>
-					</div>
-                </div>
-            </div>
-									<ul class="features-tab-labels">
-                                        <li class="features-tab-0  withicon">
-                                            <img src="images/hi.png" title="我的首页" alt="我的首页" />
-                                            我的首页
-                                        </li>
-
-                                        <li class="features-tab-1  withicon">
-                                            <img src="images/111.png" title="我的团队" alt="我的团队" />
-                                            我的团队
-                                        </li>
-
-                                        <li class="features-tab-2  withicon">
-                                            <img src="images/layouts.png" title="团队动态" alt="团队动态" />
-                                            团队动态
-                                        </li>
-
-                                        <li class="features-tab-3  withicon">
-                                            <img src="images/shortcodes.png" title="我的资料" alt="我的资料" />
-                                            我的资料
-                                        </li>
-
-                                        <li class="features-tab-4  withicon">
-                                            <img src="images/seo.png" title="钱包管理" alt="钱包管理" />
-                                            钱包管理
-                                        </li>
-										
-                                        <li class="features-tab-7  withicon">
-                                            <img src="images/sample.png" title="我的激活币" alt="我的激活币" />
-                                            我的激活币
-                                        </li>
-
-                                        <li class="features-tab-5  withicon">
-                                            <img src="images/newsletter.png" title="新闻公告" alt="新闻公告" />
-                                            新闻公告
-                                        </li>
-
-                                        <li class="features-tab-6  withicon">
-                                            <img src="images/advanced.png" title="我的消息" alt="我的消息" />
-                                            我的消息
-                                        </li>
-                                       
-                                        <li class="features-tab-8  withicon">
-                                            <img src="images/forum.png" title="退出系统" alt="退出系统" />
-                                            退出系统
-                                        </li>
-                                    </ul>
-									</div>
-                                    <div class="features-tab-wrapper span9">
-									    @RenderBody()
-                                    </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="input-group">
+                                    <label class="sr-only" for="subscribe-email">Email address</label>
+                                    <input type="email" class="form-control" id="subscribe-email" placeholder="Enter your email">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-style btn-k btn-primary">OK</button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                    <br />
+                    <h4>Follow us on</h4>
+                    <ul class="list-inline">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                    </ul>
+                </div><!-- / .Newsletter -->
 
-                    <!-- START COMMENTS -->
-                    <div id="comments"></div>
-                    <!-- END COMMENTS -->
-                </div>
-                <!-- END CONTENT -->               
-            </div>
-        </div>
-    </div>
-    <!-- END PRIMARY -->
-
-    <!-- START COPYRIGHT -->
-    <div id="copyright">
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </footer><!-- / .Footer -->
+    <!-- Copyright -->
+    <div class="copyrights">
         <div class="container">
             <div class="row">
-                <div class="left span6">
-                    <p>
-                        <a href=""><img src="http://yithemes.com/cdn/images/various/footer_yith_grey.png" alt="Your Inspiration Themes" style="position:relative; top:9px; margin: -22px 5px 0 0;"></a>&nbsp;Copyright 2012 - <strong>Libra theme</strong> by
-                        Your Inspiration Themes
-                    </p>
+                <div class="col-sm-12">
+                    <div class="copyright">
+                        <small>Copyright &copy; 2015.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></small>
+                    </div>
                 </div>
-                <div class="right span6">
-                    <p>
-                        Collect from <a href="" title="网站模板" target="_blank">网站模板</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END COPYRIGHT -->
-
-    <div class="wrapper-border"></div>
-
-    </div>
-<!-- END WRAPPER -->
-
-</div>
-<!-- END BG SHADOW -->
-
-<script type='text/javascript' src='@Url.Content("/js/comment-reply.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/underscore.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.colorbox-min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.easing.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.masonry.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/responsive.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/mobilemenu.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.superfish.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.placeholder.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/contact.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.tipsy.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.cycle.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/hoverIntent.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/media-upload.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("/js/jquery.custom.js")'></script>
-
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </div><!-- / .Copyright -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="@Url.Content("/js/jquery-1.11.0.min.js")"></script>
+    <script src="@Url.Content("/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("/js/scrolltopcontrol.js")"></script>
+    <script src="@Url.Content("/js/SmoothScroll.js")"></script>
+    <script src="@Url.Content("/js/custom.js")"></script>
+    @RenderSection("scriptfiles", required: false)
 </body>
-<!-- END BODY -->
 </html>

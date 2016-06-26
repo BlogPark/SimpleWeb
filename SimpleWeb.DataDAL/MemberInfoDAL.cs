@@ -445,5 +445,32 @@ WHERE   MobileNum = @MobileNum";
             model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
             return model;
         }
+        /// <summary>
+        /// 得到正常会员信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static MemberInfoModel GetMember(int id)
+        {
+            string sqltxt = @"SELECT  ID ,
+        TruethName ,
+        MobileNum
+FROM    dbo.MemberInfo
+WHERE   id = @id and MStatus=2";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@id",id)
+                                      };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                MemberInfoModel model = new MemberInfoModel();
+                model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                model.TruethName = dt.Rows[0]["TruethName"].ToString();
+                model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                return model;
+            }
+            else
+                return null;
+        }
     }
 }

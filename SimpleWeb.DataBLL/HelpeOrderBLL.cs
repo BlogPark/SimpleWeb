@@ -55,7 +55,7 @@ namespace SimpleWeb.DataBLL
                         return 0;
                     }
                 }
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount, dinterest);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount, dinterest,model.MemberName,model.MemberPhone);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -81,6 +81,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderID = orderid;
                 logmodel.ProduceMoney = model.Amount;
                 logmodel.Remark = "会员:" + model.MemberPhone + " 申请提供帮助 " + model.Amount.ToString() + "元";
+                logmodel.Type = 1;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
 
                 scope.Complete();
@@ -151,6 +152,7 @@ namespace SimpleWeb.DataBLL
             int result = 0;
             string value = SysAdminConfigDAL.GetConfigsByID(6);//得到打款后返还金额
             string inteist = SysAdminConfigDAL.GetConfigsByID(7);//得到打款后利率
+            string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(hid);
             List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
             using (TransactionScope scope = new TransactionScope())
@@ -164,7 +166,7 @@ namespace SimpleWeb.DataBLL
                 //返还排单币更改会员利率为打款后利率
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value), decimal.Parse(inteist));
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value), decimal.Parse(inteist),order.MemberName,order.MemberPhone);
                     if (rowcount < 1)
                     {
                         return 0;
@@ -177,6 +179,7 @@ namespace SimpleWeb.DataBLL
                     logmodel.OrderID = hid;
                     logmodel.ProduceMoney = order.Amount;
                     logmodel.Remark = "会员:" + order.MemberPhone + " 打款完成，返还" + order.Amount.ToString() + "元";
+                    logmodel.Type = 5;
                     rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 }
                 else
@@ -198,6 +201,11 @@ namespace SimpleWeb.DataBLL
                             return 0;
                         }
                     }
+                }
+                rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(order.MemberID, order.Amount, inteistlist, order.OrderCode, order.ID);
+                if (rowcount < 1)
+                {
+                    return 0;
                 }
                 scope.Complete();
                 result = 1;
@@ -223,7 +231,7 @@ namespace SimpleWeb.DataBLL
                 }
                 //返还会员追加的资金
                 HelpeOrderModel model = HelpeOrderDAL.GetHelpOrderInfo(hid);
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount));
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount),model.MemberName,model.MemberPhone);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -237,6 +245,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderID = hid;
                 logmodel.ProduceMoney = (0 - model.Amount);
                 logmodel.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减静态资金 " + model.Amount.ToString() + "元";
+                logmodel.Type = 1;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
@@ -259,6 +268,7 @@ namespace SimpleWeb.DataBLL
                     logmodel1.OrderID = hid;
                     logmodel1.ProduceMoney = (0 - model.Amount);
                     logmodel1.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减利息 " + model.Interest.ToString() + "元";
+                    logmodel.Type = 4;
                     rowcount = OperateLogDAL.AddAmountChangeLog(logmodel1);
                     if (rowcount < 1)
                     {

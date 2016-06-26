@@ -46,6 +46,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="HelpeOrderBLL.cs" />
     <Compile Include="MatchOrderBLL.cs" />
+    <Compile Include="MemberCapitalDetailBLL.cs" />
     <Compile Include="MemberInfoBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysAdminConfigBLL.cs" />

@@ -76,7 +76,7 @@ namespace SimpleWeb.DataDAL
         /// 废除推荐关系
         /// </summary>
         /// <returns></returns>
-        public static int UpdateReMemberRelationStatus(int memberid,int recommemberid)
+        public static int UpdateReMemberRelationStatus(int memberid, int recommemberid)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update ReMemberRelation set ");
@@ -90,6 +90,127 @@ namespace SimpleWeb.DataDAL
             parameters[1].Value = recommemberid;
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
+        }
+        /// <summary>
+        /// 按照被推荐的会员ID查找推荐人
+        /// </summary>
+        /// <param name="recommmid"></param>
+        /// <returns></returns>
+        public static ReMemberRelationModel GetReMemberRelation(int recommmid)
+        {
+
+            string sqltxt = @"SELECT  ID ,
+        A.MemberID ,
+        MemberPhone ,
+        MemberTruthName ,
+        RecommMID ,
+        RecommMPhone ,
+        RecommMTruthName ,
+        RStatus ,
+        AddTime,
+        B.LastHelpMoney
+FROM    ReMemberRelation A
+INNER JOIN dbo.MemberExtendInfo B ON A.MemberID=B.MemberID 
+WHERE   RecommMID = @RecommMID";
+            SqlParameter[] parameters = {
+					new SqlParameter("@RecommMID", SqlDbType.Int)
+			};
+            parameters[0].Value = recommmid;
+            ReMemberRelationModel model = new ReMemberRelationModel();
+            DataSet ds = helper.Query(sqltxt, parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (ds.Tables[0].Rows[0]["ID"].ToString() != "")
+                {
+                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["MemberID"].ToString() != "")
+                {
+                    model.MemberID = int.Parse(ds.Tables[0].Rows[0]["MemberID"].ToString());
+                }
+                model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
+                model.MemberTruthName = ds.Tables[0].Rows[0]["MemberTruthName"].ToString();
+                if (ds.Tables[0].Rows[0]["RecommMID"].ToString() != "")
+                {
+                    model.RecommMID = int.Parse(ds.Tables[0].Rows[0]["RecommMID"].ToString());
+                }
+                model.RecommMPhone = ds.Tables[0].Rows[0]["RecommMPhone"].ToString();
+                model.RecommMTruthName = ds.Tables[0].Rows[0]["RecommMTruthName"].ToString();
+                if (ds.Tables[0].Rows[0]["RStatus"].ToString() != "")
+                {
+                    model.RStatus = int.Parse(ds.Tables[0].Rows[0]["RStatus"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["AddTime"].ToString() != "")
+                {
+                    model.AddTime = DateTime.Parse(ds.Tables[0].Rows[0]["AddTime"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["LastHelpMoney"].ToString() != "")
+                {
+                    model.Amount = ds.Tables[0].Rows[0]["LastHelpMoney"].ToString().ParseToDecimal(0);
+                }
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 按照会员ID查找被推荐人列表
+        /// </summary>
+        /// <param name="recommmid"></param>
+        /// <returns></returns>
+        public static List<ReMemberRelationModel> GetReMemberRelationList(int memberid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, MemberID, MemberPhone, MemberTruthName, RecommMID, RecommMPhone, RecommMTruthName, RStatus, AddTime  ");
+            strSql.Append("  from ReMemberRelation ");
+            strSql.Append(" where MemberID=@MemberID");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberID", SqlDbType.Int)
+			};
+            parameters[0].Value = memberid;
+            List<ReMemberRelationModel> list = new List<ReMemberRelationModel>();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    ReMemberRelationModel model = new ReMemberRelationModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberTruthName = item["MemberTruthName"].ToString();
+                    if (item["RecommMID"].ToString() != "")
+                    {
+                        model.RecommMID = int.Parse(item["RecommMID"].ToString());
+                    }
+                    model.RecommMPhone = item["RecommMPhone"].ToString();
+                    model.RecommMTruthName = item["RecommMTruthName"].ToString();
+                    if (item["RStatus"].ToString() != "")
+                    {
+                        model.RStatus = int.Parse(item["RStatus"].ToString());
+                    }
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

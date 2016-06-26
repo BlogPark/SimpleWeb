@@ -1,0 +1,3 @@
+/* ===== Tooltips ===== */
+
+$('#bonus-tip').tooltip();

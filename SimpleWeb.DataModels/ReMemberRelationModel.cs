@@ -103,7 +103,22 @@ namespace SimpleWeb.DataModels
         {
             get { return _addtime; }
             set { _addtime = value; }
-        }        
+        }
+
+        #region 扩展字段
+        private decimal _amount;
+        /// <summary>
+        /// 金额
+        /// </summary>		
+        [DataMember]
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+
+
+        #endregion
 
     }
 
@@ -118,7 +133,7 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public string id { get; set; }
         [DataMember]
-        public SubTreemodel additionalParameters{get;set;}
+        public SubTreemodel additionalParameters { get; set; }
     }
     [Serializable]
     [DataContract]

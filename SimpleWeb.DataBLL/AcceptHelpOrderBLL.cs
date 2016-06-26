@@ -50,6 +50,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderID = orderid;
                 logmodel.ProduceMoney = 0 - model.Amount;
                 logmodel.Remark = "会员:" + model.MemberPhone + " 申请接受帮助 " + model.Amount.ToString() + "元";
+                logmodel.Type = 1;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
@@ -123,6 +124,7 @@ namespace SimpleWeb.DataBLL
                     logmodel.OrderID = item.HelperOrderID;
                     logmodel.ProduceMoney = 0;
                     logmodel.Remark = "会员:" + order.MemberPhone + " 所有冻结资金解冻";
+                    logmodel.Type = 5;
                     rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                     if (rowcount < 1)
                     {
@@ -154,11 +156,11 @@ namespace SimpleWeb.DataBLL
                 AcceptHelpOrderModel order = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
                 if (order.SourceType == 1)//静态资金
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID,order.Amount);
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID,order.Amount,order.MemberName,order.MemberPhone);
                 }
                 else if (order.SourceType == 2)//动态资金
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(order.MemberID, order.Amount);
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(order.MemberID, order.Amount,order.MemberName,order.MemberPhone);
                 }
                 if (rowcount < 1)
                 {
@@ -173,6 +175,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderID = aid;
                 logmodel.ProduceMoney = order.Amount;
                 logmodel.Remark = "会员:" + order.MemberPhone + " 取消提供帮助，返还扣减的资金 " + order.Amount.ToString() + "元";
+                logmodel.Type = 5;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);                
                 if (rowcount < 1)
                 {

@@ -63,6 +63,7 @@
     <Compile Include="JsonHelper.cs" />
     <Compile Include="PinYinConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemExtendClass.cs" />
     <Compile Include="UploadHelper.cs" />
     <Compile Include="ValidateCode.cs" />
   </ItemGroup>

@@ -1,0 +1,3 @@
+/* ===== Tooltips ===== */
+
+$('#tooltip').tooltip();

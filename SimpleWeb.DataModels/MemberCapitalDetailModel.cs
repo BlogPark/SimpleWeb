@@ -24,6 +24,20 @@ namespace SimpleWeb.DataModels
             get { return _memberid; }
             set { _memberid = value; }
         }
+        private string _MemberPhone;
+        [DataMember]
+        public string MemberPhone
+        {
+            get { return _MemberPhone; }
+            set { _MemberPhone = value; }
+        }
+        private string _MemberName;
+        [DataMember]
+        public string MemberName
+        {
+            get { return _MemberName; }
+            set { _MemberName = value; }
+        }
         /// <summary>
         /// 静态资金
         /// </summary>		

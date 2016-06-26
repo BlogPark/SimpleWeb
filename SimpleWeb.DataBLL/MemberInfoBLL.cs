@@ -34,7 +34,7 @@ namespace SimpleWeb.DataBLL
                     {
                         return 0;
                     }
-                    int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont);
+                    int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont,model.TruethName,model.MobileNum);
                     if (row < 1)
                     {
                         return 0;
@@ -46,6 +46,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.MemberPhone = model.MobileNum;
                 logmodel.ProduceMoney = amont;
                 logmodel.Remark = "会员注册赠送" + amont.ToString() + "元";
+                logmodel.Type = 5;
                 int rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {

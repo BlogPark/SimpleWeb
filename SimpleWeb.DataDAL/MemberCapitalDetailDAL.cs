@@ -69,7 +69,7 @@ namespace SimpleWeb.DataDAL
         /// <param name="memberid"></param>
         /// <param name="amont"></param>
         /// <returns></returns>
-        public static int UpdateMemberStaticFreezeMoney(int memberid, decimal amont)
+        public static int UpdateMemberStaticFreezeMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
             FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -82,15 +82,17 @@ namespace SimpleWeb.DataDAL
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
-                ( MemberID ,
+                ( MemberID,MemberPhone,MemberName,
                   StaticFreezeMoney
                 )
-        VALUES  ( @MemberID ,
+        VALUES  ( @MemberID,@MemberPhone,@MemberName,
                   @Amount
                 )
     END";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
                                       new SqlParameter("@Amount",amont)
                                       };
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
@@ -102,7 +104,7 @@ ELSE
         /// <param name="memberid"></param>
         /// <param name="amont"></param>
         /// <returns></returns>
-        public static int UpdateMemberDynamicFreezeMoney(int memberid, decimal amont)
+        public static int UpdateMemberDynamicFreezeMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
             FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -115,15 +117,17 @@ ELSE
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
-                ( MemberID ,
+                ( MemberID ,MemberPhone,MemberName,
                   DynamicFreezeMoney
                 )
-        VALUES  ( @MemberID ,
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
                   @Amount
                 )
     END";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
                                       new SqlParameter("@Amount",amont)
                                       };
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
@@ -135,7 +139,7 @@ ELSE
         /// <param name="memberid"></param>
         /// <param name="amont"></param>
         /// <returns></returns>
-        public static int UpdateMemberStaticCapital(int memberid, decimal amont)
+        public static int UpdateMemberStaticCapital(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
             FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -149,17 +153,19 @@ ELSE
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
-                ( MemberID ,
+                ( MemberID ,MemberPhone,MemberName,
                   StaticCapital,
                   TotalStaticCapital
                 )
-        VALUES  ( @MemberID ,
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
                   @Amount,
                   @Amount
                 )
     END";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
                                       new SqlParameter("@Amount",amont)
                                       };
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
@@ -171,7 +177,7 @@ ELSE
         /// <param name="memberid"></param>
         /// <param name="amont"></param>
         /// <returns></returns>
-        public static int UpdateMemberStaticCapital(int memberid, decimal amont, decimal interest)
+        public static int UpdateMemberStaticCapital(int memberid, decimal amont, decimal interest, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
             FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -186,12 +192,12 @@ ELSE
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
-                ( MemberID ,
+                ( MemberID ,MemberPhone,MemberName,
                   StaticCapital,
                   TotalStaticCapital,
                   Interest
                 )
-        VALUES  ( @MemberID ,
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
                   @Amount,
                   @Amount,
                   @interest
@@ -199,6 +205,8 @@ ELSE
     END";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
                                       new SqlParameter("@Amount",amont),
                                       new SqlParameter("@interest",interest)
                                       };
@@ -211,7 +219,7 @@ ELSE
         /// <param name="memberid"></param>
         /// <param name="amont"></param>
         /// <returns></returns>
-        public static int UpdateMemberDynamicFunds(int memberid, decimal amont)
+        public static int UpdateMemberDynamicFunds(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
             FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -225,17 +233,19 @@ ELSE
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
-                ( MemberID ,
+                ( MemberID ,MemberPhone,MemberName,
                   DynamicFunds,
                   TotalDynamicFunds
                 )
-        VALUES  ( @MemberID ,
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
                   @Amount,
                   @Amount
                 )
     END";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
                                       new SqlParameter("@Amount",amont)
                                       };
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
@@ -416,6 +426,84 @@ WHERE   MemberID = @id";
             int rowcount = helper.ExecuteSql(sqltxt, paramter);
             return rowcount;
         }
+        /// <summary>
+        /// 为会员派发利息
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public static int PaymentInterest(int day)
+        {
+            string sqltxt = @"    UPDATE A
+	SET StaticInterest=(StaticCapital*(0.01*Interest))+StaticInterest
+	OUTPUT INSERTED.MemberID,DELETED.MemberPhone,DELETED.MemberName,DELETED.StaticCapital*DELETED.Interest*0.01,'系统派发利息',GETDATE(),0,4,''
+	INTO dbo.AmountChangeLog
+	FROM MemberCapitalDetail A 
+	WHERE MemberID IN (SELECT MemberID FROM dbo.MemberExtendInfo WHERE (DATEDIFF(DAY,LastHelperTime,GETDATE())+1)<=@days)";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@days",day)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 为会员的推荐人分派奖金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amount"></param>
+        /// <param name="intereststr"></param>
+        /// <param name="ordercode"></param>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        public static int PaymentLeaderPrize(int memberid, decimal amount, string intereststr, string ordercode, int oid)
+        {
+            int result = 0;
+            List<int> interests = new List<int>();
+            if (!string.IsNullOrWhiteSpace(intereststr))
+            {
+                foreach (var item in intereststr.Split(','))
+                {
+                    interests.Add(item.ParseToInt(0));
+                }
+            }
+            if (interests.Count < 1)
+                return result;
+            //按照配置的利率查找推荐图谱
+            List<ReMemberRelationModel> members = new List<ReMemberRelationModel>();
+            for (int i = 0; i < interests.Count; i++)
+            {
+                if (i == 0)
+                {
+                    ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(memberid);
+                    if (member != null)
+                        members.Add(member);
+                }
+                if (members.Count > (i - 1))
+                {
+                    ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(members[i - 1].ID);
+                    if (member != null)
+                        members.Add(member);
+                }
+            }
+            for (int i = 0; i < members.Count; i++)
+            {
+                decimal money = amount;//若推荐人排单金额小于被推荐人排单金额，则取推荐人排单金额计算
+                if (members[i].Amount < amount)
+                {
+                    money = members[i].Amount;
+                }
+                int rowcount = UpdateMemberDynamicFunds(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone);
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = members[i].MemberID;
+                logmodel.MemberName = members[i].MemberTruthName;
+                logmodel.MemberPhone = members[i].MemberPhone;
+                logmodel.OrderCode = ordercode;
+                logmodel.OrderID = oid;
+                logmodel.ProduceMoney = (money / 100 * interests[i]);
+                logmodel.Remark = "会员:" + members[i].MemberPhone + " 得到来自单据：" + ordercode + "的领导奖";
+                logmodel.Type = 3;
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+            }
+            return result;
 
+        }
     }
 }

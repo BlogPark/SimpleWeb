@@ -137,10 +137,11 @@ namespace SimpleWeb.DataModels
             get { return _orderid; }
             set { _orderid = value; }
         }
+        	
+        private int _type;
         /// <summary>
         /// 类型（1 提供帮助  2 接受帮助 3 奖金派发 4 利息结余 5 系统返还）
-        /// </summary>		
-        private int _type;
+        /// </summary>	
         [DataMember]
         public int Type
         {

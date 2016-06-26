@@ -127,5 +127,32 @@ WHERE   MemberID = @memberid";
                                       };
             return helper.ExecuteSql(sqltxt,paramter);
         }
+        /// <summary>
+        /// 得到该分配利息的会员
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public static List<MemberInfoModel> GetPaymentInterestMembers(int day)
+        {
+            List<MemberInfoModel> members = new List<MemberInfoModel>();
+            string sqltxt = @"SELECT  MemberID ,
+        b.MobileNum ,
+        b.TruethName
+FROM    SimpleWebDataBase.dbo.MemberExtendInfo A
+        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = b.ID
+WHERE   ( DATEDIFF(DAY, LastHelperTime, GETDATE()) + 1 ) <=@days";
+            SqlParameter[] paramter = {
+                                          new SqlParameter("@days",day)
+                                    };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            foreach (DataRow item in dt.Rows)
+            {
+                MemberInfoModel model = new MemberInfoModel();
+                model.ID = item["MemberID"].ToString().ParseToInt(0);
+                model.TruethName = item["TruethName"].ToString();
+                model.MobileNum = item["MobileNum"].ToString();
+            }
+            return members;
+        }
     }
 }
