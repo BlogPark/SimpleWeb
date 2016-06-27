@@ -128,7 +128,7 @@ ELSE
             return list;
         }
         /// <summary>
-        /// 更改状态
+        /// 更改状态为已使用
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>

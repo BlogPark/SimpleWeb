@@ -303,5 +303,23 @@ namespace SimpleWeb.DataBLL
             }
             return result;
         }
+        /// <summary>
+        /// 根据ID得到单据的信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public HelpeOrderModel GetHelpordermodel(int id)
+        {
+            return HelpeOrderDAL.GetHelpOrderInfo(id);
+        }
+        /// <summary>
+        /// 根据提供帮助订单号得到匹配的信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public List<AcceptExtendInfoModel> GetAcceptextendmodels(int hid)
+        {
+            return HelpeOrderDAL.GetAcceptextendmodels(hid);
+        }
     }
 }

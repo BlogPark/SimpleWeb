@@ -519,5 +519,49 @@ WHERE   id = @id";
             SqlParameter[] paramter = { new SqlParameter("@id", hid), new SqlParameter("@money", money) };
             return helper.ExecuteSql(sqltxt, paramter);
         }
+        /// <summary>
+        /// 根据提供帮助订单号得到匹配的信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static List<AcceptExtendInfoModel> GetAcceptextendmodels(int hid)
+        {
+            List<AcceptExtendInfoModel> list = new List<AcceptExtendInfoModel>();
+            string sqltxt = @"SELECT  A.ID ,
+        A.OrderCode ,
+        A.MemberID ,
+        A.MemberPhone ,
+        A.MemberName ,
+        B.WeixinNum ,
+        B.AliPayNum ,
+        C.MemberID ,
+        C.MemberPhone ,
+        C.MemberTruthName,
+        D.MatchedMoney
+FROM    SimpleWebDataBase.dbo.MatchOrder D
+        INNER JOIN SimpleWebDataBase.dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
+        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
+        INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
+WHERE   D.HelperOrderID = @orderid";
+            SqlParameter[] paramter = { new SqlParameter("@hid",hid)};
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    AcceptExtendInfoModel model = new AcceptExtendInfoModel();
+                    model.acceptmemberAlipayId = item["AliPayNum"].ToString();
+                    model.acceptmemberid = item["MemberID"].ToString().ParseToInt(0);
+                    model.acceptmemberName = item["MemberName"].ToString();
+                    model.acceptmemberPhone = item["MemberPhone"].ToString();
+                    model.acceptmemberweixin = item["WeixinNum"].ToString();
+                    model.acceptordercode = item["OrderCode"].ToString();
+                    model.acceptorderid = item["ID"].ToString().ParseToInt(0);
+                    model.MatchedMoney = item["MatchedMoney"].ToString().ParseToDecimal(0);
+                    list.Add(model);
+                }                
+            }
+            return list;
+        }
     }
 }

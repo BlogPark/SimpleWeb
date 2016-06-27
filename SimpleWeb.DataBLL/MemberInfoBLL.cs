@@ -52,6 +52,8 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                //更改激活码的使用状态(未完成)
+
                 //插入推荐人信息表
                 MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
                 ReMemberRelationModel remodel = new ReMemberRelationModel();
