@@ -89,6 +89,7 @@ function webchang(id, control) {
         }
     });
 }
-function subchange() {
-    alert(1);
+function subchange() {    
+    document.getElementById('registerform').submit();
+    return false;
 }

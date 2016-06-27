@@ -124,5 +124,16 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetRecommdMemberModel(rmid);
         }
+        /// <summary>
+        /// 检查会员填写的信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="name"></param>
+        /// <param name="alipay"></param>
+        /// <returns></returns>
+        public int GetMemberInfoBycheck(string phone, string name, string alipay)
+        {
+            return dal.GetMemberInfoBycheck(phone,name,alipay);
+        }
     }
 }

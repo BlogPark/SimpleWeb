@@ -472,5 +472,125 @@ WHERE   id = @id and MStatus=2";
             else
                 return null;
         }
+        /// <summary>
+        /// 检查会员填写的信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="name"></param>
+        /// <param name="alipay"></param>
+        /// <returns></returns>
+        public int GetMemberInfoBycheck(string phone, string name, string alipay)
+        {
+            string sqltxt = @"SELECT ID  FROM SimpleWebDataBase.dbo.MemberInfo   WHERE MStatus IN (1,2)";
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                sqltxt += @" AND MobileNum=@MobileNum";
+            }
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                sqltxt += @" AND TruethName=@TruethName";
+            }
+            if (!string.IsNullOrWhiteSpace(alipay))
+            {
+                sqltxt += @" AND AliPayNum=@AliPayNum";
+            }
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MobileNum",phone),
+                                      new SqlParameter("@TruethName",name),
+                                      new SqlParameter("@AliPayNum",alipay)
+                                      };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
+        }
+
+        /// <summary>
+        /// 前端会员登陆
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public MemberInfoModel GetMemberInfo(string phone, string pwd,out string logmsg)
+        {
+            MemberInfoModel model = null;
+            string sqltxt = @"SELECT  ID ,
+        TruethName ,
+        Sex ,
+        TelPhone ,
+        MobileNum ,
+        Email ,
+        IdentificationID ,
+        Province ,
+        City ,
+        Area ,
+        [Address] ,
+        WeixinNum ,
+        AliPayName ,
+        AliPayNum ,
+        SecurityQuestion ,
+        SecurityAnswer ,
+        LogPwd ,
+        MStatus ,
+        AddTime
+FROM    dbo.MemberInfo
+WHERE MobileNum=@MobileNum";
+            SqlParameter[] paramter = { new SqlParameter("@MobileNum",phone) };
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                string logpwd = dt.Rows[0]["LogPwd"].ToString();
+                if (logpwd != pwd)
+                {
+                    logmsg = "登陆密码不正确";
+                    return null;
+                }
+                model = new MemberInfoModel();
+                if (dt.Rows[0]["ID"].ToString() != "")
+                {
+                    model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                }
+                if (dt.Rows[0]["Area"].ToString() != "")
+                {
+                    model.Area = dt.Rows[0]["Area"].ToString();
+                }
+                model.Address = dt.Rows[0]["Address"].ToString();
+                model.WeixinNum = dt.Rows[0]["WeixinNum"].ToString();
+                model.AliPayName = dt.Rows[0]["AliPayName"].ToString();
+                model.AliPayNum = dt.Rows[0]["AliPayNum"].ToString();
+                model.SecurityQuestion = dt.Rows[0]["SecurityQuestion"].ToString();
+                model.SecurityAnswer = dt.Rows[0]["SecurityAnswer"].ToString();
+                model.LogPwd = "password";
+                if (dt.Rows[0]["MStatus"].ToString() != "")
+                {
+                    model.MStatus = int.Parse(dt.Rows[0]["MStatus"].ToString());
+                }
+                if (dt.Rows[0]["AddTime"].ToString() != "")
+                {
+                    model.AddTime = DateTime.Parse(dt.Rows[0]["AddTime"].ToString());
+                }
+                model.TruethName = dt.Rows[0]["TruethName"].ToString();
+                if (dt.Rows[0]["Sex"].ToString() != "")
+                {
+                    model.Sex = int.Parse(dt.Rows[0]["Sex"].ToString());
+                }
+                model.TelPhone = dt.Rows[0]["TelPhone"].ToString();
+                model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                model.Email = dt.Rows[0]["Email"].ToString();
+                model.IdentificationID = dt.Rows[0]["IdentificationID"].ToString();
+                if (dt.Rows[0]["Province"].ToString() != "")
+                {
+                    model.Province = dt.Rows[0]["Province"].ToString();
+                }
+                if (dt.Rows[0]["City"].ToString() != "")
+                {
+                    model.City = dt.Rows[0]["City"].ToString();
+                }
+            }
+            else
+            {
+                logmsg = "手机号不存在";
+                return null;
+            }
+        }
+
     }
 }

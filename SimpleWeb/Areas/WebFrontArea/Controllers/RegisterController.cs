@@ -25,8 +25,50 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         [HttpPost]
         public ActionResult Index(MemberInfoModel member)
         {
+            if (member != null)
+            {
+                int row = bll.AddMemberInfo(member);
+            }
             return View(member);
         }
-
+        [HttpPost]
+        public ActionResult checkphone(string phone)
+        {
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                int count = bll.GetMemberInfoBycheck(phone, "", "");
+                if (count > 0)
+                {
+                    return Json("0");
+                }
+            }
+            return Json("1");
+        }
+        [HttpPost]
+        public ActionResult checkname(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                int count = bll.GetMemberInfoBycheck("", name, "");
+                if (count > 0)
+                {
+                    return Json("0");
+                }
+            }
+            return Json("1");
+        }
+        [HttpPost]
+        public ActionResult checkalipay(string alipay)
+        {
+            if (!string.IsNullOrWhiteSpace(alipay))
+            {
+                int count = bll.GetMemberInfoBycheck("", "", alipay);
+                if (count > 0)
+                {
+                    return Json("0");
+                }
+            }
+            return Json("1");
+        }
     }
 }
