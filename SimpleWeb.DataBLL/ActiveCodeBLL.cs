@@ -106,5 +106,15 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetActiveCodeLogListForPage(memberid, pageindex, pagesize,out totalrowcount);
         }
+        /// <summary>
+        /// 得到会员的分类激活码信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(int memberid, int typeid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            return dal.GetMemberActiveCodeListForPage(memberid, typeid, pageindex, pagesize, out totalrowcount);
+        }
     }
 }

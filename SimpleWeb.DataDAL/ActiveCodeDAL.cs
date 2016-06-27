@@ -650,5 +650,67 @@ WHERE   AMType = @type
             return list;
         }
 
+        /// <summary>
+        /// 得到会员的分类激活码信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(int memberid, int typeid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            List<MemberActiveCodeModel> list = new List<MemberActiveCodeModel>();
+            string columms = @"ID,ActiveCode,AMType,MemberID,MemberPhone,MemberName,AMStatus,Addtime,UseCode,UserTime";
+            string where = "";
+            if (memberid > 0)
+            {
+                where = " MemberID=" + memberid.ToString() + " AND AMType="+typeid.ToString();
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "Addtime";
+            page.pageindex = pageindex;
+            page.pagesize = pagesize;
+            page.tablename = @"dbo.MemberActiveCode";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberActiveCodeModel activecode = new MemberActiveCodeModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        activecode.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["UserTime"].ToString() != "")
+                    {
+                        activecode.UserTime = DateTime.Parse(item["UserTime"].ToString());
+                    }
+                    activecode.ActiveCode = item["ActiveCode"].ToString();
+                    if (item["AMType"].ToString() != "")
+                    {
+                        activecode.AMType = int.Parse(item["AMType"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        activecode.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    activecode.MemberPhone = item["MemberPhone"].ToString();
+                    activecode.MemberName = item["MemberName"].ToString();
+                    if (item["AMStatus"].ToString() != "")
+                    {
+                        activecode.AMStatus = int.Parse(item["AMStatus"].ToString());
+                    }
+                    if (item["Addtime"].ToString() != "")
+                    {
+                        activecode.Addtime = DateTime.Parse(item["Addtime"].ToString());
+                    }
+                    activecode.UseCode = item["UseCode"].ToString();
+                    list.Add(activecode);
+                }
+            }
+            return list;
+        }
+
     }
 }

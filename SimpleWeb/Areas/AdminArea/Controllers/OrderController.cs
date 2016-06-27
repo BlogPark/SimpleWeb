@@ -10,6 +10,7 @@ using Webdiyer.WebControls.Mvc;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
+    //[AdminLoginAttribute]
     public class OrderController : Controller
     {
         //

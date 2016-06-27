@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SimpleWeb.Areas.WebFrontArea.Models;
+using SimpleWeb.Common;
+using SimpleWeb.Controllers;
+using SimpleWeb.DataBLL;
+using SimpleWeb.DataModels;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
@@ -11,19 +15,37 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
     {
         //会员登陆页面
         // GET: /WebFrontArea/Login/
-
-        public ActionResult Index(string bl="")
+        MemberInfoBLL bll = new MemberInfoBLL();
+        public ActionResult Index(string bl = "")
         {
-            webLoginViewModel model = new webLoginViewModel();
-            model.returnurl = bl;
-            return View();
+            MemberInfoModel model = new MemberInfoModel();
+            return View(model);
         }
-
+        /// <summary>
+        /// 会员登陆
+        /// </summary>
+        /// <param name="member"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Index()
+        public ActionResult Index(MemberInfoModel member)
         {
-            ViewBag.TempMsg = "无此用户信息";
-            return View();
+            if (member == null)
+            {
+                return View(member);
+            }
+            string newpwd = DESEncrypt.Encrypt(member.LogPwd, AppContent.SecrectStr);
+            string logmsg = "";
+            MemberInfoModel logmember = bll.GetMemberInfo(member.MobileNum, newpwd, out logmsg);
+            if (logmsg == "1")
+            {
+                Session[AppContent.SESSION_WEB_LOGIN] = logmember;
+                return RedirectToAction("Index", "WebHome", new { area = "WebFrontArea" });
+            }
+            else
+            {
+                ViewBag.TempMsg = logmsg;
+                return View(member);
+            }
         }
     }
 }

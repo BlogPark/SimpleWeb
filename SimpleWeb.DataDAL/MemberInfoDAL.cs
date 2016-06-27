@@ -543,6 +543,16 @@ WHERE MobileNum=@MobileNum";
                     logmsg = "登陆密码不正确";
                     return null;
                 }
+                if (dt.Rows[0]["MStatus"].ToString() == "1")
+                {
+                    logmsg = "该账户未激活";
+                    return null;
+                }
+                if (dt.Rows[0]["MStatus"].ToString() == "3")
+                {
+                    logmsg = "该账户已被冻结";
+                    return null;
+                }
                 model = new MemberInfoModel();
                 if (dt.Rows[0]["ID"].ToString() != "")
                 {
@@ -584,6 +594,8 @@ WHERE MobileNum=@MobileNum";
                 {
                     model.City = dt.Rows[0]["City"].ToString();
                 }
+                logmsg = "1";
+                return model;
             }
             else
             {
@@ -591,6 +603,5 @@ WHERE MobileNum=@MobileNum";
                 return null;
             }
         }
-
     }
 }

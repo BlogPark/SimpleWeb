@@ -11,6 +11,7 @@ using SimpleWeb.Models;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
+    //[AdminLoginAttribute]
     public class SiteMsgController : Controller
     {
         //网站公告管理

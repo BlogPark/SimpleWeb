@@ -15,42 +15,29 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
     {
         //
         // GET: /WebFrontArea/WebHome/
-        private MemberInfoBLL bll = new MemberInfoBLL();
 
+        //Session[AppContent.SESSION_WEB_LOGIN] 
+        private MemberInfoBLL bll = new MemberInfoBLL();
+        private ActiveCodeBLL activecodebll = new ActiveCodeBLL();
+        private readonly int pagesize = 30;
         public ActionResult Index()
         {
             return View();
         }
-        /// <summary>
-        /// 会员注册
-        /// </summary>
-        /// <param name="fph"></param>
-        /// <returns></returns>
-        public ActionResult Register(string fph)
-        {
-            RegisterViewModel model = new RegisterViewModel();
-            model.regintable = bll.GetReginTableListModel(1);
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult Register(MemberInfoModel member)
-        {
-            if (member != null)
-            {
-                member.LogPwd = DESEncrypt.Encrypt(member.LogPwd, AppContent.SecrectStr);//加密密码
-                int row = bll.AddMemberInfo(member);
-            }
-            return RedirectToActionPermanent("Index", "WebHome", new { area = "WebFrontArea" });
-        }
-
+       
         /// <summary>
         /// 我的激活码页面
         /// </summary>
         /// <returns></returns>
-        public ActionResult ActivationCode()
+        public ActionResult myactivation(int page=1)
         {
-            LogMemberMsg logmember = Session[AppContent.SESSION_WEB_LOGIN] as LogMemberMsg;
-
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("", "", new { area=""});
+            }
+            int totalcount=0;
+            List<MemberActiveCodeModel> activecodes = activecodebll.GetMemberActiveCodeListForPage(logmember.ID, 1, page, pagesize, out totalcount);
             return View();
         }
     }

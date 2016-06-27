@@ -135,5 +135,15 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetMemberInfoBycheck(phone,name,alipay);
         }
+        /// <summary>
+        /// 前端会员登陆
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public MemberInfoModel GetMemberInfo(string phone, string pwd, out string logmsg)
+        {
+            return dal.GetMemberInfo(phone, pwd, out logmsg);
+        }
     }
 }

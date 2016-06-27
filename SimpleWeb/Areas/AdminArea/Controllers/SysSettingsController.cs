@@ -11,6 +11,7 @@ using SimpleWeb.DataModels;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
+    //[AdminLoginAttribute]
     public class SysSettingsController : Controller
     {
         //

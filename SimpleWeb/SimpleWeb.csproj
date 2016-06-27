@@ -151,6 +151,8 @@
     <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SystemHelper.cs" />
+    <Compile Include="Filters\AdminLoginAttribute.cs" />
+    <Compile Include="Filters\WebLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1585,6 +1587,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
     <Folder Include="Areas\WebFrontArea\Views\Shared\" />
+    <Folder Include="Areas\WebFrontArea\Views\WebHome\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1776,9 +1779,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\_WebLayout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\WebFrontArea\Views\WebHome\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFrontArea\Views\Webnews\Index.cshtml" />

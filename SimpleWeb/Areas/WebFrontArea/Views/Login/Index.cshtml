@@ -1,4 +1,4 @@
-﻿@model SimpleWeb.Areas.WebFrontArea.Models.webLoginViewModel
+﻿@model SimpleWeb.DataModels.MemberInfoModel
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
@@ -27,12 +27,12 @@
                     <form role="form">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号", @class = "form-control"})
+                            @Html.TextBoxFor(m =>m.MobileNum, new { @placeholder = "手机号", @class = "form-control"})
                         </div>
                         <br />
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            @Html.PasswordFor(m => m.member.LogPwd, new { @placeholder = "登陆密码", @class = "form-control"})
+                            @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "form-control"})
                         </div>
                         <div class="checkbox">
                             <label>
