@@ -453,13 +453,54 @@ WHERE   id = @id";
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
+        /// 根据ID和会员查询提供帮助订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static HelpeOrderModel GetHelpOrderInfo(int id,int memberid)
+        {
+            string sqltxt = @"SELECT  OrderCode ,
+        MemberID ,
+        MemberPhone ,
+        MemberName ,
+        Amount ,
+        ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
+        Interest,
+        DATEDIFF(DAY,AddTime,GETDATE()) diffday 
+FROM    HelpeOrder
+WHERE   ID = @id
+        AND MemberID = @memberid";
+            SqlParameter[] paramter ={
+                                        new SqlParameter("@id",id),
+                                        new SqlParameter("@memberid",memberid)
+                                    };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                HelpeOrderModel model = new HelpeOrderModel();
+                model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
+                model.MemberName = dt.Rows[0]["MemberName"].ToString();
+                model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
+                model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
+                model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
+                model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
+                model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
+                model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
         /// 根据ID查询提供帮助订单信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest from HelpeOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday  from HelpeOrder where ID=@id ";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };
@@ -474,6 +515,7 @@ WHERE   id = @id";
                 model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
+                model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
                 return model;
             }
             else
@@ -534,16 +576,16 @@ WHERE   id = @id";
         A.MemberName ,
         B.WeixinNum ,
         B.AliPayNum ,
-        C.MemberID ,
-        C.MemberPhone ,
-        C.MemberTruthName,
+         C.MemberID  as rememberid,
+        C.MemberPhone as rememberphone,
+        C.MemberTruthName as remembername,
         D.MatchedMoney
 FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
         INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
         INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
 WHERE   D.HelperOrderID = @orderid";
-            SqlParameter[] paramter = { new SqlParameter("@hid",hid)};
+            SqlParameter[] paramter = { new SqlParameter("@orderid", hid) };
             DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -558,6 +600,9 @@ WHERE   D.HelperOrderID = @orderid";
                     model.acceptordercode = item["OrderCode"].ToString();
                     model.acceptorderid = item["ID"].ToString().ParseToInt(0);
                     model.MatchedMoney = item["MatchedMoney"].ToString().ParseToDecimal(0);
+                    model.rememberid = item["rememberid"].ToString().ParseToInt(0);
+                    model.remembername = item["remembername"].ToString();
+                    model.rememberphone = item["rememberphone"].ToString();
                     list.Add(model);
                 }                
             }

@@ -147,5 +147,16 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetMemberInfo(phone, pwd, out logmsg);
         }
+        /// <summary>
+        /// 更改会员的密码
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public int UpdateUserPwd(int memberid, string pwd)
+        {
+            return dal.UpdateUserPwd(memberid,pwd);
+        }
+
     }
 }

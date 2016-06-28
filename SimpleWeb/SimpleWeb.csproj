@@ -139,10 +139,14 @@
     <Compile Include="Areas\WebFrontArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\RegisterController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\WebHomeController.cs" />
-    <Compile Include="Areas\WebFrontArea\Controllers\WebnewsController.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\AcceptOrderListViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\AcceptOrderViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\ContactUsViewModel.cs" />
-    <Compile Include="Areas\WebFrontArea\Models\HelpOrderDetailViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\HelpOrderListViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\HelpOrderViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\HomeViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\MyActiveIndexModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\UserProfileViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\webLoginViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\LogMemberMsg.cs" />
     <Compile Include="Areas\WebFrontArea\Models\MemberNewsViewModel.cs" />
@@ -1589,7 +1593,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
     <Folder Include="Areas\WebFrontArea\Views\Shared\" />
-    <Folder Include="Areas\WebFrontArea\Views\WebHome\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1783,9 +1786,6 @@
     <Content Include="Views\_WebLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\WebFrontArea\Views\Webnews\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\AdminArea\Views\SiteMsg\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1805,6 +1805,36 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFrontArea\Views\Login\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\userprofile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\contentus.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\webnews.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\acceptOrderlist.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\helpOrderlist.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\AcceptOrderDetail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\helporderDetail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\mylineation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\myactivation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

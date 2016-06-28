@@ -46,6 +46,7 @@
     <Compile Include="ActiveCodeModel.cs" />
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="HelpeOrderModel.cs" />
+    <Compile Include="HelpOrderExtendInfoModel.cs" />
     <Compile Include="LogModels.cs" />
     <Compile Include="MatchOrderModel.cs" />
     <Compile Include="MemberActiveCodeModel.cs" />

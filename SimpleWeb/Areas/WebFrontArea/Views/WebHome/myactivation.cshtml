@@ -1,0 +1,57 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model SimpleWeb.Areas.WebFrontArea.Models.MyActiveIndexModel
+@{
+    Layout = "~/Views/_WebLayout.cshtml";
+}
+
+<div class="topic">
+    <div class="container">
+        <div class="row">
+            <ol class="breadcrumb hidden-xs">
+                <li><a href="index.html">首页</a></li>
+                <li class="active">我的激活码</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-muted">我拥有的激活码列表
+                    </h3>
+                    <hr>
+                </div>
+                <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>激活码</th>
+                                <th>使用状态</th>
+                                <th>使用单据编号/用户名</th>
+                                <th>使用时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.orderlist)
+                            {
+                                <tr>                                    
+                                    <td>
+                                        <div class="item">
+                                            @item.ActiveCode
+                                        </div>
+                                    </td>
+                                    <td>@item.AMStatusName</td>
+                                    <td>@item.UseCode</td>
+                                    <td>@item.UserTime</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

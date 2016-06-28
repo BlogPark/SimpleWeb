@@ -213,5 +213,23 @@ namespace SimpleWeb.DataBLL
         {
             return dal.UpdateSortindex(aid);
         }
+         /// <summary>
+        /// 根据接受帮助订单号得到匹配的信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public  List<HelpOrderExtendInfoModel> GetHelpextendmodels(int hid)
+        {
+            return AcceptHelpOrderDAL.GetHelpextendmodels(hid);
+        }
+        /// <summary>
+        /// 根据ID查询提供帮助订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public  AcceptHelpOrderModel GetAcceptOrderInfo(int id, int memberid)
+        {
+            return AcceptHelpOrderDAL.GetAcceptOrderInfo(id, memberid);
+        }
     }
 }

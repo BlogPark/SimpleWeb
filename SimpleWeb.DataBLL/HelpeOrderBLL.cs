@@ -321,5 +321,14 @@ namespace SimpleWeb.DataBLL
         {
             return HelpeOrderDAL.GetAcceptextendmodels(hid);
         }
+         /// <summary>
+        /// 根据ID和会员查询提供帮助订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public  HelpeOrderModel GetHelpOrderInfo(int id, int memberid)
+        {
+            return HelpeOrderDAL.GetHelpOrderInfo(id,memberid);
+        }
     }
 }

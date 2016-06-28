@@ -1,0 +1,52 @@
+﻿@model SimpleWeb.Areas.WebFrontArea.Models.HelpOrderListViewModel
+@{
+    Layout = "~/Views/_WebLayout.cshtml";
+}
+<div class="topic">
+    <div class="container">
+        <div class="row">
+            <ol class="breadcrumb hidden-xs">
+                <li><a href="index.html">Home</a></li>
+                <li class="active">提供帮助信息</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>单据编号</th>
+                        <th>提供金额</th>
+                        <th>支付方式</th>
+                        <th>已匹金额</th>
+                        <th>单据状态</th>
+                        <th>排单天数</th>
+                        <th>使用激活码</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (var item in Model.orderlist)
+                        {
+                            <td>
+                                @item.OrderCode
+                            </td>
+                            <td>
+                                @item.Amount
+                            </td>
+                            <td>
+                                @item.PayType
+                            </td>
+                            <td>$75,89</td>
+                        }
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

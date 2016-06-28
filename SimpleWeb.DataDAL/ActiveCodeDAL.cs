@@ -659,7 +659,7 @@ WHERE   AMType = @type
         public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(int memberid, int typeid, int pageindex, int pagesize, out int totalrowcount)
         {
             List<MemberActiveCodeModel> list = new List<MemberActiveCodeModel>();
-            string columms = @"ID,ActiveCode,AMType,MemberID,MemberPhone,MemberName,AMStatus,Addtime,UseCode,UserTime";
+            string columms = @"ID,ActiveCode,AMType,MemberID,MemberPhone,MemberName,AMStatus,Addtime,UseCode,UserTime,CASE AMStatus WHEN 1 THEN '未使用' WHEN 2 THEN '已使用' WHEN 3 THEN '已过期' END AS AMStatusName";
             string where = "";
             if (memberid > 0)
             {
@@ -706,6 +706,7 @@ WHERE   AMType = @type
                         activecode.Addtime = DateTime.Parse(item["Addtime"].ToString());
                     }
                     activecode.UseCode = item["UseCode"].ToString();
+                    activecode.AMStatusName = item["AMStatusName"].ToString();
                     list.Add(activecode);
                 }
             }

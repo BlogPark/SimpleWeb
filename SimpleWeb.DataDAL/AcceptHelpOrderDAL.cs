@@ -296,7 +296,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static AcceptHelpOrderModel GetAcceptOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,SourceType,MatchedAmount  from AcceptHelpOrder where ID=@id";
+            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,SourceType,MatchedAmount,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday  from AcceptHelpOrder where ID=@id";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };
@@ -312,13 +312,55 @@ WHERE   id = @id";
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 model.SourceType = Convert.ToInt32(dt.Rows[0]["SourceType"].ToString());
                 model.MatchedAmount = Convert.ToDecimal(dt.Rows[0]["MatchedAmount"].ToString());
+                model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
                 return model;
             }
             else
             {
                 return null;
             }
-
+        }
+        /// <summary>
+        /// 根据ID查询提供帮助订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static AcceptHelpOrderModel GetAcceptOrderInfo(int id,int memberid)
+        {
+            string sqltxt = @"SELECT  OrderCode ,
+        MemberID ,
+        MemberPhone ,
+        MemberName ,
+        Amount ,
+        ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
+        SourceType ,
+        MatchedAmount,
+        DATEDIFF(DAY,AddTime,GETDATE()) AS diffday
+FROM    AcceptHelpOrder
+WHERE   ID = @id AND MemberID=@memberid";
+            SqlParameter[] paramter ={
+                                        new SqlParameter("@id",id),
+                                        new SqlParameter("@memberid",memberid)
+                                    };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                AcceptHelpOrderModel model = new AcceptHelpOrderModel();
+                model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
+                model.MemberName = dt.Rows[0]["MemberName"].ToString();
+                model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
+                model.OrderCode = dt.Rows[0]["OrderCode"].ToString();
+                model.Amount = Convert.ToDecimal(dt.Rows[0]["Amount"].ToString());
+                model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
+                model.SourceType = Convert.ToInt32(dt.Rows[0]["SourceType"].ToString());
+                model.MatchedAmount = Convert.ToDecimal(dt.Rows[0]["MatchedAmount"].ToString());
+                model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
+                return model;
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// 更改状态
@@ -375,6 +417,53 @@ WHERE   id = @id";
             parameters[0].Value = aid;
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
+        }
+        /// <summary>
+        /// 根据接受帮助订单号得到匹配的信息
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static List<HelpOrderExtendInfoModel> GetHelpextendmodels(int aid)
+        {
+            List<HelpOrderExtendInfoModel> list = new List<HelpOrderExtendInfoModel>();
+            string sqltxt = @"SELECT  A.ID ,
+        A.OrderCode ,
+        A.MemberID ,
+        A.MemberPhone ,
+        A.MemberName ,
+        B.WeixinNum ,
+        B.AliPayNum ,
+        C.MemberID AS rememberid ,
+        C.MemberPhone AS rememberphone ,
+        C.MemberTruthName AS remembername ,
+        D.MatchedMoney
+FROM    SimpleWebDataBase.dbo.MatchOrder D
+        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder A ON D.HelperOrderID = A.ID
+        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
+        INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
+WHERE   D.AcceptOrderID = @orderid";
+            SqlParameter[] paramter = { new SqlParameter("@orderid", aid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    HelpOrderExtendInfoModel model = new HelpOrderExtendInfoModel();
+                    model.helpmemberAlipayId = item["AliPayNum"].ToString();//支付宝账户
+                    model.helpmemberid = item["MemberID"].ToString().ParseToInt(0);//会员id
+                    model.helpmemberName = item["MemberName"].ToString();//会员名称
+                    model.helpmemberPhone = item["MemberPhone"].ToString();//会员电话
+                    model.helpmemberweixin = item["WeixinNum"].ToString();//会员微信
+                    model.helpordercode = item["OrderCode"].ToString();//单据编号
+                    model.helporderid = item["ID"].ToString().ParseToInt(0);//单据ID
+                    model.MatchedMoney = item["MatchedMoney"].ToString().ParseToDecimal(0);//匹配金额
+                    model.rememberid = item["rememberid"].ToString().ParseToInt(0);
+                    model.remembername = item["remembername"].ToString();
+                    model.rememberphone = item["rememberphone"].ToString();
+                    list.Add(model);
+                }
+            }
+            return list;
         }
     }
 }

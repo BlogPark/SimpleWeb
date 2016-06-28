@@ -502,7 +502,6 @@ WHERE   id = @id and MStatus=2";
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             return dt.Rows.Count;
         }
-
         /// <summary>
         /// 前端会员登陆
         /// </summary>
@@ -602,6 +601,21 @@ WHERE MobileNum=@MobileNum";
                 logmsg = "手机号不存在";
                 return null;
             }
+        }
+        /// <summary>
+        /// 更改会员的密码
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public int UpdateUserPwd(int memberid,string pwd)
+        {
+            string sqltxt = @"
+UPDATE dbo.MemberInfo
+SET LogPwd=@pwd
+WHERE id=@id";
+            SqlParameter[] paramter = { new SqlParameter("@pwd",pwd),new SqlParameter("@id",memberid)};
+            return helper.ExecuteSql(sqltxt,paramter);
         }
     }
 }

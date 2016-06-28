@@ -1,0 +1,113 @@
+﻿@model SimpleWeb.Areas.WebFrontArea.Models.HelpOrderViewModel
+@{
+    Layout = "~/Views/_WebLayout.cshtml";
+}
+<div class="topic">
+    <div class="container">
+        <div class="row">
+            <ol class="breadcrumb hidden-xs">
+                <li><a href="index.html">Home</a></li>
+                <li class="active">@(Model.helporder.OrderCode)详细信息</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span>提供帮助单据明细信息</span></h2>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">单据信息</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>单据编号</td>
+                                        <td></td>
+                                        <td>提供金额</td>
+                                        <td></td>
+                                        <td>支付方式</td>
+                                        <td></td>
+                                        <td>已匹金额</td>
+                                        <td></td>
+                                        <td>单据状态</td>
+                                        <td></td>
+                                        <td>排队天数</td>
+                                        <td></td>
+                                        <td>@(Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2 ? "操&nbsp;&nbsp;作" : "")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>@Model.helporder.OrderCode</td>
+                                        <td>
+                                            <input type="hidden" value="@Model.helporder.ID" id="helporderid"></td>
+                                        <td>@Model.helporder.Amount</td>
+                                        <td></td>
+                                        <td>@Model.helporder.PayType</td>
+                                        <td></td>
+                                        <td>@Model.helporder.MatchedAmount</td>
+                                        <td></td>
+                                        <td>@Model.helporder.HStatusName</td>
+                                        <td></td>
+                                        <td>@Model.helporder.DiffDay</td>
+                                        <td></td>
+                                        <td>
+                                            @if (Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2)
+                                            {
+                                                <a class="btn btn-lg btn-blue" href="javascript:void(0);" onclick="updatehelporder(@Model.helporder.ID)">已打款</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2><span>提供帮助会员基本信息</span></h2>
+            <hr />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="info-board info-board-red">
+                        <ul class="checkout">
+                            <li><strong>会员名字</strong>: @Model.helperpeople.TruethName</li>
+                            <li><strong>会员手机</strong>: @Model.helperpeople.MobileNum</li>
+                            <li><strong>会员邮箱</strong>: @Model.helperpeople.Email</li>
+                            <li><strong>会员微信号</strong>: @Model.helperpeople.WeixinNum</li>
+                            <li><strong>会员支付宝ID</strong>: @Model.helperpeople.AliPayNum</li>
+                            <li><strong>会员归属地</strong>: @(Model.helperpeople.Province + " " + Model.helperpeople.City + " " + Model.helperpeople.Area</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.acceptOrderInfo.Count > 0)
+            {
+                <h2><span>匹配单据信息</span></h2>
+                <hr />
+                <div class="row">
+                    @foreach (var item in Model.acceptOrderInfo)
+                    {
+                        <div class="col-sm-6">
+                            <div class="info-board info-board-red">
+                                <ul class="checkout">
+                                    <li><strong>匹配单据号</strong>: @item.acceptordercode</li>
+                                    <li><strong>匹配金额</strong>: @item.MatchedMoney</li>
+                                    <li><strong>接受帮助会员名字</strong>: @item.acceptmemberName</li>
+                                    <li><strong>接受帮助会员电话</strong>: @item.acceptmemberPhone</li>
+                                    <li><strong>接受帮助会员微信</strong>: @item.acceptmemberweixin</li>
+                                    <li><strong>接受帮助会员支付宝</strong>: @item.acceptmemberAlipayId</li>
+                                    <li><strong>推荐人名字</strong>: @item.remembername</li>
+                                    <li><strong>推荐人电话</strong>: @item.rememberphone</li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
