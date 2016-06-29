@@ -33,5 +33,15 @@ namespace SimpleWeb.DataBLL
             }
             return result;
         }
+
+         /// <summary>
+        /// 查询会员的个人资产信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public  MemberCapitalDetailModel GetMemberStaticCapital(int memberid)
+        {
+            return MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);
+        }
     }
 }

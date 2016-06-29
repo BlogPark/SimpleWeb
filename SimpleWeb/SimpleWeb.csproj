@@ -45,7 +45,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\SimpleWeb.Common\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -146,6 +146,7 @@
     <Compile Include="Areas\WebFrontArea\Models\HelpOrderViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\HomeViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\MyActiveIndexModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\mycapitalViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\UserProfileViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\webLoginViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\LogMemberMsg.cs" />
@@ -1835,6 +1836,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFrontArea\Views\WebHome\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\mycapital.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

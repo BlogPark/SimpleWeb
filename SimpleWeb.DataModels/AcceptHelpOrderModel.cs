@@ -173,6 +173,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public decimal DiffAmount { get; set; }
+        /// <summary>
+        /// 资金来源类型名称
+        /// </summary>
+        [DataMember]
+        public string SourceTypeName { get; set; }
         #endregion
     }
 }

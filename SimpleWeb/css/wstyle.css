@@ -7732,12 +7732,12 @@ body {
 .shopping-cart .form-control {
   width: 60px;
 }
-.shopping-cart .checkout {
+.checkout {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.shopping-cart .checkout > li {
+.checkout > li {
   margin: 10px 0;
 }
 /* ===== User Profile ====== */

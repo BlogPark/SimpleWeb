@@ -127,7 +127,7 @@ namespace SimpleWeb.DataDAL
         public List<AcceptHelpOrderModel> GetAllAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
-            string columms = @"ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName ";
+            string columms = @"ID, AddTime, AStatus, SourceType,SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName ";
             string where = "";
             if (model != null)
             {
@@ -203,6 +203,11 @@ namespace SimpleWeb.DataDAL
                 {
                     model.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
                 }
+                if (item["SourceType"].ToString() != "")
+                {
+                    model.SourceType = item["SourceType"].ToString().ParseToInt(0);
+                }
+                model.SourceTypeName = item["SourceTypeName"].ToString();
                 model.TurnOutOrder = item["TurnOutOrder"].ToString();
                 model.AStatusName = item["AStatusName"].ToString();
                 list.Add(model);

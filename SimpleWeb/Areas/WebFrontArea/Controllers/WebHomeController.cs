@@ -23,6 +23,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         private HelpeOrderBLL hobll = new HelpeOrderBLL();
         private AcceptHelpOrderBLL aobll = new AcceptHelpOrderBLL();
         private AdminSiteNewsBll newsbll = new AdminSiteNewsBll();
+        private MemberCapitalDetailBLL cbll = new MemberCapitalDetailBLL();
         private readonly int pagesize = 2;
         /// <summary>
         /// 登陆后首页
@@ -259,6 +260,20 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             int row = bll.UpdateUserPwd(logmember.ID, newpwd);
             return Json(row);
         }
-
+        /// <summary>
+        /// 我的资产页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult mycapital()
+        {
+            //MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            //if (logmember == null)
+            //{
+            //    return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            //}
+            mycapitalViewModel model = new mycapitalViewModel();
+            model.mycapitalinfo = cbll.GetMemberStaticCapital(1);
+            return View(model);
+        }
     }
 }

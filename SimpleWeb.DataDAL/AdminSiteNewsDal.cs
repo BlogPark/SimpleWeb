@@ -305,7 +305,7 @@ namespace SimpleWeb.DataDAL
         public List<WebContactMessageModel> GetContractMessage(int userid)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID, ReplyTime, MemberID, MemberName, MemberPhone, MessageTitle, MessageContent, AddTime, MStatus, ReplyContent  ");
+            strSql.Append("select ID, ReplyTime, MemberID, MemberName, MemberPhone, MessageTitle, MessageContent, AddTime, MStatus, ReplyContent,CASE MStatus WHEN 1 THEN '新留言' WHEN 2 THEN '已回复' WHEN 3 THEN '删除' END AS MStatusName  ");
             strSql.Append("  from WebContactMessage ");
             strSql.Append(" where MemberID=@MemberID");
             strSql.Append(" Order By ID Desc ");
@@ -345,6 +345,7 @@ namespace SimpleWeb.DataDAL
                         model.MStatus = int.Parse(item["MStatus"].ToString());
                     }
                     model.ReplyContent = item["ReplyContent"].ToString();
+                    model.MStatusName = item["MStatusName"].ToString();
                     list.Add(model);
                 }
                 return list;

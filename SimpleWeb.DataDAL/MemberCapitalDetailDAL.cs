@@ -505,5 +505,92 @@ WHERE   MemberID = @id";
             return result;
 
         }
+        /// <summary>
+        /// 查询会员的个人资产信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static MemberCapitalDetailModel GetMemberStaticCapital(int memberid)
+        {
+            string sqltxt = @"SELECT  MemberID ,
+        MemberPhone ,
+        MemberName ,
+        StaticCapital ,
+        DynamicFunds ,
+        StaticInterest ,
+        DynamicInterest ,
+        StaticPunishMoney ,
+        DynamicPunishMoney ,
+        StaticFreezeMoney ,
+        DynamicFreezeMoney ,
+        TotalStaticCapital ,
+        TotalDynamicFunds ,
+        Interest
+FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter ={
+                                    new SqlParameter("@memberid",memberid)
+                                    };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            MemberCapitalDetailModel model = new MemberCapitalDetailModel();
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0]["MemberID"].ToString() != "")
+                {
+                    model.MemberID = int.Parse(dt.Rows[0]["MemberID"].ToString());
+                }
+                if (dt.Rows[0]["StaticFreezeMoney"].ToString() != "")
+                {
+                    model.StaticFreezeMoney = decimal.Parse(dt.Rows[0]["StaticFreezeMoney"].ToString());
+                }
+                if (dt.Rows[0]["DynamicFreezeMoney"].ToString() != "")
+                {
+                    model.DynamicFreezeMoney = decimal.Parse(dt.Rows[0]["DynamicFreezeMoney"].ToString());
+                }
+                if (dt.Rows[0]["TotalStaticCapital"].ToString() != "")
+                {
+                    model.TotalStaticCapital = decimal.Parse(dt.Rows[0]["TotalStaticCapital"].ToString());
+                }
+                if (dt.Rows[0]["TotalDynamicFunds"].ToString() != "")
+                {
+                    model.TotalDynamicFunds = decimal.Parse(dt.Rows[0]["TotalDynamicFunds"].ToString());
+                }
+                if (dt.Rows[0]["Interest"].ToString() != "")
+                {
+                    model.Interest = decimal.Parse(dt.Rows[0]["Interest"].ToString());
+                }
+                model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
+                model.MemberName = dt.Rows[0]["MemberName"].ToString();
+                if (dt.Rows[0]["StaticCapital"].ToString() != "")
+                {
+                    model.StaticCapital = decimal.Parse(dt.Rows[0]["StaticCapital"].ToString());
+                }
+                if (dt.Rows[0]["DynamicFunds"].ToString() != "")
+                {
+                    model.DynamicFunds = decimal.Parse(dt.Rows[0]["DynamicFunds"].ToString());
+                }
+                if (dt.Rows[0]["StaticInterest"].ToString() != "")
+                {
+                    model.StaticInterest = decimal.Parse(dt.Rows[0]["StaticInterest"].ToString());
+                }
+                if (dt.Rows[0]["DynamicInterest"].ToString() != "")
+                {
+                    model.DynamicInterest = decimal.Parse(dt.Rows[0]["DynamicInterest"].ToString());
+                }
+                if (dt.Rows[0]["StaticPunishMoney"].ToString() != "")
+                {
+                    model.StaticPunishMoney = decimal.Parse(dt.Rows[0]["StaticPunishMoney"].ToString());
+                }
+                if (dt.Rows[0]["DynamicPunishMoney"].ToString() != "")
+                {
+                    model.DynamicPunishMoney = decimal.Parse(dt.Rows[0]["DynamicPunishMoney"].ToString());
+                }
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
