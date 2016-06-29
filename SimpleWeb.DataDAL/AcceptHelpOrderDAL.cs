@@ -64,7 +64,7 @@ namespace SimpleWeb.DataDAL
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public List<AcceptHelpOrderModel> GetAllHelpeOrderList()
+        public List<AcceptHelpOrderModel> GetAllAcceptOrderList()
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             StringBuilder strSql = new StringBuilder();
@@ -469,6 +469,69 @@ WHERE   D.AcceptOrderID = @orderid";
                 }
             }
             return list;
+        }
+        /// <summary>
+        /// 查询所有的帮助订单
+        /// </summary>
+        /// <returns></returns>
+        public static List<AcceptHelpOrderModel> GetTopAcceptOrderListByMemberID(int memberid,int top=10)
+        {
+            List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select TOP (@topnum) ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName  ");
+            strSql.Append("  from AcceptHelpOrder ");
+            strSql.Append(" WHERE MemberID=@memberid ");
+            strSql.Append(" ORDER BY ID DESC ");
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum",top) };
+            DataSet ds = helper.Query(strSql.ToString());
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    AcceptHelpOrderModel model = new AcceptHelpOrderModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    if (item["AStatus"].ToString() != "")
+                    {
+                        model.AStatus = int.Parse(item["AStatus"].ToString());
+                    }
+                    if (item["SortIndex"].ToString() != "")
+                    {
+                        model.SortIndex = int.Parse(item["SortIndex"].ToString());
+                    }
+                    model.OrderCode = item["OrderCode"].ToString();
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberName = item["MemberName"].ToString();
+                    if (item["Amount"].ToString() != "")
+                    {
+                        model.Amount = decimal.Parse(item["Amount"].ToString());
+                    }
+                    model.PayType = item["PayType"].ToString();
+                    if (item["MatchedAmount"].ToString() != "")
+                    {
+                        model.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
+                    }
+                    model.TurnOutOrder = item["TurnOutOrder"].ToString();
+                    model.AStatusName = item["AStatusName"].ToString();
+                    model.SourceTypeName = item["SourceTypeName"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

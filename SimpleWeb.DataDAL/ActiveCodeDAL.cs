@@ -713,5 +713,17 @@ WHERE   AMType = @type
             return list;
         }
 
+        public static int GetMemberActiveCodeCount(int memberid, int type)
+        {
+            string sqltxt = @"SELECT  COUNT(0)
+FROM    SimpleWebDataBase.dbo.MemberActiveCode
+WHERE   MemberID = @memberid
+        AND AMStatus = 1
+        AND AMType = @type";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),
+                                      new SqlParameter("@type",type)};
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
+        }
+
     }
 }

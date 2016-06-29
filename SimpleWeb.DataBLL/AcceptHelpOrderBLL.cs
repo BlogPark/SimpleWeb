@@ -64,9 +64,9 @@ namespace SimpleWeb.DataBLL
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public List<AcceptHelpOrderModel> GetAllHelpeOrderList()
+        public List<AcceptHelpOrderModel> GetAllAcceptOrderList()
         {
-            return dal.GetAllHelpeOrderList();
+            return dal.GetAllAcceptOrderList();
         }
         /// <summary>
         /// 查询所有的帮助订单

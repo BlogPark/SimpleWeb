@@ -157,6 +157,23 @@ namespace SimpleWeb.DataBLL
         {
             return dal.UpdateUserPwd(memberid,pwd);
         }
-
+        /// <summary>
+        /// 为首页获取数据
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public WebIndexModel GetIndexNeeddata(int memberid)
+        {
+            WebIndexModel model = new WebIndexModel();
+            model.acceptOrders=AcceptHelpOrderDAL.GetTopAcceptOrderListByMemberID(memberid,10);//接受帮助的订单
+                model.activecodeCount=ActiveCodeDAL.GetMemberActiveCodeCount(memberid,1);//我的激活币的个数
+                //model.activecodelog=//我的激活币和排单币的使用状态
+                //model.AmontChangLog=//我的资金变动日志
+                model.helperOrders=HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid,10);//我提供的帮助订单
+                //model.members=//我下级会员的总人数
+                model.paidancodeCount=ActiveCodeDAL.GetMemberActiveCodeCount(memberid,2);//我的排单币个数
+                //model.zijinmodel=//我的资金状况详情                
+            return model;
+        }
     }
 }
