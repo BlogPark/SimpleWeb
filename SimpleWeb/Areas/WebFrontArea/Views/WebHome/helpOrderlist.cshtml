@@ -41,7 +41,11 @@
                             <td>
                                 @item.PayType
                             </td>
-                            <td>$75,89</td>
+                            <td>@item.MatchedAmount</td>
+                            <td>@item.HStatusName</td>
+                            <td>@item.DiffDay</td>
+                            <td>@item.ActiveCode</td>
+                            <td><a href="@Html.Action("helporderDetail", "WebHome", new { area="WebFrontArea",orderid=item.ID})"></td>
                         }
 
                     </tr>
