@@ -294,7 +294,7 @@ WHERE   RecommMID = @RecommMID";
                         memberids = "";
                     }
                 }
-            } while (string.IsNullOrWhiteSpace(memberids));
+            } while (!string.IsNullOrWhiteSpace(memberids));
             return list;
         }
     }
