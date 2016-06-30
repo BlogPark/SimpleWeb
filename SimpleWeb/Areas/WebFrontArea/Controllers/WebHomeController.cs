@@ -31,7 +31,15 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
             HomeViewModel model = new HomeViewModel();
+            model.data = bll.GetIndexNeeddata(logmember.ID);
+            model.member = logmember;
+            model.recommend = bll.GetReMemberRelation(logmember.ID);
             return View(model);
         }
         /// <summary>
@@ -266,13 +274,13 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         /// <returns></returns>
         public ActionResult mycapital()
         {
-            //MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-            //if (logmember == null)
-            //{
-            //    return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
-            //}
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
             mycapitalViewModel model = new mycapitalViewModel();
-            model.mycapitalinfo = cbll.GetMemberStaticCapital(1);
+            model.mycapitalinfo = cbll.GetMemberStaticCapital(logmember.ID);
             return View(model);
         }
     }

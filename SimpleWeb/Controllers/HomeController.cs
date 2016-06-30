@@ -11,16 +11,17 @@ namespace SimpleWeb.Controllers
     {
         //
         // GET: /Home/
-
         public ActionResult Index()
         {
-            SessionLoginModel user = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Default", new { area = "AdminArea" });
-            }
+            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+        }
+        /// <summary>
+        /// 网站维护页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CommingSoon()
+        {
             return View();
         }
-
     }
 }

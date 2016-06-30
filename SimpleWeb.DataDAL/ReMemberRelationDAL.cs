@@ -98,7 +98,6 @@ namespace SimpleWeb.DataDAL
         /// <returns></returns>
         public static ReMemberRelationModel GetReMemberRelation(int recommmid)
         {
-
             string sqltxt = @"SELECT  ID ,
         A.MemberID ,
         MemberPhone ,
@@ -211,6 +210,92 @@ WHERE   RecommMID = @RecommMID";
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 按照会员ID查找被推荐人列表
+        /// </summary>
+        /// <param name="recommmid"></param>
+        /// <returns></returns>
+        public static List<ReMemberRelationModel> GetReMemberRelationList(string memberids)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ID, MemberID, MemberPhone, MemberTruthName, RecommMID, RecommMPhone, RecommMTruthName, RStatus, AddTime  ");
+            strSql.Append("  from ReMemberRelation ");
+            strSql.Append(" where MemberID in (" + memberids.TrimEnd(',') + ")");
+            List<ReMemberRelationModel> list = new List<ReMemberRelationModel>();
+            DataSet ds = helper.Query(strSql.ToString());
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    ReMemberRelationModel model = new ReMemberRelationModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberTruthName = item["MemberTruthName"].ToString();
+                    if (item["RecommMID"].ToString() != "")
+                    {
+                        model.RecommMID = int.Parse(item["RecommMID"].ToString());
+                    }
+                    model.RecommMPhone = item["RecommMPhone"].ToString();
+                    model.RecommMTruthName = item["RecommMTruthName"].ToString();
+                    if (item["RStatus"].ToString() != "")
+                    {
+                        model.RStatus = int.Parse(item["RStatus"].ToString());
+                    }
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 查询会员的推荐地图
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static List<ReMemberRelationModel> GetMemberRecommendMap(int memberid, out int count)
+        {
+            List<ReMemberRelationModel> list = new List<ReMemberRelationModel>();
+            string memberids = memberid.ToString();
+            count = 0;
+            do
+            {
+                if (!string.IsNullOrWhiteSpace(memberids))
+                {
+                    List<ReMemberRelationModel> relist = GetReMemberRelationList(memberids.TrimEnd(','));
+                    if (relist != null)
+                    {
+                        memberids = "";
+                        foreach (var item in relist)
+                        {
+                            memberids += item.RecommMID + ",";
+                        }
+                        list.AddRange(relist);
+                        count += relist.Count;
+                    }
+                    else
+                    {
+                        memberids = "";
+                    }
+                }
+            } while (string.IsNullOrWhiteSpace(memberids));
+            return list;
         }
     }
 }

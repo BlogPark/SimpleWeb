@@ -9,7 +9,7 @@ using SimpleWeb.DataModels;
 
 namespace SimpleWeb.DataDAL
 {
-    public  class OperateLogDAL
+    public class OperateLogDAL
     {
         private static DbHelperSQL helper = new DbHelperSQL();
 
@@ -53,7 +53,7 @@ namespace SimpleWeb.DataDAL
             else
             {
                 return Convert.ToInt32(obj);
-            }			   
+            }
         }
         /// <summary>
         /// 增加用户行为日志
@@ -132,7 +132,102 @@ namespace SimpleWeb.DataDAL
             else
             {
                 return Convert.ToInt32(obj);
-            }	
+            }
+        }
+        /// <summary>
+        /// 查询会员的机会码使用记录
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        public static List<ActiveCodeLogModel> GetActiveCodeLogByMemberID(int memberid, int top = 10)
+        {
+            List<ActiveCodeLogModel> list = new List<ActiveCodeLogModel>();
+            string sqltxt = @"SELECT TOP ( @topnum )
+        ID ,
+        MemberID ,
+        MemberName ,
+        MemberPhone ,
+        ActiveCode ,
+        AID ,
+        Remark ,
+        Addtime
+FROM    SimpleWebDataBase.dbo.ActiveCodeLog
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum", top) };
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    ActiveCodeLogModel model = new ActiveCodeLogModel();
+                    model.ActiveCode = item["ActiveCode"].ToString();
+                    model.Addtime = item["Addtime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.AID = item["AID"].ToString().ParseToInt(0);
+                    model.ID = item["ID"].ToString().ParseToInt(0);
+                    model.MemberID = item["MemberID"].ToString().ParseToInt(0);
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.Remark = item["Remark"].ToString();
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 查询会员的资金变动记录
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        public static List<AmountChangeLogModel> GetAmontChangeLogByMemberID(int memberid, int top = 10)
+        {
+            List<AmountChangeLogModel> list = new List<AmountChangeLogModel>();
+            string sqltxt = @"SELECT TOP ( @topnum )
+        ID ,
+        MemberID ,
+        MemberPhone ,
+        MemberName ,
+        ProduceMoney ,
+        Remark ,
+        AddTime ,
+        OrderID ,
+        [Type] ,
+        OrderCode,
+        CASE [Type]
+          WHEN 1 THEN '提供帮助'
+          WHEN 2 THEN '接受帮助'
+          WHEN 3 THEN '奖金派发'
+          WHEN 4 THEN '利息结余'
+          WHEN 5 THEN '系统返还'
+        END AS TypeName
+FROM    SimpleWebDataBase.dbo.AmountChangeLog
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@memberid",memberid),
+                                      new SqlParameter("@topnum",top)
+                                      };
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    AmountChangeLogModel model = new AmountChangeLogModel();
+                    model.AddTime = item["AddTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.ID = item["ID"].ToString().ParseToInt(0);
+                    model.MemberID = item["MemberID"].ToString().ParseToInt(0);
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.OrderCode = item["OrderCode"].ToString();
+                    model.OrderID = item["OrderID"].ToString().ParseToInt(0);
+                    model.ProduceMoney = item["ProduceMoney"].ToString().ParseToDecimal(0);
+                    model.Remark = item["Remark"].ToString();
+                    model.Type = item["Type"].ToString().ParseToInt(0);
+                    model.TypeName = item["TypeName"].ToString();
+                    list.Add(model);
+                }
+            }
+            return list;
         }
     }
 }

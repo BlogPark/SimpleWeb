@@ -167,6 +167,8 @@
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\partMessageViewModel.cs" />
     <Compile Include="Models\SessionLoginModel.cs" />
+    <Compile Include="Models\webfooterViewModel.cs" />
+    <Compile Include="Models\webmenuViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ueditor\net\App_Code\Config.cs" />
     <Compile Include="ueditor\net\App_Code\ConfigHandler.cs" />
@@ -1135,6 +1137,7 @@
     <Content Include="img\divider-shadow2.png" />
     <Content Include="img\dots.png" />
     <Content Include="img\fileupload-default.jpg" />
+    <Content Include="img\fix.jpg" />
     <Content Include="img\gallery\1.png" />
     <Content Include="img\gallery\2.jpg" />
     <Content Include="img\gallery\3.png" />
@@ -1839,6 +1842,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFrontArea\Views\WebHome\mycapital.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\webfooter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\webmenu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\CommingSoon.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

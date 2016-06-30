@@ -157,6 +157,17 @@ namespace SimpleWeb.DataModels
         {
             get { return _ordercode; }
             set { _ordercode = value; }
-        }        
+        }
+
+        private string _TypeName;
+        /// <summary>
+        /// 类型名称
+        /// </summary>
+        [DataMember]
+        public string TypeName
+        {
+            get { return _TypeName; }
+            set { _TypeName = value; }
+        }
     }
 }

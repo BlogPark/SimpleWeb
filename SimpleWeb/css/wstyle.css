@@ -6705,7 +6705,7 @@ a.carousel-arrow-next {
 }
 /* ===== Topic Header ===== */
 .topic {
-  margin-top: -30px;
+  margin-top: -10px;
   margin-bottom: 40px;
   border-bottom: 1px solid #eee;
   background: #f6f6f6;
@@ -7962,7 +7962,7 @@ body {
 }
 /* ===== Footer & Copyright ===== */
 footer {
-  margin-top: 100px;
+  margin-top: 228px;
   padding: 30px 0 0 0;
   background: #111;
 }
@@ -7978,6 +7978,7 @@ footer p {
 }
 footer a {
   color: #808080;
+  font-size:22px;
 }
 footer a:hover {
   color: #ffffff;

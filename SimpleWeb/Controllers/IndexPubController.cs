@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SimpleWeb.Common;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
 using SimpleWeb.Models;
@@ -98,6 +99,36 @@ namespace SimpleWeb.Controllers
         public ActionResult mytest()
         {
             return View();
+        }
+
+
+        public ActionResult webfooter()
+        {
+            webfooterViewModel model = new webfooterViewModel();
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                model.Linkurl = "ssssssssssssssss";
+                model.phone = "00000000000";
+            }
+            else
+            {
+                model.Linkurl = Url.Action("Index", "Register", new { area = "WebFrontArea", msd = logmember.MobileNum });
+                model.phone = logmember.MobileNum;
+            }
+            return View(model);
+        }
+        public ActionResult GetqrCode(string msd)
+        {
+            byte[] bytes = QRCodeHelper.CreateBitMap(msd);
+            return File(bytes, @"image/jpeg");
+        }
+
+        public ActionResult webmenu()
+        {
+            webmenuViewModel model = new webmenuViewModel();
+            model.webname = "诚信创客";
+            return View(model);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace SimpleWeb.DataBLL
                     {
                         return 0;
                     }
-                    int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont,model.TruethName,model.MobileNum);
+                    int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont, model.TruethName, model.MobileNum);
                     if (row < 1)
                     {
                         return 0;
@@ -135,7 +135,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int GetMemberInfoBycheck(string phone, string name, string alipay)
         {
-            return dal.GetMemberInfoBycheck(phone,name,alipay);
+            return dal.GetMemberInfoBycheck(phone, name, alipay);
         }
         /// <summary>
         /// 前端会员登陆
@@ -155,7 +155,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int UpdateUserPwd(int memberid, string pwd)
         {
-            return dal.UpdateUserPwd(memberid,pwd);
+            return dal.UpdateUserPwd(memberid, pwd);
         }
         /// <summary>
         /// 为首页获取数据
@@ -164,16 +164,27 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public WebIndexModel GetIndexNeeddata(int memberid)
         {
+            int count = 0;
+            List<ReMemberRelationModel> rememberlist = ReMemberRelationDAL.GetMemberRecommendMap(memberid, out count);
             WebIndexModel model = new WebIndexModel();
-            model.acceptOrders=AcceptHelpOrderDAL.GetTopAcceptOrderListByMemberID(memberid,10);//接受帮助的订单
-                model.activecodeCount=ActiveCodeDAL.GetMemberActiveCodeCount(memberid,1);//我的激活币的个数
-                //model.activecodelog=//我的激活币和排单币的使用状态
-                //model.AmontChangLog=//我的资金变动日志
-                model.helperOrders=HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid,10);//我提供的帮助订单
-                //model.members=//我下级会员的总人数
-                model.paidancodeCount=ActiveCodeDAL.GetMemberActiveCodeCount(memberid,2);//我的排单币个数
-                //model.zijinmodel=//我的资金状况详情                
+            model.acceptOrders = AcceptHelpOrderDAL.GetTopAcceptOrderListByMemberID(memberid, 4);//接受帮助的订单
+            model.activecodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 1);//我的激活币的个数
+            model.activecodelog = OperateLogDAL.GetActiveCodeLogByMemberID(memberid, 10);//我的激活币和排单币的使用状态
+            model.AmontChangLog = OperateLogDAL.GetAmontChangeLogByMemberID(memberid, 10);//我的资金变动日志
+            model.helperOrders = HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid, 4);//我提供的帮助订单
+            model.members = count;//我下级会员的总人数
+            model.paidancodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 2);//我的排单币个数
+            model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情                
             return model;
+        }
+        /// <summary>
+        /// 查找会员的推荐人信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public ReMemberRelationModel GetReMemberRelation(int memberid)
+        {
+            return ReMemberRelationDAL.GetReMemberRelation(memberid);
         }
     }
 }

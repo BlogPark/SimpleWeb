@@ -3,4 +3,173 @@
     Layout = "~/Views/_WebLayout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="user-avatar text-center">
+                <h1>@Model.member.TruethName</h1>
+                <p class="text-muted">@Model.member.MobileNum</p>
+            </div>
+            <ul class="user-info">
+                <li>邮箱: <span class="text-muted">@Model.member.Email</span></li>
+                <li>注册时间: <span class="text-muted">@Model.member.AddTime.ToString("yyyy/MM/dd")</span></li>
+                <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
+                <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
+            </ul>
+            <div id="help-nav-one" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <ul>
+                        <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
+                        <li><a href="#buttons">激活币剩余：@Model.data.activecodeCount 枚</a></li>
+                        <li><a href="#navs">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
+                        <li>我的钱包</li>
+                        <li><a href="#tooltips">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
+                        <li><a href="#popovers">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
+                        <li><a href="#panels">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="text-muted"><a href="#">我提供的帮助</a>
+                    </h3>
+                    <hr>
+                </div>
+                <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+                    @foreach (var item in Model.data.helperOrders)
+                    {
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>单据编号:
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.OrderCode
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>帮助金额：
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.Amount
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>目前状态：
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.HStatusName
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <a href="#">查看明细>></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>     
+                    }
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="text-muted"><a href="#">我接受的帮助</a>
+                    </h3>
+                    <hr>
+                </div>
+                <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+                    @foreach (var item in Model.data.acceptOrders)
+                    {
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>单据编号:
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.OrderCode
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>帮助金额：
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.Amount
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>目前状态：
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="item">
+                                            @item.AStatusName
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <a href="#">查看明细>></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>     
+                    }
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-muted"><a href="#">我的资金变动记录</a>
+                    </h3>
+                    <hr>
+                </div>
+                <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>变动描述</th>
+                                <th>变动金额</th>
+                                <th>涉及单号</th>
+                                <th>变动时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.data.AmontChangLog)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="item">
+                                            @item.Remark
+                                        </div>
+                                    </td>
+                                    <td>@item.ProduceMoney</td>
+                                    <td>
+                                        @item.OrderCode
+                                    </td>
+                                    <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                </tr>  
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
