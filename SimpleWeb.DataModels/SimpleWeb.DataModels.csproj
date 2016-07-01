@@ -65,6 +65,7 @@
     <Compile Include="UploadFileModel.cs" />
     <Compile Include="WebContactMessageModel.cs" />
     <Compile Include="WebIndexModel.cs" />
+    <Compile Include="WebSettingsModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SimpleWeb.Controllers;
+using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
 
 namespace SimpleWeb.Filters
@@ -12,39 +13,26 @@ namespace SimpleWeb.Filters
     public class WebLoginAttribute : System.Web.Mvc.ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext ctx)
-        {
-            //登录模式不做验证
-            if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
-                return;
-            //对外接口不做验证
-            if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "publicaction")
-                return;
+        {           
             //部分视图不做验证
             if (ctx.IsChildAction)
                 return;
-
             //判断是否当前系统状态为false，系统自动跳转至登录页面
+            WebSettingsBLL bll = new WebSettingsBLL();
+            WebSettingsModel sitemodel = bll.GetWebSiteModel();
+            if (sitemodel.IsOpen == 0)
+            {
+                ctx.Result = new RedirectResult("/Home/CommingSoon");
+                return;
+            }
             if (ctx.HttpContext.Session[AppContent.SESSION_WEB_LOGIN] == null)
             {
                 var url = ctx.RequestContext.HttpContext.Request == null
                         ? ""
                         : ctx.RequestContext.HttpContext.Request.Url.ToString();
-                ctx.Result = new RedirectResult("/Login/Index?returnurl=" + System.Web.HttpUtility.UrlEncode(url));
+                ctx.Result = new RedirectResult("/login.html");
                 return;
-            }
-            if (ctx.HttpContext.Session[AppContent.SESSION_LOGIN_NAME] != null)
-            {
-                string controllername = ctx.ActionDescriptor.ControllerDescriptor.ControllerName;
-                MemberInfoModel model = ctx.HttpContext.Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-                if (controllername != "Home")
-                {
-                    var url = ctx.RequestContext.HttpContext.Request == null
-                      ? "/Home/Index"
-                      : ctx.RequestContext.HttpContext.Request.Url.ToString();
-                    ctx.Result = new RedirectResult(url);
-                    return;
-                }
-            }
+            }          
         }
     }
 }

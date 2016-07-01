@@ -101,14 +101,22 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult updatesta(int id, int status)
         {
-            int row = bll.UpdateStatus(id, status);
-            if (row > 0)
+            string result = "";
+            if (status == 2)
+            {
+                result=bll.ActiveMember(id,"","",true);//系统分配一个随机激活码
+            }
+            else
+            { 
+                result =bll.UpdateStatus(id, status).ToString();
+            }
+            if (!result.StartsWith("0"))
             {
                 return Json("1");
             }
             else
             {
-                return Json("0");
+                return Json(result);
             }
         }
 

@@ -133,7 +133,7 @@ namespace SimpleWeb.DataDAL
             {
                 if (!string.IsNullOrWhiteSpace(model.OrderCode))
                 {
-                    where += "OrderCode=" + model.OrderCode;
+                    where += "OrderCode='" + model.OrderCode+"'";
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
@@ -340,7 +340,11 @@ WHERE   id = @id";
         ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
         SourceType ,
         MatchedAmount,
-        DATEDIFF(DAY,AddTime,GETDATE()) AS diffday
+        DATEDIFF(DAY,AddTime,GETDATE()) AS diffday,
+        CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已收款' END AS AStatusName
+       ,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName,
+      AStatus,
+     PayType
 FROM    AcceptHelpOrder
 WHERE   ID = @id AND MemberID=@memberid";
             SqlParameter[] paramter ={
@@ -360,6 +364,10 @@ WHERE   ID = @id AND MemberID=@memberid";
                 model.SourceType = Convert.ToInt32(dt.Rows[0]["SourceType"].ToString());
                 model.MatchedAmount = Convert.ToDecimal(dt.Rows[0]["MatchedAmount"].ToString());
                 model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
+                model.SourceTypeName = dt.Rows[0]["SourceTypeName"].ToString();
+                model.PayType = dt.Rows[0]["PayType"].ToString();
+                model.AStatus = dt.Rows[0]["AStatus"].ToString().ParseToInt(0);
+                model.AStatusName = dt.Rows[0]["AStatusName"].ToString();
                 return model;
             }
             else
@@ -478,12 +486,12 @@ WHERE   D.AcceptOrderID = @orderid";
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP (@topnum) ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName  ");
+            strSql.Append("select TOP (@topnum) ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已收款' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName  ");
             strSql.Append("  from AcceptHelpOrder ");
             strSql.Append(" WHERE MemberID=@memberid ");
             strSql.Append(" ORDER BY ID DESC ");
-            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum",top) };
-            DataSet ds = helper.Query(strSql.ToString());
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum", top) };
+            DataSet ds = helper.Query(strSql.ToString(),paramter);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow item in ds.Tables[0].Rows)

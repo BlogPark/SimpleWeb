@@ -6,9 +6,11 @@ using System.Web.Mvc;
 using SimpleWeb.Areas.WebFrontArea.Models;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
+     [WebLoginAttribute]
     public class RegisterController : Controller
     {
         //

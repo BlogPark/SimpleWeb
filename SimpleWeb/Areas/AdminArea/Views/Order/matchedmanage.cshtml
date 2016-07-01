@@ -149,11 +149,22 @@
             App.init(); //Initialise plugins and elements
             $("#hidbtn").hide();
             $("input[type='checkbox'][name='hproList']").change(function () {
-                $("input[type='checkbox'][name='hproList']").prop("checked", false);
-                $(this).prop("checked", true);
                 var ch = $(this).is(':checked');
                 var index = $(this).val();
                 var amont = $("#htr" + index).children('td').eq(6).html();
+                var oldamount = $(".help").html();
+                var id = index + ",";
+                var newamount = 0;
+                var hids = $("#hid").val();
+                if (ch) {
+                    newamount = parseFloat(amont) + parseFloat(oldamount);
+                    hids = hids + id;
+                }
+                else {
+                    newamount = parseFloat(oldamount) - parseFloat(amont);
+                    hids = hids.replace(id, "");
+                }
+
                 $("#hid").val(index);
                 $(".help").html(amont);
             });

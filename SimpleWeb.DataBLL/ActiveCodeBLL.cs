@@ -116,5 +116,17 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetMemberActiveCodeListForPage(memberid, typeid, pageindex, pagesize, out totalrowcount);
         }
+        /// <summary>
+        /// 会员间赠送激活码
+        /// </summary>
+        /// <param name="soucememberID">原始会员ID</param>
+        /// <param name="type">赠送激活码类型</param>
+        /// <param name="acceptMemberPhone">接受会员电话</param>
+        /// <param name="count">赠送数量</param>
+        /// <returns>返回值（-1 接受会员不存在 -2 没有足够的激活币赠送 0 数据库操作失败 1 成功）</returns>
+        public int GiveActiveCodeFromMember(int soucememberID, int type, string acceptMemberPhone, int count)
+        {
+            return dal.GiveActiveCodeFromMember(soucememberID, type, acceptMemberPhone, count);
+        }
     }
 }

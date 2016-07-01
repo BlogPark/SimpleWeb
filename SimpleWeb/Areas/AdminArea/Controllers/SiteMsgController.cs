@@ -17,6 +17,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         //网站公告管理
         // GET: /AdminArea/SiteMsg/
         AdminSiteNewsBll bll = new AdminSiteNewsBll();
+        WebSettingsBLL websetbll = new WebSettingsBLL();
         /// <summary>
         /// 首页
         /// </summary>
@@ -105,6 +106,22 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 return Json("0");
             }
+        }
+
+        /// <summary>
+        /// 网站基本信息管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult websitemsg()
+        {
+            WebSettingsModel model = new WebSettingsModel();
+            model = websetbll.GetWebSiteModel();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult websitemsg(WebSettingsModel model)
+        {
+            return View(model);
         }
     }
 }

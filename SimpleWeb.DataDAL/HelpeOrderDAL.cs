@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into HelpeOrder(");
-            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode");
+            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode");
+            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -141,7 +141,7 @@ namespace SimpleWeb.DataDAL
             {
                 if (!string.IsNullOrWhiteSpace(model.OrderCode))
                 {
-                    where += "OrderCode=" + model.OrderCode;
+                    where += "OrderCode='" + model.OrderCode+"'";
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
@@ -464,9 +464,12 @@ WHERE   id = @id";
         MemberPhone ,
         MemberName ,
         Amount ,
+       HStatus,
         ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
         Interest,
-        DATEDIFF(DAY,AddTime,GETDATE()) diffday 
+        DATEDIFF(DAY,AddTime,GETDATE()) diffday,
+        PayType,
+         CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName
 FROM    HelpeOrder
 WHERE   ID = @id
         AND MemberID = @memberid";
@@ -486,6 +489,9 @@ WHERE   ID = @id
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
                 model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
+                model.HStatus = dt.Rows[0]["HStatus"].ToString().ParseToInt(0);
+                model.HStatusName = dt.Rows[0]["HStatusName"].ToString();
+                model.PayType = dt.Rows[0]["PayType"].ToString();
                 return model;
             }
             else
@@ -621,7 +627,7 @@ WHERE   D.HelperOrderID = @orderid";
             strSql.Append(" WHERE MemberID=@memberid");
             strSql.Append(" ORDER BY ID DESC ");
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),new SqlParameter("@topnum",top) };
-            DataSet ds = helper.Query(strSql.ToString());
+            DataSet ds = helper.Query(strSql.ToString(),paramter);
 
             if (ds.Tables[0].Rows.Count > 0)
             {

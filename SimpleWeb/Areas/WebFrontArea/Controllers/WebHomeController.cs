@@ -8,16 +8,16 @@ using SimpleWeb.Common;
 using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 using Webdiyer.WebControls.Mvc;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
+    [WebLoginAttribute]
     public class WebHomeController : Controller
     {
         //
         // GET: /WebFrontArea/WebHome/
-
-        //Session[AppContent.SESSION_WEB_LOGIN] 
         private MemberInfoBLL bll = new MemberInfoBLL();
         private ActiveCodeBLL activecodebll = new ActiveCodeBLL();
         private HelpeOrderBLL hobll = new HelpeOrderBLL();
@@ -34,7 +34,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
             }
             HomeViewModel model = new HomeViewModel();
             model.data = bll.GetIndexNeeddata(logmember.ID);
@@ -51,7 +51,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                return RedirectToAction("", "", new { area = "" });
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
             }
             int totalcount = 0;
             List<MemberActiveCodeModel> activecodes = activecodebll.GetMemberActiveCodeListForPage(logmember.ID, 1, page, pagesize, out totalcount);
@@ -87,6 +87,24 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             return View(model);
         }
         /// <summary>
+        /// 会员间转增激活码
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="count"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult MemberGife(string phone, int count, int type)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return Json(-10);
+            }
+            int result = activecodebll.GiveActiveCodeFromMember(logmember.ID, type, phone, count);
+            return Json(result);
+        }
+        /// <summary>
         /// 提供帮助单据信息页面
         /// </summary>
         /// <param name="orderid"></param>
@@ -104,14 +122,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             {
                 return RedirectToAction("Index", "WebHome", new { area = "WebFrontArea" });
             }
-            if (order.HStatus > 0 && order.HStatus != 3)
-            {
-                //本人的信息
-                model.helperpeople = logmember;
-                //匹配列表单据信息和会员信息及推荐人联系方式
-                List<AcceptExtendInfoModel> acceptmodel = hobll.GetAcceptextendmodels(orderid);
-                model.acceptOrderInfo = acceptmodel;
-            }
+            //本人的信息
+            model.helperpeople = logmember;
+            //匹配列表单据信息和会员信息及推荐人联系方式
+            List<AcceptExtendInfoModel> acceptmodel = hobll.GetAcceptextendmodels(orderid);
+            model.acceptOrderInfo = acceptmodel;
             model.helporder = order;
             return View(model);
         }
@@ -133,14 +148,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             {
                 return RedirectToAction("Index", "WebHome", new { area = "WebFrontArea" });
             }
-            if (order.AStatus > 0 && order.AStatus != 3)
-            {
-                //本人的信息
-                model.acceptpeople = logmember;
-                //匹配列表单据信息和会员信息及推荐人联系方式
-                List<HelpOrderExtendInfoModel> acceptmodel = aobll.GetHelpextendmodels(orderid);
-                model.helpOrderInfo = acceptmodel;
-            }
+            //本人的信息
+            model.acceptpeople = logmember;
+            //匹配列表单据信息和会员信息及推荐人联系方式
+            List<HelpOrderExtendInfoModel> acceptmodel = aobll.GetHelpextendmodels(orderid);
+            model.helpOrderInfo = acceptmodel;
             model.acceptorder = order;
             return View(model);
         }
@@ -158,6 +170,9 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             HelpOrderListViewModel model = new HelpOrderListViewModel();
             int totalcount = 0;
+            
+            seachmodel.PageIndex = page;
+            seachmodel.PageSize = pagesize;
             List<HelpeOrderModel> orderlist = hobll.GetAllHelpeOrderListForPage(seachmodel, out totalcount);
             PagedList<HelpeOrderModel> pagelist = null;
             if (orderlist != null)
@@ -181,6 +196,8 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             AcceptOrderListViewModel model = new AcceptOrderListViewModel();
             int totalcount = 0;
+            seachmodel.PageIndex = page;
+            seachmodel.PageSize = pagesize;
             List<AcceptHelpOrderModel> orderlist = aobll.GetAllAcceptOrderListForPage(seachmodel, out totalcount);
             PagedList<AcceptHelpOrderModel> pagelist = null;
             if (orderlist != null)
@@ -282,6 +299,19 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             mycapitalViewModel model = new mycapitalViewModel();
             model.mycapitalinfo = cbll.GetMemberStaticCapital(logmember.ID);
             return View(model);
+        }
+        /// <summary>
+        /// 退出系统
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult exitsystem()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember != null)
+            {
+                Session.Remove(AppContent.SESSION_WEB_LOGIN);
+            }
+            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
         }
     }
 }

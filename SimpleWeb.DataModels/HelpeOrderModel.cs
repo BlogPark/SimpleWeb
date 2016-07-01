@@ -154,7 +154,17 @@ namespace SimpleWeb.DataModels
         {
             get { return _activecode; }
             set { _activecode = value; }
-        }            
+        }
+        private decimal _currentinterest;
+        /// <summary>
+        /// 当前利率
+        /// </summary>
+        [DataMember]
+        public decimal Currentinterest
+        {
+            get { return _currentinterest; }
+            set { _currentinterest = value; }
+        }  
         #endregion
 
         #region 扩展字段

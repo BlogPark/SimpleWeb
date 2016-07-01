@@ -22,11 +22,11 @@
                 {
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">@item.STitle</a>
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">标题：@item.STitle</a>
                         </div>
-                        <div id="@(item.ID.ToString() + "news")" class="panel-collapse collapse in">
+                        <div id="@(item.ID.ToString() + "news")" class="panel-collapse collapse">
                             <div class="panel-body">
-                                @item.SContent
+                                @Html.Raw(item.SContent)
                             </div>
                         </div>
                     </div>

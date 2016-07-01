@@ -177,7 +177,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public ActionResult matchedmanage(int page = 1,int id=1)
+        public ActionResult matchedmanage(int page = 1, int id = 1)
         {
             int totalrowcount = 0;
             int htotalrowcount = 0;
@@ -211,9 +211,9 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// <param name="aids"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult matchedorder(string hid, string aids)
+        public ActionResult matchedorder(string hids, string aids)
         {
-            if (string.IsNullOrWhiteSpace(hid))
+            if (string.IsNullOrWhiteSpace(hids))
             {
                 return Json("没有传入提供帮助单据");
             }
@@ -221,17 +221,26 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 return Json("没有传入接受帮助单据");
             }
+            List<string> hidlist = hids.TrimEnd(',').Split(',').ToList();
             List<string> aidlist = aids.TrimEnd(',').Split(',').ToList();
+            if (hidlist.Count < 1)
+            {
+                return Json("没有单据需要处理");
+            }
             if (aidlist.Count < 1)
             {
                 return Json("没有单据需要处理");
             }
             int row = 0;
-            foreach (var item in aidlist)
+            foreach (var item in hidlist)
             {
-                int aid = int.Parse(item);
-               row+= mbll.OperateMatchOrder(int.Parse(hid), aid);
+                foreach (var aitem in aidlist)
+                {
+                    int aid = int.Parse(aitem);
+                    row += mbll.OperateMatchOrder(int.Parse(item), aid);
+                }
             }
+
             if (row < aidlist.Count)
             {
                 return Json("部分单据处理完成");

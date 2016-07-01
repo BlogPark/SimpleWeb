@@ -57,6 +57,7 @@
     <Compile Include="ReMemberRelationDAL.cs" />
     <Compile Include="SysAdminConfigDAL.cs" />
     <Compile Include="SysMenuAndUserDAL.cs" />
+    <Compile Include="WebSettingsDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimpleWeb.Common\SimpleWeb.Common.csproj">

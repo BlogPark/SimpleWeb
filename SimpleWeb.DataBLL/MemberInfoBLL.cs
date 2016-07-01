@@ -40,6 +40,7 @@ namespace SimpleWeb.DataBLL
                         return 0;
                     }
                 }
+                //返还激活码金额
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
                 logmodel.MemberID = memberid;
                 logmodel.MemberName = model.TruethName;
@@ -52,8 +53,6 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
-                //更改激活码的使用状态(未完成)
-
                 //插入推荐人信息表
                 MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
                 ReMemberRelationModel remodel = new ReMemberRelationModel();
@@ -96,7 +95,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int UpdateStatus(int mid, int status)
         {
-            return dal.UpdateStatus(mid, status);
+            return MemberInfoDAL.UpdateStatus(mid, status);
         }
         /// <summary>
         /// 得到分页数据
@@ -174,7 +173,8 @@ namespace SimpleWeb.DataBLL
             model.helperOrders = HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid, 4);//我提供的帮助订单
             model.members = count;//我下级会员的总人数
             model.paidancodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 2);//我的排单币个数
-            model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情                
+            model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情           
+     
             return model;
         }
         /// <summary>
@@ -185,6 +185,96 @@ namespace SimpleWeb.DataBLL
         public ReMemberRelationModel GetReMemberRelation(int memberid)
         {
             return ReMemberRelationDAL.GetReMemberRelation(memberid);
+        }
+        /// <summary>
+        /// 激活会员（外用）
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="phone"></param>
+        /// <param name="activecode"></param>
+        /// <returns></returns>
+        public string ActiveMember(int memberid,string phone,string activecode,bool isauto)
+        {
+            string result = "0";
+            if (isauto)
+            {
+                activecode = ActiveCodeDAL.GetRedamActiveCode(1);
+            }
+            MemberInfoModel member = null;
+            if(memberid!=0)
+            {
+                member=MemberInfoDAL.GetMember(memberid);
+            }
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                member = MemberInfoDAL.GetMember(phone);
+            }
+            if (member == null)
+            {
+                result = "0无此会员";
+                return result;
+            }
+            ActiveCodeModel activecodemodel = ActiveCodeDAL.GetActiveCodeExtendModel(activecode);
+            if (activecodemodel == null)
+            {
+                result = @"0无此激活码";
+                return result;
+            }
+            if (activecodemodel.AType == 2)
+            {
+                result = @"0激活码类型选择不正确";
+                return result;
+            }
+            if (activecodemodel.AStatus == 10)
+            {
+                result = @"0激活码已经使用";
+                return result;
+            }
+            using (TransactionScope scope = new TransactionScope())
+            {
+               //更改会员的状态
+                int rowcount = MemberInfoDAL.UpdateStatus(member.ID, 2);
+                if (rowcount < 1)
+                {
+                    result = "0更新会员状态失败";
+                    return result;
+                }
+                //更改激活码的状态
+                rowcount = ActiveCodeDAL.UpdateStatus(activecodemodel.ID, 10);
+                if (rowcount < 1)
+                {
+                    result = "0更新激活码状态失败";
+                    return result;
+                }
+                if (activecodemodel.MemberID > 0)
+                {
+                    //更改会员机会码的使用状态
+                    rowcount = ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);
+                    if (rowcount < 1)
+                    {
+                        result = "0更新会员激活码表状态失败";
+                        return result;
+                    }
+                    //插入使用日志
+                    ActiveCodeLogModel logmodel = new ActiveCodeLogModel();
+                    logmodel.ActiveCode = activecodemodel.ActivationCode;
+                    logmodel.Addtime = DateTime.Now;
+                    logmodel.AID = activecodemodel.ID;
+                    logmodel.MemberID = activecodemodel.MemberID;
+                    logmodel.MemberName = activecodemodel.MemberName;
+                    logmodel.MemberPhone = activecodemodel.MemberPhone;
+                    logmodel.Remark = "为会员："+member.MobileNum+" 激活";
+                    rowcount = OperateLogDAL.AddActiveCodeLog(logmodel);
+                    if (rowcount < 1)
+                    {
+                        result = "0写入日志失败";
+                        return result;
+                    }
+                }
+                scope.Complete();
+                result = "1";
+            }
+            return result;
         }
     }
 }

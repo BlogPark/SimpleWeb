@@ -8,9 +8,11 @@ using SimpleWeb.Common;
 using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
+     [WebLoginAttribute]
     public class LoginController : Controller
     {
         //会员登陆页面

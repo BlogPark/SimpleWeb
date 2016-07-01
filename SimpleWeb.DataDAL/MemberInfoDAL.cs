@@ -21,7 +21,7 @@ namespace SimpleWeb.DataDAL
             strSql.Append("insert into MemberInfo(");
             strSql.Append("Area,Address,WeixinNum,AliPayName,AliPayNum,SecurityQuestion,SecurityAnswer,LogPwd,MStatus,AddTime,TruethName,Sex,TelPhone,MobileNum,Email,IdentificationID,Province,City");
             strSql.Append(") values (");
-            strSql.Append("@Area,@Address,@WeixinNum,@AliPayName,@AliPayNum,@SecurityQuestion,@SecurityAnswer,@LogPwd,@MStatus,GETDATE(),@TruethName,@Sex,@TelPhone,@MobileNum,@Email,@IdentificationID,@Province,@City");
+            strSql.Append("@Area,@Address,@WeixinNum,@AliPayName,@AliPayNum,@SecurityQuestion,@SecurityAnswer,@LogPwd,1,GETDATE(),@TruethName,@Sex,@TelPhone,@MobileNum,@Email,@IdentificationID,@Province,@City");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -32,8 +32,7 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@AliPayNum", SqlDbType.NVarChar) ,            
                         new SqlParameter("@SecurityQuestion", SqlDbType.NVarChar) ,            
                         new SqlParameter("@SecurityAnswer", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@LogPwd", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MStatus", SqlDbType.Int) ,                   
+                        new SqlParameter("@LogPwd", SqlDbType.NVarChar) ,         
                         new SqlParameter("@TruethName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@Sex", SqlDbType.Int) ,            
                         new SqlParameter("@TelPhone", SqlDbType.NVarChar) ,            
@@ -51,15 +50,14 @@ namespace SimpleWeb.DataDAL
             parameters[5].Value = model.SecurityQuestion;
             parameters[6].Value = model.SecurityAnswer;
             parameters[7].Value = model.LogPwd;
-            parameters[8].Value = model.MStatus;
-            parameters[9].Value = model.TruethName;
-            parameters[10].Value = model.Sex;
-            parameters[11].Value = model.TelPhone;
-            parameters[12].Value = model.MobileNum;
-            parameters[13].Value = model.Email;
-            parameters[14].Value = model.IdentificationID;
-            parameters[15].Value = model.Province;
-            parameters[16].Value = model.City;
+            parameters[8].Value = model.TruethName;
+            parameters[9].Value = model.Sex;
+            parameters[10].Value = model.TelPhone;
+            parameters[11].Value = model.MobileNum;
+            parameters[12].Value = model.Email;
+            parameters[13].Value = model.IdentificationID;
+            parameters[14].Value = model.Province;
+            parameters[15].Value = model.City;
 
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -68,11 +66,8 @@ namespace SimpleWeb.DataDAL
             }
             else
             {
-
                 return Convert.ToInt32(obj);
-
             }
-
         }
         /// <summary>
         /// 更新一条数据
@@ -211,7 +206,7 @@ namespace SimpleWeb.DataDAL
         /// <param name="mid"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public int UpdateStatus(int mid, int status)
+        public static int UpdateStatus(int mid, int status)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update MemberInfo set ");

@@ -136,6 +136,7 @@
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysUserMenuViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\WebSiteViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\RegisterController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\WebHomeController.cs" />
@@ -1851,6 +1852,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\CommingSoon.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\SiteMsg\websitemsg.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

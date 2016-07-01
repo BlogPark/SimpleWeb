@@ -461,7 +461,7 @@ WHERE   ID = @id";
         /// <param name="id"></param>
         /// <param name="status">状态值（1 未使用 2 已使用 3 过期）</param>
         /// <returns></returns>
-        public static int UpdateMemberActiveStatus(int id,int status)
+        public static int UpdateMemberActiveStatus(int id, int status)
         {
             string sqltxt = @"UPDATE  MemberActiveCode
 SET     AMStatus = @status
@@ -477,7 +477,7 @@ WHERE   ID = @id";
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static int UpdateMemberActiveToUse(int memberid,string ordercode,string activecode)
+        public static int UpdateMemberActiveToUse(int memberid, string ordercode, string activecode)
         {
             string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberActiveCode
 SET     AMStatus = 2 ,
@@ -595,7 +595,6 @@ WHERE   AMType = @type
             }
             return list;
         }
-
         /// <summary>
         /// 得到会员的激活码使用信息
         /// </summary>
@@ -649,7 +648,6 @@ WHERE   AMType = @type
             }
             return list;
         }
-
         /// <summary>
         /// 得到会员的分类激活码信息
         /// </summary>
@@ -663,7 +661,7 @@ WHERE   AMType = @type
             string where = "";
             if (memberid > 0)
             {
-                where = " MemberID=" + memberid.ToString() + " AND AMType="+typeid.ToString();
+                where = " MemberID=" + memberid.ToString() + " AND AMType=" + typeid.ToString();
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
@@ -723,6 +721,61 @@ WHERE   MemberID = @memberid
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),
                                       new SqlParameter("@type",type)};
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 根据Code读取信息及分配信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static ActiveCodeModel GetActiveCodeExtendModel(string code)
+        {
+            ActiveCodeModel model = new ActiveCodeModel();
+            string sqltxt = @"SELECT  A.ID ,
+        A.ActivationCode ,
+        A.AType ,
+        A.AStatus,
+        B.MemberID,
+        B.MemberName,
+        B.MemberPhone,
+        B.ID as mid
+FROM    SimpleWebDataBase.dbo.ActiveCode A 
+LEFT JOIN SimpleWebDataBase.dbo.MemberActiveCode B ON A.ActivationCode=B.ActiveCode
+WHERE A.ActivationCode=@code";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@code",code)
+                                      };
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                model.ActivationCode = dt.Rows[0]["ActivationCode"].ToString();
+                model.AStatus = dt.Rows[0]["AStatus"].ToString().ParseToInt(0);
+                model.AType = dt.Rows[0]["AType"].ToString().ParseToInt(0);
+                model.ID = dt.Rows[0]["ID"].ToString().ParseToInt(0);
+                model.MemberID = dt.Rows[0][""].ToString().ParseToInt(0);
+                model.MemberName = dt.Rows[0]["MemberName"].ToString();
+                model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
+                model.MID = dt.Rows[0]["mid"].ToString().ParseToInt(0);
+                return model;
+            }
+            else {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 随机读取一个为分配  未使用的激活码
+        /// </summary>
+        /// <param name="type">激活码 1  排单码 2</param>
+        /// <returns></returns>
+        public static string GetRedamActiveCode(int type)
+        {
+            string sqltxt = @"SELECT TOP 1
+        A.ActivationCode
+FROM    SimpleWebDataBase.dbo.ActiveCode A
+WHERE   A.AType = @type
+        AND A.AStatus = 20";
+            SqlParameter[] paramter = { new SqlParameter("@type",type)};
+            return helper.GetSingle(sqltxt, paramter).ToString();
         }
 
     }

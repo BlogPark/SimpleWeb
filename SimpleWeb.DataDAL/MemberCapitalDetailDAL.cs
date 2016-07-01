@@ -445,6 +445,56 @@ WHERE   MemberID = @id";
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
+        /// 为会员的帮助订单分配利息
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public static int PaymentInterestForOrder(int day)
+        {
+            string sqltxt = @"UPDATE  A
+SET     Interest = CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > (@days) THEN 0
+                        ELSE ( Amount * ( 0.01 * CurrentInterest ) )
+                   END
+FROM    SimpleWebDataBase.dbo.HelpeOrder A 
+WHERE HStatus <3";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@days",day)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 汇总会员的本次利息
+        /// </summary>
+        /// <returns></returns>
+        public static int SumInterestMoney()
+        {
+            string sqltxt = @"UPDATE  A
+SET     A.StaticInterest = ISNULL(A.StaticInterest,0)
+        + ( SELECT  SUM(Interest)
+            FROM    SimpleWebDataBase.dbo.HelpeOrder
+            WHERE   MemberID = A.MemberID
+          )
+OUTPUT  INSERTED.MemberID ,
+        DELETED.MemberPhone ,
+        DELETED.MemberName ,
+        INSERTED.StaticInterest-DELETED.StaticInterest ,
+        '系统派发利息' ,
+        GETDATE() ,
+        0 ,
+        4 ,
+        ''
+        INTO dbo.AmountChangeLog
+FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
+            return helper.ExecuteSql(sqltxt);
+        }
+
+        public static int ClearHelperInterest()
+        {
+            string sqltxt = @"UPDATE dbo.HelpeOrder SET Interest=0 ";
+            return helper.ExecuteSql(sqltxt);
+        }
+
+        /// <summary>
         /// 为会员的推荐人分派奖金
         /// </summary>
         /// <param name="memberid"></param>

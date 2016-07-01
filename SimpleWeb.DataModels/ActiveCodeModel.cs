@@ -60,6 +60,26 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public string ATypeName { get; set; }
+        /// <summary>
+        /// 会员ID
+        /// </summary>
+        [DataMember]
+        public int MemberID { get; set; }
+        /// <summary>
+        /// 会员名字
+        /// </summary>
+        [DataMember]
+        public string MemberName { get; set; }
+        /// <summary>
+        /// 会员电话
+        /// </summary>
+        [DataMember]
+        public string MemberPhone { get; set; }
+        /// <summary>
+        /// 扩展字段
+        /// </summary>
+        [DataMember]
+        public int MID { get; set; }
         #endregion
     }
 }

@@ -51,7 +51,7 @@
                                         <td></td>
                                         <td>@Model.helporder.HStatusName</td>
                                         <td></td>
-                                        <td>@Model.helporder.DiffDay</td>
+                                        <td>@Model.helporder.DiffDay 天</td>
                                         <td></td>
                                         <td>
                                             @if (Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2)
@@ -78,7 +78,7 @@
                             <li><strong>会员邮箱</strong>: @Model.helperpeople.Email</li>
                             <li><strong>会员微信号</strong>: @Model.helperpeople.WeixinNum</li>
                             <li><strong>会员支付宝ID</strong>: @Model.helperpeople.AliPayNum</li>
-                            <li><strong>会员归属地</strong>: @(Model.helperpeople.Province + " " + Model.helperpeople.City + " " + Model.helperpeople.Area</li>
+                            <li><strong>会员归属地</strong>: @(Model.helperpeople.Province + " " + Model.helperpeople.City + " " + Model.helperpeople.Area)</li>
                         </ul>
                     </div>
                 </div>

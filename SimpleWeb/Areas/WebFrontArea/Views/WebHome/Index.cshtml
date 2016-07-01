@@ -20,12 +20,12 @@
                 <div class="panel-body">
                     <ul>
                         <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
-                        <li><a href="#buttons">激活币剩余：@Model.data.activecodeCount 枚</a></li>
-                        <li><a href="#navs">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
+                        <li><a href="@Url.Action("myactivation", "WebHome", new { area="WebFrontArea"})">激活币剩余：@Model.data.activecodeCount 枚</a></li>
+                        <li><a href="@Url.Action("mylineation", "WebHome", new { area="WebFrontArea"})">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
                         <li>我的钱包</li>
-                        <li><a href="#tooltips">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
-                        <li><a href="#popovers">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
-                        <li><a href="#panels">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,7 +34,12 @@
         <div class="col-sm-9">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="#">我提供的帮助</a>
+                    <h3 class="text-muted"><a href="@Url.Action("helpOrderlist", "WebHome", new { area="WebFrontArea"})">我提供的帮助</a>
+                    </h3>
+                    <hr>
+                </div>
+                <div class="col-sm-6">
+                    <h3 class="text-muted"><a href="@Url.Action("acceptOrderlist", "WebHome", new { area="WebFrontArea"})">我接受的帮助</a>
                     </h3>
                     <hr>
                 </div>
@@ -75,18 +80,14 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-center">
-                                        <a href="#">查看明细>></a>
+                                        <a href="@Url.Action("helporderDetail", "WebHome", new { area="WebFrontArea",orderid=item.ID})">查看明细>></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>     
                     }
                 </div>
-                <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="#">我接受的帮助</a>
-                    </h3>
-                    <hr>
-                </div>
+                
                 <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
                     @foreach (var item in Model.data.acceptOrders)
                     {
@@ -124,7 +125,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-center">
-                                        <a href="#">查看明细>></a>
+                                        <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area="WebFrontArea",orderid=item.ID})">查看明细>></a>
                                     </td>
                                 </tr>
                             </tbody>
