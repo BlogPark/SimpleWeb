@@ -69,7 +69,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home", new { area = "" });
+                    return RedirectToAction("Index", "Default", new { area = "AdminArea" });
                 }
             }
             this.ViewBag.Title = SysAdminConfigHelper.GetConfigValue("管理后台登陆页标题");

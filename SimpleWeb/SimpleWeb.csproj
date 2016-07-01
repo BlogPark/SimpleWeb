@@ -1856,6 +1856,9 @@
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\SiteMsg\websitemsg.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\Default\Index.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
