@@ -30,12 +30,22 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("BaseData", "FrontSetting", new { area = "AdminArea" }, FormMethod.Post, new { @id = "form1", @class = "form-horizontal", @role = "form" }))
+                    @using (Html.BeginForm("websitemsg", "SiteMsg", new { area = "AdminArea" }, FormMethod.Post, new { @id = "form1", @class = "form-horizontal", @role = "form" }))
                     {
+                        @Html.HiddenFor(m=>m.ID)
                         <div class="form-group">
                             <label class="col-sm-3 control-label">网站名称</label>
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebName, new { @class = "form-control", @placeholder = "网站名称" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否开启</label>
+                            <div class="col-sm-7">
+                                <div id="webopen" class="make-switch switch-large" data-on="info" data-off="success" data-on-label="<i class='fa fa-check icon-white'></i>" data-off-label="<i class='fa fa-times'></i>">
+													<input type="checkbox">
+											</div>
+                                @Html.HiddenFor(m=>m.IsOpen)
                             </div>
                         </div>
                         <div class="form-group">
@@ -50,14 +60,8 @@
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebType, new { @class = "form-control", @placeholder = "网站类型" })
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">LOGO描述</label>
-                            <div class="col-sm-7">
-                                @Html.TextBoxFor(m => m.WebLogoAlt, new { @class = "form-control", @placeholder = "LOGO描述" })
-                            </div>
-                        </div>
-                        
+                        </div>                        
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备案编号</label>
                             <div class="col-sm-7">
@@ -77,37 +81,37 @@
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebAddress, new { @class = "form-control", @placeholder = "联系地址" })
                             </div>
-                        </div>       
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">传真</label>
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebFax, new { @class = "form-control", @placeholder = "传真" })
                             </div>
-                        </div>       
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">手机</label>
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebMobile, new { @class = "form-control", @placeholder = "手机" })
                             </div>
-                        </div>       
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">电话</label>
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebPhone, new { @class = "form-control", @placeholder = "电话" })
                             </div>
-                        </div>       
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">邮箱</label>
                             <div class="col-sm-7">
                                 @Html.TextBoxFor(m => m.WebEmail, new { @class = "form-control", @placeholder = "邮箱" })
                             </div>
-                        </div>       
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">关于我们</label>
                             <div class="col-sm-7">
-                                @Html.TextAreaFor(m => m.WebAboutUs, new { @rows="3"})
+                                @Html.TextAreaFor(m => m.WebAboutUs, new { @rows = "3", @class = "form-control", @placeholder = "关于我们" })
                             </div>
-                        </div>                          
+                        </div>
                         <div class="modal-footer center">
                             <a class="btn btn-lg btn-default" href="#">取 消</a>
                             <button type="button" class="btn btn-lg btn-primary" onclick="checkform()">保  存</button>
@@ -118,16 +122,38 @@
         </div>
     </div>
 </div>
+@section mycss{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/bootstrap-switch/bootstrap-switch.min.css")" />
+    }
+@section scriptfiles{
+    <script type="text/javascript" src="@Url.Content("/js/bootstrap-switch/bootstrap-switch.min.js")"></script>
+    }
 @section myscript{
-    <script type="text/javascript">
+    ><script type="text/javascript">
         $(function () {
             App.init(); //Initialise plugins and elements
             $("#erradpic").hide();
+            var open = $("#IsOpen").val();
+            if (open == '0') {
+                $('#webopen').bootstrapSwitch('setState', false);
+            }
+            else {
+                $('#webopen').bootstrapSwitch('setState', true);
+            }
+            $("#webopen").on('switch-change', function (e, data) {
+                var value = data.value;
+                if (value)
+                {
+                    $("#IsOpen").val(1);
+                } else {
+                    $("#IsOpen").val(0);
+                }
+            });
         });
-        function checkform()
-        {
+        function checkform() {
             document.getElementById('form1').submit();
             return false;
         }
+
     </script>
 }

@@ -6,11 +6,12 @@ using System.Web.Mvc;
 using SimpleWeb.Areas.AdminArea.Models;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 using Webdiyer.WebControls.Mvc;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
-    //[AdminLoginAttribute]
+    [AdminLoginAttribute]
     public class OrderController : Controller
     {
         //

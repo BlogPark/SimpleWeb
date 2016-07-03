@@ -102,11 +102,143 @@ function changlogpwd() {
             data: { 'pwd': pwd },
             type: 'POST',
             success: function (data) {
-                if (data == "1")
-                {
+                if (data == "1") {
                     alert("更改成功");
                 }
             }
         });
     }
+}
+/*=======mycapital page===========*/
+$("#chkweixin").change(function () {
+    var weixin = $(this).val();
+    var check = $(this).is(':checked');
+    var paytype = $("#paytype").val();
+    if (check) {
+        paytype = weixin + "," + paytype;
+    }
+    else {
+        paytype = paytype.replace(weixin + ",", "");
+    }
+    $("#paytype").val(paytype);
+});
+$("#chkalipay").change(function () {
+    var alipay = $(this).val();
+    var check = $(this).is(':checked');
+    var paytype = $("#paytype").val();
+    if (check) {
+        paytype = paytype + alipay + ",";
+    }
+    else {
+        paytype = paytype.replace(alipay + ",", "");
+    }
+    $("#paytype").val(paytype);
+});
+$("#achkweixin").change(function () {
+    var alipay = $(this).val();
+    var check = $(this).is(':checked');
+    var paytype = $("#apaytype").val();
+    if (check) {
+        paytype = paytype + alipay + ",";
+    }
+    else {
+        paytype = paytype.replace(alipay + ",", "");
+    }
+    $("#apaytype").val(paytype);
+});
+$("#achkalipay").change(function () {
+    var alipay = $(this).val();
+    var check = $(this).is(':checked');
+    var paytype = $("#apaytype").val();
+    if (check) {
+        paytype = paytype + alipay + ",";
+    }
+    else {
+        paytype = paytype.replace(alipay + ",", "");
+    }
+    $("#apaytype").val(paytype);
+});
+$("input:radio[name=optionsRadios1]").change(function () {
+    var raval = $("input:radio[name=optionsRadios1]:checked").val();
+    $("#soucetype").val(raval);
+});
+function providehelp() {
+    var helpmin = parseFloat($("#helpmin").html());//最少帮助金额
+    var helpmax = parseFloat($("#helpmax").html());//最大帮助金额
+    var helpamount = parseFloat($("#helpamount").val());//帮助金额
+    var paytype = $("#paytype").val();
+    var code = $("#helpactivecode").val();
+    var lastmoney = parseFloat($("#lasthelp").val());//上次帮助金额
+    if (code == '') {
+       bootbox.alert("请填写排单币编号");
+        return false;
+    }
+    if (paytype == '') {
+        alert("请选择支付方式");
+        return false;
+    }
+    if (helpamount < helpmin) {
+        alert("提供的帮助金额小于平台规定值");
+        return false;
+    }
+    if (helpamount > helpmax) {
+       alert("提供的帮助金额大于平台规定值");
+        return false;
+    }
+    if (helpamount < lastmoney) {
+        alert("提供的金额小于上次的帮助金额");
+        return false;
+    }
+    $.ajax({
+        url: "/WebFrontArea/WebHome/addhelporder",
+        datatype: "json",
+        async: false,
+        type: "POST",
+        data: { 'helpactivecode': code, "helpamount": helpamount, "paytype": paytype },
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                bootbox.alert("操作失败");
+            }
+        }
+    });
+}
+function accepthelp() {
+    var accmin = parseFloat($("#accmin").html());//最少接受金额
+    var accmax = parseFloat($("#accmax").html());//最大接受金额
+    var accamount = parseFloat($("#acceptamont").val());//接受金额
+    var paytype = $("#apaytype").val();
+    var soucetype = $("#soucetype").val();
+    if (soucetype == '') {
+        alert("请选择资金来源");
+        return false;
+    }
+    if (paytype == '') {
+        alert("请选择支付方式");
+        return false;
+    }
+    if (accamount < helpmin) {
+        alert("接受的帮助金额小于平台规定值");
+        return false;
+    }
+    if (accamount > helpmax) {
+        alert("接受的帮助金额大于平台规定值");
+        return false;
+    }
+    $.ajax({
+        url: '/WebFrontArea/WebHome/addacceptorder',
+        dataType: 'Json',
+        data: { 'soucetype': soucetype, "money": accamount, "paytype": paytype },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                alert("操作失败");
+            }
+        }
+    });
 }

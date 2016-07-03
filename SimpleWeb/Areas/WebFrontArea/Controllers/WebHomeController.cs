@@ -298,7 +298,58 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             mycapitalViewModel model = new mycapitalViewModel();
             model.mycapitalinfo = cbll.GetMemberStaticCapital(logmember.ID);
+            model.maxacceptamont = SystemConfigs.GetmaxAcceptAmont();//得到最大的接受帮助限制
+            model.minacceptamont = SystemConfigs.GetminAcceptAmont();//得到最小的接受帮助限制
+            model.minhelpamont = SystemConfigs.GetminHelpAmont();//得到最小的提供帮助限制
+            model.maxhelpamont = SystemConfigs.GetmaxHelpAmont();//得到最大的提供帮助限制
+            model.extendinfo = cbll.GetMemberExtendInfo(logmember.ID);//得到会员的扩展信息
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult addhelporder(string helpactivecode, decimal helpamount, string paytype)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            HelpeOrderModel help = new HelpeOrderModel();
+            help.ActiveCode = helpactivecode;
+            help.Amount = helpamount;
+            help.HStatus = 0;
+            help.MemberID = logmember.ID;
+            help.MemberName = logmember.TruethName;
+            help.MemberPhone = logmember.MobileNum;
+            help.OrderCode = "H" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            help.PayType = paytype;
+            int result = hobll.AddHelpeOrder(help);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        [HttpPost]
+        public ActionResult addacceptorder(int soucetype, decimal money, string paytype)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            AcceptHelpOrderModel accept = new AcceptHelpOrderModel();
+            accept.SourceType = soucetype;
+            accept.Amount = money;
+            accept.AStatus = 0;
+            accept.MemberID = logmember.ID;
+            accept.MemberName = logmember.TruethName;
+            accept.MemberPhone = logmember.MobileNum;
+            accept.OrderCode = "A" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            accept.PayType = paytype;
+            int result = aobll.AddAcceptHelpOrder(accept);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
         }
         /// <summary>
         /// 退出系统

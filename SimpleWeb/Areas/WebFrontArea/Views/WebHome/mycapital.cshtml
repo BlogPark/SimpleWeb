@@ -11,30 +11,35 @@
             </div>
             <div class="modal-body">
                 <div class="bootbox-body">
-                    <form role="form">
+                    <form role="form" class="form-horizontal" method="post" action="/WebFrontArea/WebHome/addhelporder">
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">帮助金额</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="helpamount" name="helpamount">
-                                <input type="hidden" value="@Model.minhelpamont" id="minhelpamont" name="minhelpamont">
-                                <input type="hidden" value="@Model.maxhelpamont" id="maxhelpamont" name="maxhelpamont">
+                            <div class="col-sm-6">
+                                <input type="text" id="helpamount" name="helpamount" class="form-control" placeholder="帮助金额">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <label class="col-sm-10 pull-left control-label" style="color:red;font-size:15px;">最低可帮助金额<span id="helpmin">@Model.minhelpamont</span>元&nbsp;&nbsp;&nbsp;最高可帮助金额<span id="helpmax">@Model.maxhelpamont</span>元</label>
+                            <input type="hidden" id="lasthelp" name="lasthelp" value="@Model.extendinfo.LastHelpMoney">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">支付方式</label>
+                            <div class="col-sm-6">
                                 <input type="checkbox" id="chkweixin" name="chkweixin" value="微信">微信
                                 <input type="checkbox" id="chkalipay" name="chkalipay" value="支付宝">支付宝
+                                <input type="hidden" id="paytype" name="paytype">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">使用排单币</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="helpactivecode" name="helpactivecode">
+                            <div class="col-sm-6">
+                                <input type="text" id="helpactivecode" name="helpactivecode" class="form-control" placeholder="排单币编码">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="checkbox" id="chkrisk" name="chkrisk">警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
+                            <label class="col-sm-1 pull-left control-label"><input type="checkbox" id="chkrisk" name="chkrisk" class="form-control"></label>
+                            <div class="col-sm-8">
+                                警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
                         </div>
                     </form>
@@ -56,39 +61,42 @@
             </div>
             <div class="modal-body">
                 <div class="bootbox-body">
-                    <form role="form">
+                    <form role="form" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">可用金额</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly">
+                            <div class="col-sm-7">
+                                <input type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">接受金额</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="acceptamont" name="acceptamont">
+                            <div class="col-sm-7">
+                                <input type="text" id="acceptamont" name="acceptamont" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-12 pull-left control-label" style="color:red;">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元&nbsp;&nbsp;&nbsp;最高可接受金额<span id="accmax">@Model.maxacceptamont</span></label>
+                            <label class="col-sm-10 pull-left control-label" style="color:red;font-size:15px;">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元&nbsp;&nbsp;&nbsp;最高可接受金额<span id="accmax">@Model.maxacceptamont</span>元</label>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">接受来源</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-7">
                                 <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
                                 静态资金
                                 <input type="radio" class="uniform" name="optionsRadios1" value="2">
                                 动态资金
+                                <input type="hidden" id="soucetype" name="soucetype" value="1">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="checkbox" id="chkweixin" name="chkweixin" value="微信">微信
-                                <input type="checkbox" id="chkalipay" name="chkalipay" value="支付宝">支付宝
+                            <label class="col-sm-3 pull-left control-label">支付方式</label>
+                            <div class="col-sm-7">
+                                <input type="checkbox" id="achkweixin" name="achkweixin" value="微信">微信
+                                <input type="checkbox" id="achkalipay" name="achkalipay" value="支付宝">支付宝
+                                <input type="hidden" id="apaytype" name="apaytype">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class="col-sm-10">
                                 <input type="checkbox" id="chkrisk" name="chkrisk">警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
                         </div>

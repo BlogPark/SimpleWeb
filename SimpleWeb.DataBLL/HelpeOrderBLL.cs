@@ -20,10 +20,20 @@ namespace SimpleWeb.DataBLL
             int result = 0;
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
+
+            ActiveCodeModel activemodel = ActiveCodeDAL.GetActiveCodeExtendModel(model.ActiveCode);
+            if (activemodel == null)//没有该激活码信息为失败
+            {
+                return 0;
+            }
+            if (activemodel.AStatus == 10)//改激活码已使用为失败
+            {
+                return 0;
+            }
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改激活码的使用状态
-                int rowcount = ActiveCodeDAL.UpdateStatus(model.ActiveCodeID, 10);
+                int rowcount = ActiveCodeDAL.UpdateStatus(activemodel.ID, 10);
                 if (rowcount < 1)
                 {
                     return 0;

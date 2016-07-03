@@ -7,11 +7,12 @@ using SimpleWeb.Areas.AdminArea.Models;
 using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 using SimpleWeb.Models;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
-    //[AdminLoginAttribute]
+    [AdminLoginAttribute]
     public class SiteMsgController : Controller
     {
         //网站公告管理
@@ -121,6 +122,10 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult websitemsg(WebSettingsModel model)
         {
+            if (model != null)
+            {
+                int row = websetbll.UpdateWebSetting(model);
+            }
             return View(model);
         }
     }

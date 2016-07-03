@@ -125,6 +125,7 @@
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\HelperOrderViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MatchedManageViewModel.cs" />
@@ -1207,6 +1208,8 @@
     <Content Include="js\bootstrap-daterangepicker\bootstrap-datetimepicker.css" />
     <Content Include="js\bootstrap-daterangepicker\bootstrap-datetimepicker.js" />
     <Content Include="js\bootstrap-daterangepicker\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="js\bootstrap-switch\bootstrap-switch.min.css" />
+    <Content Include="js\bootstrap-switch\bootstrap-switch.min.js" />
     <Content Include="js\bootstrap-wizard\form-wizard.js" />
     <Content Include="js\bootstrap-wizard\form-wizard.min.js" />
     <Content Include="js\bootstrap-wizard\jquery.bootstrap.wizard.js" />

@@ -487,7 +487,7 @@ WHERE   MemberID = @memberid
         AND ActiveCode = @activecode
         AND AMType=2";
             SqlParameter[] paramter = { 
-                                      new SqlParameter("@id",memberid),
+                                      new SqlParameter("@memberid",memberid),
                                       new SqlParameter("@usecode",ordercode),
                                       new SqlParameter("@activecode",activecode)
                                       };
@@ -751,7 +751,7 @@ WHERE A.ActivationCode=@code";
                 model.AStatus = dt.Rows[0]["AStatus"].ToString().ParseToInt(0);
                 model.AType = dt.Rows[0]["AType"].ToString().ParseToInt(0);
                 model.ID = dt.Rows[0]["ID"].ToString().ParseToInt(0);
-                model.MemberID = dt.Rows[0][""].ToString().ParseToInt(0);
+                model.MemberID = dt.Rows[0]["MemberID"].ToString().ParseToInt(0);
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
                 model.MID = dt.Rows[0]["mid"].ToString().ParseToInt(0);
@@ -776,6 +776,21 @@ WHERE   A.AType = @type
         AND A.AStatus = 20";
             SqlParameter[] paramter = { new SqlParameter("@type",type)};
             return helper.GetSingle(sqltxt, paramter).ToString();
+        }
+        /// <summary>
+        /// 按照类型统计全部的激活码数量
+        /// </summary>
+        /// <param name="typenum"></param>
+        /// <returns></returns>
+        public static int GetTotalCount(int typenum)
+        {
+            string sqltxt = @"SELECT COUNT(0)
+FROM    SimpleWebDataBase.dbo.ActiveCode
+WHERE   AType = @atype ";
+            SqlParameter[] paramter = {
+                                          new SqlParameter("@atype",typenum)
+                                      };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
 
     }

@@ -503,7 +503,7 @@ WHERE   id = @id and MStatus=2";
         /// <param name="phone"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public MemberInfoModel GetMemberInfo(string phone, string pwd,out string logmsg)
+        public MemberInfoModel GetMemberInfo(string phone, string pwd, out string logmsg)
         {
             MemberInfoModel model = null;
             string sqltxt = @"SELECT  ID ,
@@ -527,8 +527,8 @@ WHERE   id = @id and MStatus=2";
         AddTime
 FROM    dbo.MemberInfo
 WHERE MobileNum=@MobileNum";
-            SqlParameter[] paramter = { new SqlParameter("@MobileNum",phone) };
-            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            SqlParameter[] paramter = { new SqlParameter("@MobileNum", phone) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 string logpwd = dt.Rows[0]["LogPwd"].ToString();
@@ -603,14 +603,30 @@ WHERE MobileNum=@MobileNum";
         /// <param name="memberid"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public int UpdateUserPwd(int memberid,string pwd)
+        public int UpdateUserPwd(int memberid, string pwd)
         {
             string sqltxt = @"
 UPDATE dbo.MemberInfo
 SET LogPwd=@pwd
 WHERE id=@id";
-            SqlParameter[] paramter = { new SqlParameter("@pwd",pwd),new SqlParameter("@id",memberid)};
-            return helper.ExecuteSql(sqltxt,paramter);
+            SqlParameter[] paramter = { new SqlParameter("@pwd", pwd), new SqlParameter("@id", memberid) };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 得到会员的总数
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int GetTotalMemberCount(int status)
+        {
+            string sqltxt = @"SELECT  COUNT(0)
+FROM    SimpleWebDataBase.dbo.MemberInfo ";
+            if (status == 2)
+            {
+                sqltxt += @" WHERE MStatus=@mstatus";
+            }
+            SqlParameter[] paratmer = { new SqlParameter("@mstatus", status) };
+            return helper.GetSingle(sqltxt, paratmer).ToString().ParseToInt(0);
         }
     }
 }

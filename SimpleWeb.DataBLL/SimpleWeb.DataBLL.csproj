@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AcceptHelpOrderBLL.cs" />
     <Compile Include="ActiveCodeBLL.cs" />
+    <Compile Include="AdminIndexBLL.cs" />
     <Compile Include="AdminSiteNewsBll.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="HelpeOrderBLL.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysAdminConfigBLL.cs" />
     <Compile Include="SysMenuAndUserBLL.cs" />
+    <Compile Include="SystemConfigs.cs" />
     <Compile Include="WebSettingsBLL.cs" />
   </ItemGroup>
   <ItemGroup>

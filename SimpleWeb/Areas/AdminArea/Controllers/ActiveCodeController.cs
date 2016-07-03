@@ -11,7 +11,7 @@ using Webdiyer.WebControls.Mvc;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
-    //[AdminLoginAttribute]
+    [AdminLoginAttribute]
     public class ActiveCodeController : Controller
     {
         //

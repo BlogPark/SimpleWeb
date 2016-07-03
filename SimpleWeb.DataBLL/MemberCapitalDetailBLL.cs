@@ -78,5 +78,14 @@ namespace SimpleWeb.DataBLL
         {
             return MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);
         }
+        /// <summary>
+        /// 得到会员的扩展信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public MemberExtendInfoModel GetMemberExtendInfo(int memberid)
+        {
+            return MemberExtendInfoDAL.GetMemberExtendInfo(memberid);
+        }
     }
 }

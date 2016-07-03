@@ -642,5 +642,26 @@ WHERE   MemberID = @memberid";
                 return null;
             }
         }
+
+        /// <summary>
+        /// 统计平台总计提供的帮助和接受帮助的金额
+        /// </summary>
+        /// <param name="dynamicTotal"></param>
+        /// <returns></returns>
+        public static decimal GetTotalAmontForPlant(out decimal dynamicTotal)
+        {
+            decimal staticTotal = 0;
+            dynamicTotal=0;
+            string sqltxt = @"SELECT  SUM(TotalStaticCapital) as staticnum ,
+        SUM(TotalDynamicFunds) as dynamicnum
+FROM    SimpleWebDataBase.dbo.MemberCapitalDetail";
+            DataTable dt = helper.Query(sqltxt).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                staticTotal = dt.Rows[0]["staticnum"].ToString().ParseToDecimal(0);
+                dynamicTotal = dt.Rows[0]["dynamicnum"].ToString().ParseToDecimal(0);
+            }
+            return staticTotal;
+        }
     }
 }

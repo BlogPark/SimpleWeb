@@ -29,8 +29,6 @@ namespace SimpleWeb.DataDAL
             strSql.Append(" WebName = @WebName , ");
             strSql.Append(" WebDescription = @WebDescription , ");
             strSql.Append(" WebType = @WebType , ");
-            strSql.Append(" WebLogoAlt = @WebLogoAlt , ");
-            strSql.Append(" WebLogo = @WebLogo , ");
             strSql.Append(" WebPutonrecord = @WebPutonrecord , ");
             strSql.Append(" WebDefaultKey = @WebDefaultKey , ");
             strSql.Append(" WebAddress = @WebAddress  ");
@@ -46,9 +44,7 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@DomainName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WebName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WebDescription", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@WebType", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@WebLogoAlt", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@WebLogo", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@WebType", SqlDbType.NVarChar) ,          
                         new SqlParameter("@WebPutonrecord", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WebDefaultKey", SqlDbType.NVarChar) ,            
                         new SqlParameter("@WebAddress", SqlDbType.NVarChar)             
@@ -64,11 +60,9 @@ namespace SimpleWeb.DataDAL
             parameters[8].Value = model.WebName;
             parameters[9].Value = model.WebDescription;
             parameters[10].Value = model.WebType;
-            parameters[11].Value = model.WebLogoAlt;
-            parameters[12].Value = model.WebLogo;
-            parameters[13].Value = model.WebPutonrecord;
-            parameters[14].Value = model.WebDefaultKey;
-            parameters[15].Value = model.WebAddress;
+            parameters[11].Value = model.WebPutonrecord;
+            parameters[12].Value = model.WebDefaultKey;
+            parameters[13].Value = model.WebAddress;
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
         }

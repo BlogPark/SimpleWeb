@@ -25,6 +25,10 @@ namespace SimpleWeb.Areas.WebFrontArea.Models
         /// 最低提供帮助金额
         /// </summary>
         public string minhelpamont { get; set; }
+        /// <summary>
+        /// 会员扩展信息
+        /// </summary>
+        public MemberExtendInfoModel extendinfo { get; set; }
 
     }
 }

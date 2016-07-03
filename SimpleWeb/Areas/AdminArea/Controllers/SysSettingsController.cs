@@ -8,10 +8,11 @@ using SimpleWeb.Common;
 using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
-    //[AdminLoginAttribute]
+    [AdminLoginAttribute]
     public class SysSettingsController : Controller
     {
         //
