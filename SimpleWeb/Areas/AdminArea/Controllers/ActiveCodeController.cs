@@ -65,6 +65,19 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             return items;
         }
         /// <summary>
+        /// 得到状态列表
+        /// </summary>
+        /// <param name="defval"></param>
+        /// <returns></returns>
+        private List<SelectListItem> GetStatusListItem1(int defval = 1)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "未使用", Value = "1", Selected = defval == 1 });
+            items.Add(new SelectListItem { Text = "已使用", Value = "2", Selected = defval == 2 });
+            items.Add(new SelectListItem { Text = "已过期", Value = "3", Selected = defval == 3 });
+            return items;
+        }
+        /// <summary>
         /// 生成激活码
         /// </summary>
         /// <param name="count"></param>
@@ -121,8 +134,8 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 pageList = new PagedList<MemberActiveCodeModel>(memberactivecodelist, page, PageSize, totalrowcount);
             }
-            this.ViewData["activecode.AType"] = GetTypeListItem(0);
-            this.ViewData["activecode.AStatus"] = GetStatusListItem(0);
+            this.ViewData["memberactivecode.AMType"] = GetTypeListItem(0);
+            this.ViewData["memberactivecode.AMStatus"] = GetStatusListItem1(1);
             MemberActiveIndexViewModel model = new MemberActiveIndexViewModel();
             model.memberactivecodelist = pageList;
             model.totalcount = totalrowcount;

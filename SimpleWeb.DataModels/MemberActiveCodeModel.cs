@@ -42,11 +42,19 @@ namespace SimpleWeb.DataModels
         /// </summary>       
         [DataMember]
         public string MemberName { get; set; }
+
+        private int _AMStatus = 0;
         /// <summary>
         /// 激活码使用状态(1 未使用 2 已使用 3 已过期)
         /// </summary>       
         [DataMember]
-        public int AMStatus { get; set; }
+        public int AMStatus
+        {
+            get { return _AMStatus; }
+            set { _AMStatus = value; }
+        }
+
+
         /// <summary>
         /// 添加时间
         /// </summary>       

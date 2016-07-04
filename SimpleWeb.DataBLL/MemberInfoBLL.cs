@@ -223,7 +223,7 @@ namespace SimpleWeb.DataBLL
             MemberInfoModel member = null;
             if(memberid!=0)
             {
-                member=MemberInfoDAL.GetMember(memberid);
+                member = MemberInfoDAL.GetNotActiveMember(memberid);
             }
             if (!string.IsNullOrWhiteSpace(phone))
             {
@@ -250,6 +250,11 @@ namespace SimpleWeb.DataBLL
                 result = @"0激活码已经使用";
                 return result;
             }
+            if (activecodemodel.AMStatus == 3)
+            {
+                result = @"0激活码已经过期";
+                return result;
+            }
             using (TransactionScope scope = new TransactionScope())
             {
                //更改会员的状态
@@ -266,7 +271,7 @@ namespace SimpleWeb.DataBLL
                     result = "0更新激活码状态失败";
                     return result;
                 }
-                if (activecodemodel.MemberID > 0)
+                if (activecodemodel.MID > 0)
                 {
                     //更改会员机会码的使用状态
                     rowcount = ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);

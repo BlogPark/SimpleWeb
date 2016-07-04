@@ -67,7 +67,7 @@ ELSE
         public List<ActiveCodeModel> GetActiveCodeListForPage(ActiveCodeModel model, out int totalrowcount)
         {
             List<ActiveCodeModel> list = new List<ActiveCodeModel>();
-            string columms = @"ID,ActivationCode,AType,AStatus,AddTime,CASE AStatus WHEN 1 THEN '未使用' WHEN 2 THEN '已使用' END AStatusName";
+            string columms = @"ID,ActivationCode,AType,CASE AType WHEN 1 THEN '激活码' WHEN 2 THEN '排单币' END ATypeName,AStatus,AddTime,CASE AStatus WHEN 20 THEN '未使用' WHEN 15 THEN '已分配'  WHEN 10 THEN '已使用' END AStatusName ";
             string where = "";
             if (model != null)
             {
@@ -122,7 +122,8 @@ ELSE
                     {
                         active.AddTime = DateTime.Parse(item["AddTime"].ToString());
                     }
-                    
+                    active.AStatusName = item["AStatusName"].ToString();
+                    active.ATypeName = item["ATypeName"].ToString();
                     list.Add(active);
                 }
             }
@@ -219,12 +220,16 @@ WHERE   ActivationCode = @ActivationCode";
         public List<ActiveCodeModel> GetCodeMassage(List<string> code)
         {
             List<ActiveCodeModel> list = new List<ActiveCodeModel>();
-            string codeliststr = string.Join(",", code);
+            string codeliststr = "";
+            foreach (var item in code)
+            {
+                codeliststr += "'" + item + "',";
+            }
             string sqltxt = @"SELECT  ID ,
         ActivationCode ,
         AType 
 FROM    SimpleWebDataBase.dbo.ActiveCode
-WHERE ActivationCode IN (" + codeliststr + ") AND AStatus=20";
+WHERE ActivationCode IN (" + codeliststr.TrimEnd(',') + ") AND AStatus=20";
             DataTable dt = helper.Query(sqltxt).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
@@ -236,6 +241,35 @@ WHERE ActivationCode IN (" + codeliststr + ") AND AStatus=20";
             }
             return list;
         }
+        /// <summary>
+        /// 得到激活码信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static ActiveCodeModel GetSingleCodeMassage(string code)
+        {
+
+            string sqltxt = @"SELECT  ID ,
+        ActivationCode ,
+        AType 
+FROM    SimpleWebDataBase.dbo.ActiveCode
+WHERE ActivationCode =@code  AND AStatus=20";
+            SqlParameter[] paramter = { new SqlParameter("@code",code)};
+            DataTable dt = helper.Query(sqltxt).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                ActiveCodeModel model = new ActiveCodeModel();
+                model.ActivationCode = dt.Rows[0]["ActivationCode"].ToString();
+                model.AType = int.Parse(dt.Rows[0]["AType"].ToString());
+                model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// 得到会员信息
         /// </summary>
@@ -326,6 +360,10 @@ WHERE   ID = @Mid";
                         maclist.Add(mac);
                     }
                     result = AddMemberActiveCode(maclist);
+                    if (result < 1)
+                    {
+                        return 0;
+                    }
                     scope.Complete();
                     result = 1;
                 }
@@ -738,14 +776,15 @@ WHERE   MemberID = @memberid
         B.MemberID,
         B.MemberName,
         B.MemberPhone,
-        B.ID as mid
+        B.ID as mid,
+        B.AMStatus
 FROM    SimpleWebDataBase.dbo.ActiveCode A 
 LEFT JOIN SimpleWebDataBase.dbo.MemberActiveCode B ON A.ActivationCode=B.ActiveCode
 WHERE A.ActivationCode=@code";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@code",code)
                                       };
-            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 model.ActivationCode = dt.Rows[0]["ActivationCode"].ToString();
@@ -756,9 +795,11 @@ WHERE A.ActivationCode=@code";
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
                 model.MID = dt.Rows[0]["mid"].ToString().ParseToInt(0);
+                model.AMStatus = dt.Rows[0]["AMStatus"].ToString().ParseToInt(0);
                 return model;
             }
-            else {
+            else
+            {
                 return null;
             }
         }
@@ -775,7 +816,7 @@ WHERE A.ActivationCode=@code";
 FROM    SimpleWebDataBase.dbo.ActiveCode A
 WHERE   A.AType = @type
         AND A.AStatus = 20";
-            SqlParameter[] paramter = { new SqlParameter("@type",type)};
+            SqlParameter[] paramter = { new SqlParameter("@type", type) };
             return helper.GetSingle(sqltxt, paramter).ToString();
         }
         /// <summary>

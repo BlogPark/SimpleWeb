@@ -44,7 +44,7 @@ namespace SimpleWeb.DataModels
         /// 状态名称
         /// </summary>
         [DataMember]
-        public string MStatusName { get; set; }
+        public string AStatusName { get; set; }
         /// <summary>
         /// 页容量
         /// </summary>
@@ -80,6 +80,9 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public int MID { get; set; }
+
+        [DataMember]
+        public int AMStatus { get; set; }
         #endregion
     }
 }

@@ -32,7 +32,7 @@
             <div class="well well-sm">
                 <div class="row">
                     <div class="col-sm-12">
-                        @using (Html.BeginForm("Index", "MemberOpera", FormMethod.Get, new { @id = "form1" }))
+                        @using (Html.BeginForm("memberactivecode", "ActiveCode", new { area = "AdminArea" }, FormMethod.Get, new { @id = "form1" }))
                         {
                             <div class="form-group">
                                 <label class="pull-left control-label">激活编码</label>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="pull-left control-label">类型</label>
                                 <div class="col-sm-2">
-                                    @Html.DropDownListFor(m => m.memberactivecode.AMType, new { @class = "form-control" })
+                                    @Html.DropDownListFor(m => m.memberactivecode.AMType,null,new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -103,9 +103,9 @@
                                         <td>@item.Addtime.ToString("yyyy-MM-dd HH:ss")</td>
                                         <td>
                                             <p class="btn-toolbar">
-                                                @if (item.AMStatus == 20)
+                                                @if (item.AMStatus == 1)
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,2)" ><i class="fa fa-times-circle"></i>&nbsp; 设置过期</button>
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID)" ><i class="fa fa-times-circle"></i>&nbsp; 设置过期</button>
                                                 }
                                             </p>
                                         </td>
