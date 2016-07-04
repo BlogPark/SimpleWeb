@@ -58,7 +58,6 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// 添加会员
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
         public ActionResult AddMember()
         {
             AddMemberViewModel model = new AddMemberViewModel();

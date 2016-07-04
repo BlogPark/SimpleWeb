@@ -173,44 +173,44 @@ namespace SimpleWeb.DataDAL
                 AcceptHelpOrderModel helpeordermodel = new AcceptHelpOrderModel();
                 if (item["ID"].ToString() != "")
                 {
-                    model.ID = int.Parse(item["ID"].ToString());
+                    helpeordermodel.ID = int.Parse(item["ID"].ToString());
                 }
                 if (item["AddTime"].ToString() != "")
                 {
-                    model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    helpeordermodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
                 }
                 if (item["AStatus"].ToString() != "")
                 {
-                    model.AStatus = int.Parse(item["AStatus"].ToString());
+                    helpeordermodel.AStatus = int.Parse(item["AStatus"].ToString());
                 }
                 if (item["SortIndex"].ToString() != "")
                 {
-                    model.SortIndex = int.Parse(item["SortIndex"].ToString());
+                    helpeordermodel.SortIndex = int.Parse(item["SortIndex"].ToString());
                 }
-                model.OrderCode = item["OrderCode"].ToString();
+                helpeordermodel.OrderCode = item["OrderCode"].ToString();
                 if (item["MemberID"].ToString() != "")
                 {
-                    model.MemberID = int.Parse(item["MemberID"].ToString());
+                    helpeordermodel.MemberID = int.Parse(item["MemberID"].ToString());
                 }
-                model.MemberPhone = item["MemberPhone"].ToString();
-                model.MemberName = item["MemberName"].ToString();
+                helpeordermodel.MemberPhone = item["MemberPhone"].ToString();
+                helpeordermodel.MemberName = item["MemberName"].ToString();
                 if (item["Amount"].ToString() != "")
                 {
-                    model.Amount = decimal.Parse(item["Amount"].ToString());
+                    helpeordermodel.Amount = decimal.Parse(item["Amount"].ToString());
                 }
                 model.PayType = item["PayType"].ToString();
                 if (item["MatchedAmount"].ToString() != "")
                 {
-                    model.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
+                    helpeordermodel.MatchedAmount = decimal.Parse(item["MatchedAmount"].ToString());
                 }
                 if (item["SourceType"].ToString() != "")
                 {
-                    model.SourceType = item["SourceType"].ToString().ParseToInt(0);
+                    helpeordermodel.SourceType = item["SourceType"].ToString().ParseToInt(0);
                 }
-                model.SourceTypeName = item["SourceTypeName"].ToString();
-                model.TurnOutOrder = item["TurnOutOrder"].ToString();
-                model.AStatusName = item["AStatusName"].ToString();
-                list.Add(model);
+                helpeordermodel.SourceTypeName = item["SourceTypeName"].ToString();
+                helpeordermodel.TurnOutOrder = item["TurnOutOrder"].ToString();
+                helpeordermodel.AStatusName = item["AStatusName"].ToString();
+                list.Add(helpeordermodel);
             }
             return list;
         }

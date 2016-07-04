@@ -628,5 +628,50 @@ FROM    SimpleWebDataBase.dbo.MemberInfo ";
             SqlParameter[] paratmer = { new SqlParameter("@mstatus", status) };
             return helper.GetSingle(sqltxt, paratmer).ToString().ParseToInt(0);
         }
+        /// <summary>
+        /// 根据名字读取会员的个数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static int GetMemberCountInfoByName(string name)
+        {
+            string sqltxt = @"SELECT  ID 
+FROM    SimpleWebDataBase.dbo.MemberInfo
+WHERE   TruethName = @name
+        AND MStatus <> 3";
+            SqlParameter[] paramter = { new SqlParameter("@name", name) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
+        }
+        /// <summary>
+        /// 根据手机号读取会员的个数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static int GetMemberCountInfoByMobile(string mobilenum)
+        {
+            string sqltxt = @"SELECT  ID 
+FROM    SimpleWebDataBase.dbo.MemberInfo
+WHERE   MobileNum = @mobilenum
+        AND MStatus <> 3";
+            SqlParameter[] paramter = { new SqlParameter("@mobilenum", mobilenum) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
+        }
+        /// <summary>
+        /// 根据支付宝ID读取会员的个数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static int GetMemberCountInfoByAlipayNum(string alipaynum)
+        {
+            string sqltxt = @"SELECT  ID 
+FROM    SimpleWebDataBase.dbo.MemberInfo
+WHERE   AliPayNum = @alipaynum
+        AND MStatus <> 3";
+            SqlParameter[] paramter = { new SqlParameter("@alipaynum", alipaynum) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace SimpleWeb.DataBLL
     public class MatchOrderBLL
     {
         /// <summary>
-        /// 单据匹配方法
+        /// 单据匹配方法4
         /// </summary>
         /// <returns></returns>
         public int OperateMatchOrder(int hid,int aid)
@@ -75,6 +75,19 @@ namespace SimpleWeb.DataBLL
                 result = 1;
             }
             return result;
+        }
+
+        /// <summary>
+        /// 根据类型得到分页的日志数据
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="type"></param>
+        /// <param name="totalcount"></param>
+        /// <returns></returns>
+        public List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, out int totalrowcount)
+        {
+            return OperateLogDAL.GetAmountChangeLogByTypeForPage(pageindex,pagesize,4,out totalrowcount);
         }
     }
 }

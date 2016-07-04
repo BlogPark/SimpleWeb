@@ -18,7 +18,24 @@ namespace SimpleWeb.DataBLL
         public int AddMemberInfo(MemberInfoModel model)
         {
             int result = 0;
-            string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额            
+            string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额  
+            #region 验证用户真实姓名 和手机
+            int rows = MemberInfoDAL.GetMemberCountInfoByName(model.TruethName.Trim());
+            if (rows > 2)
+            {
+                return 0;
+            }
+            rows = MemberInfoDAL.GetMemberCountInfoByMobile(model.MobileNum.Trim());
+            if (rows > 0)
+            {
+                return 0;
+            }
+            rows = MemberInfoDAL.GetMemberCountInfoByAlipayNum(model.AliPayNum.Trim());
+            if (rows > 0)
+            {
+                return 0;
+            }
+            #endregion
             using (TransactionScope scope = new TransactionScope())
             {
                 int memberid = dal.AddMemberInfo(model);
@@ -53,19 +70,22 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
-                //插入推荐人信息表
-                MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
-                ReMemberRelationModel remodel = new ReMemberRelationModel();
-                remodel.MemberID = soucemember.ID;
-                remodel.MemberTruthName = soucemember.TruethName;
-                remodel.MemberPhone = soucemember.MobileNum;
-                remodel.RecommMID = memberid;
-                remodel.RecommMPhone = model.TelPhone;
-                remodel.RecommMTruthName = model.TruethName;
-                rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
-                if (rowcount < 1)
+                if (model.MemberPhone != "admin")
                 {
-                    return 0;
+                    //插入推荐人信息表
+                    MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
+                    ReMemberRelationModel remodel = new ReMemberRelationModel();
+                    remodel.MemberID = soucemember.ID;
+                    remodel.MemberTruthName = soucemember.TruethName;
+                    remodel.MemberPhone = soucemember.MobileNum;
+                    remodel.RecommMID = memberid;
+                    remodel.RecommMPhone = model.TelPhone;
+                    remodel.RecommMTruthName = model.TruethName;
+                    rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
                 }
                 scope.Complete();
                 result = 1;

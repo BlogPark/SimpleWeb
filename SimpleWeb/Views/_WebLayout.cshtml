@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="ico/favicon.ico">
 
-    <title>Rooster - Multipurpose Business Theme</title>
-
+    <title>@ViewBag.PageTitle</title>
     <!-- Bootstrap core CSS -->
     <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="@Url.Content("/css/wstyle.css")" rel="stylesheet">
@@ -51,6 +50,7 @@
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/scrolltopcontrol.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/SmoothScroll.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/jquery-qrcode/jquery.qrcode.min.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/custom.js")"></script>
     @RenderSection("scriptcontent", required: false)
 </body>

@@ -122,6 +122,7 @@ ELSE
                     {
                         active.AddTime = DateTime.Parse(item["AddTime"].ToString());
                     }
+                    
                     list.Add(active);
                 }
             }

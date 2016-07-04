@@ -13,14 +13,14 @@
                     <li class="dropdown">
                         <a href="@Url.Action("Index", "WebHome", new { area="WebFrontArea"})">首页</a>
                     </li>
-                    <li class="dropdown">
+                    @*<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">会员管理</a>
                         <ul class="dropdown-menu">
                             <li><a href="#">添加会员</a></li>
                             <li><a href="#">会员列表</a></li>
                             <li><a href="#">会员动态</a></li>
                         </ul>
-                    </li>
+                    </li>*@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">钱包</a>
                         <ul class="dropdown-menu">
@@ -33,9 +33,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">网站公告</a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("webnews", "WebHome", new { area="WebFrontArea"})">网站公告</a></li>
+                            <li><a href="@Url.Action("contentus", "WebHome", new { area="WebFrontArea"})">联系我们</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown active">
+                    <li class="dropdown"><!--active-->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心</a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("userprofile", "WebHome", new { area="WebFrontArea"})">我的资料</a></li>

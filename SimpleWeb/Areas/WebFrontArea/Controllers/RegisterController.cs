@@ -10,18 +10,25 @@ using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
-     [WebLoginAttribute]
+    [WebLoginAttribute]
     public class RegisterController : Controller
     {
         //
         // GET: /WebFrontArea/Register/
         private MemberInfoBLL bll = new MemberInfoBLL();
+        private WebSettingsBLL webbll = new WebSettingsBLL();
+        private WebSettingsModel web;
+        public RegisterController()
+        {
+            web = webbll.GetWebSiteModel();
+        }
         public ActionResult Index(string msd)
         {
             RegisterViewModel model = new RegisterViewModel();
             model.member = new MemberInfoModel();
             model.member.MemberPhone = msd;
             model.regintable = bll.GetReginTableListModel(1);
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         [HttpPost]

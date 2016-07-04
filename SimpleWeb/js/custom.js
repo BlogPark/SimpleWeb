@@ -1,3 +1,14 @@
+$(function () {
+    var linkurl = $("#linkurl").val();
+    $('#qrcode').qrcode({
+        width: 200,
+        height: 200,
+        correctLevel: QRErrorCorrectLevel.H,
+        render: "table",
+        text: linkurl
+
+    });
+});
 /* ===== Navbar Search ===== */
 
 $('#navbar-search > a').on('click', function () {
@@ -170,7 +181,7 @@ function providehelp() {
     var code = $("#helpactivecode").val();
     var lastmoney = parseFloat($("#lasthelp").val());//上次帮助金额
     if (code == '') {
-       bootbox.alert("请填写排单币编号");
+        bootbox.alert("请填写排单币编号");
         return false;
     }
     if (paytype == '') {
@@ -182,7 +193,7 @@ function providehelp() {
         return false;
     }
     if (helpamount > helpmax) {
-       alert("提供的帮助金额大于平台规定值");
+        alert("提供的帮助金额大于平台规定值");
         return false;
     }
     if (helpamount < lastmoney) {

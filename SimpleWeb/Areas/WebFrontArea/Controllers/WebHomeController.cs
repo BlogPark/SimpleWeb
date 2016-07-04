@@ -24,7 +24,14 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         private AcceptHelpOrderBLL aobll = new AcceptHelpOrderBLL();
         private AdminSiteNewsBll newsbll = new AdminSiteNewsBll();
         private MemberCapitalDetailBLL cbll = new MemberCapitalDetailBLL();
+        private WebSettingsBLL webbll = new WebSettingsBLL();
         private readonly int pagesize = 2;
+        private WebSettingsModel web;
+
+        public WebHomeController()
+        {
+            web = webbll.GetWebSiteModel();
+        }
         /// <summary>
         /// 登陆后首页
         /// </summary>
@@ -40,6 +47,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             model.data = bll.GetIndexNeeddata(logmember.ID);
             model.member = logmember;
             model.recommend = bll.GetReMemberRelation(logmember.ID);
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -62,6 +70,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 pagelist = new PagedList<MemberActiveCodeModel>(activecodes, page, pagesize, totalcount);
             }
             model.orderlist = pagelist;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -84,6 +93,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 pagelist = new PagedList<MemberActiveCodeModel>(activecodes, page, pagesize, totalcount);
             }
             model.orderlist = pagelist;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -128,6 +138,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             List<AcceptExtendInfoModel> acceptmodel = hobll.GetAcceptextendmodels(orderid);
             model.acceptOrderInfo = acceptmodel;
             model.helporder = order;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -154,6 +165,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             List<HelpOrderExtendInfoModel> acceptmodel = aobll.GetHelpextendmodels(orderid);
             model.helpOrderInfo = acceptmodel;
             model.acceptorder = order;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -180,6 +192,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 pagelist = new PagedList<HelpeOrderModel>(orderlist, page, pagesize, totalcount);
             }
             model.orderlist = pagelist;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -205,6 +218,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 pagelist = new PagedList<AcceptHelpOrderModel>(orderlist, page, pagesize, totalcount);
             }
             model.orderlist = pagelist;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -220,6 +234,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             MemberNewsViewModel model = new MemberNewsViewModel();
             model.news = newsbll.GetModelListByUserID(logmember.ID);
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -235,6 +250,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             ContactUsViewModel model = new ContactUsViewModel();
             model.list = newsbll.GetContractMessage(logmember.ID);
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         [HttpPost]
@@ -267,6 +283,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             UserProfileViewModel model = new UserProfileViewModel();
             model.member = logmember;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         [HttpPost]
@@ -303,6 +320,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             model.minhelpamont = SystemConfigs.GetminHelpAmont();//得到最小的提供帮助限制
             model.maxhelpamont = SystemConfigs.GetmaxHelpAmont();//得到最大的提供帮助限制
             model.extendinfo = cbll.GetMemberExtendInfo(logmember.ID);//得到会员的扩展信息
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         [HttpPost]

@@ -18,9 +18,16 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         //会员登陆页面
         // GET: /WebFrontArea/Login/
         MemberInfoBLL bll = new MemberInfoBLL();
+        private WebSettingsBLL webbll = new WebSettingsBLL();
+        private WebSettingsModel web;
+        public LoginController()
+        {
+            web = webbll.GetWebSiteModel();
+        }
         public ActionResult Index(string bl = "")
         {
             MemberInfoModel model = new MemberInfoModel();
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>

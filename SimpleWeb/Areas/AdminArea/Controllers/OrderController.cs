@@ -19,6 +19,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         private HelpeOrderBLL bll = new HelpeOrderBLL();
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
         private MatchOrderBLL mbll = new MatchOrderBLL();
+        private MemberCapitalDetailBLL mcbll = new MemberCapitalDetailBLL();
         private readonly int PageSize = 2;
         public ActionResult Index()
         {
@@ -247,6 +248,37 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json("部分单据处理完成");
             }
             return Json("1");
+        }
+
+        /// <summary>
+        /// 分派利息页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PaymentInterist(int page=1)
+        {
+            paymentinteristViewModel model = new paymentinteristViewModel();
+            int totalrowcount=0;
+            List<AmountChangeLogModel> list= mbll.GetAmountChangeLogByTypeForPage(page,PageSize,out totalrowcount);
+            PagedList<AmountChangeLogModel> pagedlist = null;
+            if (list != null)
+            {
+                pagedlist = new PagedList<AmountChangeLogModel>(list, page, PageSize, totalrowcount);
+            }
+            model.logs = pagedlist;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult paymentinterist()
+        {
+            string result=mcbll.PaymentInterestV2();
+            if (result == "1")
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json(result.Substring(1));
+            }
         }
     }
 }

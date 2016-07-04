@@ -15,6 +15,7 @@ namespace SimpleWeb.Controllers
         //
         // GET: /IndexPub/
         private SysMenuAndUserBLL bll = new SysMenuAndUserBLL();
+        private WebSettingsBLL webbll = new WebSettingsBLL();
         public ActionResult Index()
         {
             return View();
@@ -85,7 +86,8 @@ namespace SimpleWeb.Controllers
             {
                 return View(model.User);
             }
-            else {
+            else
+            {
                 return View(new SysAdminUserModel());
             }
         }
@@ -105,16 +107,15 @@ namespace SimpleWeb.Controllers
         public ActionResult webfooter()
         {
             webfooterViewModel model = new webfooterViewModel();
+            WebSettingsModel setting = webbll.GetWebSiteModel();
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                model.Linkurl = "ssssssssssssssss";
-                model.phone = "00000000000";
+                model.Linkurl = setting.DomainName;
             }
             else
             {
-                model.Linkurl = Url.Action("Index", "Register", new { area = "WebFrontArea", msd = logmember.MobileNum });
-                model.phone = logmember.MobileNum;
+                model.Linkurl = setting.DomainName + Url.Action("Index", "Register", new { area = "WebFrontArea", msd = logmember.MobileNum });
             }
             return View(model);
         }

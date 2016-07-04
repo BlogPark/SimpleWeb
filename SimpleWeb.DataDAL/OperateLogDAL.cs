@@ -22,7 +22,7 @@ namespace SimpleWeb.DataDAL
             strSql.Append("insert into AmountChangeLog(");
             strSql.Append("Type,OrderCode,MemberID,MemberPhone,MemberName,ProduceMoney,Remark,AddTime,OrderID");
             strSql.Append(") values (");
-            strSql.Append("@Type,@OrderCode,@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@Remark,@AddTime,@OrderID");
+            strSql.Append("@Type,@OrderCode,@MemberID,@MemberPhone,@MemberName,@ProduceMoney,@Remark,GETDATE(),@OrderID");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -33,7 +33,6 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@ProduceMoney", SqlDbType.Decimal) ,            
                         new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
                         new SqlParameter("@OrderID", SqlDbType.Int)      
             };
             parameters[0].Value = model.Type;
@@ -43,8 +42,7 @@ namespace SimpleWeb.DataDAL
             parameters[4].Value = model.MemberName;
             parameters[5].Value = model.ProduceMoney;
             parameters[6].Value = model.Remark;
-            parameters[7].Value = model.AddTime;
-            parameters[8].Value = model.OrderID;
+            parameters[7].Value = model.OrderID;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -111,8 +109,7 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@ActiveCode", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AID", SqlDbType.Int) ,            
-                        new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@Addtime", SqlDbType.DateTime)             
+                        new SqlParameter("@Remark", SqlDbType.NVarChar)             
               
             };
 
@@ -122,7 +119,6 @@ namespace SimpleWeb.DataDAL
             parameters[3].Value = model.ActiveCode;
             parameters[4].Value = model.AID;
             parameters[5].Value = model.Remark;
-            parameters[6].Value = model.Addtime;
 
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -226,6 +222,64 @@ WHERE   MemberID = @memberid";
                     model.TypeName = item["TypeName"].ToString();
                     list.Add(model);
                 }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 根据类型得到分页的日志数据
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="type"></param>
+        /// <param name="totalcount"></param>
+        /// <returns></returns>
+        public static List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, int type, out int totalrowcount)
+        {
+            List<AmountChangeLogModel> list = new List<AmountChangeLogModel>();
+            string columms = @"ID ,MemberID ,MemberPhone ,MemberName ,ProduceMoney ,Remark ,AddTime ,OrderID ,[Type] ,OrderCode";
+            string where = " [Type]="+type.ToString();                
+            
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "AddTime";
+            page.pageindex = pageindex;
+            page.pagesize = pagesize;
+            page.tablename = @"dbo.AmountChangeLog";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                AmountChangeLogModel model = new AmountChangeLogModel();
+                if (item["ID"].ToString() != "")
+                {
+                    model.ID = int.Parse(item["ID"].ToString());
+                }
+                if (item["AddTime"].ToString() != "")
+                {
+                    model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                }
+                if (item["MemberID"].ToString() != "")
+                {
+                    model.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                model.MemberPhone = item["MemberPhone"].ToString();
+                if (item["ProduceMoney"].ToString() != "")
+                {
+                    model.ProduceMoney = decimal.Parse(item["ProduceMoney"].ToString());
+                }
+                model.MemberName = item["MemberName"].ToString();
+                if (item["AddTime"].ToString() != "")
+                {
+                    model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                }
+                model.Remark = item["Remark"].ToString();
+                if (item["OrderID"].ToString() != "")
+                {
+                    model.OrderID = int.Parse(item["OrderID"].ToString());
+                }
+                model.OrderCode = item["OrderCode"].ToString();
+                model.Type = int.Parse(item["Type"].ToString());
+                list.Add(model);
             }
             return list;
         }

@@ -417,27 +417,23 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into WebContactMessage(");
-            strSql.Append("ReplyTime,MemberID,MemberName,MemberPhone,MessageTitle,MessageContent,AddTime,MStatus,ReplyContent");
+            strSql.Append("MemberID,MemberName,MemberPhone,MessageTitle,MessageContent,AddTime,MStatus");
             strSql.Append(") values (");
-            strSql.Append("@ReplyTime,@MemberID,@MemberName,@MemberPhone,@MessageTitle,@MessageContent,GETDATE(),1,@ReplyContent");
+            strSql.Append("@MemberID,@MemberName,@MemberPhone,@MessageTitle,@MessageContent,GETDATE(),1");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
-			            new SqlParameter("@ReplyTime", SqlDbType.DateTime) ,            
+            SqlParameter[] parameters = {           
                         new SqlParameter("@MemberID", SqlDbType.Int) ,            
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MessageTitle", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MessageContent", SqlDbType.NVarChar) , 
-                        new SqlParameter("@ReplyContent", SqlDbType.NVarChar)         
+                        new SqlParameter("@MessageContent", SqlDbType.NVarChar)     
             };
-            parameters[0].Value = model.ReplyTime;
-            parameters[1].Value = model.MemberID;
-            parameters[2].Value = model.MemberName;
-            parameters[3].Value = model.MemberPhone;
-            parameters[4].Value = model.MessageTitle;
-            parameters[5].Value = model.MessageContent;
-            parameters[6].Value = model.ReplyContent;
+            parameters[0].Value = model.MemberID;
+            parameters[1].Value = model.MemberName;
+            parameters[2].Value = model.MemberPhone;
+            parameters[3].Value = model.MessageTitle;
+            parameters[4].Value = model.MessageContent;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {

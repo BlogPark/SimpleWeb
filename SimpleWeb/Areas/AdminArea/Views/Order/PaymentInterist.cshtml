@@ -1,0 +1,107 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model SimpleWeb.Areas.AdminArea.Models.paymentinteristViewModel
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">钱包管理</a>
+                            </li>
+                            <li>派发利息</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">派发利息</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="btn-group hidden-xs pull-left invoice-btn-group">
+                            <p class="btn-toolbar">
+                                <button class="btn btn-info" type="button" onclick="payment()"><i class="fa fa-cog"></i>&nbsp;派发会员利息</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="tabdiv">
+                        <table class="table table-striped table-bordered" id="menutab">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">日志编号</th>
+                                    <th class="text-center">会员姓名</th>
+                                    <th class="text-center">会员手机</th>
+                                    <th class="text-center">产生金额</th>
+                                    <th class="text-center">日志备注</th>
+                                    <th class="text-center">涉及单据</th>
+                                    <th class="text-center">记录时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.logs)
+                                {
+                                    <tr id="tr@(item.ID)" class="text-center">
+                                        <td>@item.ID</td>
+                                        <td>@item.MemberName</td>
+                                        <td>@item.MemberPhone</td>
+                                        <td>@item.ProduceMoney</td>
+                                        <td>@item.Remark</td>
+                                        <td>@item.OrderCode</td>
+                                        <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row center col-xs-12 mycss">
+                        @Html.Pager(Model.logs, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+    }
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements           
+        });
+        function payment() {
+            $.ajax({
+                url: "@Url.Action("paymentinterist", "Order", new { area="AdminArea"})",
+                datatype: "json",
+                async: false,
+                type: "POST",
+                success: function (data) {
+                    if (data == '1') {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert(data);
+                    }
+                }
+            });
+        }
+    </script>
+}
