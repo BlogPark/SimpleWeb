@@ -95,27 +95,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.list)
+                                @if (Model.list != null && Model.list.Any())
                                 {
-                                    <tr id="tr@(item.ID)">
-                                        <td class="center">@item.ID</td>
-                                        <td>@item.MemberName</td>
-                                        <td>@item.MessageTitle</td>
-                                        <td>@item.MessageContent</td>
-                                        <td>@item.ReplyContent</td>
-                                        <td name="@item.MStatus">@item.MStatusName</td>
-                                        <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                        <td>@(item.ReplyTime==null?"":item.ReplyTime.ToString("yyyy-MM-dd HH:mm:ss"))</td>
-                                        <td class="center">
-                                            <p class="btn-toolbar">
-                                                @if (item.MStatus == 1)
-                                                { 
-                                                    <a class="btn btn-warning" data-toggle="modal" href="#box-config1" onclick="updatewebnews(@item.ID)">回复</a>
-                                                }
-                                                <a class="btn btn-danger" onclick="deltewebnews(@item.ID)">撤 销</a>
-                                            </p>
-                                        </td>
-                                    </tr>
+                                    foreach (var item in Model.list)
+                                    {
+                                        <tr id="tr@(item.ID)">
+                                            <td class="center">@item.ID</td>
+                                            <td>@item.MemberName</td>
+                                            <td>@item.MessageTitle</td>
+                                            <td>@item.MessageContent</td>
+                                            <td>@item.ReplyContent</td>
+                                            <td name="@item.MStatus">@item.MStatusName</td>
+                                            <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                            <td>@(item.ReplyTime == null ? "" : item.ReplyTime.ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                                            <td class="center">
+                                                <p class="btn-toolbar">
+                                                    @if (item.MStatus == 1)
+                                                    {
+                                                        <a class="btn btn-warning" data-toggle="modal" href="#box-config1" onclick="updatewebnews(@item.ID)">回复</a>
+                                                    }
+                                                    <a class="btn btn-danger" onclick="deltewebnews(@item.ID)">撤 销</a>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -125,7 +128,6 @@
         </div>
     </div>
 </div>
-
 @section scriptfiles{
     <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
 }
@@ -137,7 +139,7 @@
 
         function updatewebnews(id) {
             var dtr = $("#tr" + id).children('td');
-            if (dtr) {                
+            if (dtr) {
                 var member = dtr.eq(1).html();
                 var title = dtr.eq(2).html();
                 var mcontent = dtr.eq(3).html();
@@ -167,4 +169,3 @@
         }
     </script>
 }
-

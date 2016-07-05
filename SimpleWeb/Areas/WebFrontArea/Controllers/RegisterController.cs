@@ -38,7 +38,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             {
                 int row = bll.AddMemberInfo(member);
             }
-            return View(member);
+            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
         }
         [HttpPost]
         public ActionResult checkphone(string phone)

@@ -23,9 +23,7 @@
                     @using (Html.BeginForm("Index", "Register", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
                     {
                         <div class="form-group">
-
                             @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
-
                         </div>
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "form-control" })

@@ -434,11 +434,18 @@ WHERE   MobileNum = @MobileNum";
                                       new SqlParameter("@MobileNum",phone)
                                       };
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
-            MemberInfoModel model = new MemberInfoModel();
-            model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
-            model.TruethName = dt.Rows[0]["TruethName"].ToString();
-            model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
-            return model;
+            if (dt.Rows.Count > 0)
+            {
+                MemberInfoModel model = new MemberInfoModel();
+                model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                model.TruethName = dt.Rows[0]["TruethName"].ToString();
+                model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                return model;
+            }
+            else
+            {
+                return null; 
+            }
         }
         /// <summary>
         /// 得到正常会员信息
