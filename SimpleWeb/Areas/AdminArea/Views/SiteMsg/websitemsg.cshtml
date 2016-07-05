@@ -48,6 +48,12 @@
                                 @Html.HiddenFor(m=>m.IsOpen)
                             </div>
                         </div>
+                         <div class="form-group">
+                            <label class="col-sm-3 control-label">网站域名</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.DomainName, new { @rows = "3", @class = "form-control", @placeholder = "网站描述" })
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">网站描述</label>
                             <div class="col-sm-7">

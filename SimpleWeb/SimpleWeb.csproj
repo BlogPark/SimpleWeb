@@ -1141,14 +1141,6 @@
     <Content Include="img\dots.png" />
     <Content Include="img\fileupload-default.jpg" />
     <Content Include="img\fix.jpg" />
-    <Content Include="img\gallery\1.png" />
-    <Content Include="img\gallery\2.jpg" />
-    <Content Include="img\gallery\3.png" />
-    <Content Include="img\gallery\4.png" />
-    <Content Include="img\gallery\5.png" />
-    <Content Include="img\gallery\7.jpg" />
-    <Content Include="img\gallery\8.png" />
-    <Content Include="img\gallery\img\1.jpg" />
     <Content Include="img\gritter\buy.png" />
     <Content Include="img\gritter\cloud.png" />
     <Content Include="img\gritter\error.png" />
@@ -1186,11 +1178,6 @@
     <Content Include="img\loaders\loading.gif" />
     <Content Include="img\loading.gif" />
     <Content Include="img\lockscreen.png" />
-    <Content Include="img\login\1.jpg" />
-    <Content Include="img\login\2.jpg" />
-    <Content Include="img\login\3.jpg" />
-    <Content Include="img\login\4.jpg" />
-    <Content Include="img\login\5.jpg" />
     <Content Include="img\logo\cloud.png" />
     <Content Include="img\logo\logo-alt.png" />
     <Content Include="img\logo\logo.png" />
@@ -1465,8 +1452,6 @@
     <Content Include="ueditor\lang\zh-cn\images\upload.png" />
     <Content Include="ueditor\lang\zh-cn\zh-cn.js" />
     <Content Include="ueditor\net\Bin\Newtonsoft.Json.dll" />
-    <Content Include="ueditor\net\Bin\Newtonsoft.Json.pdb" />
-    <Content Include="ueditor\net\Bin\Newtonsoft.Json.xml" />
     <Content Include="ueditor\net\net.sln" />
     <Content Include="ueditor\net\upload\image\20160229\6359238216033243754318767.png" />
     <Content Include="ueditor\net\upload\image\20160229\6359238247878391029266737.png" />
@@ -1866,6 +1851,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\Order\PaymentInterist.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

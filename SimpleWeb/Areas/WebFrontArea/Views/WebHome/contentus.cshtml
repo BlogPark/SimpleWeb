@@ -18,8 +18,10 @@
             <h2 id="accordions"><span>我的留言</span></h2>
             <hr />
             <div class="panel-group" id="accordion">
-                @foreach (var item in Model.list)
+                @if (Model.list != null)
                 {
+                    foreach (var item in Model.list)
+                    {
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a data-toggle="collapse" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">@(item.MessageTitle)(@item.MStatusName)</a>
@@ -35,6 +37,11 @@
                             </div>
                         </div>
                     </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">暂无留言</p> 
                 }
             </div>
         </div>
@@ -45,12 +52,12 @@
             {
                 <div class="form-group">
                     <label for="email">标题</label>
-                    @Html.TextBoxFor(m => m.message.MessageTitle, new { @placeholder="留言标题",@class="form-control"})
-                    <input type="email"  id="email" >
+                    @Html.TextBoxFor(m => m.message.MessageTitle, new { @placeholder = "留言标题", @class = "form-control" })
+                    <input type="email" id="email">
                 </div>              
                 <div class="form-group">
                     <label for="message">内容</label>
-                    @Html.TextAreaFor(m => m.message.MessageContent, new { @placeholder="留言内容",@class="form-control",@rows="3"})
+                    @Html.TextAreaFor(m => m.message.MessageContent, new { @placeholder = "留言内容", @class = "form-control", @rows = "3" })
                 </div>
                 <button type="submit" class="btn-animate btn-style btn-d btn-primary">提交留言</button>
             }

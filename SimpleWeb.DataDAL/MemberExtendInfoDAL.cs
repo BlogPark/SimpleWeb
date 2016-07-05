@@ -125,7 +125,7 @@ WHERE   MemberID = @memberid";
                                       new SqlParameter("@memberid",memberid),
                                       new SqlParameter("@id",hid)                                      
                                       };
-            return helper.ExecuteSql(sqltxt,paramter);
+            return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
         /// 得到该分配利息的会员
@@ -153,6 +153,32 @@ WHERE   ( DATEDIFF(DAY, LastHelperTime, GETDATE()) + 1 ) <=@days";
                 model.MobileNum = item["MobileNum"].ToString();
             }
             return members;
+        }
+        /// <summary>
+        /// 添加会员初始化信息
+        /// </summary>
+        /// <param name="model"></param>
+        public static int AddModelExtendinfo(MemberExtendInfoModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into MemberExtendInfo(");
+            strSql.Append("MemberID,LastHelperTime,MemberHelpCount,LastHelpMoney");
+            strSql.Append(") values (");
+            strSql.Append("@MemberID,@LastHelperTime,@MemberHelpCount,@LastHelpMoney");
+            strSql.Append(") ");
+
+            SqlParameter[] parameters = {
+			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
+                        new SqlParameter("@LastHelperTime", SqlDbType.DateTime) ,            
+                        new SqlParameter("@MemberHelpCount", SqlDbType.Int) ,            
+                        new SqlParameter("@LastHelpMoney", SqlDbType.Decimal)             
+              
+            };
+            parameters[0].Value = model.MemberID;
+            parameters[1].Value = model.LastHelperTime;
+            parameters[2].Value = model.MemberHelpCount;
+            parameters[3].Value = model.LastHelpMoney;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
         }
     }
 }

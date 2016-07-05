@@ -18,8 +18,10 @@
             <h2 id="accordions"><span>网站公告</span></h2>
             <hr />
             <div class="panel-group" id="accordion">
-                @foreach (var item in Model.news)
+                @if (Model.news != null && Model.news.Any())
                 {
+                    foreach (var item in Model.news)
+                    {
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">标题：@item.STitle</a>
@@ -30,6 +32,11 @@
                             </div>
                         </div>
                     </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">暂无系统公告</p> 
                 }
             </div>
         </div>

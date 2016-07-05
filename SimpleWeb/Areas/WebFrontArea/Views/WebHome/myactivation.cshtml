@@ -3,7 +3,6 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-
 <div class="topic">
     <div class="container">
         <div class="row">
@@ -19,8 +18,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="text-muted">我拥有的激活码列表
-                    </h3>
+                    <h3 class="text-muted">我拥有的激活码列表</h3>
                     <hr>
                 </div>
                 <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
@@ -36,7 +34,7 @@
                         <tbody>
                             @foreach (var item in Model.orderlist)
                             {
-                                <tr>                                    
+                                <tr>
                                     <td>
                                         <div class="item">
                                             @item.ActiveCode
@@ -44,12 +42,56 @@
                                     </td>
                                     <td>@item.AMStatusName</td>
                                     <td>@item.UseCode</td>
-                                    <td>@item.UserTime</td>
+                                    <td>@(item.UserTime == DateTime.MinValue ? "" : item.UserTime.ToString("yyyy-MM-dd HH:mm"))</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                     @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-muted">激活会员</h3>
+                    <hr>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" id="useactivecode" class="form-control" name="useactivecode" placeholder="使用的激活码" />
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" id="needactivemember" class="form-control" name="needactivemember" placeholder="需要激活的会员手机" />
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn-animate btn-style btn-d btn-primary" href="javascrtpt:void(0);" onclick="activemember()">激活</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-muted">转赠激活码/排单币</h3>
+                    <hr>
+                </div>
+                <div class="col-sm-2">
+                    <select id="codetype">
+                        <option value="1">激活码</option>
+                        <option value="2">排单币</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="acceptcodemember" name="acceptcodemember" class="form-control" placeholder="需要激活的会员手机" />
+                </div>
+                 <div class="col-sm-3">
+                    <input type="text" id="acceptcodecount" name="acceptcodecount"  class="form-control" placeholder="转赠个数" />
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn-animate btn-style btn-d btn-primary" href="javascrtpt:void(0);" onclick="activegive()">确&nbsp;&nbsp;定</a>
                 </div>
             </div>
         </div>

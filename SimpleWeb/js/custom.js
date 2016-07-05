@@ -253,3 +253,56 @@ function accepthelp() {
         }
     });
 }
+function activemember() {
+    var memberphone = $("#needactivemember").val();
+    var activecode = $("#useactivecode").val();
+    if (memberphone == '') {
+        alert("请填写需要激活的会员电话");
+        return false;
+    }
+    if (activecode == '') {
+        alert("请使用的激活码");
+        return false;
+    }
+    $.ajax({
+        url: '/WebFrontArea/WebHome/activemember',
+        dataType: 'Json',
+        data: { 'memberphone': memberphone, "code": activecode },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                alert(data);
+            }
+        }
+    });
+}
+function activegive() {
+    var memberphone = $("#acceptcodemember").val();
+    var count = $("#acceptcodecount").val();
+    var typenum = $("#codetype").val();
+    if (memberphone == '') {
+        alert("请填写接受的会员电话");
+        return false;
+    }
+    if (count == '') {
+        alert("请输入个数");
+        return false;
+    }
+    $.ajax({
+        url: '/WebFrontArea/WebHome/MemberGife',
+        dataType: 'Json',
+        data: { 'phone': memberphone, "count": count, "type": typenum },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                alert("操作失败！");
+            }
+        }
+    });
+}

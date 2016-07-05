@@ -20,12 +20,12 @@
                 <div class="panel-body">
                     <ul>
                         <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
-                        <li><a href="@Url.Action("myactivation", "WebHome", new { area="WebFrontArea"})">激活币剩余：@Model.data.activecodeCount 枚</a></li>
-                        <li><a href="@Url.Action("mylineation", "WebHome", new { area="WebFrontArea"})">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
+                        <li><a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活币剩余：@Model.data.activecodeCount 枚</a></li>
+                        <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
                         <li>我的钱包</li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
+                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,18 +34,20 @@
         <div class="col-sm-9">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="@Url.Action("helpOrderlist", "WebHome", new { area="WebFrontArea"})">我提供的帮助</a>
+                    <h3 class="text-muted"><a href="@Url.Action("helpOrderlist", "WebHome", new { area = "WebFrontArea" })">我提供的帮助</a>
                     </h3>
                     <hr>
                 </div>
                 <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="@Url.Action("acceptOrderlist", "WebHome", new { area="WebFrontArea"})">我接受的帮助</a>
+                    <h3 class="text-muted"><a href="@Url.Action("acceptOrderlist", "WebHome", new { area = "WebFrontArea" })">我接受的帮助</a>
                     </h3>
                     <hr>
                 </div>
                 <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
-                    @foreach (var item in Model.data.helperOrders)
+                    @if (Model.data.helperOrders != null)
                     {
+                        foreach (var item in Model.data.helperOrders)
+                        {
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -80,17 +82,24 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-center">
-                                        <a href="@Url.Action("helporderDetail", "WebHome", new { area="WebFrontArea",orderid=item.ID})">查看明细>></a>
+                                        <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>     
+                        }
+                    }
+                    else
+                    { 
+                        <p class="text-muted">暂无提供帮助的订单</p>
                     }
                 </div>
-                
+
                 <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
-                    @foreach (var item in Model.data.acceptOrders)
+                    @if (Model.data.acceptOrders != null)
                     {
+                        foreach (var item in Model.data.acceptOrders)
+                        {
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -125,13 +134,17 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-center">
-                                        <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area="WebFrontArea",orderid=item.ID})">查看明细>></a>
+                                        <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>     
+                        }
                     }
-
+                    else
+                    { 
+                        <p class="text-muted">暂无接受帮助的订单</p>
+                    }
                 </div>
             </div>
 
@@ -152,8 +165,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.data.AmontChangLog)
+                            @if (Model.data.AmontChangLog != null)
                             {
+                                foreach (var item in Model.data.AmontChangLog)
+                                {
                                 <tr>
                                     <td>
                                         <div class="item">
@@ -165,6 +180,15 @@
                                         @item.OrderCode
                                     </td>
                                     <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                </tr>  
+                                }
+                            }
+                            else
+                            {
+                                 <tr>
+                                    <td colspan="4">
+                                        <p class="text-muted">暂无信息</p>
+                                    </td>
                                 </tr>  
                             }
                         </tbody>

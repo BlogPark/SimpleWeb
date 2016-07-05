@@ -70,22 +70,30 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
-                if (model.MemberPhone != "admin")
+                //插入推荐人信息表
+                MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
+                ReMemberRelationModel remodel = new ReMemberRelationModel();
+                remodel.MemberID = soucemember.ID;
+                remodel.MemberTruthName = soucemember.TruethName;
+                remodel.MemberPhone = soucemember.MobileNum;
+                remodel.RecommMID = memberid;
+                remodel.RecommMPhone = model.MobileNum;
+                remodel.RecommMTruthName = model.TruethName;
+                rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
+                if (rowcount < 1)
                 {
-                    //插入推荐人信息表
-                    MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
-                    ReMemberRelationModel remodel = new ReMemberRelationModel();
-                    remodel.MemberID = soucemember.ID;
-                    remodel.MemberTruthName = soucemember.TruethName;
-                    remodel.MemberPhone = soucemember.MobileNum;
-                    remodel.RecommMID = memberid;
-                    remodel.RecommMPhone = model.TelPhone;
-                    remodel.RecommMTruthName = model.TruethName;
-                    rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
-                    if (rowcount < 1)
-                    {
-                        return 0;
-                    }
+                    return 0;
+                }
+                //初始化会员扩展信息表
+                MemberExtendInfoModel extendinfo = new MemberExtendInfoModel();
+                extendinfo.MemberID = memberid;
+                extendinfo.MemberHelpCount = 0;
+                extendinfo.LastHelpMoney = 0;
+                extendinfo.LastHelperTime = DateTime.Now.AddYears(-1);
+                rowcount = MemberExtendInfoDAL.AddModelExtendinfo(extendinfo);
+                if (rowcount < 1)
+                {
+                    return 0;
                 }
                 scope.Complete();
                 result = 1;
@@ -194,7 +202,7 @@ namespace SimpleWeb.DataBLL
             model.members = count;//我下级会员的总人数
             model.paidancodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 2);//我的排单币个数
             model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情           
-     
+
             return model;
         }
         /// <summary>
@@ -213,7 +221,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="phone"></param>
         /// <param name="activecode"></param>
         /// <returns></returns>
-        public string ActiveMember(int memberid,string phone,string activecode,bool isauto)
+        public string ActiveMember(int memberid, string phone, string activecode, bool isauto)
         {
             string result = "0";
             if (isauto)
@@ -221,7 +229,7 @@ namespace SimpleWeb.DataBLL
                 activecode = ActiveCodeDAL.GetRedamActiveCode(1);
             }
             MemberInfoModel member = null;
-            if(memberid!=0)
+            if (memberid != 0)
             {
                 member = MemberInfoDAL.GetNotActiveMember(memberid);
             }
@@ -257,7 +265,7 @@ namespace SimpleWeb.DataBLL
             }
             using (TransactionScope scope = new TransactionScope())
             {
-               //更改会员的状态
+                //更改会员的状态
                 int rowcount = MemberInfoDAL.UpdateStatus(member.ID, 2);
                 if (rowcount < 1)
                 {
@@ -288,7 +296,7 @@ namespace SimpleWeb.DataBLL
                     logmodel.MemberID = activecodemodel.MemberID;
                     logmodel.MemberName = activecodemodel.MemberName;
                     logmodel.MemberPhone = activecodemodel.MemberPhone;
-                    logmodel.Remark = "为会员："+member.MobileNum+" 激活";
+                    logmodel.Remark = "为会员：" + member.MobileNum + " 激活";
                     rowcount = OperateLogDAL.AddActiveCodeLog(logmodel);
                     if (rowcount < 1)
                     {

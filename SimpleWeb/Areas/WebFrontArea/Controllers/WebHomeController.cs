@@ -107,12 +107,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         public ActionResult MemberGife(string phone, int count, int type)
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-            if (logmember == null)
-            {
-                return Json(-10);
-            }
             int result = activecodebll.GiveActiveCodeFromMember(logmember.ID, type, phone, count);
-            return Json(result);
+            if (result > 0)
+                return Json("1");
+            else
+                return Json("0");
         }
         /// <summary>
         /// 提供帮助单据信息页面
@@ -182,7 +181,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             HelpOrderListViewModel model = new HelpOrderListViewModel();
             int totalcount = 0;
-            
+
             seachmodel.PageIndex = page;
             seachmodel.PageSize = pagesize;
             List<HelpeOrderModel> orderlist = hobll.GetAllHelpeOrderListForPage(seachmodel, out totalcount);
@@ -381,6 +380,25 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 Session.Remove(AppContent.SESSION_WEB_LOGIN);
             }
             return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+        }
+        /// <summary>
+        /// 协助激活会员
+        /// </summary>
+        /// <param name="memberphone"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult activemember(string memberphone, string code)
+        {
+            string result = bll.ActiveMember(0, memberphone, code, false);
+            if (result == "1")
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json(result.Substring(1));
+            }
         }
     }
 }
