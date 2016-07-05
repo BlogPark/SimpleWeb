@@ -27,6 +27,10 @@ namespace SimpleWeb.Filters
             }
             if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
                 return;
+            if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "Register")
+                return;
+            if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "public")
+                return;
             if (ctx.HttpContext.Session[AppContent.SESSION_WEB_LOGIN] == null)
             {
                 var url = ctx.RequestContext.HttpContext.Request == null

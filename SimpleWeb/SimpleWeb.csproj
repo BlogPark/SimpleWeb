@@ -160,6 +160,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\publicController.cs" />
     <Compile Include="Controllers\SystemHelper.cs" />
     <Compile Include="Filters\AdminLoginAttribute.cs" />
     <Compile Include="Filters\WebLoginAttribute.cs" />

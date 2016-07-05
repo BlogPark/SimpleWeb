@@ -81,7 +81,7 @@ $("#redrparea").change(function () {
 });
 function webchang(id, control) {
     $.ajax({
-        url: '/AdminArea/MemberOpera/obtainreagin',
+        url: '/public/obtainreagin',
         dataType: 'Json',
         data: { 'id': id },
         type: 'POST',
