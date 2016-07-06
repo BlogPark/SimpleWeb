@@ -61,7 +61,7 @@
             <div class="well well-sm">
                 <div class="row">
                     <div class="col-sm-12">
-                        @using (Html.BeginForm("Index", "MemberOpera", FormMethod.Get, new { @id = "form1" }))
+                        @using (Html.BeginForm("Index", "ActiveCode",new{area="AdminArea"}, FormMethod.Get, new { @id = "form1" }))
                         {
                             <div class="form-group">
                                 <label class="pull-left control-label">激活编码</label>

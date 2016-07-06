@@ -212,6 +212,7 @@ namespace SimpleWeb.DataBLL
                         }
                     }
                 }
+                //为推荐人增加领导奖
                 rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(order.MemberID, order.Amount, inteistlist, order.OrderCode, order.ID);
                 if (rowcount < 1)
                 {

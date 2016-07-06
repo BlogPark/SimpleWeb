@@ -8,7 +8,7 @@
         <div class="row">
             <ol class="breadcrumb hidden-xs">
                 <li><a href="index.html">首页</a></li>
-                <li class="active">我的拍单币</li>
+                <li class="active">我的排单币</li>
             </ol>
         </div>
     </div>
@@ -18,7 +18,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="text-muted">我拥有的拍单币数量
+                    <h3 class="text-muted">我拥有的排单币数量
                     </h3>
                     <hr>
                 </div>
@@ -26,7 +26,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>拍单币</th>
+                                <th>排单币</th>
                                 <th>使用状态</th>
                                 <th>使用单据编号/用户名</th>
                                 <th>使用时间</th>
@@ -43,7 +43,7 @@
                                     </td>
                                     <td>@item.AMStatusName</td>
                                     <td>@item.UseCode</td>
-                                    <td>@item.UserTime</td>
+                                    <td>@(item.UserTime==DateTime.MinValue?"":item.UserTime.ToString("yyyy-MM-dd HH:mm"))</td>
                                 </tr>
                             }
                         </tbody>

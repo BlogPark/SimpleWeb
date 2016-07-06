@@ -25,10 +25,14 @@ namespace SimpleWeb.DataBLL
             {
                 return 0;
             }
-            if (help.DiffAmount == 0 || accept.DiffAmount == 0)
+            if (help.HStatus > 2 || accept.AStatus > 2)
             {
                 return 0;
             }
+            if (help.DiffAmount == 0 || accept.DiffAmount == 0)
+            {
+                return 0;
+            }            
             //系统计算匹配金额
             if (help.DiffAmount < accept.DiffAmount)
             {

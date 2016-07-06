@@ -147,7 +147,7 @@ ELSE
     BEGIN
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
         SET     StaticCapital=@Amount,
-                   TotalStaticCapital=TotalStaticCapital+@Amount
+                   TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
@@ -185,7 +185,7 @@ ELSE
     BEGIN
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
         SET     StaticCapital=@Amount,
-                   TotalStaticCapital=TotalStaticCapital+@Amount,
+                   TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount,
                    Interest=@interest
         WHERE   MemberID = @MemberID
     END
@@ -227,7 +227,7 @@ ELSE
     BEGIN
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
         SET     DynamicFunds=@Amount,
-                   TotalDynamicFunds=TotalDynamicFunds+@Amount
+                   TotalDynamicFunds=ISNULL(TotalDynamicFunds,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
@@ -261,7 +261,7 @@ ELSE
         {
             string sqltxt = @"
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     StaticCapital=StaticCapital+@Amount
+        SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount
         WHERE   MemberID = @MemberID
     ";
             SqlParameter[] paramter = { 
@@ -281,7 +281,7 @@ ELSE
         {
             string sqltxt = @"
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     StaticCapital=StaticCapital+@Amount,Interest=@interest
+        SET     StaticCapital=ISNULL(StaticCapital,)+@Amount,Interest=@interest
         WHERE   MemberID = @MemberID
     ";
             SqlParameter[] paramter = { 
@@ -302,7 +302,7 @@ ELSE
         {
             string sqltxt = @"
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     DynamicFunds=DynamicFunds+@Amount
+        SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount
         WHERE   MemberID = @MemberID
    ";
             SqlParameter[] paramter = { 
@@ -322,7 +322,7 @@ ELSE
         {
             string sqltxt = @"
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     DynamicFunds=DynamicFunds+@Amount,,Interest=@interest
+        SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount,Interest=@interest
         WHERE   MemberID = @MemberID
    ";
             SqlParameter[] paramter = { 
@@ -361,7 +361,7 @@ ELSE
         public static int UpdateStaticThawDetail(int memberid)
         {
             string sqltxt = @"UPDATE  MemberCapitalDetail
-SET     StaticCapital = StaticCapital + StaticFreezeMoney ,
+SET     StaticCapital = ISNULL(StaticCapital,0) + StaticFreezeMoney ,
         StaticFreezeMoney = 0
 WHERE   MemberID = @id";
             SqlParameter[] paramter = { 
@@ -377,7 +377,7 @@ WHERE   MemberID = @id";
         public static int UpdateDynamicThawDetail(int memberid)
         {
             string sqltxt = @"UPDATE  MemberCapitalDetail
-SET     DynamicFunds = DynamicFunds + DynamicFreezeMoney ,
+SET     DynamicFunds = ISNULL(DynamicFunds,0) + DynamicFreezeMoney ,
         DynamicFreezeMoney = 0
 WHERE   MemberID = @id";
             SqlParameter[] paramter = { 
@@ -434,7 +434,7 @@ WHERE   MemberID = @id";
         public static int PaymentInterest(int day)
         {
             string sqltxt = @"    UPDATE A
-	SET StaticInterest=(StaticCapital*(0.01*Interest))+StaticInterest
+	SET StaticInterest=(ISNULL(StaticCapital,0)*(0.01*ISNULL(Interest,0)))+StaticInterest
 	OUTPUT INSERTED.MemberID,DELETED.MemberPhone,DELETED.MemberName,DELETED.StaticCapital*DELETED.Interest*0.01,'系统派发利息',GETDATE(),0,4,''
 	INTO dbo.AmountChangeLog
 	FROM MemberCapitalDetail A 
@@ -556,7 +556,7 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
 
         }
         /// <summary>
-        /// 查询会员的个人资产信息
+        /// 查询会员的个人全部资产信息
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
@@ -652,8 +652,8 @@ WHERE   MemberID = @memberid";
         {
             decimal staticTotal = 0;
             dynamicTotal=0;
-            string sqltxt = @"SELECT  SUM(TotalStaticCapital) as staticnum ,
-        SUM(TotalDynamicFunds) as dynamicnum
+            string sqltxt = @"SELECT  SUM(ISNULL(TotalStaticCapital,0)) as staticnum ,
+        SUM(ISNULL(TotalDynamicFunds,0)) as dynamicnum
 FROM    SimpleWebDataBase.dbo.MemberCapitalDetail";
             DataTable dt = helper.Query(sqltxt).Tables[0];
             if (dt.Rows.Count > 0)

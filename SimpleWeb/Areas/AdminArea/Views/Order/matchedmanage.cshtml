@@ -165,8 +165,8 @@
                     hids = hids.replace(id, "");
                 }
 
-                $("#hid").val(index);
-                $(".help").html(amont);
+                $("#hid").val(hids);
+                $(".help").html(newamount);
             });
             $("input[type='checkbox'][name='aproList']").change(function () {
                 var ch = $(this).is(':checked');
@@ -198,19 +198,13 @@
                 $("#btnmatch").show();
                 bootbox.alert("请选择匹配的单据");
                 return false;
-            }
-            if (amoney != hmoney) {
-                $("#hidbtn").hide();
-                $("#btnmatch").show();
-                bootbox.alert("双方金额不一致,请重新选择");
-                return false;
-            }
+            }            
             var aids = $("#aid").val();
             var hid = $("#hid").val();
             $.ajax({
                 url: '@Url.Action("matchedorder", "Order", new { area = "AdminArea" })',
                 dataType: 'Json',
-                data: { 'hid': hid, 'aids': aids },
+                data: { 'hids': hid, 'aids': aids },
                 type: 'POST',
                 async:false,
                 success: function (data) {

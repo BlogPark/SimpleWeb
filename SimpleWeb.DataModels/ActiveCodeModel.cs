@@ -22,11 +22,19 @@ namespace SimpleWeb.DataModels
         /// </summary>       
         [DataMember]
         public string ActivationCode { get; set; }
+
+        private int _AType = 1;
         /// <summary>
         /// 类型（1 激活账户  2 排单使用）
         /// </summary>       
         [DataMember]
-        public int AType { get; set; }
+        public int AType
+        {
+            get { return _AType; }
+            set { _AType = value; }
+        }
+        
+       
         /// <summary>
         /// 状态（20 未使用 15 已分配 10 已使用）
         /// </summary>       
@@ -36,7 +44,7 @@ namespace SimpleWeb.DataModels
         /// 添加时间
         /// </summary>       
         [DataMember]
-        public DateTime AddTime { get; set; } 
+        public DateTime AddTime { get; set; }
         #endregion
 
         #region 扩展字段

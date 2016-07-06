@@ -427,7 +427,8 @@ namespace SimpleWeb.DataDAL
         {
             string sqltxt = @"SELECT  ID ,
         TruethName ,
-        MobileNum
+        MobileNum,
+        MStatus
 FROM    dbo.MemberInfo
 WHERE   MobileNum = @MobileNum";
             SqlParameter[] paramter = { 
@@ -440,6 +441,7 @@ WHERE   MobileNum = @MobileNum";
                 model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
                 model.TruethName = dt.Rows[0]["TruethName"].ToString();
                 model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                model.MStatus = dt.Rows[0]["MStatus"].ToString().ParseToInt(1);
                 return model;
             }
             else

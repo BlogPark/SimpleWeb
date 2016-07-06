@@ -71,7 +71,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 member.MStatus = 1;
                 member.LogPwd = DESEncrypt.Encrypt("666666", AppContent.SecrectStr);//加密密码
-                int row = bll.AddMemberInfo(member);
+                string row = bll.AddMemberInfo(member);
             }
             return RedirectToActionPermanent("Index", "MemberOpera", new { area = "AdminArea" });
         }

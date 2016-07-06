@@ -20,7 +20,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
         private MatchOrderBLL mbll = new MatchOrderBLL();
         private MemberCapitalDetailBLL mcbll = new MemberCapitalDetailBLL();
-        private readonly int PageSize = 2;
+        private readonly int PageSize = 20;
         public ActionResult Index()
         {
             return View();

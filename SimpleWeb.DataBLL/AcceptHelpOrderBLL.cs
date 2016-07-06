@@ -18,6 +18,7 @@ namespace SimpleWeb.DataBLL
         public int AddAcceptHelpOrder(AcceptHelpOrderModel model)
         {
             int result = 0;
+            MemberCapitalDetailModel moneydetail = MemberCapitalDetailDAL.GetMemberStaticCapital(model.MemberID);
             using (TransactionScope scope = new TransactionScope())
             {
                 //插入表
@@ -31,10 +32,18 @@ namespace SimpleWeb.DataBLL
                 int rowcount = 0;
                 if (model.SourceType == 1)
                 {
+                    if (moneydetail.StaticCapital < model.Amount)
+                    {
+                        return 0;
+                    }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberStaticCapital(model.MemberID, 0 - model.Amount, 0);
                 }
                 else
                 {
+                    if (moneydetail.DynamicFunds < model.Amount)
+                    {
+                        return 0;
+                    }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberDynamicFunds(model.MemberID, 0 - model.Amount, 0);
                 }
                 if (rowcount < 1)
@@ -57,6 +66,7 @@ namespace SimpleWeb.DataBLL
                     return 0;
                 }
                 scope.Complete();
+                result = 1;
             }
             return result;
         }

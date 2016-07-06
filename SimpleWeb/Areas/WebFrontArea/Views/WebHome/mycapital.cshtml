@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-10 pull-left control-label" style="color:red;font-size:15px;">最低可帮助金额<span id="helpmin">@Model.minhelpamont</span>元&nbsp;&nbsp;&nbsp;最高可帮助金额<span id="helpmax">@Model.maxhelpamont</span>元</label>
+                            <label class="col-sm-10 pull-left control-label" style="color: red; font-size: 15px;">最低可帮助金额<span id="helpmin">@Model.minhelpamont</span>元&nbsp;&nbsp;&nbsp;最高可帮助金额<span id="helpmax">@Model.maxhelpamont</span>元</label>
                             <input type="hidden" id="lasthelp" name="lasthelp" value="@Model.extendinfo.LastHelpMoney">
                         </div>
                         <div class="form-group">
@@ -37,7 +37,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 pull-left control-label"><input type="checkbox" id="chkrisk" name="chkrisk" class="form-control"></label>
+                            <label class="col-sm-1 pull-left control-label">
+                                <input type="checkbox" id="chkrisk" name="chkrisk" class="form-control"></label>
                             <div class="col-sm-8">
                                 警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
@@ -65,7 +66,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">可用金额</label>
                             <div class="col-sm-7">
-                                <input type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly" class="form-control">
+                                <input type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly" class="form-control" value="@Model.mycapitalinfo.StaticCapital">
                             </div>
                         </div>
                         <div class="form-group">
@@ -75,7 +76,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-10 pull-left control-label" style="color:red;font-size:15px;">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元&nbsp;&nbsp;&nbsp;最高可接受金额<span id="accmax">@Model.maxacceptamont</span>元</label>
+                            <label class="col-sm-10 pull-left control-label" style="color: red; font-size: 15px;">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元&nbsp;&nbsp;&nbsp;最高可接受金额<span id="accmax">@Model.maxacceptamont</span>元</label>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 pull-left control-label">接受来源</label>
@@ -129,7 +130,7 @@
                 <div class="info-board info-board-red">
                     <h2>静态资金信息</h2>
                     <ul class="checkout">
-                        <li>静态资金：￥@Model.mycapitalinfo.StaticCapital</li>
+                        <li>静态资金：￥<span id="staticmoney">@Model.mycapitalinfo.StaticCapital</span></li>
                         <li>利息金额：￥@Model.mycapitalinfo.StaticInterest</li>
                         <li>冻结金额：￥@Model.mycapitalinfo.StaticFreezeMoney</li>
                     </ul>
@@ -140,7 +141,7 @@
                 <div class="info-board info-board-blue">
                     <h2>动态资金信息</h2>
                     <ul class="checkout">
-                        <li>动态资金：￥@Model.mycapitalinfo.DynamicFunds</li>
+                        <li>动态资金：￥<span id="dymicmoney">@Model.mycapitalinfo.DynamicFunds</span></li>
                         <li>利息金额：￥@Model.mycapitalinfo.DynamicInterest</li>
                         <li>冻结金额：￥@Model.mycapitalinfo.DynamicFreezeMoney</li>
                     </ul>

@@ -23,12 +23,11 @@ namespace SimpleWeb.DataDAL
             strSql.Append("insert into HelpeOrder(");
             strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
+            strSql.Append("@MatchedAmount,GETDATE(),@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
-			            new SqlParameter("@MatchedAmount", SqlDbType.Decimal) ,            
-                        new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+			            new SqlParameter("@MatchedAmount", SqlDbType.Decimal) ,     
                         new SqlParameter("@SortIndex", SqlDbType.Int) ,            
                         new SqlParameter("@OrderCode", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberID", SqlDbType.Int) ,            
@@ -41,17 +40,16 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@ActiveCode",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.MatchedAmount;
-            parameters[1].Value = model.AddTime;
-            parameters[2].Value = model.SortIndex;
-            parameters[3].Value = model.OrderCode;
-            parameters[4].Value = model.MemberID;
-            parameters[5].Value = model.MemberPhone;
-            parameters[6].Value = model.MemberName;
-            parameters[7].Value = model.Amount;
-            parameters[8].Value = model.Interest;
-            parameters[9].Value = model.PayType;
-            parameters[10].Value = model.HStatus;
-            parameters[11].Value = model.ActiveCode;
+            parameters[1].Value = model.SortIndex;
+            parameters[2].Value = model.OrderCode;
+            parameters[3].Value = model.MemberID;
+            parameters[4].Value = model.MemberPhone;
+            parameters[5].Value = model.MemberName;
+            parameters[6].Value = model.Amount;
+            parameters[7].Value = model.Interest;
+            parameters[8].Value = model.PayType;
+            parameters[9].Value = model.HStatus;
+            parameters[10].Value = model.ActiveCode;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -506,7 +504,7 @@ WHERE   ID = @id
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday  from HelpeOrder where ID=@id ";
+            string sqltxt = @"select HStatus,OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday  from HelpeOrder where ID=@id ";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };
@@ -522,6 +520,7 @@ WHERE   ID = @id
                 model.DiffAmount = Convert.ToDecimal(dt.Rows[0]["DiffAmount"].ToString());
                 model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
                 model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
+                model.HStatus = dt.Rows[0]["HStatus"].ToString().ParseToInt(0);
                 return model;
             }
             else

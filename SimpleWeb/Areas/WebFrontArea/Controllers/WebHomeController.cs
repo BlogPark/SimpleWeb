@@ -25,7 +25,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         private AdminSiteNewsBll newsbll = new AdminSiteNewsBll();
         private MemberCapitalDetailBLL cbll = new MemberCapitalDetailBLL();
         private WebSettingsBLL webbll = new WebSettingsBLL();
-        private readonly int pagesize = 2;
+        private readonly int pagesize = 10;
         private WebSettingsModel web;
 
         public WebHomeController()
@@ -288,15 +288,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         [HttpPost]
         public ActionResult updatepwd(string pwd)
         {
-            if (!string.IsNullOrWhiteSpace(pwd))
+            if (string.IsNullOrWhiteSpace(pwd))
             {
                 return Json("0");
             }
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-            if (logmember == null)
-            {
-                return Json("0");
-            }
             string newpwd = DESEncrypt.Encrypt(pwd, AppContent.SecrectStr);
             int row = bll.UpdateUserPwd(logmember.ID, newpwd);
             return Json(row);
@@ -322,6 +318,13 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             ViewBag.PageTitle = web.WebName;
             return View(model);
         }
+        /// <summary>
+        /// 添加提供帮助
+        /// </summary>
+        /// <param name="helpactivecode"></param>
+        /// <param name="helpamount"></param>
+        /// <param name="paytype"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult addhelporder(string helpactivecode, decimal helpamount, string paytype)
         {
@@ -345,6 +348,13 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 return Json("0");
             }
         }
+        /// <summary>
+        /// 添加接受帮助
+        /// </summary>
+        /// <param name="soucetype"></param>
+        /// <param name="money"></param>
+        /// <param name="paytype"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult addacceptorder(int soucetype, decimal money, string paytype)
         {
@@ -390,7 +400,8 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         [HttpPost]
         public ActionResult activemember(string memberphone, string code)
         {
-            string result = bll.ActiveMember(0, memberphone, code, false);
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            string result = bll.ActiveMember(0, memberphone, code, false,logmember.ID);
             if (result == "1")
             {
                 return Json("1");

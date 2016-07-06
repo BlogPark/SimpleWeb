@@ -106,7 +106,7 @@ function subchange() {
 }
 function changlogpwd() {
     if (confirm("即将修改登陆密码，确认继续？")) {
-        var pwd = $("#newpwd").val();
+        var pwd = $("#mynewpwd").val();
         $.ajax({
             url: '/WebFrontArea/WebHome/updatepwd',
             dataType: 'Json',
@@ -114,7 +114,10 @@ function changlogpwd() {
             type: 'POST',
             success: function (data) {
                 if (data == "1") {
-                    alert("更改成功");
+                    bootbox.alert("更改成功");
+                }
+                else {
+                    bootbox.alert("更改失败")
                 }
             }
         });
@@ -172,6 +175,12 @@ $("#achkalipay").change(function () {
 $("input:radio[name=optionsRadios1]").change(function () {
     var raval = $("input:radio[name=optionsRadios1]:checked").val();
     $("#soucetype").val(raval);
+    if (raval == 1) {
+        $("#acceptamontenable").val($("#staticmoney").html());
+    }
+    else {
+        $("#acceptamontenable").val($("#dymicmoney").html());
+    }
 });
 function providehelp() {
     var helpmin = parseFloat($("#helpmin").html());//最少帮助金额
@@ -274,7 +283,7 @@ function activemember() {
                 location.reload();
             }
             else {
-                alert(data);
+                $("#activemsg").html(data);
             }
         }
     });
@@ -301,7 +310,7 @@ function activegive() {
                 location.reload();
             }
             else {
-                alert("操作失败！");
+                $("#passmsg").html(data);
             }
         }
     });

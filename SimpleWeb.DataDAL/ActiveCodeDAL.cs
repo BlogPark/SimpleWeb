@@ -533,6 +533,27 @@ WHERE   MemberID = @memberid
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
+        /// 修改会员激活码为使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int UpdateMemberActiveCodeToUse(int memberid, string ordercode, string activecode)
+        {
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberActiveCode
+SET     AMStatus = 2 ,
+        UseCode = @usecode ,
+        UserTime = GETDATE()
+WHERE   MemberID = @memberid
+        AND ActiveCode = @activecode
+        AND AMType=1";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@memberid",memberid),
+                                      new SqlParameter("@usecode",ordercode),
+                                      new SqlParameter("@activecode",activecode)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
         /// 会员间赠送激活码
         /// </summary>
         /// <param name="soucememberID">原始会员ID</param>

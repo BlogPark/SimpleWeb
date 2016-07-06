@@ -15,25 +15,25 @@ namespace SimpleWeb.DataBLL
         /// <summary>
         ///注册会员（已追加注册返还金额功能）
         /// </summary>
-        public int AddMemberInfo(MemberInfoModel model)
+        public string AddMemberInfo(MemberInfoModel model)
         {
-            int result = 0;
+            string result = "1";
             string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额  
             #region 验证用户真实姓名 和手机
             int rows = MemberInfoDAL.GetMemberCountInfoByName(model.TruethName.Trim());
             if (rows > 2)
             {
-                return 0;
+                return "0用户姓名重复";
             }
             rows = MemberInfoDAL.GetMemberCountInfoByMobile(model.MobileNum.Trim());
             if (rows > 0)
             {
-                return 0;
+                return "0手机号已被注册";
             }
             rows = MemberInfoDAL.GetMemberCountInfoByAlipayNum(model.AliPayNum.Trim());
             if (rows > 0)
             {
-                return 0;
+                return "0支付宝ID已被注册";
             }
             #endregion
             using (TransactionScope scope = new TransactionScope())
@@ -41,7 +41,7 @@ namespace SimpleWeb.DataBLL
                 int memberid = dal.AddMemberInfo(model);
                 if (memberid < 1)
                 {
-                    return 0;
+                    return "0注册失败";
                 }
                 decimal amont = 0;
                 if (!string.IsNullOrWhiteSpace(value))
@@ -49,12 +49,12 @@ namespace SimpleWeb.DataBLL
 
                     if (!decimal.TryParse(value, out amont))
                     {
-                        return 0;
+                        return "0注册失败";
                     }
                     int row = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoney(memberid, amont, model.TruethName, model.MobileNum);
                     if (row < 1)
                     {
-                        return 0;
+                        return "0注册失败";
                     }
                 }
                 //返还激活码金额
@@ -68,7 +68,7 @@ namespace SimpleWeb.DataBLL
                 int rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0注册失败";
                 }
                 //插入推荐人信息表
                 MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
@@ -82,7 +82,7 @@ namespace SimpleWeb.DataBLL
                 rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0注册失败";
                 }
                 //初始化会员扩展信息表
                 MemberExtendInfoModel extendinfo = new MemberExtendInfoModel();
@@ -93,10 +93,10 @@ namespace SimpleWeb.DataBLL
                 rowcount = MemberExtendInfoDAL.AddModelExtendinfo(extendinfo);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0注册失败";
                 }
                 scope.Complete();
-                result = 1;
+                result = "1";
             }
             return result;
         }
@@ -221,7 +221,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="phone"></param>
         /// <param name="activecode"></param>
         /// <returns></returns>
-        public string ActiveMember(int memberid, string phone, string activecode, bool isauto)
+        public string ActiveMember(int memberid, string phone, string activecode, bool isauto,int souceid=0)
         {
             string result = "0";
             if (isauto)
@@ -240,6 +240,11 @@ namespace SimpleWeb.DataBLL
             if (member == null)
             {
                 result = "0无此会员";
+                return result;
+            }
+            if (member.MStatus != 1)
+            {
+                result = "0会员状态不正确";
                 return result;
             }
             ActiveCodeModel activecodemodel = ActiveCodeDAL.GetActiveCodeExtendModel(activecode);
@@ -282,11 +287,23 @@ namespace SimpleWeb.DataBLL
                 if (activecodemodel.MID > 0)
                 {
                     //更改会员机会码的使用状态
-                    rowcount = ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);
-                    if (rowcount < 1)
+                    if (souceid > 0)
                     {
-                        result = "0更新会员激活码表状态失败";
-                        return result;
+                        rowcount = ActiveCodeDAL.UpdateMemberActiveCodeToUse(souceid, member.MobileNum, activecodemodel.ActivationCode);
+                        if (rowcount < 1)
+                        {
+                            result = "0更新会员激活码表状态失败";
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        rowcount=ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);
+                        if (rowcount < 1)
+                        {
+                            result = "0更新会员激活码表状态失败";
+                            return result;
+                        }
                     }
                     //插入使用日志
                     ActiveCodeLogModel logmodel = new ActiveCodeLogModel();

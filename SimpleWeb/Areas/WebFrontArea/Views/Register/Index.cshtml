@@ -10,9 +10,12 @@
                 <li><a href="index.html">Home</a></li>
                 <li class="active">会员注册</li>
             </ol>
-        </div> <!-- / .row -->
-    </div> <!-- / .container -->
-</div> <!-- / .Topic Header -->
+        </div>
+        <!-- / .row -->
+    </div>
+    <!-- / .container -->
+</div>
+<!-- / .Topic Header -->
 <div class="container">
     <div class="row">
         <div class="col-md-7 col-md-offset-3 col-sm-8 col-sm-offset-2">
@@ -22,6 +25,12 @@
                     <hr>
                     @using (Html.BeginForm("Index", "Register", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
                     {
+                        if (!string.IsNullOrWhiteSpace(ViewData["Error"].ToString()))
+                        {
+                        <div class="form-group">
+                            <lable style="color: red">@ViewData["Error"]</lable>
+                        </div>
+                        }
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
                         </div>
@@ -103,13 +112,18 @@
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="agreementchk"> 我已阅读并且充分了解投资的风险，无条件接受网站平台的一切决定
+                                <input type="checkbox" id="agreementchk">
+                                我已阅读并且充分了解投资的风险，无条件接受网站平台的一切决定
                             </label>
                         </div>
-                        <a href="javascript:void(0);" onclick="subchange()"  class="btn-animate btn-style btn-d btn-primary ">注&nbsp;&nbsp;&nbsp;&nbsp;册</a>
+                        <div class="form-group">
+                            <a href="javascript:void(0);" onclick="subchange()" class="btn-animate btn-style btn-d btn-primary ">注&nbsp;&nbsp;&nbsp;&nbsp;册</a>
+                        </div>
                     }
                 </div>
             </div>
         </div>
-    </div> <!-- / .row -->
-</div> <!-- / .container -->
+    </div>
+    <!-- / .row -->
+</div>
+<!-- / .container -->

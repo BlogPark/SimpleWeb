@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SimpleWeb.Areas.WebFrontArea.Models;
+using SimpleWeb.Common;
+using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
 using SimpleWeb.Filters;
@@ -29,6 +31,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             model.member.MemberPhone = msd;
             model.regintable = bll.GetReginTableListModel(1);
             ViewBag.PageTitle = web.WebName;
+            ViewData["Error"] = "";
             return View(model);
         }
         [HttpPost]
@@ -36,9 +39,24 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         {
             if (member != null)
             {
-                int row = bll.AddMemberInfo(member);
+                member.LogPwd = DESEncrypt.Encrypt(member.LogPwd, AppContent.SecrectStr);
+                string row = bll.AddMemberInfo(member);
+                if (row == "1")
+                {
+                    return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+                }
+                else
+                {
+                    ViewData["Error"] = row.Substring(1);
+                }
             }
-            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            RegisterViewModel model = new RegisterViewModel();
+            model.member = member;
+            model.member.MemberPhone = member.MemberPhone;
+            model.regintable = bll.GetReginTableListModel(1);
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+
         }
         [HttpPost]
         public ActionResult checkphone(string phone)
