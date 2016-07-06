@@ -15,20 +15,27 @@ namespace SimpleWeb.DataBLL
         /// <summary>
         /// 添加一条提供帮助单据
         /// </summary>
-        public int AddHelpeOrder(HelpeOrderModel model)
+        public string AddHelpeOrder(HelpeOrderModel model)
         {
-            int result = 0;
+            string result = "0";
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
+            string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
-
+            TimeSpan ts1=new TimeSpan(DateTime.Now.Ticks);  
+            TimeSpan ts2=new TimeSpan(meinfo.LastHelperTime.Ticks);  
+            TimeSpan ts=ts1.Subtract(ts2).Duration();
+            if (ts.Days < 1 && ts.Days > -1)
+            {
+                return "0今天已经提供过帮助";
+            }
             ActiveCodeModel activemodel = ActiveCodeDAL.GetActiveCodeExtendModel(model.ActiveCode);
             if (activemodel == null)//没有该激活码信息为失败
             {
-                return 0;
+                return "0排单币无效";
             }
             if (activemodel.AStatus == 10)//改激活码已使用为失败
             {
-                return 0;
+                return "0排单币已经被使用";
             }
             using (TransactionScope scope = new TransactionScope())
             {
@@ -36,12 +43,12 @@ namespace SimpleWeb.DataBLL
                 int rowcount = ActiveCodeDAL.UpdateStatus(activemodel.ID, 10);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 rowcount = ActiveCodeDAL.UpdateMemberActiveToUse(model.MemberID, model.OrderCode, model.ActiveCode);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //插入激活码的使用日志
                 ActiveCodeLogModel aclogmodel = new ActiveCodeLogModel();
@@ -54,7 +61,7 @@ namespace SimpleWeb.DataBLL
                 rowcount = OperateLogDAL.AddActiveCodeLog(aclogmodel);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //更改会员的资金信息和利率
                 decimal dinterest = 1;
@@ -62,25 +69,25 @@ namespace SimpleWeb.DataBLL
                 {
                     if (!decimal.TryParse(interest, out dinterest))
                     {
-                        return 0;
+                        return "0操作失败";
                     }
                 }
                 rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount, dinterest,model.MemberName,model.MemberPhone);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //插入表记录
                 int orderid = dal.AddHelpeOrder(model);
                 if (orderid < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //更新会员的统计信息
                 rowcount = MemberExtendInfoDAL.Update(model.MemberID, model.Amount);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //插入会员的资金变动纪录
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
@@ -93,9 +100,18 @@ namespace SimpleWeb.DataBLL
                 logmodel.Remark = "会员:" + model.MemberPhone + " 申请提供帮助 " + model.Amount.ToString() + "元";
                 logmodel.Type = 1;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
-
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                //为推荐人添加领导奖
+                rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(model.MemberID, model.Amount, inteistlist, model.OrderCode, orderid);
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
                 scope.Complete();
-                result = 1;
+                result = "1";
             }
             return result;
         }
@@ -212,12 +228,12 @@ namespace SimpleWeb.DataBLL
                         }
                     }
                 }
-                //为推荐人增加领导奖
-                rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(order.MemberID, order.Amount, inteistlist, order.OrderCode, order.ID);
-                if (rowcount < 1)
-                {
-                    return 0;
-                }
+                //为推荐人增加领导奖（此功能迁移到排单的时候）
+                //rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(order.MemberID, order.Amount, inteistlist, order.OrderCode, order.ID);
+                //if (rowcount < 1)
+                //{
+                //    return 0;
+                //}
                 scope.Complete();
                 result = 1;
             }

@@ -280,5 +280,18 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json(result.Substring(1));
             }
         }
+        [HttpPost]
+        public ActionResult paymentdymicmoney(string phone,decimal money)
+        {
+            string result = mcbll.FenPaiMoney(phone,money);
+            if (result == "1")
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json(result.Substring(1));
+            }
+        }
     }
 }

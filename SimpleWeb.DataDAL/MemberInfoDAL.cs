@@ -142,7 +142,7 @@ namespace SimpleWeb.DataDAL
         public MemberInfoModel GetModel(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID, Area, Address, WeixinNum, AliPayName, AliPayNum, SecurityQuestion, SecurityAnswer, LogPwd, MStatus, AddTime, TruethName, Sex, TelPhone, MobileNum, Email, IdentificationID, Province, City  ");
+            strSql.Append("select ID ,TruethName ,Sex , TelPhone ,MobileNum , Email ,IdentificationID ,Province ,City ,Area ,[Address] , WeixinNum ,  AliPayName , AliPayNum ,SecurityQuestion ,SecurityAnswer , MStatus , AddTime  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -167,7 +167,7 @@ namespace SimpleWeb.DataDAL
                 model.AliPayNum = ds.Tables[0].Rows[0]["AliPayNum"].ToString();
                 model.SecurityQuestion = ds.Tables[0].Rows[0]["SecurityQuestion"].ToString();
                 model.SecurityAnswer = ds.Tables[0].Rows[0]["SecurityAnswer"].ToString();
-                model.LogPwd = ds.Tables[0].Rows[0]["LogPwd"].ToString();
+                model.LogPwd = "";
                 if (ds.Tables[0].Rows[0]["MStatus"].ToString() != "")
                 {
                     model.MStatus = int.Parse(ds.Tables[0].Rows[0]["MStatus"].ToString());

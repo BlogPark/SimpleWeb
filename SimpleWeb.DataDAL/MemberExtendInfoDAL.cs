@@ -79,7 +79,7 @@ ELSE
                 }
                 if (ds.Tables[0].Rows[0]["LastHelperTime"].ToString() != "")
                 {
-                    model.LastHelperTime = DateTime.Parse(ds.Tables[0].Rows[0]["LastHelperTime"].ToString());
+                    model.LastHelperTime = ds.Tables[0].Rows[0]["LastHelperTime"].ToString().ParseToDateTime(DateTime.MinValue);
                 }
                 if (ds.Tables[0].Rows[0]["MemberHelpCount"].ToString() != "")
                 {

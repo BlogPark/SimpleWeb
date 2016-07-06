@@ -338,14 +338,14 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             help.MemberPhone = logmember.MobileNum;
             help.OrderCode = "H" + DateTime.Now.ToString("yyyyMMddHHmmss");
             help.PayType = paytype;
-            int result = hobll.AddHelpeOrder(help);
-            if (result > 0)
+            string result = hobll.AddHelpeOrder(help);
+            if (result == "1")
             {
                 return Json("1");
             }
             else
             {
-                return Json("0");
+                return Json(result.Substring(1));
             }
         }
         /// <summary>
@@ -368,14 +368,14 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             accept.MemberPhone = logmember.MobileNum;
             accept.OrderCode = "A" + DateTime.Now.ToString("yyyyMMddHHmmss");
             accept.PayType = paytype;
-            int result = aobll.AddAcceptHelpOrder(accept);
-            if (result > 0)
+            string result = aobll.AddAcceptHelpOrder(accept);
+            if (result == "1")
             {
                 return Json("1");
             }
             else
             {
-                return Json("0");
+                return Json(result.Substring(1));
             }
         }
         /// <summary>
@@ -401,7 +401,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         public ActionResult activemember(string memberphone, string code)
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-            string result = bll.ActiveMember(0, memberphone, code, false,logmember.ID);
+            string result = bll.ActiveMember(0, memberphone, code, false, logmember.ID);
             if (result == "1")
             {
                 return Json("1");

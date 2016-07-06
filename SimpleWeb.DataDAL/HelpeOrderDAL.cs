@@ -680,5 +680,20 @@ WHERE   D.HelperOrderID = @orderid";
                 return null;
             }
         }
+        /// <summary>
+        /// 查询会员是否还有未完成的提供订单
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int GetNotFinishOrderByMember(int memberid)
+        {
+            string sqltxt = @"SELECT  ID
+FROM    dbo.HelpeOrder
+WHERE   MemberID = @memberid
+        AND HStatus < 3";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            return dt.Rows.Count;
+        }
     }
 }

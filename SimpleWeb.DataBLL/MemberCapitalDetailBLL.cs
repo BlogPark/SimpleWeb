@@ -87,5 +87,45 @@ namespace SimpleWeb.DataBLL
         {
             return MemberExtendInfoDAL.GetMemberExtendInfo(memberid);
         }
+        /// <summary>
+        /// 为会员分派奖金
+        /// </summary>
+        /// <param name="memberphone"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public string FenPaiMoney(string memberphone,decimal money)
+        {
+            string result = "0";
+            MemberInfoModel member = MemberInfoDAL.GetMember(memberphone);
+            if (member == null)
+            {
+                return "0无此会员";
+            }
+            using (TransactionScope scope = new TransactionScope())
+            {
+                int rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(member.ID, money, member.TruethName, member.MobileNum);
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = member.ID;
+                logmodel.MemberName = member.TruethName;
+                logmodel.MemberPhone = member.MobileNum;
+                logmodel.OrderCode = "";
+                logmodel.OrderID = 0;
+                logmodel.ProduceMoney = money;
+                logmodel.Remark = "会员:"+member.MobileNum+" 得到系统派发的奖金";
+                logmodel.Type = 3;
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                scope.Complete();
+                result = "1";
+            }
+            return result;
+        }
     }
 }

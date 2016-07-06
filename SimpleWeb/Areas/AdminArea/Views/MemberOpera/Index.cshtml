@@ -35,19 +35,19 @@
                         @using (Html.BeginForm("Index", "MemberOpera", FormMethod.Get, new { @id = "form1" }))
                         {
                             <div class="form-group">
-                                <label  class="pull-left control-label">编号</label>
+                                <label class="pull-left control-label">编号</label>
                                 <div class="col-sm-1">
                                     @Html.TextBoxFor(m => m.member.ID, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="pull-left control-label">手机号</label>
+                                <label class="pull-left control-label">手机号</label>
                                 <div class="col-sm-2">
                                     @Html.TextBoxFor(m => m.member.MobileNum, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="pull-left control-label">真实姓名</label>
+                                <label class="pull-left control-label">真实姓名</label>
                                 <div class="col-sm-2">
                                     @Html.TextBoxFor(m => m.member.TruethName, new { @class = "form-control" })
                                 </div>
@@ -57,7 +57,7 @@
                                 <div class="col-sm-2">
                                     @Html.DropDownListFor(m => m.member.MStatus, null, new { @class = "form-control" })
                                 </div>
-                            </div>                  
+                            </div>
                             <div class="btn-group hidden-xs pull-right invoice-btn-group">
                                 <p class="btn-toolbar">
                                     <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
@@ -67,18 +67,18 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row" id="tabdiv">
                         <table class="table table-striped table-bordered" id="menutab">
                             <thead>
                                 <tr>
-                                    <th  class="text-center"><input type="checkbox" id="chk_all" /></th>
+                                    <th class="text-center"><input type="checkbox" id="chk_all" /></th>
                                     <th class="text-center">会员编号</th>
                                     <th class="text-center">真实姓名</th>
                                     <th class="text-center">手机号</th>
-                                     <th class="text-center">微信号</th>
+                                    <th class="text-center">微信号</th>
                                     <th class="text-center">支付宝账号</th>
                                     <th class="text-center">添加时间</th>
                                     <th class="text-center">状        态</th>
@@ -92,7 +92,7 @@
                                         <td><input type="checkbox" name="proList" value="@item.ID" /></td>
                                         <td>@item.ID</td>
                                         <td>@item.TruethName</td>
-                                        <td>@item.MobileNum</td>
+                                        <td><a href="@Url.Action("NoPwdLogin", "Login", new { area = "WebFrontArea", id = item.ID })" target="_blank">@item.MobileNum</a></td>
                                         <td>@item.WeixinNum</td>
                                         <td>@item.AliPayNum</td>
                                         <td>@item.AddTime.ToString("yyyy-MM-dd HH:ss")</td>
@@ -101,19 +101,20 @@
                                         </td>
                                         <td>
                                             <p class="btn-toolbar">
-                                                <a class="btn btn-info"  href="@Url.Action("EditMember", "MemberOpera", new { area = "AdminArea", mid = item.ID })" ><i class="fa fa-edit"></i>&nbsp; 编&nbsp; &nbsp; 辑</a>
+                                                <a class="btn btn-info" href="@Url.Action("EditMember", "MemberOpera", new { area = "AdminArea", mid = item.ID })"><i class="fa fa-edit"></i> 编 辑</a>
                                                 @if (item.MStatus == 1)
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,2)" ><i class="fa fa-times-circle"></i>&nbsp; 激&nbsp; &nbsp; 活</button>
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,2)"><i class="fa fa-times-circle"></i>激 活</button>
                                                 }
                                                 else if (item.MStatus == 2)
-                                                { 
-                                                <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,3)" ><i class="fa fa-times-circle"></i>&nbsp;冻 &nbsp; &nbsp; 结</button>
+                                                {
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,3)"><i class="fa fa-times-circle"></i>冻  结</button>
                                                 }
                                                 else
                                                 {
-                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,4)" ><i class="fa fa-times-circle"></i>&nbsp; 解&nbsp; &nbsp; 冻</button> 
-                                                }                                                
+                                                    <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,4)"><i class="fa fa-times-circle"></i> 解冻</button>
+                                                }
+                                                <button class="btn btn-danger" data-toggle="modal" onclick="update(@item.ID,5)"><i class="fa fa-times-circle"></i> 重置</button>
                                             </p>
                                         </td>
                                     </tr>
@@ -131,7 +132,7 @@
 </div>
 @section scriptfiles{
     <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
-    }
+}
 @section myscript{
     <script type="text/javascript">
         $(function () {

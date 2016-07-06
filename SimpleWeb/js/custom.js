@@ -220,7 +220,7 @@ function providehelp() {
                 location.reload();
             }
             else {
-                bootbox.alert("²Ù×÷Ê§°Ü");
+                bootbox.alert(data);
             }
         }
     });
@@ -257,7 +257,7 @@ function accepthelp() {
                 location.reload();
             }
             else {
-                alert("²Ù×÷Ê§°Ü");
+                bootbox.alert(data);
             }
         }
     });

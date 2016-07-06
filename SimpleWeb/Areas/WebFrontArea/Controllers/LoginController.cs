@@ -12,7 +12,7 @@ using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.WebFrontArea.Controllers
 {
-     [WebLoginAttribute]
+    [WebLoginAttribute]
     public class LoginController : Controller
     {
         //会员登陆页面
@@ -55,6 +55,22 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 ViewBag.TempMsg = logmsg;
                 return View(member);
             }
+        }
+
+        public ActionResult NoPwdLogin(int id)
+        {
+            if (Session[AppContent.SESSION_LOGIN_NAME] == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            MemberInfoModel member = bll.GetModel(id);
+            if (member != null)
+            {
+                Session.Remove(AppContent.SESSION_WEB_LOGIN);
+                Session[AppContent.SESSION_WEB_LOGIN] = member;
+                return RedirectToAction("Index", "WebHome", new { area = "WebFrontArea" });
+            }
+            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
         }
     }
 }

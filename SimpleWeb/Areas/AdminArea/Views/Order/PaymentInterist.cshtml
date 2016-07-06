@@ -3,6 +3,41 @@
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">派发会员奖金</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal">
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">会员手机：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="memberphone" name="memberphone" placeholder="会员手机" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">派发金额：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="money" name="money" placeholder="派发金额" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" onclick="paymentmoney()">派 发</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
 <div class="container">
     <div class="row">
         <div id="content" class="col-lg-12">
@@ -35,6 +70,7 @@
                         <div class="btn-group hidden-xs pull-left invoice-btn-group">
                             <p class="btn-toolbar">
                                 <button class="btn btn-info" type="button" onclick="payment()"><i class="fa fa-cog"></i>&nbsp;派发会员利息</button>
+                                <a class="btn btn-primary" data-toggle="modal" href="#box-config1"><i class="fa fa-plus"></i>&nbsp;派发会员奖金</a>
                             </p>
                         </div>
                     </div>
@@ -81,11 +117,11 @@
 </div>
 @section scriptfiles{
     <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
-    }
+}
 @section myscript{
     <script type="text/javascript">
         $(function () {
-            App.init(); //Initialise plugins and elements           
+            App.init(); //Initialise plugins and elements
         });
         function payment() {
             $.ajax({
@@ -93,6 +129,25 @@
                 datatype: "json",
                 async: false,
                 type: "POST",
+                success: function (data) {
+                    if (data == '1') {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert(data);
+                    }
+                }
+            });
+        }
+        function paymentmoney() {
+            var phone = $("#memberphone").val();
+            var money = $("#money").val();
+            $.ajax({
+                url: "@Url.Action("paymentdymicmoney", "Order", new { area = "AdminArea" })",
+                datatype: "json",
+                async: false,
+                type: "POST",
+                data: { "phone": phone, "money": money },
                 success: function (data) {
                     if (data == '1') {
                         location.reload();

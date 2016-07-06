@@ -106,9 +106,18 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 result=bll.ActiveMember(id,"","",true);//系统分配一个随机激活码
             }
+            else if (status == 5)
+            {
+                string pwd=DESEncrypt.Encrypt("666666",AppContent.SecrectStr);
+                result = bll.UpdateUserPwd(id,pwd).ToString();
+            }
             else
-            { 
-                result =bll.UpdateStatus(id, status).ToString();
+            {
+                if (status == 4)
+                {
+                    status = 2;
+                }
+                result = bll.UpdateStatus(id, status).ToString();
             }
             if (!result.StartsWith("0"))
             {

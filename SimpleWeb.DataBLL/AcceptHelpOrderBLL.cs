@@ -15,17 +15,22 @@ namespace SimpleWeb.DataBLL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public int AddAcceptHelpOrder(AcceptHelpOrderModel model)
+        public string  AddAcceptHelpOrder(AcceptHelpOrderModel model)
         {
-            int result = 0;
+            string result = "0";
             MemberCapitalDetailModel moneydetail = MemberCapitalDetailDAL.GetMemberStaticCapital(model.MemberID);
+            int rows = HelpeOrderDAL.GetNotFinishOrderByMember(model.MemberID);
+            if (rows > 0)
+            {
+                return "0还有未打款的帮助单据";
+            }
             using (TransactionScope scope = new TransactionScope())
             {
                 //插入表
                 int orderid = dal.AddAcceptHelpOrder(model);
                 if (orderid < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //扣减会员的相应金额记录
                 //点击接受帮助后不再为会员计算利息
@@ -34,7 +39,7 @@ namespace SimpleWeb.DataBLL
                 {
                     if (moneydetail.StaticCapital < model.Amount)
                     {
-                        return 0;
+                        return "0操作失败";
                     }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberStaticCapital(model.MemberID, 0 - model.Amount, 0);
                 }
@@ -42,13 +47,13 @@ namespace SimpleWeb.DataBLL
                 {
                     if (moneydetail.DynamicFunds < model.Amount)
                     {
-                        return 0;
+                        return "0操作失败";
                     }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberDynamicFunds(model.MemberID, 0 - model.Amount, 0);
                 }
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 //增加会员的资金变动记录
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
@@ -63,10 +68,10 @@ namespace SimpleWeb.DataBLL
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
-                    return 0;
+                    return "0操作失败";
                 }
                 scope.Complete();
-                result = 1;
+                result = "1";
             }
             return result;
         }
