@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into HelpeOrder(");
-            strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest");
+            strSql.Append("MatchedAmount,AddTime,LastUpdateTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,GETDATE(),@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
+            strSql.Append("@MatchedAmount,GETDATE(),GETDATE(),@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -133,7 +133,7 @@ namespace SimpleWeb.DataDAL
         public List<HelpeOrderModel> GetAllHelpeOrderListForPage(HelpeOrderModel model, out int totalrowcount)
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
-            string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName";
+            string columms = @"ID, MatchedAmount, AddTime, SortIndex, ActiveCode,OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName";
             string where = "";
             if (model != null)
             {
@@ -214,6 +214,7 @@ namespace SimpleWeb.DataDAL
                     helpeordermodel.HStatus = int.Parse(item["HStatus"].ToString());
                 }
                 helpeordermodel.HStatusName = item["HStatusName"].ToString();
+                helpeordermodel.ActiveCode = item["ActiveCode"].ToString();
                 list.Add(helpeordermodel);
             }
             return list;
@@ -230,9 +231,9 @@ namespace SimpleWeb.DataDAL
                 //插入帮助订单表
                 StringBuilder strSql = new StringBuilder();
                 strSql.Append("insert into HelpeOrder(");
-                strSql.Append("MatchedAmount,AddTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus");
+                strSql.Append("MatchedAmount,AddTime,LastUpdateTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus");
                 strSql.Append(") values (");
-                strSql.Append("@MatchedAmount,@AddTime,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus");
+                strSql.Append("@MatchedAmount,@AddTime,GETDATE()@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus");
                 strSql.Append(") ");
                 strSql.Append(";select @@IDENTITY");
                 SqlParameter[] parameters = {
@@ -337,7 +338,7 @@ VALUES  ( @MemberID ,
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update HelpeOrder set ");
-            strSql.Append(" HStatus = @HStatus  ");
+            strSql.Append(" HStatus = @HStatus,LastUpdateTime=GETDATE() ");
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@ID", SqlDbType.Int) ,            
@@ -359,6 +360,7 @@ VALUES  ( @MemberID ,
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update HelpeOrder set ");
             strSql.Append(" HStatus = @HStatus,  ");
+            strSql.Append(" LastUpdateTime=GETDATE(),  ");
             strSql.Append(" CurrentInterest = @CurrentInterest  ");
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
@@ -464,7 +466,7 @@ VALUES  ( @MemberID ,
 SET   HStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
-                  END,
+                  END,LastUpdateTime=GETDATE(),
          MatchedAmount =ISNULL(MatchedAmount,0)+ @amount 
 WHERE   id = @id";
             SqlParameter[] paramter = { 
@@ -564,7 +566,7 @@ WHERE   ID = @id
 SET     HStatus = CASE ( Amount - ISNULL(MatchedAmount, 0) )
                     WHEN 0 THEN 5
                     ELSE 1
-                  END
+                  END,LastUpdateTime=GETDATE()
 WHERE   id = @id";
             SqlParameter[] parameters = {
 			            new SqlParameter("@id", SqlDbType.Int) 
@@ -583,7 +585,7 @@ WHERE   id = @id";
 SET     HStatus = CASE ( MatchedAmount - @money )
                     WHEN 0 THEN 0
                     ELSE 1
-                  END ,
+                  END ,LastUpdateTime=GETDATE(),
         MatchedAmount = MatchedAmount - @money
 WHERE   id = @id";
             SqlParameter[] paramter = { new SqlParameter("@id", hid), new SqlParameter("@money", money) };

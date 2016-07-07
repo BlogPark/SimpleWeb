@@ -19,10 +19,10 @@ namespace SimpleWeb.DataBLL
         {
             string result = "0";
             MemberCapitalDetailModel moneydetail = MemberCapitalDetailDAL.GetMemberStaticCapital(model.MemberID);
-            int rows = HelpeOrderDAL.GetNotFinishOrderByMember(model.MemberID);
+            int rows = AcceptHelpOrderDAL.GetNotFinishOrderByMember(model.MemberID);
             if (rows > 0)
             {
-                return "0还有未打款的帮助单据";
+                return "0还有未完成的接受帮助单据";
             }
             using (TransactionScope scope = new TransactionScope())
             {

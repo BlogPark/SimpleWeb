@@ -83,7 +83,7 @@ ELSE
                 }
                 if (ds.Tables[0].Rows[0]["MemberHelpCount"].ToString() != "")
                 {
-                    model.MemberHelpCount = int.Parse(ds.Tables[0].Rows[0]["MemberHelpCount"].ToString());
+                    model.MemberHelpCount = ds.Tables[0].Rows[0]["MemberHelpCount"].ToString().ParseToInt(0);
                 }
                 if (ds.Tables[0].Rows[0]["LastHelpMoney"].ToString() != "")
                 {

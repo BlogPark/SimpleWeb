@@ -544,6 +544,10 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
                     money = members[i].Amount;
                 }
                 int rowcount = UpdateMemberDynamicFunds(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone);
+                if (rowcount < 1)
+                {
+                    return result;
+                }
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
                 logmodel.MemberID = members[i].MemberID;
                 logmodel.MemberName = members[i].MemberTruthName;
@@ -554,6 +558,11 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
                 logmodel.Remark = "会员:" + members[i].MemberPhone + " 得到来自单据：" + ordercode + "的领导奖";
                 logmodel.Type = 3;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                if (rowcount < 1)
+                {
+                    return result;
+                }
+                result++;
             }
             return result;
 
@@ -654,7 +663,7 @@ WHERE   MemberID = @memberid";
         public static decimal GetTotalAmontForPlant(out decimal dynamicTotal)
         {
             decimal staticTotal = 0;
-            dynamicTotal=0;
+            dynamicTotal = 0;
             string sqltxt = @"SELECT  SUM(ISNULL(TotalStaticCapital,0)) as staticnum ,
         SUM(ISNULL(TotalDynamicFunds,0)) as dynamicnum
 FROM    SimpleWebDataBase.dbo.MemberCapitalDetail";

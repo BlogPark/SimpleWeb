@@ -144,7 +144,18 @@ namespace SimpleWeb.DataModels
         {
             get { return _sortindex; }
             set { _sortindex = value; }
-        }  
+        }
+
+        private DateTime _LastUpdateTime;
+        /// <summary>
+        /// 最后修改时间
+        /// </summary>
+        [DataMember]
+        public DateTime LastUpdateTime
+        {
+            get { return _LastUpdateTime; }
+            set { _LastUpdateTime = value; }
+        }
         #endregion
 
         #region 扩展字段

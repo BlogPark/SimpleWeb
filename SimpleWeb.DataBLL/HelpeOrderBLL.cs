@@ -20,13 +20,26 @@ namespace SimpleWeb.DataBLL
             string result = "0";
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
+            decimal reinteist = SysAdminConfigDAL.GetConfigsByID(16).ParseToDecimal(10);//得到首次推荐的利率
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
-            TimeSpan ts1=new TimeSpan(DateTime.Now.Ticks);  
-            TimeSpan ts2=new TimeSpan(meinfo.LastHelperTime.Ticks);  
-            TimeSpan ts=ts1.Subtract(ts2).Duration();
-            if (ts.Days < 1 && ts.Days > -1)
+            if (meinfo != null)
             {
-                return "0今天已经提供过帮助";
+                TimeSpan ts1 = new TimeSpan(DateTime.Now.Ticks);
+                TimeSpan ts2 = new TimeSpan(meinfo.LastHelperTime.Ticks);
+                TimeSpan ts = ts1.Subtract(ts2).Duration();
+                if (ts.Days < 1 && ts.Days > -1)
+                {
+                    return "0今天已经提供过帮助";
+                }
+            }
+            bool isfirst = false;//默认不是第一次
+            if (meinfo == null)
+            {
+                isfirst = true;
+            }
+            else
+            {
+                isfirst = meinfo.MemberHelpCount == 0;
             }
             ActiveCodeModel activemodel = ActiveCodeDAL.GetActiveCodeExtendModel(model.ActiveCode);
             if (activemodel == null)//没有该激活码信息为失败
@@ -37,6 +50,7 @@ namespace SimpleWeb.DataBLL
             {
                 return "0排单币已经被使用";
             }
+            ReMemberRelationModel remember = ReMemberRelationDAL.GetReMemberRelation(model.MemberID);
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改激活码的使用状态
@@ -109,6 +123,29 @@ namespace SimpleWeb.DataBLL
                 if (rowcount < 1)
                 {
                     return "0操作失败";
+                }
+                //若此会员第一次排单，则给推荐人奖励
+                if (remember != null)
+                {
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(remember.MemberID, (model.Amount * reinteist / 100), remember.MemberTruthName, remember.MemberPhone);
+                    if (rowcount < 1)
+                    {
+                        return "0操作失败";
+                    }
+                    AmountChangeLogModel logmodel1 = new AmountChangeLogModel();
+                    logmodel1.MemberID = model.MemberID;
+                    logmodel1.MemberName = model.MemberName;
+                    logmodel1.MemberPhone = model.MemberPhone;
+                    logmodel1.OrderCode = model.OrderCode;
+                    logmodel1.OrderID = orderid;
+                    logmodel1.ProduceMoney = model.Amount;
+                    logmodel1.Remark = "会员:" + remember.MemberPhone + " 得到来自 " + model.MemberPhone + "的首单推荐奖" + (model.Amount * reinteist / 100).ToString() + "元";
+                    logmodel1.Type = 3;
+                    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel1);
+                    if (rowcount < 1)
+                    {
+                        return "0操作失败";
+                    }
                 }
                 scope.Complete();
                 result = "1";

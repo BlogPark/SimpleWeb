@@ -19,9 +19,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into AcceptHelpOrder(");
-            strSql.Append("AddTime,AStatus,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,PayType,MatchedAmount,TurnOutOrder,SourceType");
+            strSql.Append("AddTime,LastUpdateTime,AStatus,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,PayType,MatchedAmount,TurnOutOrder,SourceType");
             strSql.Append(") values (");
-            strSql.Append("GETDATE(),@AStatus,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@PayType,@MatchedAmount,@TurnOutOrder,@SourceType");
+            strSql.Append("GETDATE(),GETDATE(),@AStatus,@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@PayType,@MatchedAmount,@TurnOutOrder,@SourceType");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {           
@@ -283,7 +283,7 @@ namespace SimpleWeb.DataDAL
 SET  AStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
-                  END,
+                  END,LastUpdateTime=GETDATE(),
           MatchedAmount =ISNULL(MatchedAmount,0)+ @amount
 WHERE   id = @id";
             SqlParameter[] paramter = { 
@@ -385,7 +385,8 @@ WHERE   ID = @id AND MemberID=@memberid";
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update AcceptHelpOrder set ");
-            strSql.Append(" AStatus = @AStatus  ");
+            strSql.Append(" AStatus = @AStatus , ");
+            strSql.Append(" LastUpdateTime=GETDATE()  ");
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@ID", SqlDbType.Int) ,            
@@ -406,7 +407,7 @@ WHERE   ID = @id AND MemberID=@memberid";
 SET     AStatus = CASE ( MatchedAmount - @money )
                     WHEN 0 THEN 0
                     ELSE 1
-                  END ,
+                  END ,LastUpdateTime=GETDATE(),
         MatchedAmount = MatchedAmount - @money
 WHERE   id = @id";
             SqlParameter[] paramter = { new SqlParameter("@id", aid), new SqlParameter("@money", money) };
@@ -540,6 +541,22 @@ WHERE   D.AcceptOrderID = @orderid";
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 查询会员是否还有未完成的提供订单
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int GetNotFinishOrderByMember(int memberid)
+        {
+            string sqltxt = @"SELECT  ID
+FROM    dbo.AcceptHelpOrder
+WHERE   MemberID = @memberid
+        AND AStatus < 3";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
         }
     }
 }
