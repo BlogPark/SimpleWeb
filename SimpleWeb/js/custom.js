@@ -315,3 +315,35 @@ function activegive() {
         }
     });
 }
+function updatehelporder(id) {
+    $.ajax({
+        url: '/WebFrontArea/WebHome/paymoney',
+        dataType: 'Json',
+        data: { 'id': id },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                bootbox.alert("²Ù×÷Ê§°Ü")
+            }
+        }
+    });
+}
+function updateacceptorder(id) {
+    $.ajax({
+        url: '/WebFrontArea/WebHome/finishorder',
+        dataType: 'Json',
+        data: { 'id': id },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                bootbox.alert("²Ù×÷Ê§°Ü")
+            }
+        }
+    });
+}

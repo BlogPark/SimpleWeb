@@ -21,7 +21,7 @@
                 {
                     <div class="form-group">
                         <label class="pull-left control-label">单据号</label>
-                        <div class="col-sm-1">
+                        <div class="col-sm-3">
                             @Html.TextBoxFor(m => m.seachmodel.OrderCode, new { @class = "form-control" })
                         </div>
                     </div>
@@ -46,9 +46,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach (var item in Model.orderlist)
-                        {
+
+                    @foreach (var item in Model.orderlist)
+                    {
+                        <tr>
                             <td>
                                 @item.OrderCode
                             </td>
@@ -62,15 +63,14 @@
                             <td>@item.AStatusName</td>
                             <td>@item.DiffDay</td>
                             <td>@item.SourceTypeName</td>
-                            <td><a href="@Html.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">详细信息>></a></td>
-                        }
-
-                    </tr>
+                            <td><a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">详细信息>></a></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
             <div class="row text-center col-xs-12">
-                        @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
-                    </div>
+                @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+            </div>
         </div>
     </div>
 </div>

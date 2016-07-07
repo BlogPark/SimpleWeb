@@ -66,7 +66,7 @@ namespace SimpleWeb.DataDAL
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName  ");
+            strSql.Append("select ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName  ");
             strSql.Append("  from AcceptHelpOrder ");
             strSql.Append(" ORDER BY SortIndex DESC ,ID DESC ");
             DataSet ds = helper.Query(strSql.ToString());
@@ -125,7 +125,7 @@ namespace SimpleWeb.DataDAL
         public List<AcceptHelpOrderModel> GetAllAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
-            string columms = @"ID, AddTime, AStatus, SourceType,SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName ";
+            string columms = @"ID, AddTime, AStatus, SourceType,SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName ";
             string where = "";
             if (model != null)
             {
@@ -219,7 +219,7 @@ namespace SimpleWeb.DataDAL
         public List<AcceptHelpOrderModel> GetWaitAcceptOrderListForPage(AcceptHelpOrderModel model, out int totalrowcount)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
-            string columms = @" ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
+            string columms = @" ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
             string where = " AStatus <2 ";
             PageProModel page = new PageProModel();
             page.colums = columms;
@@ -331,7 +331,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static AcceptHelpOrderModel GetAcceptOrderInfo(int id,int memberid)
         {
-            string sqltxt = @"SELECT  OrderCode ,
+            string sqltxt = @"SELECT  ID,OrderCode ,
         MemberID ,
         MemberPhone ,
         MemberName ,
@@ -340,7 +340,7 @@ WHERE   id = @id";
         SourceType ,
         MatchedAmount,
         DATEDIFF(DAY,AddTime,GETDATE()) AS diffday,
-        CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已收款' END AS AStatusName
+        CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName
        ,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName,
       AStatus,
      PayType
@@ -354,6 +354,7 @@ WHERE   ID = @id AND MemberID=@memberid";
             if (dt.Rows.Count > 0)
             {
                 AcceptHelpOrderModel model = new AcceptHelpOrderModel();
+                model.ID = dt.Rows[0]["ID"].ToString().ParseToInt(0);
                 model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
@@ -485,7 +486,7 @@ WHERE   D.AcceptOrderID = @orderid";
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP (@topnum) ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部成交' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已收款' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName  ");
+            strSql.Append("select TOP (@topnum) ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName,CASE SourceType WHEN 1 THEN '静态资金' WHEN 2 THEN '动态资金' END AS SourceTypeName  ");
             strSql.Append("  from AcceptHelpOrder ");
             strSql.Append(" WHERE MemberID=@memberid ");
             strSql.Append(" ORDER BY ID DESC ");

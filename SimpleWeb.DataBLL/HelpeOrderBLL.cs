@@ -184,7 +184,7 @@ namespace SimpleWeb.DataBLL
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改状态为已打款
-                int rowcount = HelpeOrderDAL.UpdateStatus(hid, 3);
+                int rowcount = HelpeOrderDAL.UpdateStatusandinster(hid, 4, decimal.Parse(inteist));
                 if (rowcount < 1)
                 {
                     return 0;

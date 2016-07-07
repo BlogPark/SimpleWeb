@@ -349,6 +349,29 @@ VALUES  ( @MemberID ,
             return rows;
         }
         /// <summary>
+        /// 更改状态和利率
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatusandinster(int oid, int status,decimal inster)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update HelpeOrder set ");
+            strSql.Append(" HStatus = @HStatus,  ");
+            strSql.Append(" CurrentInterest = @CurrentInterest  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,            
+                        new SqlParameter("@HStatus", SqlDbType.Int) ,
+                        new SqlParameter("@CurrentInterest", inster) 
+            };
+            parameters[0].Value = oid;
+            parameters[1].Value = status;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
+        }
+        /// <summary>
         /// 更改置顶
         /// </summary>
         /// <param name="oid"></param>
@@ -457,7 +480,7 @@ WHERE   id = @id";
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id,int memberid)
         {
-            string sqltxt = @"SELECT  OrderCode ,
+            string sqltxt = @"SELECT  ID,OrderCode ,
         MemberID ,
         MemberPhone ,
         MemberName ,
@@ -479,6 +502,7 @@ WHERE   ID = @id
             if (dt.Rows.Count > 0)
             {
                 HelpeOrderModel model = new HelpeOrderModel();
+                model.ID = dt.Rows[0]["ID"].ToString().ParseToInt(0);
                 model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
@@ -539,7 +563,7 @@ WHERE   ID = @id
             string sqltxt = @"UPDATE  HelpeOrder
 SET     HStatus = CASE ( Amount - ISNULL(MatchedAmount, 0) )
                     WHEN 0 THEN 5
-                    ELSE 2
+                    ELSE 1
                   END
 WHERE   id = @id";
             SqlParameter[] parameters = {

@@ -411,5 +411,32 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 return Json(result.Substring(1));
             }
         }
+
+        [HttpPost]
+        public ActionResult paymoney(int id)
+        {
+            int result = hobll.UpdateToPlayMoney(id);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        [HttpPost]
+        public ActionResult finishorder(int id)
+        {
+            int result = aobll.UpdateStatusToComplete(id);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
     }
 }

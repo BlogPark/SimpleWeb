@@ -37,7 +37,7 @@
                                         <td></td>
                                         <td>排队天数</td>
                                         <td></td>
-                                        <td>@(Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2 ? "操&nbsp;&nbsp;作" : "")</td>
+                                        <td>@(Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2 ? "操 作" : "")</td>
                                     </tr>
                                     <tr>
                                         <td>@Model.helporder.OrderCode</td>
@@ -56,7 +56,7 @@
                                         <td>
                                             @if (Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2)
                                             {
-                                                <a class="btn btn-lg btn-blue" href="javascript:void(0);" onclick="updatehelporder(@Model.helporder.ID)">已打款</a>
+                                                <button class="btn btn-lg btn-blue"  onclick="updatehelporder(@Model.helporder.ID)">已打款</button>
                                             }
                                         </td>
                                     </tr>

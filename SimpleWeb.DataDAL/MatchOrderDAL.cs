@@ -114,6 +114,7 @@ namespace SimpleWeb.DataDAL
                     {
                         model.MatchTime = DateTime.Parse(item["MatchTime"].ToString());
                     }
+                    list.Add(model);
                 }
                 return list;
             }
