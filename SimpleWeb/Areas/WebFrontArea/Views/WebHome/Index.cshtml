@@ -2,7 +2,115 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">提供帮助</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal" method="post" action="/WebFrontArea/WebHome/addhelporder">
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">帮助金额</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="helpamount" name="helpamount" class="form-control" placeholder="帮助金额">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-10 pull-left control-label" style="color: red; font-size: 15px;">最低可帮助金额<span id="helpmin">@Model.minhelpamont</span>元&nbsp;&nbsp;&nbsp;最高可帮助金额<span id="helpmax">@Model.maxhelpamont</span>元</label>
+                            <input type="hidden" id="lasthelp" name="lasthelp" value="@Model.extendinfo.LastHelpMoney">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">支付方式</label>
+                            <div class="col-sm-6">
+                                <input type="checkbox" id="chkweixin" name="chkweixin" value="微信">微信
+                                <input type="checkbox" id="chkalipay" name="chkalipay" value="支付宝">支付宝
+                                <input type="hidden" id="paytype" name="paytype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">使用排单币</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="helpactivecode" name="helpactivecode" class="form-control" placeholder="排单币编码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 pull-left control-label">
+                                <input type="checkbox" id="chkrisk" name="chkrisk" class="form-control"></label>
+                            <div class="col-sm-8">
+                                警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="providehelp()">确 定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bootbox modal fade in" id="box-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">接受帮助</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">可用金额</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly" class="form-control" value="@Model.mycapitalinfo.StaticCapital">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">接受金额</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="acceptamont" name="acceptamont" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-10 pull-left control-label" style="color: red; font-size: 15px;">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元&nbsp;&nbsp;&nbsp;最高可接受金额<span id="accmax">@Model.maxacceptamont</span>元</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">接受来源</label>
+                            <div class="col-sm-7">
+                                <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                静态资金
+                                <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                动态资金
+                                <input type="hidden" id="soucetype" name="soucetype" value="1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">支付方式</label>
+                            <div class="col-sm-7">
+                                <input type="checkbox" id="achkweixin" name="achkweixin" value="微信">微信
+                                <input type="checkbox" id="achkalipay" name="achkalipay" value="支付宝">支付宝
+                                <input type="hidden" id="apaytype" name="apaytype">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input type="checkbox" id="chkrisk" name="chkrisk">警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="accepthelp()">确  定</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
@@ -16,6 +124,9 @@
                 <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
                 <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
             </ul>
+            <a class="btn-animate btn-style btn-d btn-primary"  data-toggle="modal" href="#box-config" >提供帮助</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn-animate btn-style btn-d btn-primary"  data-toggle="modal" href="#box-config1" >接受帮助</a>
             <div id="help-nav-one" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <ul>
@@ -29,6 +140,7 @@
                     </ul>
                 </div>
             </div>
+
         </div>
 
         <div class="col-sm-9">
@@ -155,6 +267,8 @@
                     <hr>
                 </div>
                 <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                    <span id="staticmoney" style="display: none">@Model.mycapitalinfo.StaticCapital</span>
+                    <span id="dymicmoney" style="display: none">@Model.mycapitalinfo.DynamicFunds</span>
                     <table class="table">
                         <thead>
                             <tr>
@@ -185,7 +299,7 @@
                             }
                             else
                             {
-                                 <tr>
+                                <tr>
                                     <td colspan="4">
                                         <p class="text-muted">暂无信息</p>
                                     </td>

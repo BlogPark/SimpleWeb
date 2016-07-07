@@ -47,6 +47,12 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             model.data = bll.GetIndexNeeddata(logmember.ID);
             model.member = logmember;
             model.recommend = bll.GetReMemberRelation(logmember.ID);
+            model.mycapitalinfo = cbll.GetMemberStaticCapital(logmember.ID);
+            model.maxacceptamont = SystemConfigs.GetmaxAcceptAmont();//得到最大的接受帮助限制
+            model.minacceptamont = SystemConfigs.GetminAcceptAmont();//得到最小的接受帮助限制
+            model.minhelpamont = SystemConfigs.GetminHelpAmont();//得到最小的提供帮助限制
+            model.maxhelpamont = SystemConfigs.GetmaxHelpAmont();//得到最大的提供帮助限制
+            model.extendinfo = cbll.GetMemberExtendInfo(logmember.ID);//得到会员的扩展信息
             ViewBag.PageTitle = web.WebName;
             return View(model);
         }

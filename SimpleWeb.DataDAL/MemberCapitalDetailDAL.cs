@@ -526,11 +526,14 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
                     if (member != null)
                         members.Add(member);
                 }
-                if (members.Count > (i - 1))
+                else
                 {
-                    ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(members[i - 1].ID);
-                    if (member != null)
-                        members.Add(member);
+                    if (members.Count > (i - 1))
+                    {
+                        ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(members[i - 1].ID);
+                        if (member != null)
+                            members.Add(member);
+                    }
                 }
             }
             for (int i = 0; i < members.Count; i++)
