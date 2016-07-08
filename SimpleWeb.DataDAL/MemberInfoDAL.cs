@@ -480,7 +480,8 @@ WHERE   id = @id and MStatus=2";
         {
             string sqltxt = @"SELECT  ID ,
         TruethName ,
-        MobileNum
+        MobileNum,
+        MStatus
 FROM    dbo.MemberInfo
 WHERE   id = @id and MStatus=1";
             SqlParameter[] paramter = { 
@@ -493,6 +494,7 @@ WHERE   id = @id and MStatus=1";
                 model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
                 model.TruethName = dt.Rows[0]["TruethName"].ToString();
                 model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                model.MStatus = dt.Rows[0]["MStatus"].ToString().ParseToInt(1);
                 return model;
             }
             else
