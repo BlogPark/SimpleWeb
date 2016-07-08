@@ -139,7 +139,7 @@ namespace SimpleWeb.DataDAL
             {
                 if (!string.IsNullOrWhiteSpace(model.OrderCode))
                 {
-                    where += "OrderCode='" + model.OrderCode+"'";
+                    where += "OrderCode='" + model.OrderCode + "'";
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
@@ -355,7 +355,7 @@ VALUES  ( @MemberID ,
         /// <param name="oid"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public static int UpdateStatusandinster(int oid, int status,decimal inster)
+        public static int UpdateStatusandinster(int oid, int status, decimal inster)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update HelpeOrder set ");
@@ -480,7 +480,7 @@ WHERE   id = @id";
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static HelpeOrderModel GetHelpOrderInfo(int id,int memberid)
+        public static HelpeOrderModel GetHelpOrderInfo(int id, int memberid)
         {
             string sqltxt = @"SELECT  ID,OrderCode ,
         MemberID ,
@@ -616,7 +616,7 @@ FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
 WHERE   D.HelperOrderID = @orderid";
             SqlParameter[] paramter = { new SqlParameter("@orderid", hid) };
-            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
@@ -634,7 +634,7 @@ WHERE   D.HelperOrderID = @orderid";
                     model.remembername = item["remembername"].ToString();
                     model.rememberphone = item["rememberphone"].ToString();
                     list.Add(model);
-                }                
+                }
             }
             return list;
         }
@@ -643,7 +643,7 @@ WHERE   D.HelperOrderID = @orderid";
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public static List<HelpeOrderModel> GetTopHelpeOrderListByMemberID(int memberid,int top=10)
+        public static List<HelpeOrderModel> GetTopHelpeOrderListByMemberID(int memberid, int top = 10)
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
             StringBuilder strSql = new StringBuilder();
@@ -651,8 +651,8 @@ WHERE   D.HelperOrderID = @orderid";
             strSql.Append("  from HelpeOrder ");
             strSql.Append(" WHERE MemberID=@memberid");
             strSql.Append(" ORDER BY ID DESC ");
-            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),new SqlParameter("@topnum",top) };
-            DataSet ds = helper.Query(strSql.ToString(),paramter);
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum", top) };
+            DataSet ds = helper.Query(strSql.ToString(), paramter);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -717,9 +717,21 @@ WHERE   D.HelperOrderID = @orderid";
 FROM    dbo.HelpeOrder
 WHERE   MemberID = @memberid
         AND HStatus < 3";
-            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
-            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             return dt.Rows.Count;
+        }
+        /// <summary>
+        /// 查看会员当天的帮助次数
+        /// </summary>
+        /// <returns></returns>
+        public static int GetTodayHelpCount(int memberid)
+        {
+            string sqltxt = @"SELECT COUNT(0)
+  FROM SimpleWebDataBase.dbo.HelpeOrder
+  WHERE MemberID=@memberid AND AddTime>='" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "' AND AddTime<=GETDATE()";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
+            return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
         }
     }
 }

@@ -21,16 +21,22 @@ namespace SimpleWeb.DataBLL
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             decimal reinteist = SysAdminConfigDAL.GetConfigsByID(16).ParseToDecimal(10);//得到首次推荐的利率
+            decimal maxcount = SysAdminConfigDAL.GetConfigsByID(17).ParseToInt(1);//得到首次推荐的利率
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
-            if (meinfo != null)
+            //if (meinfo != null)
+            //{
+            //    TimeSpan ts1 = new TimeSpan(DateTime.Now.Ticks);
+            //    TimeSpan ts2 = new TimeSpan(meinfo.LastHelperTime.Ticks);
+            //    TimeSpan ts = ts1.Subtract(ts2).Duration();
+            //    if (ts.Days < 1 && ts.Days > -1)
+            //    {
+            //        return "0今天已经提供过帮助";
+            //    }
+            //}
+            int helpcount = HelpeOrderDAL.GetTodayHelpCount(model.MemberID);
+            if (helpcount >= maxcount)
             {
-                TimeSpan ts1 = new TimeSpan(DateTime.Now.Ticks);
-                TimeSpan ts2 = new TimeSpan(meinfo.LastHelperTime.Ticks);
-                TimeSpan ts = ts1.Subtract(ts2).Duration();
-                if (ts.Days < 1 && ts.Days > -1)
-                {
-                    return "0今天已经提供过帮助";
-                }
+                return "0今天已经提供过帮助";
             }
             bool isfirst = false;//默认不是第一次
             if (meinfo == null)
