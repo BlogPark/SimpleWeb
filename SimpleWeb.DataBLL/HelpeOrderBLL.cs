@@ -131,7 +131,7 @@ namespace SimpleWeb.DataBLL
                     return "0操作失败";
                 }
                 //若此会员第一次排单，则给推荐人奖励
-                if (remember != null)
+                if (isfirst)
                 {
                     rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(remember.MemberID, (model.Amount * reinteist / 100), remember.MemberTruthName, remember.MemberPhone);
                     if (rowcount < 1)

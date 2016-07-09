@@ -3,17 +3,13 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<div class="wrapper">
-    <div class="topic">
-        <div class="container">
-            <div class="row">
-                <ol class="breadcrumb hidden-xs">
-                    <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
-                    <li class="active">我的激活码</li>
-                </ol>
-            </div>
-        </div>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        @Html.Action("webmenu", "IndexPub", new { area = "" })
     </div>
+</div>
+<div class="wrapper">
+    
     <div class="container">
         <div class="row">
             <div class="col-sm-12">

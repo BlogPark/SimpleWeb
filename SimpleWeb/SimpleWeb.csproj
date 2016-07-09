@@ -1126,6 +1126,7 @@
     <Content Include="img\avatars\avatar6.jpg" />
     <Content Include="img\avatars\avatar7.jpg" />
     <Content Include="img\avatars\avatar8.jpg" />
+    <Content Include="img\banner.jpg" />
     <Content Include="img\carousel\1.jpg" />
     <Content Include="img\carousel\2.jpg" />
     <Content Include="img\carousel\3.jpg" />

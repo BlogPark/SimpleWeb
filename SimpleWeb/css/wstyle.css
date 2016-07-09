@@ -4998,7 +4998,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     .navbar-nav > li > a {
         padding-top: 25px;
         padding-bottom: 25px;
-        line-height: 45px;
+        line-height: 25px;
     }
 
 @media (max-width: 767px) {
@@ -5184,8 +5184,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-default {
-    background-color: #111;
-    border-color: #111;
+    background-color: #f1f1f1;
 }
 
     .navbar-default .navbar-brand {
@@ -5204,7 +5203,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     }
 
     .navbar-default .navbar-nav > li > a {
-        color: #fff;
+        color: #111;
         font-weight: 600;
     }
 
@@ -7757,7 +7756,7 @@ hr.arrow-down {
 /*** Navbar Links ***/
 .navbar-default .navbar-nav > li > a {
     text-transform: uppercase;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 @media (min-width: 768px) {
@@ -8313,7 +8312,7 @@ body {
     height: auto !important;
     /* for older versions of IE */
     height: 100%;
-    padding-top: 85px;
+    padding-top: 13%;
     /* navbar height + margin */
     margin-bottom: -379px;
     /* footer height + margin */
@@ -9695,7 +9694,7 @@ footer .form-control {
 .login {
     background: url(/img/login.jpg) no-repeat;
     background-size: 100%;
-    padding-top: 10%;
+    padding-top: 5%;
 }
 
 .errortext {
