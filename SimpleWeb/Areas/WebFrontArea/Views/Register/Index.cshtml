@@ -2,128 +2,128 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<!-- Topic Header -->
-<div class="topic">
+<div class="wrapper">
+    <!-- Topic Header -->
+    <div class="topic">
+        <div class="container">
+            <div class="row">
+                <ol class="breadcrumb hidden-xs">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">会员注册</li>
+                </ol>
+            </div>
+            <!-- / .row -->
+        </div>
+        <!-- / .container -->
+    </div>
+    <!-- / .Topic Header -->
     <div class="container">
         <div class="row">
-            <ol class="breadcrumb hidden-xs">
-                <li><a href="index.html">Home</a></li>
-                <li class="active">会员注册</li>
-            </ol>
-        </div>
-        <!-- / .row -->
-    </div>
-    <!-- / .container -->
-</div>
-<!-- / .Topic Header -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-7 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <div class="sign-form">
-                <div class="sign-inner">
-                    <h3 class="first-child">注册新会员</h3>
-                    <hr>
-                    @using (Html.BeginForm("Index", "Register", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
-                    {
-                        if (!string.IsNullOrWhiteSpace(ViewData["Error"].ToString()))
+            <div class="col-md-7 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="sign-form">
+                    <div class="sign-inner">
+                        <h3 class="first-child">注册新会员</h3>
+                        <hr>
+                        @using (Html.BeginForm("Index", "Register", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
                         {
-                        <div class="form-group">
-                            <lable style="color: red">@ViewData["Error"]</lable>
-                        </div>
+                            if (!string.IsNullOrWhiteSpace(ViewData["Error"].ToString()))
+                            {
+                                <div class="form-group">
+                                    <lable style="color: red">@ViewData["Error"]</lable>
+                                </div>
+                            }
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                男
+                                <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                女
+                                @Html.HiddenFor(m => m.member.Sex)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.TelPhone, new { @placeholder = "固定电话", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.Email, new { @placeholder = "会员邮箱", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.IdentificationID, new { @placeholder = "身份证号", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.WeixinNum, new { @placeholder = "微信账号", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.AliPayName, new { @placeholder = "支付宝账号", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.AliPayNum, new { @placeholder = "支付宝ID", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.SecurityQuestion, new { @placeholder = "密保问题", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.SecurityAnswer, new { @placeholder = "密保答案", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <select class="form-control" id="redrpprovince">
+                                            <option value="0">选择省份</option>
+                                            @foreach (var item in Model.regintable)
+                                            {
+                                                <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" id="redrpcity">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" id="redrparea">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                    @Html.HiddenFor(m => m.member.Province)
+                                    @Html.HiddenFor(m => m.member.City)
+                                    @Html.HiddenFor(m => m.member.Area)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.Address, new { @placeholder = "详细地址", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control margin-bottom-xs" id="pwd" name="pwd" placeholder="登陆密码">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.PasswordFor(m => m.member.LogPwd, new { @placeholder = "确认密码", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.member.MemberPhone, new { @placeholder = "推荐人手机", @class = "form-control", @readonly = "true" })
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="agreementchk">
+                                    我已阅读并且充分了解投资的风险，无条件接受网站平台的一切决定
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <a href="javascript:void(0);" onclick="subchange()" class="btn-animate btn-style btn-d btn-primary ">注&nbsp;&nbsp;&nbsp;&nbsp;册</a>
+                            </div>
                         }
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
-                            男
-                            <input type="radio" class="uniform" name="optionsRadios1" value="2">
-                            女
-                            @Html.HiddenFor(m => m.member.Sex)
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.TelPhone, new { @placeholder = "固定电话", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.Email, new { @placeholder = "会员邮箱", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.IdentificationID, new { @placeholder = "身份证号", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.WeixinNum, new { @placeholder = "微信账号", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.AliPayName, new { @placeholder = "支付宝账号", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.AliPayNum, new { @placeholder = "支付宝ID", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.SecurityQuestion, new { @placeholder = "密保问题", @class = "form-control" })
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.SecurityAnswer, new { @placeholder = "密保答案", @class = "form-control" })
-                        </div>                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <select class="form-control" id="redrpprovince">
-                                        <option value="0">选择省份</option>
-                                        @foreach (var item in Model.regintable)
-                                        {
-                                            <option value="@item.REGION_ID">@item.REGION_NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <select class="form-control" id="redrpcity">
-                                        <option value="0"></option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4">
-                                    <select class="form-control" id="redrparea">
-                                        <option value="0"></option>
-                                    </select>
-                                </div>
-                                @Html.HiddenFor(m => m.member.Province)
-                                @Html.HiddenFor(m => m.member.City)
-                                @Html.HiddenFor(m => m.member.Area)
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.Address, new { @placeholder = "详细地址", @class = "form-control" })
-                        </div>   
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control margin-bottom-xs" id="pwd" name="pwd" placeholder="登陆密码">
-                                </div>
-                                <div class="col-sm-6">
-                                    @Html.PasswordFor(m => m.member.LogPwd, new { @placeholder = "确认密码", @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.member.MemberPhone, new { @placeholder = "推荐人手机", @class = "form-control", @readonly = "true" })
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="agreementchk">
-                                我已阅读并且充分了解投资的风险，无条件接受网站平台的一切决定
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <a href="javascript:void(0);" onclick="subchange()" class="btn-animate btn-style btn-d btn-primary ">注&nbsp;&nbsp;&nbsp;&nbsp;册</a>
-                        </div>
-                    }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- / .row -->
 </div>
-<!-- / .container -->

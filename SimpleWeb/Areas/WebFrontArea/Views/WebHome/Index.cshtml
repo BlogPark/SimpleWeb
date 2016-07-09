@@ -111,202 +111,213 @@
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="user-avatar text-center">
-                <h1>@Model.member.TruethName</h1>
-                <p class="text-muted">@Model.member.MobileNum</p>
-            </div>
-            <ul class="user-info">
-                <li>邮箱: <span class="text-muted">@Model.member.Email</span></li>
-                <li>注册时间: <span class="text-muted">@Model.member.AddTime.ToString("yyyy/MM/dd")</span></li>
-                <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
-                <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
-            </ul>
-            <a class="btn-animate btn-style btn-d btn-primary"  data-toggle="modal" href="#box-config" >提供帮助</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="btn-animate btn-style btn-d btn-primary"  data-toggle="modal" href="#box-config1" >接受帮助</a>
-            <div id="help-nav-one" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <ul>
-                        <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
-                        <li><a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活币剩余：@Model.data.activecodeCount 枚</a></li>
-                        <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
-                        <li>我的钱包</li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
-                        <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
-                    </ul>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="user-avatar text-center">
+                    <h1>@Model.member.TruethName</h1>
+                    <p class="text-muted">@Model.member.MobileNum</p>
                 </div>
+                <ul class="user-info">
+                    <li>邮箱: <span class="text-muted">@Model.member.Email</span></li>
+                    <li>注册时间: <span class="text-muted">@Model.member.AddTime.ToString("yyyy/MM/dd")</span></li>
+                    <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
+                    <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
+                </ul>
+                <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config">提供帮助</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config1">接受帮助</a>
+                <div id="help-nav-one" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
+                            <li><a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活币剩余：@Model.data.activecodeCount 枚</a></li>
+                            <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
+                            <li>我的钱包</li>
+                            <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">静态资金余额：@Model.data.zijinmodel.StaticCapital</a></li>
+                            <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">利息冻结：@Model.data.zijinmodel.StaticInterest</a></li>
+                            <li><a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">动态资金余额：@Model.data.zijinmodel.DynamicFunds</a></li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-        <div class="col-sm-9">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="@Url.Action("helpOrderlist", "WebHome", new { area = "WebFrontArea" })">我提供的帮助</a>
-                    </h3>
-                    <hr>
-                </div>
-                <div class="col-sm-6">
-                    <h3 class="text-muted"><a href="@Url.Action("acceptOrderlist", "WebHome", new { area = "WebFrontArea" })">我接受的帮助</a>
-                    </h3>
-                    <hr>
-                </div>
-                <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
-                    @if (Model.data.helperOrders != null)
-                    {
-                        foreach (var item in Model.data.helperOrders)
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="text-muted">
+                            <a href="@Url.Action("helpOrderlist", "WebHome", new { area = "WebFrontArea" })">我提供的帮助</a>
+                        </h3>
+                        <hr>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3 class="text-muted">
+                            <a href="@Url.Action("acceptOrderlist", "WebHome", new { area = "WebFrontArea" })">我接受的帮助</a>
+                        </h3>
+                        <hr>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+                        @if (Model.data.helperOrders != null)
                         {
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>单据编号:
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.OrderCode
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>帮助金额：
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.Amount
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>目前状态：
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.HStatusName
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" class="text-center">
-                                        <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>     
-                        }
-                    }
-                    else
-                    { 
-                        <p class="text-muted">暂无提供帮助的订单</p>
-                    }
-                </div>
-
-                <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
-                    @if (Model.data.acceptOrders != null)
-                    {
-                        foreach (var item in Model.data.acceptOrders)
-                        {
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>单据编号:
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.OrderCode
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>帮助金额：
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.Amount
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>目前状态：
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="item">
-                                            @item.AStatusName
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" class="text-center">
-                                        <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>     
-                        }
-                    }
-                    else
-                    { 
-                        <p class="text-muted">暂无接受帮助的订单</p>
-                    }
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="text-muted"><a href="#">我的资金变动记录</a>
-                    </h3>
-                    <hr>
-                </div>
-                <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
-                    <span id="staticmoney" style="display: none">@Model.mycapitalinfo.StaticCapital</span>
-                    <span id="dymicmoney" style="display: none">@Model.mycapitalinfo.DynamicFunds</span>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>变动描述</th>
-                                <th>变动金额</th>
-                                <th>涉及单号</th>
-                                <th>变动时间</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.data.AmontChangLog != null)
+                            foreach (var item in Model.data.helperOrders)
                             {
-                                foreach (var item in Model.data.AmontChangLog)
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                单据编号:
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.OrderCode
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                帮助金额：
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.Amount
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                目前状态：
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.HStatusName
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-center">
+                                                <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">暂无提供帮助的订单</p>
+                        }
+                    </div>
+
+                    <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+                        @if (Model.data.acceptOrders != null)
+                        {
+                            foreach (var item in Model.data.acceptOrders)
+                            {
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                单据编号:
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.OrderCode
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                帮助金额：
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.Amount
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                目前状态：
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="item">
+                                                    @item.AStatusName
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-center">
+                                                <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">暂无接受帮助的订单</p>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="text-muted">
+                            <a href="#">我的资金变动记录</a>
+                        </h3>
+                        <hr>
+                    </div>
+                    <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                        <span id="staticmoney" style="display: none">@Model.mycapitalinfo.StaticCapital</span>
+                        <span id="dymicmoney" style="display: none">@Model.mycapitalinfo.DynamicFunds</span>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>变动描述</th>
+                                    <th>变动金额</th>
+                                    <th>涉及单号</th>
+                                    <th>变动时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.data.AmontChangLog != null)
                                 {
-                                <tr>
-                                    <td>
-                                        <div class="item">
-                                            @item.Remark
-                                        </div>
-                                    </td>
-                                    <td>@item.ProduceMoney</td>
-                                    <td>
-                                        @item.OrderCode
-                                    </td>
-                                    <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                </tr>  
+                                    foreach (var item in Model.data.AmontChangLog)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="item">
+                                                    @item.Remark
+                                                </div>
+                                            </td>
+                                            <td>@item.ProduceMoney</td>
+                                            <td>
+                                                @item.OrderCode
+                                            </td>
+                                            <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        </tr>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="4">
-                                        <p class="text-muted">暂无信息</p>
-                                    </td>
-                                </tr>  
-                            }
-                        </tbody>
-                    </table>
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">
+                                            <p class="text-muted">暂无信息</p>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

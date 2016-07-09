@@ -731,7 +731,7 @@ WHERE   MemberID = @memberid
   FROM SimpleWebDataBase.dbo.HelpeOrder
   WHERE MemberID=@memberid AND AddTime>='" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "' AND AddTime<=GETDATE()";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
-            return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
+            return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
         }
     }
 }

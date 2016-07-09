@@ -111,45 +111,47 @@
         </div>
     </div>
 </div>
-<div class="topic">
-    <div class="container">
-        <div class="row">
-            <ol class="breadcrumb hidden-xs">
-                <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
-                <li class="active">我的资产信息</li>
-            </ol>
+<div class="wrapper">
+    <div class="topic">
+        <div class="container">
+            <div class="row">
+                <ol class="breadcrumb hidden-xs">
+                    <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
+                    <li class="active">我的资产信息</li>
+                </ol>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 id="accordions"><span>我的资产信息</span></h2>
-            <hr />
-            <div class="col-sm-6">
-                <div class="info-board info-board-red">
-                    <h2>静态资金信息</h2>
-                    <ul class="checkout">
-                        <li>静态资金：￥<span id="staticmoney">@Model.mycapitalinfo.StaticCapital</span></li>
-                        <li>利息金额：￥@Model.mycapitalinfo.StaticInterest</li>
-                        <li>冻结金额：￥@Model.mycapitalinfo.StaticFreezeMoney</li>
-                    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 id="accordions"><span>我的资产信息</span></h2>
+                <hr />
+                <div class="col-sm-6">
+                    <div class="info-board info-board-red">
+                        <h2>静态资金信息</h2>
+                        <ul class="checkout">
+                            <li>静态资金：￥<span id="staticmoney">@Model.mycapitalinfo.StaticCapital</span></li>
+                            <li>利息金额：￥@Model.mycapitalinfo.StaticInterest</li>
+                            <li>冻结金额：￥@Model.mycapitalinfo.StaticFreezeMoney</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <!-- Info Board Blue -->
-                <div class="info-board info-board-blue">
-                    <h2>动态资金信息</h2>
-                    <ul class="checkout">
-                        <li>动态资金：￥<span id="dymicmoney">@Model.mycapitalinfo.DynamicFunds</span></li>
-                        <li>利息金额：￥@Model.mycapitalinfo.DynamicInterest</li>
-                        <li>冻结金额：￥@Model.mycapitalinfo.DynamicFreezeMoney</li>
-                    </ul>
+                <div class="col-sm-6">
+                    <!-- Info Board Blue -->
+                    <div class="info-board info-board-blue">
+                        <h2>动态资金信息</h2>
+                        <ul class="checkout">
+                            <li>动态资金：￥<span id="dymicmoney">@Model.mycapitalinfo.DynamicFunds</span></li>
+                            <li>利息金额：￥@Model.mycapitalinfo.DynamicInterest</li>
+                            <li>冻结金额：￥@Model.mycapitalinfo.DynamicFreezeMoney</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config" style="float: left; margin-left: 30px;">提供帮助</a>
-                <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config1" style="float: right; margin-right: 30px;">接受帮助</a>
+                <div class="row">
+                    <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config" style="float: left; margin-left: 30px;">提供帮助</a>
+                    <a class="btn-animate btn-style btn-d btn-primary" data-toggle="modal" href="#box-config1" style="float: right; margin-right: 30px;">接受帮助</a>
+                </div>
             </div>
         </div>
     </div>

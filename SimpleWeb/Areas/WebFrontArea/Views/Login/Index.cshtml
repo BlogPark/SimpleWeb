@@ -2,49 +2,40 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<div class="topic">
+<div class="wrapper login">
     <div class="container">
         <div class="row">
-            <ol class="breadcrumb hidden-xs">
-                <li><a href="index.html">Home</a></li>
-                <li class="active">登陆</li>
-            </ol>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <div class="sign-form">
-                <div class="sign-inner">
-                    <h3 class="first-child">会员登陆</h3>
-                    <hr>
-                    <form role="form" method="post">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            @Html.TextBoxFor(m =>m.MobileNum, new { @placeholder = "手机号", @class = "form-control"})
-                        </div>
-                        <br />
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "form-control"})
-                        </div>
-                        @*<div class="checkbox">
-                            <label>
-                                <input type="checkbox">
-                                Remember me
-                            </label>
-                        </div>*@
-                         <div class="input-group">
-                        </div>
-                        <button href="#" type="submit" class="btn-animate btn-style btn-d btn-primary">Submit</button>
+            <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+                <div class="sign-form">
+                    <div class="sign-inner">
+                        <h3 class="first-child">会员登陆</h3>
                         <hr>
-                    </form>
-                    <p>@ViewBag.TempMsg</p>                   
-                    <!-- / .pwd-lost -->
+                        <form role="form" method="post">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                @Html.TextBoxFor(m => m.MobileNum, new { @placeholder = "手机号", @class = "form-control" })
+                            </div>
+                            <br />
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "form-control" })
+                            </div>
+                            @*<div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">
+                                        Remember me
+                                    </label>
+                                </div>*@
+                            <div class="input-group">
+                            </div>
+                            <button href="#" type="submit" class="btn-animate btn-style btn-d btn-primary">Submit</button>
+                            <hr>
+                        </form>
+                        <p class="errortext">@ViewBag.TempMsg</p>
+                        <!-- / .pwd-lost -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

@@ -8,8 +8,8 @@
 
     <title>@ViewBag.PageTitle</title>
     <!-- Bootstrap core CSS -->
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
-    <link href="@Url.Content("/css/wstyle.css")" rel="stylesheet">
+    <link href="@Url.Content("bootstrap-dist/css/bootstrap.min.css")" rel="stylesheet">
+    ><link href="@Url.Content("/css/wstyle.css")" rel="stylesheet">
     <link href="@Url.Content("/css/font-awesome.min.css")" rel="stylesheet">
     <link href="@Url.Content("/css/animate.css")" rel="stylesheet">
     <link href='http://fonts.useso.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
@@ -28,9 +28,9 @@
         </div>
     </div>
     <span id="header_shadow" style="width: 100%; top: 30px;"></span>
-    <div class="wrapper">
+    
         @RenderBody()
-    </div>
+    
     <footer>
         @Html.Action("webfooter", "IndexPub", new { area = "" })
     </footer>

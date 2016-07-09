@@ -2,44 +2,45 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<div class="topic">
-    <div class="container">
-        <div class="row">
-            <ol class="breadcrumb hidden-xs">
-                <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
-                <li class="active">网站公告</li>
-            </ol>
+<div class="wrapper">
+    <div class="topic">
+        <div class="container">
+            <div class="row">
+                <ol class="breadcrumb hidden-xs">
+                    <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
+                    <li class="active">网站公告</li>
+                </ol>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 id="accordions"><span>网站公告</span></h2>
-            <hr />
-            <div class="panel-group" id="accordion">
-                @if (Model.news != null && Model.news.Any())
-                {
-                    foreach (var item in Model.news)
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 id="accordions"><span>网站公告</span></h2>
+                <hr />
+                <div class="panel-group" id="accordion">
+                    @if (Model.news != null && Model.news.Any())
                     {
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">标题：@item.STitle</a>
-                        </div>
-                        <div id="@(item.ID.ToString() + "news")" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                @Html.Raw(item.SContent)
+                        foreach (var item in Model.news)
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@(item.ID.ToString() + "news")">标题：@item.STitle</a>
+                                </div>
+                                <div id="@(item.ID.ToString() + "news")" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        @Html.Raw(item.SContent)
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        }
                     }
-                }
-                else
-                {
-                    <p class="text-muted">暂无系统公告</p> 
-                }
+                    else
+                    {
+                        <p class="text-muted">暂无系统公告</p>
+                    }
+                </div>
             </div>
         </div>
     </div>
 </div>
-

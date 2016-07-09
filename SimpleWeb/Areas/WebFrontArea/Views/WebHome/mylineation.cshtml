@@ -3,52 +3,55 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<div class="topic">
-    <div class="container">
-        <div class="row">
-            <ol class="breadcrumb hidden-xs">
-                <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
-                <li class="active">我的排单币</li>
-            </ol>
+<div class="wrapper">
+    <div class="topic">
+        <div class="container">
+            <div class="row">
+                <ol class="breadcrumb hidden-xs">
+                    <li><a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a></li>
+                    <li class="active">我的排单币</li>
+                </ol>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="text-muted">我拥有的排单币数量
-                    </h3>
-                    <hr>
-                </div>
-                <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>排单币</th>
-                                <th>使用状态</th>
-                                <th>使用单据编号/用户名</th>
-                                <th>使用时间</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.orderlist)
-                            {
-                                <tr>                                    
-                                    <td>
-                                        <div class="item">
-                                            @item.ActiveCode
-                                        </div>
-                                    </td>
-                                    <td>@item.AMStatusName</td>
-                                    <td>@item.UseCode</td>
-                                    <td>@(item.UserTime==DateTime.MinValue?"":item.UserTime.ToString("yyyy-MM-dd HH:mm"))</td>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="text-muted">
+                            我拥有的排单币数量
+                        </h3>
+                        <hr>
+                    </div>
+                    <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>排单币</th>
+                                    <th>使用状态</th>
+                                    <th>使用单据编号/用户名</th>
+                                    <th>使用时间</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                    @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.orderlist)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="item">
+                                                @item.ActiveCode
+                                            </div>
+                                        </td>
+                                        <td>@item.AMStatusName</td>
+                                        <td>@item.UseCode</td>
+                                        <td>@(item.UserTime == DateTime.MinValue ? "" : item.UserTime.ToString("yyyy-MM-dd HH:mm"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
                 </div>
             </div>
         </div>

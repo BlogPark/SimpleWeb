@@ -1179,6 +1179,7 @@
     <Content Include="img\loaders\loading.gif" />
     <Content Include="img\loading.gif" />
     <Content Include="img\lockscreen.png" />
+    <Content Include="img\login.jpg" />
     <Content Include="img\logo\cloud.png" />
     <Content Include="img\logo\logo-alt.png" />
     <Content Include="img\logo\logo.png" />
