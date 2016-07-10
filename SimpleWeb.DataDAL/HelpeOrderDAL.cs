@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into HelpeOrder(");
-            strSql.Append("MatchedAmount,AddTime,LastUpdateTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest");
+            strSql.Append("MatchedAmount,AddTime,LastUpdateTime,SortIndex,OrderCode,MemberID,MemberPhone,MemberName,Amount,Interest,PayType,HStatus,ActiveCode,CurrentInterest,IsFristOrder");
             strSql.Append(") values (");
-            strSql.Append("@MatchedAmount,GETDATE(),GETDATE(),@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1");
+            strSql.Append("@MatchedAmount,GETDATE(),GETDATE(),@SortIndex,@OrderCode,@MemberID,@MemberPhone,@MemberName,@Amount,@Interest,@PayType,@HStatus,@ActiveCode,1,@IsFristOrder");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -37,7 +37,8 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@Interest", SqlDbType.Decimal) ,            
                         new SqlParameter("@PayType", SqlDbType.NVarChar) ,            
                         new SqlParameter("@HStatus", SqlDbType.Int),
-                        new SqlParameter("@ActiveCode",SqlDbType.NVarChar)
+                        new SqlParameter("@ActiveCode",SqlDbType.NVarChar),
+                        new SqlParameter("@IsFristOrder",SqlDbType.Int)
             };
             parameters[0].Value = model.MatchedAmount;
             parameters[1].Value = model.SortIndex;
@@ -50,6 +51,7 @@ namespace SimpleWeb.DataDAL
             parameters[8].Value = model.PayType;
             parameters[9].Value = model.HStatus;
             parameters[10].Value = model.ActiveCode;
+            parameters[11].Value = model.IsFristOrder;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -140,6 +142,14 @@ namespace SimpleWeb.DataDAL
                 if (!string.IsNullOrWhiteSpace(model.OrderCode))
                 {
                     where += "OrderCode='" + model.OrderCode + "'";
+                }
+                if (model.MemberID != null && model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
+                {
+                    where += " MemberID=" + model.MemberID.ToString();
+                }
+                else
+                {
+                    where += @" AND MemberID=" + model.MemberID.ToString();
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
@@ -730,8 +740,8 @@ WHERE   MemberID = @memberid
             string sqltxt = @"SELECT COUNT(0)
   FROM SimpleWebDataBase.dbo.HelpeOrder
   WHERE MemberID=@memberid AND AddTime>='" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "' AND AddTime<=GETDATE()";
-            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
-            return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
     }
 }

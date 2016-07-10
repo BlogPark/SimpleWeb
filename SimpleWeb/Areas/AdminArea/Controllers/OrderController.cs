@@ -270,7 +270,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult paymentinterist()
         {
-            string result=mcbll.PaymentInterestV2();
+            string result=mcbll.PaymentInterestV3();
             if (result == "1")
             {
                 return Json("1");

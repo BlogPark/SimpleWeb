@@ -15,7 +15,7 @@ namespace SimpleWeb.DataBLL
         /// <summary>
         /// 增加一条数据
         /// </summary>
-        public string  AddAcceptHelpOrder(AcceptHelpOrderModel model)
+        public string AddAcceptHelpOrder(AcceptHelpOrderModel model)
         {
             string result = "0";
             MemberCapitalDetailModel moneydetail = MemberCapitalDetailDAL.GetMemberStaticCapital(model.MemberID);
@@ -106,44 +106,82 @@ namespace SimpleWeb.DataBLL
         public int UpdateStatusToComplete(int aid)
         {
             int result = 0;
-            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
+            //List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
+            List<HelpeOrderModel> matchorderlist = MatchOrderDAL.GetMatchHelpOrderByAid(aid);
+            string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改当前的状态
-                int rowcount = AcceptHelpOrderDAL.UpdateStatus(aid, 5);
+                int rowcount = AcceptHelpOrderDAL.UpdateStatusToComplete(aid);
                 if (rowcount < 1)
                 {
                     return 0;
                 }
                 //更改匹配的提供帮助订单的状态
-                foreach (var item in matchorders)
+                #region 注释
+                //foreach (var item in matchorders)
+                //{
+                //    rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.HelperOrderID);
+                //    if (rowcount < 1)
+                //    {
+                //        return 0;
+                //    }
+                //    HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(item.HelperOrderID);
+                //    //解冻会员的静态冻结资金
+                //    rowcount = MemberCapitalDetailDAL.UpdateStaticThawDetail(order.MemberID);
+                //    if (rowcount < 1)
+                //    {
+                //        return 0;
+                //    }
+                //    //插入会员的资金变动记录
+                //    AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                //    logmodel.MemberID = order.MemberID;
+                //    logmodel.MemberName = order.MemberName;
+                //    logmodel.MemberPhone = order.MemberPhone;
+                //    logmodel.OrderCode = order.OrderCode;
+                //    logmodel.OrderID = item.HelperOrderID;
+                //    logmodel.ProduceMoney = 0;
+                //    logmodel.Remark = "会员:" + order.MemberPhone + " 所有冻结资金解冻";
+                //    logmodel.Type = 5;
+                //    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                //    if (rowcount < 1)
+                //    {
+                //        return 0;
+                //    }
+                //} 
+                #endregion
+                foreach (var item in matchorderlist)
                 {
-                    rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.HelperOrderID);
+                    rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.ID);
                     if (rowcount < 1)
                     {
                         return 0;
                     }
-                    HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(item.HelperOrderID);
-                    //解冻会员的静态冻结资金
-                    rowcount = MemberCapitalDetailDAL.UpdateStaticThawDetail(order.MemberID);
-                    if (rowcount < 1)
+                    if (item.DiffAmount == 0)
                     {
-                        return 0;
-                    }
-                    //插入会员的资金变动记录
-                    AmountChangeLogModel logmodel = new AmountChangeLogModel();
-                    logmodel.MemberID = order.MemberID;
-                    logmodel.MemberName = order.MemberName;
-                    logmodel.MemberPhone = order.MemberPhone;
-                    logmodel.OrderCode = order.OrderCode;
-                    logmodel.OrderID = item.HelperOrderID;
-                    logmodel.ProduceMoney = 0;
-                    logmodel.Remark = "会员:" + order.MemberPhone + " 所有冻结资金解冻";
-                    logmodel.Type = 5;
-                    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
-                    if (rowcount < 1)
-                    {
-                        return 0;
+                        //返还匹配会员的静态冻结资金和利息
+                        rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(item.MemberID,item.Amount,item.Interest);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                        //返还推荐奖
+                        if (item.IsFristOrder == 1)
+                        {
+                            decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率
+                            decimal money = item.Amount * inster / 100;
+                            rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(item.MemberID, money);
+                            if (rowcount < 1)
+                            {
+                                return 0;
+                            }
+                        }
+                        //返还领导奖
+                        rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(item.MemberID, inteistlist, item.OrderCode, item.ID);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
                     }
                 }
                 scope.Complete();
@@ -156,7 +194,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="aid"></param>
         /// <returns></returns>
-        public int UpdateToCancle(int aid,int ispipei)
+        public int UpdateToCancle(int aid, int ispipei)
         {
             int result = 0;
             using (TransactionScope scope = new TransactionScope())
@@ -171,11 +209,11 @@ namespace SimpleWeb.DataBLL
                 AcceptHelpOrderModel order = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
                 if (order.SourceType == 1)//静态资金
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID,order.Amount,order.MemberName,order.MemberPhone);
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, order.Amount, order.MemberName, order.MemberPhone);
                 }
                 else if (order.SourceType == 2)//动态资金
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(order.MemberID, order.Amount,order.MemberName,order.MemberPhone);
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(order.MemberID, order.Amount, order.MemberName, order.MemberPhone);
                 }
                 if (rowcount < 1)
                 {
@@ -191,12 +229,12 @@ namespace SimpleWeb.DataBLL
                 logmodel.ProduceMoney = order.Amount;
                 logmodel.Remark = "会员:" + order.MemberPhone + " 取消提供帮助，返还扣减的资金 " + order.Amount.ToString() + "元";
                 logmodel.Type = 5;
-                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);                
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
                 {
                     return 0;
                 }
-                if (ispipei>0)//若已经匹配则取消对应单据的信息
+                if (ispipei > 0)//若已经匹配则取消对应单据的信息
                 {
                     List<MatchOrderModel> matchs = MatchOrderDAL.GetMatchOrderInfo(0, aid);
                     rowcount = MatchOrderDAL.UpdateStatus(0, aid);//更改状态为取消
@@ -228,12 +266,12 @@ namespace SimpleWeb.DataBLL
         {
             return dal.UpdateSortindex(aid);
         }
-         /// <summary>
+        /// <summary>
         /// 根据接受帮助订单号得到匹配的信息
         /// </summary>
         /// <param name="hid"></param>
         /// <returns></returns>
-        public  List<HelpOrderExtendInfoModel> GetHelpextendmodels(int hid)
+        public List<HelpOrderExtendInfoModel> GetHelpextendmodels(int hid)
         {
             return AcceptHelpOrderDAL.GetHelpextendmodels(hid);
         }
@@ -242,7 +280,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public  AcceptHelpOrderModel GetAcceptOrderInfo(int id, int memberid)
+        public AcceptHelpOrderModel GetAcceptOrderInfo(int id, int memberid)
         {
             return AcceptHelpOrderDAL.GetAcceptOrderInfo(id, memberid);
         }

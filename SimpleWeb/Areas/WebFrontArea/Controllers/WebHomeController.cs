@@ -187,7 +187,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             HelpOrderListViewModel model = new HelpOrderListViewModel();
             int totalcount = 0;
-
+            seachmodel.MemberID = logmember.ID;
             seachmodel.PageIndex = page;
             seachmodel.PageSize = pagesize;
             List<HelpeOrderModel> orderlist = hobll.GetAllHelpeOrderListForPage(seachmodel, out totalcount);
@@ -214,6 +214,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             AcceptOrderListViewModel model = new AcceptOrderListViewModel();
             int totalcount = 0;
+            seachmodel.MemberID = logmember.ID;
             seachmodel.PageIndex = page;
             seachmodel.PageSize = pagesize;
             List<AcceptHelpOrderModel> orderlist = aobll.GetAllAcceptOrderListForPage(seachmodel, out totalcount);

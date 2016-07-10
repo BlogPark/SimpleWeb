@@ -177,6 +177,17 @@ namespace SimpleWeb.DataModels
             get { return _LastUpdateTime; }
             set { _LastUpdateTime = value; }
         }
+
+        private int _IsFristOrder = 0;
+        /// <summary>
+        /// 是否会员首单
+        /// </summary>
+        [DataMember]
+        public int IsFristOrder
+        {
+            get { return _IsFristOrder; }
+            set { _IsFristOrder = value; }
+        }
         #endregion
 
         #region 扩展字段

@@ -147,8 +147,47 @@ namespace SimpleWeb.DataDAL
 			};
             parameters[0].Value = hid;
             parameters[1].Value = aid;
-            return helper.ExecuteSql(sqltxt,parameters);
+            return helper.ExecuteSql(sqltxt, parameters);
 
+        }
+        /// <summary>
+        /// 根据Aid读取匹配的提供帮助列表
+        /// </summary>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public static List<HelpeOrderModel> GetMatchHelpOrderByAid(int aid)
+        {
+            List<HelpeOrderModel> list = new List<HelpeOrderModel>();
+            string sqlttx = @"SELECT  B.ID ,
+        B.OrderCode ,
+        ( B.Amount - B.MatchedAmount ) AS diffmoney ,
+        B.IsFristOrder ,
+        B.Amount ,
+        B.Interest,
+        b.MemberID,
+        b.MemberName,
+        b.MemberPhone
+FROM    SimpleWebDataBase.dbo.MatchOrder A
+        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder B ON A.HelperOrderID = B.ID
+WHERE   A.AcceptOrderID = @aid
+        AND MatchStatus = 1";
+            SqlParameter[] paramter = { new SqlParameter("@aid", aid) };
+            DataTable dt = helper.Query(sqlttx, paramter).Tables[0];
+            foreach (DataRow item in dt.Rows)
+            {
+                HelpeOrderModel model = new HelpeOrderModel();
+                model.ID = item["ID"].ToString().ParseToInt(0);
+                model.OrderCode = item["OrderCode"].ToString();
+                model.DiffAmount = item["diffmoney"].ToString().ParseToDecimal(0);
+                model.IsFristOrder = item["IsFristOrder"].ToString().ParseToInt(0);
+                model.Amount = item["Amount"].ToString().ParseToDecimal(0);
+                model.Interest = item["Interest"].ToString().ParseToDecimal(0);
+                model.MemberID = item["MemberID"].ToString().ParseToInt(0);
+                model.MemberName = item["MemberName"].ToString();
+                model.MemberPhone = item["MemberPhone"].ToString();
+                list.Add(model);
+            }
+            return list;
         }
     }
 }

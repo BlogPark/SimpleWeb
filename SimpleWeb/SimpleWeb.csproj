@@ -1112,6 +1112,7 @@
     <Content Include="images\user.png" />
     <Content Include="images\weixin.png" />
     <Content Include="images\woman.png" />
+    <Content Include="img\accept.jpg" />
     <Content Include="img\addressbook\1.jpg" />
     <Content Include="img\addressbook\2.jpg" />
     <Content Include="img\addressbook\3.jpg" />
@@ -1151,6 +1152,7 @@
     <Content Include="img\gritter\waring.png" />
     <Content Include="img\header_shadow.png" />
     <Content Include="img\headshot.png" />
+    <Content Include="img\help.jpg" />
     <Content Include="img\icon-block1.png" />
     <Content Include="img\icon-block2.png" />
     <Content Include="img\icon-block3.png" />
@@ -1188,6 +1190,7 @@
     <Content Include="img\pattern.png" />
     <Content Include="img\prev.png" />
     <Content Include="img\profile\avatar.jpg" />
+    <Content Include="img\right.jpg" />
     <Content Include="img\search-icon.png" />
     <Content Include="img\search\sample.jpg" />
     <Content Include="img\sidebar-menu-arrow.png" />

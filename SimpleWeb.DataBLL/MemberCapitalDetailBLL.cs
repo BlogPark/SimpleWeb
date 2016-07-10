@@ -58,6 +58,7 @@ namespace SimpleWeb.DataBLL
                     result = "0为会员更新利息总额失败";
                     return result;
                 }
+                //清空单据上面的利息金额
                 rowcount = MemberCapitalDetailDAL.ClearHelperInterest();
                 if (rowcount < 1)
                 {
@@ -66,6 +67,36 @@ namespace SimpleWeb.DataBLL
                 }
                 scope.Complete();
                 result ="1";
+            }
+            return result;
+        }
+        /// <summary>
+        /// 为会员派发利息(V3版)
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public string PaymentInterestV3()
+        {
+            string result = "";
+            int days = int.Parse(SysAdminConfigDAL.GetConfigsByID(10));
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //为每个单据派发利息
+                int rowcount = MemberCapitalDetailDAL.PaymentInterestForOrderWithLog(days);
+                if (rowcount < 1)
+                {
+                    result = "0为单据派发利息失败";
+                    return result;
+                }
+                //汇总并加入到账户信息记录日志
+                rowcount = MemberCapitalDetailDAL.SumInterestMoneyWithoutLog();
+                if (rowcount < 1)
+                {
+                    result = "0为会员更新利息总额失败";
+                    return result;
+                }
+                scope.Complete();
+                result = "1";
             }
             return result;
         }

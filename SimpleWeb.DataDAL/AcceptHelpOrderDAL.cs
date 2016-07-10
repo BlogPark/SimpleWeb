@@ -131,7 +131,15 @@ namespace SimpleWeb.DataDAL
             {
                 if (!string.IsNullOrWhiteSpace(model.OrderCode))
                 {
-                    where += "OrderCode='" + model.OrderCode+"'";
+                    where += "OrderCode='" + model.OrderCode + "'";
+                }
+                if (model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberID =" + model.MemberID;
+                }
+                else if (model.MemberID > 0 && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberID =" + model.MemberID;
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
@@ -329,7 +337,7 @@ WHERE   id = @id";
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static AcceptHelpOrderModel GetAcceptOrderInfo(int id,int memberid)
+        public static AcceptHelpOrderModel GetAcceptOrderInfo(int id, int memberid)
         {
             string sqltxt = @"SELECT  ID,OrderCode ,
         MemberID ,
@@ -394,6 +402,26 @@ WHERE   ID = @id AND MemberID=@memberid";
             };
             parameters[0].Value = aid;
             parameters[1].Value = status;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
+        }
+        /// <summary>
+        /// 更改状态为完成
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatusToComplete(int aid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update AcceptHelpOrder set ");
+            strSql.Append(" AStatus = 5 , ");
+            strSql.Append(" LastUpdateTime=GETDATE()  ");
+            strSql.Append(" where ID=@ID AND AStatus=4");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) 
+            };
+            parameters[0].Value = aid;
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             return rows;
         }
@@ -483,7 +511,7 @@ WHERE   D.AcceptOrderID = @orderid";
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public static List<AcceptHelpOrderModel> GetTopAcceptOrderListByMemberID(int memberid,int top=10)
+        public static List<AcceptHelpOrderModel> GetTopAcceptOrderListByMemberID(int memberid, int top = 10)
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             StringBuilder strSql = new StringBuilder();
@@ -492,7 +520,7 @@ WHERE   D.AcceptOrderID = @orderid";
             strSql.Append(" WHERE MemberID=@memberid ");
             strSql.Append(" ORDER BY ID DESC ");
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum", top) };
-            DataSet ds = helper.Query(strSql.ToString(),paramter);
+            DataSet ds = helper.Query(strSql.ToString(), paramter);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow item in ds.Tables[0].Rows)

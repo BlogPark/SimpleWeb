@@ -21,7 +21,7 @@ namespace SimpleWeb.DataBLL
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             decimal reinteist = SysAdminConfigDAL.GetConfigsByID(16).ParseToDecimal(10);//得到首次推荐的利率
-            decimal maxcount = SysAdminConfigDAL.GetConfigsByID(17).ParseToInt(1);//得到首次推荐的利率
+            decimal maxcount = SysAdminConfigDAL.GetConfigsByID(17).ParseToInt(1);//得到每日最大排单数
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
             //if (meinfo != null)
             //{
@@ -92,12 +92,14 @@ namespace SimpleWeb.DataBLL
                         return "0操作失败";
                     }
                 }
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount, dinterest,model.MemberName,model.MemberPhone);
+                //rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, model.Amount, dinterest,model.MemberName,model.MemberPhone);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoneyAndinster(model.MemberID, model.Amount, dinterest, model.MemberName, model.MemberPhone);
                 if (rowcount < 1)
                 {
                     return "0操作失败";
                 }
                 //插入表记录
+                model.IsFristOrder = isfirst ? 1 : 0;
                 int orderid = dal.AddHelpeOrder(model);
                 if (orderid < 1)
                 {
@@ -133,15 +135,15 @@ namespace SimpleWeb.DataBLL
                 //若此会员第一次排单，则给推荐人奖励
                 if (isfirst)
                 {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFunds(remember.MemberID, (model.Amount * reinteist / 100), remember.MemberTruthName, remember.MemberPhone);
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFreezeMoney(remember.MemberID, (model.Amount * reinteist / 100), remember.MemberTruthName, remember.MemberPhone);
                     if (rowcount < 1)
                     {
                         return "0操作失败";
                     }
                     AmountChangeLogModel logmodel1 = new AmountChangeLogModel();
-                    logmodel1.MemberID = model.MemberID;
-                    logmodel1.MemberName = model.MemberName;
-                    logmodel1.MemberPhone = model.MemberPhone;
+                    logmodel1.MemberID = remember.MemberID;
+                    logmodel1.MemberName = remember.MemberTruthName;
+                    logmodel1.MemberPhone = remember.MemberPhone;
                     logmodel1.OrderCode = model.OrderCode;
                     logmodel1.OrderID = orderid;
                     logmodel1.ProduceMoney = model.Amount;
@@ -226,7 +228,7 @@ namespace SimpleWeb.DataBLL
             List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
             using (TransactionScope scope = new TransactionScope())
             {
-                //更改状态为已打款
+                //更改状态为已打款和更改利率为已打款后的利率
                 int rowcount = HelpeOrderDAL.UpdateStatusandinster(hid, 4, decimal.Parse(inteist));
                 if (rowcount < 1)
                 {
@@ -271,12 +273,6 @@ namespace SimpleWeb.DataBLL
                         }
                     }
                 }
-                //为推荐人增加领导奖（此功能迁移到排单的时候）
-                //rowcount = MemberCapitalDetailDAL.PaymentLeaderPrize(order.MemberID, order.Amount, inteistlist, order.OrderCode, order.ID);
-                //if (rowcount < 1)
-                //{
-                //    return 0;
-                //}
                 scope.Complete();
                 result = 1;
             }
