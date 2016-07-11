@@ -520,8 +520,8 @@ WHERE HStatus <3";
             string sqltxt = @"UPDATE  A
 SET     Interest =ISNULL(Interest,0)+( CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > ( @days )
                         THEN 0
-                        ELSE ( Amount * ( 0.01 * CurrentInterest ) ))
-                   END
+                        ELSE ( Amount * ( 0.01 * CurrentInterest ) )
+                   END)
 OUTPUT  INSERTED.MemberID ,
         DELETED.MemberPhone ,
         DELETED.MemberName ,

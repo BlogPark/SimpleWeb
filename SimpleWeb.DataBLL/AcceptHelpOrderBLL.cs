@@ -152,6 +152,7 @@ namespace SimpleWeb.DataBLL
                 #endregion
                 foreach (var item in matchorderlist)
                 {
+
                     rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.ID);
                     if (rowcount < 1)
                     {
@@ -170,7 +171,8 @@ namespace SimpleWeb.DataBLL
                         {
                             decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率
                             decimal money = item.Amount * inster / 100;
-                            rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(item.MemberID, money);
+                            ReMemberRelationModel model = ReMemberRelationDAL.GetReMemberRelation(item.ID);
+                            rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(model.MemberID, money);
                             if (rowcount < 1)
                             {
                                 return 0;

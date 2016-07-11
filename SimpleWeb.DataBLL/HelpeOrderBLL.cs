@@ -235,32 +235,32 @@ namespace SimpleWeb.DataBLL
                     return 0;
                 }
                 //返还排单币更改会员利率为打款后利率
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value), decimal.Parse(inteist),order.MemberName,order.MemberPhone);
-                    if (rowcount < 1)
-                    {
-                        return 0;
-                    }
-                    AmountChangeLogModel logmodel = new AmountChangeLogModel();
-                    logmodel.MemberID = order.MemberID;
-                    logmodel.MemberName = order.MemberName;
-                    logmodel.MemberPhone = order.MemberPhone;
-                    logmodel.OrderCode = order.OrderCode;
-                    logmodel.OrderID = hid;
-                    logmodel.ProduceMoney = order.Amount;
-                    logmodel.Remark = "会员:" + order.MemberPhone + " 打款完成，返还" + order.Amount.ToString() + "元";
-                    logmodel.Type = 5;
-                    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
-                }
-                else
-                {
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberInterest(order.MemberID, decimal.Parse(inteist));
-                    if (rowcount < 1)
-                    {
-                        return 0;
-                    }
-                }
+                //if (!string.IsNullOrWhiteSpace(value))
+                //{
+                //    rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(order.MemberID, decimal.Parse(value), decimal.Parse(inteist),order.MemberName,order.MemberPhone);
+                //    if (rowcount < 1)
+                //    {
+                //        return 0;
+                //    }
+                //    AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                //    logmodel.MemberID = order.MemberID;
+                //    logmodel.MemberName = order.MemberName;
+                //    logmodel.MemberPhone = order.MemberPhone;
+                //    logmodel.OrderCode = order.OrderCode;
+                //    logmodel.OrderID = hid;
+                //    logmodel.ProduceMoney = order.Amount;
+                //    logmodel.Remark = "会员:" + order.MemberPhone + " 打款完成，返还" + order.Amount.ToString() + "元";
+                //    logmodel.Type = 5;
+                //    rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                //}
+                //else
+                //{
+                //    rowcount = MemberCapitalDetailDAL.UpdateMemberInterest(order.MemberID, decimal.Parse(inteist));
+                //    if (rowcount < 1)
+                //    {
+                //        return 0;
+                //    }
+                //}
                 //更新匹配接受订单的状态为对方已打款
                 if (matchorders.Count > 0)
                 {

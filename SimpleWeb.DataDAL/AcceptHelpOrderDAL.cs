@@ -415,7 +415,7 @@ WHERE   ID = @id AND MemberID=@memberid";
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update AcceptHelpOrder set ");
-            strSql.Append(" AStatus = 5 , ");
+            strSql.Append(" AStatus = ( CASE ( Amount - ISNULL(MatchedAmount, 0) ) WHEN 0 THEN 5 ELSE 1 END ),");
             strSql.Append(" LastUpdateTime=GETDATE()  ");
             strSql.Append(" where ID=@ID AND AStatus=4");
             SqlParameter[] parameters = {

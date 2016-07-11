@@ -577,7 +577,7 @@ SET     HStatus = CASE ( Amount - ISNULL(MatchedAmount, 0) )
                     WHEN 0 THEN 5
                     ELSE 1
                   END,LastUpdateTime=GETDATE()
-WHERE   id = @id";
+WHERE   id = @id AND HStatus=4 ";
             SqlParameter[] parameters = {
 			            new SqlParameter("@id", SqlDbType.Int) 
             };
