@@ -297,5 +297,18 @@ WHERE   RecommMID = @RecommMID";
             } while (!string.IsNullOrWhiteSpace(memberids));
             return list;
         }
+        /// <summary>
+        /// 查找会员的推荐人数
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int GetReMemberCount(int memberid)
+        {
+            string sqltxt = @"SELECT COUNT(0)
+  FROM SimpleWebDataBase.dbo.ReMemberRelation
+  WHERE MemberID=@memberid AND RStatus=1";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(1);
+        }
     }
 }

@@ -743,5 +743,18 @@ WHERE   MemberID = @memberid
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
+
+        /// <summary>
+        /// 查看会员当天的帮助次数
+        /// </summary>
+        /// <returns></returns>
+        public static int UpdateCurrentInterestToClear(int memberid)
+        {
+            string sqltxt = @"UPDATE SimpleWebDataBase.dbo.HelpeOrder
+  SET CurrentInterest=0
+  WHERE MemberID=@memberid AND CurrentInterest=2 ";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
     }
 }

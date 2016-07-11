@@ -533,7 +533,7 @@ OUTPUT  INSERTED.MemberID ,
         DELETED.OrderCode
         INTO dbo.AmountChangeLog
 FROM    SimpleWebDataBase.dbo.HelpeOrder A
-WHERE   HStatus < 3";
+WHERE   HStatus <> 3";
             SqlParameter[] paramter = { 
                                           new SqlParameter("@days",day)
                                       };
@@ -631,6 +631,11 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
             }
             for (int i = 0; i < members.Count; i++)
             {
+                int count = ReMemberRelationDAL.GetReMemberCount(members[i].MemberID);
+                if (count < (i + 1))
+                {
+                    continue;
+                }
                 decimal money = amount;//若推荐人排单金额小于被推荐人排单金额，则取推荐人排单金额计算
                 if (members[i].Amount < amount)
                 {
@@ -787,6 +792,27 @@ SET     StaticCapital = ISNULL(StaticCapital, 0) + @money + @insertmoney ,
 WHERE   MemberID = @memberid";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),
                                           new SqlParameter("@insertmoney",instermoney),
+                                          new SqlParameter("@money",money)
+                                      };
+            result = helper.ExecuteSql(sqltxt, paramter);
+            return result;
+        }
+        /// <summary>
+        /// 解冻会员的初次激活码资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="money"></param>
+        /// <param name="instermoney"></param>
+        /// <returns></returns>
+        public static int UpdateStaticFreezeMoneyForReiger(int memberid, decimal money)
+        {
+            int result = 0;
+            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+SET     StaticCapital = ISNULL(StaticCapital, 0) + @money ,
+        StaticFreezeMoney = ISNULL(StaticFreezeMoney, 0) - @money,
+        TotalStaticCapital=ISNULL(TotalStaticCapital, 0) + @money 
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid),
                                           new SqlParameter("@money",money)
                                       };
             result = helper.ExecuteSql(sqltxt, paramter);

@@ -34,6 +34,7 @@ namespace SimpleWeb.DataBLL
                 }
                 //扣减会员的相应金额记录
                 //点击接受帮助后不再为会员计算利息
+
                 int rowcount = 0;
                 if (model.SourceType == 1)
                 {
@@ -51,6 +52,12 @@ namespace SimpleWeb.DataBLL
                     }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberDynamicFunds(model.MemberID, 0 - model.Amount, 0);
                 }
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                //清空会员的利率
+                rowcount = HelpeOrderDAL.UpdateCurrentInterestToClear(model.MemberID);
                 if (rowcount < 1)
                 {
                     return "0操作失败";
@@ -108,6 +115,7 @@ namespace SimpleWeb.DataBLL
             int result = 0;
             //List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
             List<HelpeOrderModel> matchorderlist = MatchOrderDAL.GetMatchHelpOrderByAid(aid);
+            string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额 
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             using (TransactionScope scope = new TransactionScope())
             {
@@ -177,6 +185,7 @@ namespace SimpleWeb.DataBLL
                             {
                                 return 0;
                             }
+                            rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(item.MemberID,value.ParseToDecimal(0));
                         }
                         //返还领导奖
                         rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(item.MemberID, inteistlist, item.OrderCode, item.ID);
