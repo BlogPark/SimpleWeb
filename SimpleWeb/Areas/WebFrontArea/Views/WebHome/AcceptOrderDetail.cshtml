@@ -33,7 +33,7 @@
                                             <td></td>
                                             <td>排队天数</td>
                                             <td></td>
-                                            <td>@(Model.acceptorder.AStatus == 1 || Model.acceptorder.AStatus == 2 ? "操 作" : "")</td>
+                                            
                                         </tr>
                                         <tr>
                                             <td>@Model.acceptorder.OrderCode</td>
@@ -49,13 +49,7 @@
                                             <td>@Model.acceptorder.AStatusName</td>
                                             <td></td>
                                             <td>@Model.acceptorder.DiffDay</td>
-                                            <td></td>
-                                            <td>
-                                                @if (Model.acceptorder.AStatus == 4)
-                                                {
-                                                    <button class="btn btn-lg btn-blue" onclick="updateacceptorder(@Model.acceptorder.ID)">已收款</button>
-                                                }
-                                            </td>
+                                            <td></td>                                            
                                         </tr>
                                     </tbody>
                                 </table>

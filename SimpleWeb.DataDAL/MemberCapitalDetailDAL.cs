@@ -318,7 +318,7 @@ ELSE
         {
             string sqltxt = @"
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     StaticCapital=ISNULL(StaticCapital,)+@Amount,Interest=@interest
+        SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount,Interest=@interest
         WHERE   MemberID = @MemberID
     ";
             SqlParameter[] paramter = { 

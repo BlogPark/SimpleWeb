@@ -855,6 +855,30 @@ WHERE   AType = @atype ";
                                       };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
-
+        /// <summary>
+        /// 按照类型和数量读取激活码
+        /// </summary>
+        /// <param name="typenum"></param>
+        /// <returns></returns>
+        public static List<string> GetTypeCountActiveCode(int type,int count)
+        {
+            List<string> list = new List<string>();
+            string sqltxt = @"SELECT TOP (@topnum) ActivationCode
+FROM    SimpleWebDataBase.dbo.ActiveCode
+WHERE   AType = @atype ";
+            SqlParameter[] paramter = {
+                                          new SqlParameter("@atype",type),
+                                          new SqlParameter("@topnum",count)
+                                      };
+            DataTable dt= helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    list.Add(item["ActivationCode"].ToString());
+                }
+            }
+            return list;
+        }
     }
 }

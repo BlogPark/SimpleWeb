@@ -540,7 +540,19 @@ WHERE   ID = @id
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select ID,HStatus,OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday,ISNULL(IsFristOrder,0) IsFristOrder from HelpeOrder where ID=@id ";
+            string sqltxt = @"SELECT  ID ,
+        HStatus ,
+        OrderCode ,
+        MemberID ,
+        MemberPhone ,
+        MemberName ,
+        Amount ,
+        ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
+        Interest ,
+        DATEDIFF(DAY, AddTime, GETDATE()) diffday ,
+        ISNULL(IsFristOrder, 0) IsFristOrder
+FROM    HelpeOrder
+WHERE   ID = @id";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };

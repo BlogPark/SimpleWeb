@@ -21,7 +21,7 @@ namespace SimpleWeb.DataBLL
         {
             return dal.ProduceActiveCode(list);
         }
-         /// <summary>
+        /// <summary>
         /// 产生新的激活码
         /// </summary>
         /// <param name="list"></param>
@@ -47,7 +47,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<ActiveCodeModel> GetActiveCodeListForPage(ActiveCodeModel model, out int totalrowcount)
         {
-            return dal.GetActiveCodeListForPage(model,out totalrowcount);
+            return dal.GetActiveCodeListForPage(model, out totalrowcount);
         }
         /// <summary>
         /// 更改状态
@@ -75,8 +75,21 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int AssignedCode(List<string> codes, string memberphone)
         {
-            return dal.AssignedCode(codes,memberphone);
+            return dal.AssignedCode(codes, memberphone);
         }
+
+        /// <summary>
+        /// 分配激活码
+        /// </summary>
+        /// <param name="codes"></param>
+        /// <param name="memberphone"></param>
+        /// <returns></returns>
+        public int AssignedCode(int count, int type, string memberphone)
+        {
+            List<string> codes = ActiveCodeDAL.GetTypeCountActiveCode(type,count);
+            return dal.AssignedCode(codes, memberphone);
+        }
+
         /// <summary>
         /// 得到分页数据
         /// </summary>
@@ -85,7 +98,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<MemberActiveCodeModel> GetMemberActiveCodeListForPage(MemberActiveCodeModel model, out int totalrowcount)
         {
-            return dal.GetMemberActiveCodeListForPage(model,out totalrowcount);
+            return dal.GetMemberActiveCodeListForPage(model, out totalrowcount);
         }
         /// <summary>
         /// 修改会员激活码状态
@@ -104,7 +117,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<ActiveCodeLogModel> GetActiveCodeLogListForPage(int memberid, int pageindex, int pagesize, out int totalrowcount)
         {
-            return dal.GetActiveCodeLogListForPage(memberid, pageindex, pagesize,out totalrowcount);
+            return dal.GetActiveCodeLogListForPage(memberid, pageindex, pagesize, out totalrowcount);
         }
         /// <summary>
         /// 得到会员的分类激活码信息
