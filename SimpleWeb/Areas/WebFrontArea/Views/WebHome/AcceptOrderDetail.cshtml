@@ -62,7 +62,35 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
+                @if (Model.helpOrderInfo.Count > 0)
+                {
+                    <h2><span>匹配单据信息</span></h2>
+                    <hr />
+                    <div class="row">
+                        @foreach (var item in Model.helpOrderInfo)
+                        {
+                            <div class="col-sm-6">
+                                <div class="info-board info-board-blue">
+                                    <ul class="checkout">
+                                        <li><strong>匹配单据编号</strong>: @item.helpordercode</li>
+                                        <li><strong>匹配金额</strong>: @item.MatchedMoney</li>
+                                        <li><strong>提供帮助会员名字</strong>: @item.helpmemberName</li>
+                                        <li><strong>提供帮助会员电话</strong>: @item.helpmemberPhone</li>
+                                        <li><strong>提供帮助会员微信</strong>: @item.helpmemberweixin</li>
+                                        <li><strong>提供帮助会员支付宝</strong>: @item.helpmemberAlipayId</li>
+                                        <li><strong>推荐人名字</strong>: @item.remembername</li>
+                                        <li><strong>推荐人电话</strong>: @item.rememberphone</li>
+                                        <li><strong>单据当前状态</strong>: @item.HStatusName</li>
+                                        @if (item.HStatus == 4) { 
+                                        <li><button class="btn btn-lg btn-blue" onclick="updatesingleorder(@Model.acceptorder.ID,@item.helporderid)">确认已收款</button></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
                 <h2><span>接受帮助会员基本信息</span></h2>
                 <hr />
                 <div class="row">
@@ -79,30 +107,6 @@
                         </div>
                     </div>
                 </div>
-                @if (Model.helpOrderInfo.Count > 0)
-                {
-                    <h2><span>匹配单据信息</span></h2>
-                    <hr />
-                    <div class="row">
-                        @foreach (var item in Model.helpOrderInfo)
-                        {
-                            <div class="col-sm-6">
-                                <div class="info-board info-board-red">
-                                    <ul class="checkout">
-                                        <li><strong>匹配单据编号</strong>: @item.helpordercode</li>
-                                        <li><strong>匹配金额</strong>: @item.MatchedMoney</li>
-                                        <li><strong>提供帮助会员名字</strong>: @item.helpmemberName</li>
-                                        <li><strong>提供帮助会员电话</strong>: @item.helpmemberPhone</li>
-                                        <li><strong>提供帮助会员微信</strong>: @item.helpmemberweixin</li>
-                                        <li><strong>提供帮助会员支付宝</strong>: @item.helpmemberAlipayId</li>
-                                        <li><strong>推荐人名字</strong>: @item.remembername</li>
-                                        <li><strong>推荐人电话</strong>: @item.rememberphone</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
             </div>
         </div>
     </div>

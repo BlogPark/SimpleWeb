@@ -432,10 +432,33 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 return Json("0");
             }
         }
+        /// <summary>
+        /// 完成接受帮助订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult finishorder(int id)
         {
             int result = aobll.UpdateStatusToComplete(id);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 完成接受帮助订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult singlefinishorder(int aid,int hid)
+        {
+            int result = aobll.UpdateSingleOrderToComplete(aid,hid);
             if (result > 0)
             {
                 return Json("1");

@@ -540,7 +540,7 @@ WHERE   ID = @id
         /// <returns></returns>
         public static HelpeOrderModel GetHelpOrderInfo(int id)
         {
-            string sqltxt = @"select HStatus,OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday  from HelpeOrder where ID=@id ";
+            string sqltxt = @"select ID,HStatus,OrderCode,MemberID,MemberPhone,MemberName,Amount,(Amount-ISNULL(MatchedAmount,0)) as DiffAmount,Interest,DATEDIFF(DAY,AddTime,GETDATE()) diffday,ISNULL(IsFristOrder,0) IsFristOrder from HelpeOrder where ID=@id ";
             SqlParameter[] paramter ={
                                         new SqlParameter("@id",id)
                                     };
@@ -548,6 +548,7 @@ WHERE   ID = @id
             if (dt.Rows.Count > 0)
             {
                 HelpeOrderModel model = new HelpeOrderModel();
+                model.ID = dt.Rows[0]["ID"].ToString().ParseToInt(0);
                 model.MemberID = Convert.ToInt32(dt.Rows[0]["MemberID"].ToString());
                 model.MemberName = dt.Rows[0]["MemberName"].ToString();
                 model.MemberPhone = dt.Rows[0]["MemberPhone"].ToString();
@@ -557,6 +558,7 @@ WHERE   ID = @id
                 model.Interest = Convert.ToDecimal(dt.Rows[0]["Interest"].ToString());
                 model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
                 model.HStatus = dt.Rows[0]["HStatus"].ToString().ParseToInt(0);
+                model.IsFristOrder = dt.Rows[0]["IsFristOrder"].ToString().ParseToInt(0);
                 return model;
             }
             else
@@ -745,7 +747,7 @@ WHERE   MemberID = @memberid
         }
 
         /// <summary>
-        /// 查看会员当天的帮助次数
+        /// 更新会员的高利率为0
         /// </summary>
         /// <returns></returns>
         public static int UpdateCurrentInterestToClear(int memberid)

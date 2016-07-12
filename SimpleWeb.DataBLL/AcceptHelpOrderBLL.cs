@@ -32,9 +32,7 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
-                //扣减会员的相应金额记录
-                //点击接受帮助后不再为会员计算利息
-
+                //扣减会员的相应金额记录      
                 int rowcount = 0;
                 if (model.SourceType == 1)
                 {
@@ -56,12 +54,9 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
-                //清空会员的利率
+                //点击接受帮助后不再为会员计算利息
+                //清空会员的利率(不判断结果，不排除没有这样单据的可能，因为存在特殊账户)
                 rowcount = HelpeOrderDAL.UpdateCurrentInterestToClear(model.MemberID);
-                if (rowcount < 1)
-                {
-                    return "0操作失败";
-                }
                 //增加会员的资金变动记录
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
                 logmodel.MemberID = model.MemberID;
@@ -160,7 +155,6 @@ namespace SimpleWeb.DataBLL
                 #endregion
                 foreach (var item in matchorderlist)
                 {
-
                     rowcount = HelpeOrderDAL.UpdateStatusForComplete(item.ID);
                     if (rowcount < 1)
                     {
@@ -169,7 +163,7 @@ namespace SimpleWeb.DataBLL
                     if (item.DiffAmount == 0)
                     {
                         //返还匹配会员的静态冻结资金和利息
-                        rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(item.MemberID,item.Amount,item.Interest);
+                        rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(item.MemberID, item.Amount, item.Interest);
                         if (rowcount < 1)
                         {
                             return 0;
@@ -185,15 +179,67 @@ namespace SimpleWeb.DataBLL
                             {
                                 return 0;
                             }
-                            rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(item.MemberID,value.ParseToDecimal(0));
+                            rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(item.MemberID, value.ParseToDecimal(0));
                         }
                         //返还领导奖
                         rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(item.MemberID, inteistlist, item.OrderCode, item.ID);
+                    }
+                }
+                scope.Complete();
+                result = 1;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 更新状态为已完成
+        /// </summary>
+        /// <returns></returns>
+        public int UpdateSingleOrderToComplete(int aid, int hid)
+        {
+            int result = 0;
+            //List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
+            HelpeOrderModel helporder = HelpeOrderDAL.GetHelpOrderInfo(hid);
+            List<MatchOrderModel> matchinfo = MatchOrderDAL.GetMatchOrderInfo(hid,aid);
+            string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额 
+            string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //更改当前的接受单据状态和完成金额
+                int rowcount = AcceptHelpOrderDAL.UpdateStatusAndMoneyToComplete(aid,matchinfo[0].MatchedMoney);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //更改匹配的提供帮助订单的状态  
+                rowcount = HelpeOrderDAL.UpdateStatusForComplete(helporder.ID);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                if (helporder.DiffAmount == 0)
+                {
+                    //返还匹配会员的静态冻结资金和利息
+                    rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(helporder.MemberID, helporder.Amount, helporder.Interest);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    //返还推荐奖
+                    if (helporder.IsFristOrder == 1)
+                    {
+                        decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率
+                        decimal money = helporder.Amount * inster / 100;
+                        ReMemberRelationModel model = ReMemberRelationDAL.GetReMemberRelation(helporder.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(model.MemberID, money);
                         if (rowcount < 1)
                         {
                             return 0;
                         }
+                        //返还激活码的钱
+                        rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(helporder.MemberID, value.ParseToDecimal(0));
                     }
+                    //返还领导奖
+                    rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID);
                 }
                 scope.Complete();
                 result = 1;

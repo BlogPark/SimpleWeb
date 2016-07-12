@@ -64,13 +64,14 @@ namespace SimpleWeb.DataDAL
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select ID, HelperOrderID, HelperOrderCode, HelperMemberID, AcceptOrderID, AcceptOrderCode, AcceptMemberID, MatchedMoney, MatchTime  ");
             strSql.Append("  from MatchOrder ");
+            strSql.Append("  where MatchStatus=1 ");
             if (hid > 0)
             {
-                strSql.Append(" where HelperOrderID=@hid AND MatchStatus=1 ");
+                strSql.Append(" AND HelperOrderID=@hid ");
             }
             if (aid > 0)
             {
-                strSql.Append(" where AcceptOrderID=@aid AND MatchStatus=1 ");
+                strSql.Append(" AND AcceptOrderID=@aid ");
             }
             SqlParameter[] parameters = {
 					new SqlParameter("@hid", SqlDbType.Int),

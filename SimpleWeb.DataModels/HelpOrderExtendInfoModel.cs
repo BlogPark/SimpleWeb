@@ -33,5 +33,9 @@ namespace SimpleWeb.DataModels
         public string helpmemberAlipayId { get; set; }
         [DataMember]
         public string helpmemberweixin { get; set; }
+        [DataMember]
+        public string HStatusName { get; set; }
+        [DataMember]
+        public int HStatus { get; set; }
     }
 }

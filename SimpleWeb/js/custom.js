@@ -347,3 +347,19 @@ function updateacceptorder(id) {
         }
     });
 }
+function updatesingleorder(aid,hid) {
+    $.ajax({
+        url: '/WebFrontArea/WebHome/singlefinishorder',
+        dataType: 'Json',
+        data: { 'aid': aid,'hid':hid },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                bootbox.alert("²Ù×÷Ê§°Ü")
+            }
+        }
+    });
+}

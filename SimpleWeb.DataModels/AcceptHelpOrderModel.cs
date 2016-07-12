@@ -105,6 +105,17 @@ namespace SimpleWeb.DataModels
             get { return _matchedamount; }
             set { _matchedamount = value; }
         }
+        private decimal _FinishAmount;
+        /// <summary>
+        /// 完成金额
+        /// </summary>
+        [DataMember]
+        public decimal FinishAmount
+        {
+            get { return _FinishAmount; }
+            set { _FinishAmount = value; }
+        }
+
         private string _turnoutorder;
         /// <summary>
         /// 对应订单

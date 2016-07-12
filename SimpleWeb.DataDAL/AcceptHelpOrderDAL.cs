@@ -426,6 +426,30 @@ WHERE   ID = @id AND MemberID=@memberid";
             return rows;
         }
         /// <summary>
+        /// 更改状态为完成
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatusAndMoneyToComplete(int aid,decimal money)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update AcceptHelpOrder set ");
+            strSql.Append(" AStatus = ( CASE ( Amount - ISNULL(FinishAmount, 0)-@amount ) WHEN 0 THEN 5 ELSE 1 END ),");
+            strSql.Append(" FinishAmount=ISNULL(FinishAmount, 0)+@amount,  ");
+            strSql.Append(" LastUpdateTime=GETDATE()  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,
+                        new SqlParameter("@amount", SqlDbType.Decimal)
+            };
+            parameters[0].Value = aid;
+            parameters[1].Value = money;
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
+        }
+
+        /// <summary>
         /// 更新接受帮助的订单的状态
         /// </summary>
         /// <returns></returns>
@@ -478,7 +502,9 @@ WHERE   id = @id";
         C.MemberID AS rememberid ,
         C.MemberPhone AS rememberphone ,
         C.MemberTruthName AS remembername ,
-        D.MatchedMoney
+        D.MatchedMoney,
+        A.HStatus,
+        CASE A.HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '对方已打款'  WHEN 5 THEN '双方已确认' END AS HStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.HelpeOrder A ON D.HelperOrderID = A.ID
         INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
@@ -502,6 +528,8 @@ WHERE   D.AcceptOrderID = @orderid";
                     model.rememberid = item["rememberid"].ToString().ParseToInt(0);
                     model.remembername = item["remembername"].ToString();
                     model.rememberphone = item["rememberphone"].ToString();
+                    model.HStatusName = item["HStatusName"].ToString();
+                    model.HStatus = item["HStatus"].ToString().ParseToInt(0);
                     list.Add(model);
                 }
             }
