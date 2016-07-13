@@ -188,7 +188,16 @@ namespace SimpleWeb.DataBLL
         {
             return dal.DelSysAdminUser(userid);
         }
-
+        /// <summary>
+        /// 更改系统管理员登陆密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int UpdateAdminPwd(string newpwd, int userid)
+        {
+            return dal.UpdateAdminPwd(newpwd,userid);
+        }
         #endregion
 
     }

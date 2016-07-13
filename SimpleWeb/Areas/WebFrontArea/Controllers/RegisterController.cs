@@ -97,5 +97,48 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             return Json("1");
         }
+        /// <summary>
+        /// 发送短信
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult sendsms(string phone)
+        {
+            Random ran = new Random();
+            int RandKey = ran.Next(100000,999999);
+            int id = bll.AddVerification(RandKey.ToString());
+            string content = @"校验码："+RandKey.ToString()+",请勿泄露短信验证码。(短信编号："+id.ToString()+")";
+            string result = SendSMSClass.SendSMS(phone, content);
+            int row = bll.UpdateVerification(result.Substring(1),id);
+            if (result.StartsWith("s"))
+            {
+                return Json(id.ToString());
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 检查短信
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult checkverification(int id,string code)
+        {
+            string datacode = bll.SelectVerification(id);
+            if (datacode != code)
+            {
+                return Json("0");
+            }
+            else
+            {
+                return Json("1");
+            }
+        }
+
     }
 }

@@ -77,7 +77,21 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 return Json("0");
             }
-        } 
+        }
+        [HttpPost]
+        public JsonResult updatepwd(int userid, string pwd)
+        {
+            string newpwd = DESEncrypt.Encrypt(pwd, AppContent.SecrectStr);
+            int row = mbll.UpdateAdminPwd(newpwd, userid);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
         #endregion
 
         #region 系统配置界面

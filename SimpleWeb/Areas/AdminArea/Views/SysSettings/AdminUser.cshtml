@@ -168,6 +168,34 @@
     </div>
 </div>
 <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">修改登陆密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role = "form" class = "form-horizontal"> 
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">新密码：</label>
+                            <div class="col-sm-7">
+                              <input type="password" class = "form-control"  id="newpwd" name="newpwd"/>
+                                <input type="hidden" id="userid" name="userid" value="">
+                            </div>
+                        </div>
+                   </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updatepwd()">更  改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
 <div class="container">
     <div class="row">
         <div id="content" class="col-lg-12">
@@ -242,6 +270,7 @@
                                         <td>
                                             <p class="btn-toolbar">
                                                 <a class="btn btn-warning" data-toggle="modal" href="#box-config" onclick="updatemassage(@item.ID)"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+                                                <a class="btn btn-warning" data-toggle="modal" href="#box-config2" onclick="showuppwd(@item.ID)">修改密码</a>
                                                 <button class="btn btn-danger" onclick="deluser(@item.ID)"><i class="fa fa-times-circle"></i>&nbsp; 禁 用</button>
                                             </p>
                                         </td>
@@ -259,7 +288,6 @@
     <!-- BOOTBOX -->
     <script type="text/javascript" src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
 }
-
 @section myscript{
     <script type="text/javascript">
         $(function () {
@@ -340,6 +368,32 @@
                     });
                 }
             });
+        }
+        function showuppwd(id)
+        {
+            $("#userid").val(id);
+        }
+        function updatepwd()
+        {
+            var userid = $("#userid").val();
+            var newpwd = $("#newpwd").val();
+            $.ajax({
+                url: '@Url.Action("updatepwd", "SysSettings", new { area = "AdminArea" })',
+                datatype: 'json',
+                async: false,
+                type: 'POST',
+                data: { 'userid': userid, 'pwd': newpwd },
+                success: function (data) {
+                    if (data == "1") {                       
+                        bootbox.alert("操作成功");
+                        setTimeout(function () {
+                            $(".bootbox").modal("hide");
+                        }, 2000);
+                    }
+                    else { bootbox.alert("操作失败"); }
+                }
+            });
+
         }
     </script>
 }

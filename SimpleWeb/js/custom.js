@@ -101,6 +101,56 @@ function webchang(id, control) {
     });
 }
 function subchange() {
+    var name = $("#member_TruethName").val();
+    var phone = $("#member_MobileNum").val();
+    var weixin = $("#member_WeixinNum").val();
+    var zhifubao = $("#member_AliPayNum").val();
+    var area = $("#member_Area").val();
+    var pwd = $("#pwd").val();
+    var surepwd = $("#member_LogPwd").val();
+    var checkv = $("#checkv").val();
+    if (name == '') {
+        bootbox.alert("请输入您的真实姓名！");
+        return false;
+    }
+    if (phone == '') {
+        bootbox.alert("请填写注册手机号！");
+        return false;
+    }    
+    if (weixin == '') {
+        bootbox.alert("请填写微信联系方式！");
+        return false;
+    }
+    if (zhifubao == '') {
+        bootbox.alert("请填写支付宝账户！");
+        return false;
+    }
+    if (area == '') {
+        bootbox.alert("请选择所在区域！");
+        return false;
+    }
+    if (pwd == '') {
+        bootbox.alert("请设置登陆密码！");
+        return false;
+    }
+    if (surepwd == '') {
+        bootbox.alert("请输入确认密码！");
+        return false;
+    }
+    if (surepwd != pwd) {
+        bootbox.alert("两次输入密码不一致！");
+        return false;
+    }
+    if (checkv == "e")
+    {
+        bootbox.alert("手机验证码不正确，请重新验证！");
+        return false;
+    }
+    var check = $("#agreementchk").is(':checked');
+    if (!check) {
+        bootbox.alert("若不同意平台协定无法完成注册");
+        return false;
+    }
     document.getElementById('registerform').submit();
     return false;
 }
@@ -122,6 +172,51 @@ function changlogpwd() {
             }
         });
     }
+}
+function send() {
+    var phone = $("#member_MobileNum").val();
+    if (phone.length != 11) {
+        bootbox.alert("输入的手机号不合法");
+        return false;
+    }
+    $.ajax({
+        url: '/WebFrontArea/Register/sendsms',
+        dataType: 'Json',
+        data: { 'phone': phone },
+        type: 'POST',
+        success: function (data) {
+            if (data == "0") {
+                bootbox.alert("短信发送失败，请重试");
+            }
+            else {
+                $("#vid").val(data);
+                $("#resultmsg").html("发送成功，编号:" + data);
+            }
+        }
+    });
+}
+function checkvcode() {
+    var id = $("#vid").val();
+    var code = $("#verifivationcode").val();
+    if (code.length != 6) {
+        return false;
+    }
+    $.ajax({
+        url: '/WebFrontArea/Register/checkverification',
+        dataType: 'Json',
+        data: { 'id': id, 'code': code },
+        type: 'POST',
+        success: function (data) {
+            if (data == "0") {
+                $("#resultmsg").html("验证码不正确");
+                $("#checkv").val("e");
+            }
+            else {
+                $("#resultmsg").html("验证码通过");
+                $("#checkv").val("s");
+            }
+        }
+    });
 }
 /*=======mycapital page===========*/
 $("#chkweixin").change(function () {
@@ -347,11 +442,11 @@ function updateacceptorder(id) {
         }
     });
 }
-function updatesingleorder(aid,hid) {
+function updatesingleorder(aid, hid) {
     $.ajax({
         url: '/WebFrontArea/WebHome/singlefinishorder',
         dataType: 'Json',
-        data: { 'aid': aid,'hid':hid },
+        data: { 'aid': aid, 'hid': hid },
         type: 'POST',
         success: function (data) {
             if (data == '1') {

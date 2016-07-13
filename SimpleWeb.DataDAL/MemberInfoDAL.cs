@@ -706,5 +706,44 @@ WHERE   AliPayNum = @alipaynum
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             return dt.Rows.Count;
         }
+        /// <summary>
+        /// 插入验证码
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static int AddVerification(string code)
+        {
+            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.Verification
+        ( VerificationCode )
+VALUES  ( @VerificationCode )
+SELECT  @@IDENTITY;";
+            SqlParameter[] paramter = { new SqlParameter("@VerificationCode",code) };
+            return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 修改验证码发送结果
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static int UpdateVerification(string sendid,int id)
+        {
+            string sqltxt = @"Update SimpleWebDataBase.dbo.Verification
+        SET SendID=@SendID where ID=@id";
+            SqlParameter[] paramter = { new SqlParameter("@SendID", sendid),new SqlParameter("@id",id) };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 修改验证码发送结果
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static string SelectVerification(int id)
+        {
+            string sqltxt = @"select VerificationCode
+       from SimpleWebDataBase.dbo.Verification
+       where ID=@id";
+            SqlParameter[] paramter = { new SqlParameter("@id", id) };
+            return helper.GetSingle(sqltxt, paramter).ToString();
+        }
     }
 }

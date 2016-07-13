@@ -911,6 +911,18 @@ WHERE   ID = @id";
             rowcount = helper.ExecuteSql(sqltxt, paramter);
             return rowcount;
         }
+        /// <summary>
+        /// 更改系统管理员登陆密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int UpdateAdminPwd(string newpwd,int userid)
+        {
+            string sqltxt = @"UPDATE   dbo.SysAdminUser SET UserPwd = @userpwd WHERE ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@userpwd",newpwd),new SqlParameter("@id",userid)};
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
         #endregion
     }
 }

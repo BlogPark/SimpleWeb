@@ -221,7 +221,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="phone"></param>
         /// <param name="activecode"></param>
         /// <returns></returns>
-        public string ActiveMember(int memberid, string phone, string activecode, bool isauto,int souceid=0)
+        public string ActiveMember(int memberid, string phone, string activecode, bool isauto, int souceid = 0)
         {
             string result = "0";
             if (isauto)
@@ -298,7 +298,7 @@ namespace SimpleWeb.DataBLL
                     }
                     else
                     {
-                        rowcount=ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);
+                        rowcount = ActiveCodeDAL.UpdateMemberActiveStatus(activecodemodel.MID, 2);
                         if (rowcount < 1)
                         {
                             result = "0更新会员激活码表状态失败";
@@ -326,5 +326,34 @@ namespace SimpleWeb.DataBLL
             }
             return result;
         }
+        #region 验证码操作
+        /// <summary>
+        /// 插入验证码
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public int AddVerification(string code)
+        {
+            return MemberInfoDAL.AddVerification(code);
+        }
+        /// <summary>
+        /// 修改验证码发送结果
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public int UpdateVerification(string sendid, int id)
+        {
+            return MemberInfoDAL.UpdateVerification(sendid, id);
+        }
+        /// <summary>
+        /// 修改验证码发送结果
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string SelectVerification(int id)
+        {
+            return MemberInfoDAL.SelectVerification(id);
+        }
+        #endregion
     }
 }

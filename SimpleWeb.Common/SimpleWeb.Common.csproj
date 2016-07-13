@@ -68,6 +68,7 @@
     <Compile Include="PinYinConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRCodeHelper.cs" />
+    <Compile Include="SendSMSClass.cs" />
     <Compile Include="SystemExtendClass.cs" />
     <Compile Include="UploadHelper.cs" />
     <Compile Include="ValidateCode.cs" />
