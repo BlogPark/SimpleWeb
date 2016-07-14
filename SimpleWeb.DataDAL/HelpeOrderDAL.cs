@@ -147,7 +147,7 @@ namespace SimpleWeb.DataDAL
                 {
                     where += " MemberID=" + model.MemberID.ToString();
                 }
-                else
+                else if (!string.IsNullOrWhiteSpace(where) && model.MemberID > 0)
                 {
                     where += @" AND MemberID=" + model.MemberID.ToString();
                 }
@@ -769,6 +769,17 @@ WHERE   MemberID = @memberid
   WHERE MemberID=@memberid AND CurrentInterest=2 ";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
             return helper.ExecuteSql(sqltxt,paramter);
+        }
+        /// <summary>
+        /// 返回系统排单总金额
+        /// </summary>
+        /// <returns></returns>
+        public static decimal GetTotalHelpMoney()
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(Amount),0)
+  FROM SimpleWebDataBase.dbo.HelpeOrder
+  WHERE HStatus<>3 ";
+            return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }
     }
 }

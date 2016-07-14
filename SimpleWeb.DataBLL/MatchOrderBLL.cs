@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using SimpleWeb.Common;
 using SimpleWeb.DataDAL;
 using SimpleWeb.DataModels;
 
@@ -21,6 +22,8 @@ namespace SimpleWeb.DataBLL
             decimal money = 0;
             HelpeOrderModel help = HelpeOrderDAL.GetHelpOrderInfo(hid);
             AcceptHelpOrderModel accept = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
+            string helpsmscontent = SysAdminConfigDAL.GetConfigsByID(19);
+            string acceptsmscontent = SysAdminConfigDAL.GetConfigsByID(20);
             if (help == null || accept == null)
             {
                 return 0;
@@ -75,6 +78,12 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                #region 发送短信
+                string helpsms = string.Format(helpsmscontent, help.OrderCode);
+                string acceptsms = string.Format(acceptsmscontent, accept.OrderCode);
+                string resule = SendSMSClass.SendSMS(help.MemberPhone, helpsms);
+                resule = SendSMSClass.SendSMS(accept.MemberPhone, acceptsms);
+                #endregion
                 scope.Complete();
                 result = 1;
             }

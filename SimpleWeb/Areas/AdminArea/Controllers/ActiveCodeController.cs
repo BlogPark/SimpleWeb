@@ -117,6 +117,19 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json("0");
             }
         }
+        [HttpPost]
+        public ActionResult ressignmore(string memberphone, int count,int types)
+        {
+            int row = bll.AssignedMoreCode(count, types, memberphone);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
         /// <summary>
         /// 会员激活码
         /// </summary>

@@ -32,6 +32,51 @@
     </div>
 </div>
 <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">批量分配激活码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal" id="form2">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分配类型：</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                    激活码 </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                    排单币 </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">接受会员电话：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" placeholder="接受会员电话" id="memberphone"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分配个数：</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="paycount"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" onclick="domorefenpei()">保  存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
 <div class="container">
     <div class="row">
         <div id="content" class="col-lg-12">
@@ -97,6 +142,7 @@
                             <p class="btn-toolbar">
                                 <button class="btn btn-info" type="button" onclick="create(1,100)"><i class="fa fa-cog"></i>&nbsp;生成激活码</button>
                                 <button class="btn btn-info" type="button" onclick="create(2,100)"><i class="fa fa-cog"></i>&nbsp;生成排单币</button>
+                                <a class="btn btn-info" data-toggle="modal" href="#box-config" ><i class="fa fa-cog"></i>&nbsp;批量派发</a>
                             </p>
                         </div>
                     </div>
@@ -200,6 +246,25 @@
                 url: '@Url.Action("ressign", "ActiveCode", new { area = "AdminArea" })',
                 dataType: 'Json',
                 data: { 'memberphone': phone, 'code': code },
+                type: 'POST',
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert("操作失败");
+                    }
+                }
+            });
+        }
+        function domorefenpei() {
+            var type = $("input:radio[name=optionsRadios1]:checked").val();
+            var coount = $("#paycount").val();
+            var phone = $("#memberphone").val();
+            $.ajax({
+                url: '@Url.Action("ressignmore", "ActiveCode", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'memberphone': phone, 'count': coount,'types':type },
                 type: 'POST',
                 success: function (data) {
                     if (data == "1") {

@@ -84,7 +84,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="codes"></param>
         /// <param name="memberphone"></param>
         /// <returns></returns>
-        public int AssignedCode(int count, int type, string memberphone)
+        public int AssignedMoreCode(int count, int type, string memberphone)
         {
             List<string> codes = ActiveCodeDAL.GetTypeCountActiveCode(type,count);
             return dal.AssignedCode(codes, memberphone);

@@ -154,7 +154,6 @@ WHERE   RecommMID = @RecommMID";
                 return null;
             }
         }
-
         /// <summary>
         /// 按照会员ID查找被推荐人列表
         /// </summary>
@@ -211,7 +210,6 @@ WHERE   RecommMID = @RecommMID";
                 return null;
             }
         }
-
         /// <summary>
         /// 按照会员ID查找被推荐人列表
         /// </summary>
@@ -310,5 +308,7 @@ WHERE   RecommMID = @RecommMID";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(1);
         }
+
+
     }
 }

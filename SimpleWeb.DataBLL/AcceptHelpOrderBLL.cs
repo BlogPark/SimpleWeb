@@ -341,5 +341,14 @@ namespace SimpleWeb.DataBLL
         {
             return AcceptHelpOrderDAL.GetAcceptOrderInfo(id, memberid);
         }
+
+        /// <summary>
+        /// 返回系统排单总金额
+        /// </summary>
+        /// <returns></returns>
+        public  decimal GetTotalAcceptMoney()
+        {
+            return AcceptHelpOrderDAL.GetTotalAcceptMoney();
+        }
     }
 }

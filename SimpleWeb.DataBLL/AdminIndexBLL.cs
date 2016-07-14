@@ -12,14 +12,13 @@ namespace SimpleWeb.DataBLL
     {
         public AdminIndexModels GetDefaultData()
         {
-            decimal dynamicnum = 0;
-            decimal staticnum = MemberCapitalDetailDAL.GetTotalAmontForPlant(out dynamicnum);
+            //decimal staticnum = MemberCapitalDetailDAL.GetTotalAmontForPlant(out dynamicnum);
             AdminIndexModels model = new AdminIndexModels();
             model.ActiveCodeCount = ActiveCodeDAL.GetTotalCount(1);//全部激活码数量
             model.ActiveMemberCount = MemberInfoDAL.GetTotalMemberCount(2);
             model.PaidanCodeCount = ActiveCodeDAL.GetTotalCount(2);//全部排单币数量
-            model.TotalAcceptAmont = dynamicnum;
-            model.TotalHelpAmont = staticnum;
+            model.TotalAcceptAmont = AcceptHelpOrderDAL.GetTotalAcceptMoney();
+            model.TotalHelpAmont = HelpeOrderDAL.GetTotalHelpMoney();
             model.TotalMemberCount = MemberInfoDAL.GetTotalMemberCount(1);
             return model;
         }

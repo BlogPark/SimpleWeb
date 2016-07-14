@@ -865,7 +865,7 @@ WHERE   AType = @atype ";
             List<string> list = new List<string>();
             string sqltxt = @"SELECT TOP (@topnum) ActivationCode
 FROM    SimpleWebDataBase.dbo.ActiveCode
-WHERE   AType = @atype ";
+WHERE   AType = @atype AND AStatus = 20";
             SqlParameter[] paramter = {
                                           new SqlParameter("@atype",type),
                                           new SqlParameter("@topnum",count)

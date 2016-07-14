@@ -396,5 +396,13 @@ namespace SimpleWeb.DataBLL
         {
             return HelpeOrderDAL.GetHelpOrderInfo(id,memberid);
         }
+        /// <summary>
+        /// 返回系统排单总金额
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetTotalHelpMoney()
+        {
+            return HelpeOrderDAL.GetTotalHelpMoney();
+        }
     }
 }

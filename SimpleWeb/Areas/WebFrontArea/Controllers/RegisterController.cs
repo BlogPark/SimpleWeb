@@ -105,20 +105,8 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         [HttpPost]
         public ActionResult sendsms(string phone)
         {
-            Random ran = new Random();
-            int RandKey = ran.Next(100000,999999);
-            int id = bll.AddVerification(RandKey.ToString());
-            string content = @"校验码："+RandKey.ToString()+",请勿泄露短信验证码。(短信编号："+id.ToString()+")";
-            string result = SendSMSClass.SendSMS(phone, content);
-            int row = bll.UpdateVerification(result.Substring(1),id);
-            if (result.StartsWith("s"))
-            {
-                return Json(id.ToString());
-            }
-            else
-            {
-                return Json("0");
-            }
+            string result = bll.SendRegisterSms(phone);
+            return Json(result);
         }
         /// <summary>
         /// 检查短信

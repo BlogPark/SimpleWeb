@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using SimpleWeb.Common;
 using SimpleWeb.DataDAL;
 using SimpleWeb.DataModels;
 
@@ -328,6 +329,29 @@ namespace SimpleWeb.DataBLL
         }
         #region 验证码操作
         /// <summary>
+        /// 发送注册验证短信
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public string SendRegisterSms(string phone)
+        {
+            string smscontent = SysAdminConfigDAL.GetConfigsByID(18);//得到短信模板
+            Random ran = new Random();
+            int RandKey = ran.Next(100000, 999999);
+            int id = AddVerification(RandKey.ToString());
+            string content = string.Format(smscontent, RandKey.ToString(), id.ToString());
+            string result = SendSMSClass.SendSMS(phone, content);
+            UpdateVerification(result.Substring(1), id);
+            if (result.StartsWith("s"))
+            {
+                return id.ToString();
+            }
+            else
+            {
+                return "0";
+            }
+        }
+        /// <summary>
         /// 插入验证码
         /// </summary>
         /// <param name="code"></param>
@@ -355,5 +379,14 @@ namespace SimpleWeb.DataBLL
             return MemberInfoDAL.SelectVerification(id);
         }
         #endregion
+        /// <summary>
+        /// 根据会员ID得到推荐图
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public List<ReMemberRelationModel> GetReMemberRelationList(int memberid)
+        {
+            return ReMemberRelationDAL.GetReMemberRelationList(memberid);
+        }
     }
 }

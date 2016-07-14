@@ -614,5 +614,17 @@ WHERE   MemberID = @memberid
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             return dt.Rows.Count;
         }
+
+        /// <summary>
+        /// 返回系统排单总金额
+        /// </summary>
+        /// <returns></returns>
+        public static decimal GetTotalAcceptMoney()
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(Amount),0)
+  FROM SimpleWebDataBase.dbo.AcceptHelpOrder
+  WHERE AStatus<>3 ";
+            return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
+        }
     }
 }
