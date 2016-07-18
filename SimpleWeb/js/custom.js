@@ -116,7 +116,7 @@ function subchange() {
     if (phone == '') {
         bootbox.alert("请填写注册手机号！");
         return false;
-    }    
+    }
     if (weixin == '') {
         bootbox.alert("请填写微信联系方式！");
         return false;
@@ -141,8 +141,7 @@ function subchange() {
         bootbox.alert("两次输入密码不一致！");
         return false;
     }
-    if (checkv == "e")
-    {
+    if (checkv == "e") {
         bootbox.alert("手机验证码不正确，请重新验证！");
         return false;
     }
@@ -303,6 +302,11 @@ function providehelp() {
     }
     if (helpamount < lastmoney) {
         alert("提供的金额小于上次的帮助金额");
+        return false;
+    }
+    var result = helpamount % 100;
+    if (result != 0) {
+        alert("提供金额应为100的整数倍");
         return false;
     }
     $.ajax({

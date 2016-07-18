@@ -39,7 +39,14 @@ namespace SimpleWeb.DataModels
         /// 当前用户名
         /// </summary>
         public string AdminuserName { get; set; }
-
+        /// <summary>
+        /// 当日提供帮助金额
+        /// </summary>
+        public decimal TodayHelpMoney { get; set; }
+        /// <summary>
+        /// 当日接受帮助金额
+        /// </summary>
+        public decimal TodayAcceptMoney { get; set; }
        
     }
 }

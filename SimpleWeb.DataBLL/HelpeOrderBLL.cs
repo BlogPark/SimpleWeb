@@ -284,7 +284,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="hid"></param>
         /// <param name="ispipei">单据是否已经匹配</param>
         /// <returns></returns>
-        public int UpdateToCancle(int hid,int ispipei=0)
+        public int UpdateToCancle(int hid, int ispipei = 0)
         {
             int result = 0;
             using (TransactionScope scope = new TransactionScope())
@@ -297,7 +297,7 @@ namespace SimpleWeb.DataBLL
                 }
                 //返还会员追加的资金
                 HelpeOrderModel model = HelpeOrderDAL.GetHelpOrderInfo(hid);
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount),model.MemberName,model.MemberPhone);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount), model.MemberName, model.MemberPhone);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -342,7 +342,7 @@ namespace SimpleWeb.DataBLL
                     }
                 }
                 //更新会员统计信息
-                rowcount = MemberExtendInfoDAL.CancleHelperOrder(model.MemberID,hid);
+                rowcount = MemberExtendInfoDAL.CancleHelperOrder(model.MemberID, hid);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -387,14 +387,14 @@ namespace SimpleWeb.DataBLL
         {
             return HelpeOrderDAL.GetAcceptextendmodels(hid);
         }
-         /// <summary>
+        /// <summary>
         /// 根据ID和会员查询提供帮助订单信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public  HelpeOrderModel GetHelpOrderInfo(int id, int memberid)
+        public HelpeOrderModel GetHelpOrderInfo(int id, int memberid)
         {
-            return HelpeOrderDAL.GetHelpOrderInfo(id,memberid);
+            return HelpeOrderDAL.GetHelpOrderInfo(id, memberid);
         }
         /// <summary>
         /// 返回系统排单总金额
@@ -403,6 +403,16 @@ namespace SimpleWeb.DataBLL
         public decimal GetTotalHelpMoney()
         {
             return HelpeOrderDAL.GetTotalHelpMoney();
+        }
+        /// <summary>
+        /// 得到当天的提供帮助金额
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetTodayMoney()
+        {
+            string datastart = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            string dataend = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59";
+            return HelpeOrderDAL.GetTodayHelpMoney(datastart,dataend);
         }
     }
 }

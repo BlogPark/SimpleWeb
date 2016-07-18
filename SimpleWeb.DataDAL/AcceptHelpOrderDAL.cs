@@ -626,5 +626,21 @@ WHERE   MemberID = @memberid
   WHERE AStatus<>3 ";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }
+        /// <summary>
+        /// 按天查询接受帮助的金额
+        /// </summary>
+        /// <param name="datastart"></param>
+        /// <param name="dataend"></param>
+        /// <returns></returns>
+        public static decimal GetTodayAcceptMoney(string datastart, string dataend)
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(Amount), 0)
+FROM    SimpleWebDataBase.dbo.AcceptHelpOrder
+WHERE   AddTime >= @starttime
+        AND AddTime <= @endtime AND AStatus=0 ";
+            SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime", dataend) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToDecimal(0);
+
+        }
     }
 }

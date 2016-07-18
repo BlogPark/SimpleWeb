@@ -768,7 +768,7 @@ WHERE   MemberID = @memberid
   SET CurrentInterest=0
   WHERE MemberID=@memberid AND CurrentInterest=2 ";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
-            return helper.ExecuteSql(sqltxt,paramter);
+            return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
         /// 返回系统排单总金额
@@ -780,6 +780,22 @@ WHERE   MemberID = @memberid
   FROM SimpleWebDataBase.dbo.HelpeOrder
   WHERE HStatus<>3 ";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
+        }
+        /// <summary>
+        /// 按天查询新增帮助的金额
+        /// </summary>
+        /// <param name="datastart"></param>
+        /// <param name="dataend"></param>
+        /// <returns></returns>
+        public static decimal GetTodayHelpMoney(string datastart, string dataend)
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(Amount), 0)
+FROM    SimpleWebDataBase.dbo.HelpeOrder
+WHERE   AddTime >= @starttime
+        AND AddTime <= @endtime AND HStatus=0 ";
+            SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime",dataend) };
+            return helper.GetSingle(sqltxt,paramter).ToString().ParseToDecimal(0);
+
         }
     }
 }

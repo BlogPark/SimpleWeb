@@ -13,6 +13,8 @@ namespace SimpleWeb.DataBLL
         public AdminIndexModels GetDefaultData()
         {
             //decimal staticnum = MemberCapitalDetailDAL.GetTotalAmontForPlant(out dynamicnum);
+            string datastart = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            string dataend = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59";
             AdminIndexModels model = new AdminIndexModels();
             model.ActiveCodeCount = ActiveCodeDAL.GetTotalCount(1);//全部激活码数量
             model.ActiveMemberCount = MemberInfoDAL.GetTotalMemberCount(2);
@@ -20,6 +22,8 @@ namespace SimpleWeb.DataBLL
             model.TotalAcceptAmont = AcceptHelpOrderDAL.GetTotalAcceptMoney();
             model.TotalHelpAmont = HelpeOrderDAL.GetTotalHelpMoney();
             model.TotalMemberCount = MemberInfoDAL.GetTotalMemberCount(1);
+            model.TodayAcceptMoney = AcceptHelpOrderDAL.GetTodayAcceptMoney(datastart,dataend);
+            model.TodayHelpMoney = HelpeOrderDAL.GetTodayHelpMoney(datastart,dataend);
             return model;
         }
     }

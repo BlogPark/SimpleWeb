@@ -350,5 +350,15 @@ namespace SimpleWeb.DataBLL
         {
             return AcceptHelpOrderDAL.GetTotalAcceptMoney();
         }
+        /// <summary>
+        /// 得到当天的提供帮助金额
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetTodayMoney()
+        {
+            string datastart = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            string dataend = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59";
+            return AcceptHelpOrderDAL.GetTodayAcceptMoney(datastart, dataend);
+        }
     }
 }
