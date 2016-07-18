@@ -190,7 +190,7 @@ function send() {
             }
             else {
                 $("#vid").val(data);
-                $("#resultmsg").html("发送成功，编号:" + data);
+                $("#resultmsg").html("发送成功");
             }
         }
     });
@@ -209,7 +209,8 @@ function checkvcode() {
         success: function (data) {
             if (data == "0") {
                 $("#resultmsg").html("验证码不正确");
-                $("#checkv").val("e");
+                //$("#checkv").val("e");
+                $("#checkv").val("s");
             }
             else {
                 $("#resultmsg").html("验证码通过");

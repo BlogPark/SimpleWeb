@@ -64,7 +64,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.MemberName = model.TruethName;
                 logmodel.MemberPhone = model.MobileNum;
                 logmodel.ProduceMoney = amont;
-                logmodel.Remark = "会员注册赠送" + amont.ToString() + "元";
+                logmodel.Remark = "会员注册激活码" + amont.ToString() + "元";
                 logmodel.Type = 5;
                 int rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
@@ -339,7 +339,7 @@ namespace SimpleWeb.DataBLL
             Random ran = new Random();
             int RandKey = ran.Next(100000, 999999);
             int id = AddVerification(RandKey.ToString());
-            string content = string.Format(smscontent, RandKey.ToString(), id.ToString());
+            string content = string.Format(smscontent, RandKey.ToString());
             string result = SendSMSClass.SendSMS(phone, content);
             UpdateVerification(result.Substring(1), id);
             if (result.StartsWith("s"))
