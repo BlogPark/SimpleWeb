@@ -57,6 +57,7 @@
     <Compile Include="MemberInfoModel.cs" />
     <Compile Include="PageProModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecommendMap.cs" />
     <Compile Include="ReginTableModel.cs" />
     <Compile Include="ReMemberRelationModel.cs" />
     <Compile Include="SysAdminConfigsModel.cs" />

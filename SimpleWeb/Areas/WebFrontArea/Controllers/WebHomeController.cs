@@ -468,5 +468,30 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 return Json("0");
             }
         }
+        /// <summary>
+        /// 我的团队页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult recommendusermap()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            RecommendUserMapViewModel model = new RecommendUserMapViewModel();
+            int count=bll.recommendint(logmember.ID);
+            model.member = logmember;
+            model.childcount = count;
+            model.isParent = count > 0;
+            return View(model);
+        }
+        /// <summary>
+        /// 查询子节点
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult getchildnote(int id)
+        {
+            List<RecommendMap> list = bll.GetRecommendMap(id);
+            return Json(list);
+        }
     }
 }

@@ -388,5 +388,23 @@ namespace SimpleWeb.DataBLL
         {
             return ReMemberRelationDAL.GetReMemberRelationList(memberid);
         }
+        /// <summary>
+        /// 得到会员推荐图谱
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public  List<RecommendMap> GetRecommendMap(int memberid)
+        {
+            return ReMemberRelationDAL.GetRecommendMap(memberid);
+        }
+        /// <summary>
+        /// 查询会员的推荐人数量
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int recommendint(int memberid)
+        {
+           return  ReMemberRelationDAL.GetReMemberCount(memberid);
+        }
     }
 }

@@ -150,6 +150,7 @@
     <Compile Include="Areas\WebFrontArea\Models\HomeViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\MyActiveIndexModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\mycapitalViewModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\RecommendUserMapViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\UserProfileViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\webLoginViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\LogMemberMsg.cs" />
@@ -1295,6 +1296,33 @@
     <Content Include="js\uniform\images\bg-input.png" />
     <Content Include="js\uniform\images\sprite.png" />
     <Content Include="js\uniform\jquery.uniform.min.js" />
+    <Content Include="js\ztree\css\awesomeStyle\awesome.css" />
+    <Content Include="js\ztree\css\awesomeStyle\img\loading.gif" />
+    <Content Include="js\ztree\css\demo.css" />
+    <Content Include="js\ztree\css\metroStyle\img\line_conn.png" />
+    <Content Include="js\ztree\css\metroStyle\img\loading.gif" />
+    <Content Include="js\ztree\css\metroStyle\img\metro.gif" />
+    <Content Include="js\ztree\css\metroStyle\img\metro.png" />
+    <Content Include="js\ztree\css\metroStyle\metroStyle.css" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\1_close.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\1_open.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\2.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\3.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\4.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\5.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\6.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\7.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\8.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\diy\9.png" />
+    <Content Include="js\ztree\css\zTreeStyle\img\line_conn.gif" />
+    <Content Include="js\ztree\css\zTreeStyle\img\loading.gif" />
+    <Content Include="js\ztree\css\zTreeStyle\img\zTreeStandard.gif" />
+    <Content Include="js\ztree\css\zTreeStyle\img\zTreeStandard.png" />
+    <Content Include="js\ztree\css\zTreeStyle\zTreeStyle.css" />
+    <Content Include="js\ztree\js\jquery.ztree.all.js" />
+    <Content Include="js\ztree\js\jquery.ztree.all.min.js" />
+    <Content Include="js\ztree\js\jquery.ztree.core.js" />
+    <Content Include="js\ztree\js\jquery.ztree.core.min.js" />
     <Content Include="ueditor\dialogs\anchor\anchor.html" />
     <Content Include="ueditor\dialogs\attachment\attachment.css" />
     <Content Include="ueditor\dialogs\attachment\attachment.html" />
@@ -1859,6 +1887,9 @@
     <Content Include="Areas\AdminArea\Views\Order\PaymentInterist.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\WebFrontArea\Views\WebHome\recommendusermap.cshtml" />
+    <Content Include="js\ztree\css\awesomeStyle\awesome.less" />
+    <Content Include="js\ztree\css\awesomeStyle\fa.less" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

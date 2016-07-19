@@ -309,6 +309,41 @@ WHERE   RecommMID = @RecommMID";
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(1);
         }
 
-
+        /// <summary>
+        /// 得到会员推荐图谱
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static List<RecommendMap> GetRecommendMap(int memberid)
+        {
+            List<RecommendMap> list = new List<RecommendMap>();
+            string sqltxt = @"SELECT  MemberID AS pid ,
+        RecommMID AS id ,
+        ( RecommMPhone + '(' + RecommMTruthName + ')' ) AS name ,
+        ( SELECT    COUNT(0)
+          FROM      SimpleWebDataBase.dbo.ReMemberRelation
+          WHERE     MemberID = A.RecommMID
+                    AND RStatus = 1
+        ) AS childcount
+FROM    SimpleWebDataBase.dbo.ReMemberRelation A
+WHERE   MemberID = @memberid
+        AND RStatus = 1";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid) };
+            DataTable dt=helper.Query(sqltxt,paramter).Tables[0];
+            if (dt != null)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    RecommendMap model = new RecommendMap();
+                    model.id = item["id"].ToString().ParseToInt(0);
+                    model.pid = item["pid"].ToString().ParseToInt(0);
+                    model.name = item["name"].ToString();
+                    model.childcount = item["childcount"].ToString().ParseToInt(0);
+                    model.isParent = model.childcount > 0;
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
     }
 }

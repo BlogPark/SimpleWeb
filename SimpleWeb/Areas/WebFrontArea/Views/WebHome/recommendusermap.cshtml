@@ -1,0 +1,112 @@
+﻿@model SimpleWeb.Areas.WebFrontArea.Models.RecommendUserMapViewModel
+@{
+    Layout = "~/Views/_WebLayout.cshtml";
+}
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        @Html.Action("webmenu", "IndexPub", new { area = "" })
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 id="accordions"><span>团队信息</span></h2>
+                <hr />
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+            <div class="col-md-4">
+                <h2><span>会员信息</span></h2>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptcontent{
+    <script type="text/javascript">
+        var setting = {
+            async: {
+                enable: true,
+                url: getUrl
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                }
+            },
+            view: {
+                expandSpeed: ""
+            },
+            callback: {
+                beforeExpand: beforeExpand,
+                onAsyncSuccess: onAsyncSuccess,
+                onAsyncError: onAsyncError
+            }
+        };
+
+        var zNodes = [
+			{  id: parseInt(@Model.member.ID), pid:0,name:"@(Model.member.MobileNum + "(" + Model.member.TruethName + ")")", childcount: parseInt(@Model.childcount), isParent: new Boolean("@Model.isParent.ToString()") }
+        ];
+
+        var perTime = 100;
+        function getUrl(treeId, treeNode) {
+            $.ajax({
+                url: '@Url.Action("getchildnote", "WebHome", new { area = "WebFrontArea" })',
+                datatype: 'json',
+                async: false,
+                type: 'POST',
+                data: { 'id': treeNode.id },
+                success: function (data) {
+                    return data;
+                }
+            });
+        }
+        function beforeExpand(treeId, treeNode) {
+            if (!treeNode.isAjaxing) {               
+                ajaxGetNodes(treeNode, "refresh");
+                return true;
+            } else {
+                alert("zTree 正在下载数据中，请稍后展开节点。。。");
+                return false;
+            }
+        }
+        function onAsyncSuccess(event, treeId, treeNode, msg) {
+            if (!msg || msg.length == 0) {
+                return;
+            }
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			totalCount = treeNode.childcount;
+            if (treeNode.children.length < totalCount) {
+                setTimeout(function () { ajaxGetNodes(treeNode); }, perTime);
+            } else {
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.selectNode(treeNode.children[0]);
+            }
+        }
+        function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            alert("异步获取数据出现异常。");
+            treeNode.icon = "";
+            zTree.updateNode(treeNode);
+        }
+        function ajaxGetNodes(treeNode, reloadType) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            if (reloadType == "refresh") {
+                zTree.updateNode(treeNode);
+            }
+            zTree.reAsyncChildNodes(treeNode, reloadType, true);
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+        });
+    </script>
+}

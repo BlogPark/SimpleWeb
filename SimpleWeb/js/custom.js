@@ -208,8 +208,7 @@ function checkvcode() {
         success: function (data) {
             if (data == "0") {
                 $("#resultmsg").html("验证码不正确");
-                //$("#checkv").val("e");
-                $("#checkv").val("s");
+                $("#checkv").val("e");
             }
             else {
                 $("#resultmsg").html("验证码通过");

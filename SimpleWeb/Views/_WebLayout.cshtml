@@ -9,10 +9,11 @@
     <title>@ViewBag.PageTitle</title>
     <!-- Bootstrap core CSS -->
     <link href="@Url.Content("bootstrap-dist/css/bootstrap.min.css")" rel="stylesheet">
-    
     <link href="@Url.Content("/css/wstyle.css")" rel="stylesheet">
     <link href="@Url.Content("/css/font-awesome.min.css")" rel="stylesheet">
     <link href="@Url.Content("/css/animate.css")" rel="stylesheet">
+    <link href="@Url.Content("/js/ztree/css/zTreeStyle/zTreeStyle.css")" rel="stylesheet">
+
     <link href='http://fonts.useso.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -32,19 +33,19 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="copyright">
-                        <small>Copyright &copy; 2015.Company name All rights reserved.More Templates <a href="" target="_blank" title=""></a> - Collect from <a href="" title="" target="_blank"></a></small>
+                        <small>Copyright &copy; 2015.Company name All rights reserved.More Templates <a href="" target="_blank" title=""></a>- Collect from <a href="" title="" target="_blank"></a></small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="@Url.Content("/js/jquery/jquery-1.9.1.min.js")"></script>
-    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootstrap.min.js")"></script>
+   <script type="text/javascript" src="@Url.Content("/js/ztree/js/jquery.ztree.core.js")"></script>
+     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootstrap.min.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/scrolltopcontrol.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/SmoothScroll.js")"></script>
     <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
-    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/jquery-qrcode/jquery.qrcode.min.js")"></script>
-    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/custom.js")"></script>
     @RenderSection("scriptcontent", required: false)
+    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/custom.js")"></script>    
 </body>
 </html>
