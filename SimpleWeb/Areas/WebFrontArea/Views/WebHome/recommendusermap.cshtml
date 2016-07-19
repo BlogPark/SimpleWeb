@@ -28,12 +28,16 @@
         var setting = {
             async: {
                 enable: true,
+                dataType:"json",
                 url: getUrl
             },
             check: {
                 enable: true
             },
             data: {
+                key: {
+                    name: "name"
+                },
                 simpleData: {
                     enable: true,
                     idKey: "id",
