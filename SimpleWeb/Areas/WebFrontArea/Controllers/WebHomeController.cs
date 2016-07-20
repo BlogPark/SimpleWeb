@@ -386,6 +386,28 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
         }
         /// <summary>
+        /// 自动填充排单币
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetPromptCode()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            List<string> codes = activecodebll.GetMemberCodeByCount(2,logmember.ID,1);
+            if (codes.Count == 0)
+            {
+                return Json(0);
+            }
+            else
+            {
+                return Json(codes[0]);
+            }
+        }
+        /// <summary>
         /// 退出系统
         /// </summary>
         /// <returns></returns>
@@ -475,11 +497,16 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         public ActionResult recommendusermap()
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
             RecommendUserMapViewModel model = new RecommendUserMapViewModel();
             int count=bll.recommendint(logmember.ID);
             model.member = logmember;
             model.childcount = count;
             model.isParent = count > 0;
+            ViewBag.PageTitle = web.WebName;
             return View(model);
         }
         /// <summary>
@@ -487,11 +514,19 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         public ActionResult getchildnote(int id)
         {
             List<RecommendMap> list = bll.GetRecommendMap(id);
-            return Json(list);
+            return Json(list,JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult getmemberinfo(int id)
+        {
+            MemberInfoModel model = bll.GetModel(id);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        
     }
 }

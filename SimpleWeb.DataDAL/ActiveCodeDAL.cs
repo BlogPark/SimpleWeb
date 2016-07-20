@@ -880,5 +880,35 @@ WHERE   AType = @atype AND AStatus = 20";
             }
             return list;
         }
+
+        /// <summary>
+        /// 根据会员的ID读取特定数量的特定类型激活码
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="memberid"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static List<string> GetMemberCodeByCount(int type, int memberid, int count)
+        {
+            List<string> list = new List<string>();
+            string sqltxt = @"SELECT TOP ( @topnum )
+        ActiveCode
+FROM    SimpleWebDataBase.dbo.MemberActiveCode
+WHERE   AMType = @type
+        AND MemberID = @memberid
+        AND AMStatus = 1";
+            SqlParameter[] paramter = { new SqlParameter("@type",type),
+                                      new SqlParameter("@topnum",count),
+                                      new SqlParameter("@memberid",memberid)};
+            DataTable dt=helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    list.Add(item["ActiveCode"].ToString());
+                }
+            }
+            return list;
+        }
     }
 }

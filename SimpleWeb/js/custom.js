@@ -462,3 +462,19 @@ function updatesingleorder(aid, hid) {
         }
     });
 }
+function autofill() {
+    $.ajax({
+        url: '/WebFrontArea/WebHome/GetPromptCode',
+        dataType: 'Json',
+        type: 'POST',
+        success: function (data) {
+            if (data == '0') {
+                bootbox.alert("²Ù×÷Ê§°Ü£¬Çë¼ì²éÅÅµ¥±ÒÊÇ·ñ³ä×ã£¡")
+                $("#helpactivecode").val('');
+            }
+            else {
+                $("#helpactivecode").val(data);
+            }
+        }
+    });
+}

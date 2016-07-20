@@ -11,14 +11,46 @@
 <div class="wrapper">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <h2 id="accordions"><span>团队信息</span></h2>
                 <hr />
                 <ul id="treeDemo" class="ztree"></ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <h2><span>会员信息</span></h2>
                 <hr />
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>姓名：</td>
+                            <td></td>
+                            <td>
+                                <lable id="truename">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>手机号：</td>
+                            <td></td>
+                            <td>
+                                <lable id="mobile">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>微信：</td>
+                            <td></td>
+                            <td>
+                                <lable id="weixin">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>支付宝名称</td>
+                            <td></td>
+                            <td>
+                                <lable id="zhifubao">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -28,7 +60,7 @@
         var setting = {
             async: {
                 enable: true,
-                dataType:"json",
+                type: "get",
                 url: getUrl
             },
             check: {
@@ -41,7 +73,8 @@
                 simpleData: {
                     enable: true,
                     idKey: "id",
-                    pIdKey: "pid"
+                    pIdKey: "pid",
+                    rootPId: 0
                 }
             },
             view: {
@@ -50,29 +83,33 @@
             callback: {
                 beforeExpand: beforeExpand,
                 onAsyncSuccess: onAsyncSuccess,
-                onAsyncError: onAsyncError
+                onAsyncError: onAsyncError,
+                onClick: function (event, treeId, treeNode) {
+                    $.ajax({
+                        url: '@Url.Action("getmemberinfo", "WebHome", new { area = "WebFrontArea" })',
+                        dataType: 'Json',
+                        Type: 'get',
+                        data: { 'id': treeNode.id },
+                        success: function (data) {
+                            $("#truename").html(data.TruethName);
+                            $("#mobile").html(data.MobileNum);
+                            $("#weixin").html(data.WeixinNum);
+                            $("#zhifubao").html(data.AliPayNum);
+                        }
+                    });
+                }
             }
         };
-
         var zNodes = [
-			{  id: parseInt(@Model.member.ID), pid:0,name:"@(Model.member.MobileNum + "(" + Model.member.TruethName + ")")", childcount: parseInt(@Model.childcount), isParent: new Boolean("@Model.isParent.ToString()") }
+			{ id: parseInt(@Model.member.ID), pid: 0, name: "@(Model.member.MobileNum + "(" + Model.member.TruethName + ")")", childcount: parseInt(@Model.childcount), isParent: new Boolean("@Model.isParent.ToString()") }
         ];
 
         var perTime = 100;
         function getUrl(treeId, treeNode) {
-            $.ajax({
-                url: '@Url.Action("getchildnote", "WebHome", new { area = "WebFrontArea" })',
-                datatype: 'json',
-                async: false,
-                type: 'POST',
-                data: { 'id': treeNode.id },
-                success: function (data) {
-                    return data;
-                }
-            });
+            return "/WebFrontArea/WebHome/getchildnote?id=" + treeNode.id;
         }
         function beforeExpand(treeId, treeNode) {
-            if (!treeNode.isAjaxing) {               
+            if (!treeNode.isAjaxing) {
                 ajaxGetNodes(treeNode, "refresh");
                 return true;
             } else {
@@ -107,10 +144,8 @@
             }
             zTree.reAsyncChildNodes(treeNode, reloadType, true);
         }
-
         $(document).ready(function () {
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-
         });
     </script>
 }

@@ -337,7 +337,7 @@ WHERE   MemberID = @memberid
                     RecommendMap model = new RecommendMap();
                     model.id = item["id"].ToString().ParseToInt(0);
                     model.pid = item["pid"].ToString().ParseToInt(0);
-                    model.name = item["name"].ToString();
+                    model.name = item["name"].ToString() ;
                     model.childcount = item["childcount"].ToString().ParseToInt(0);
                     model.isParent = model.childcount > 0;
                     list.Add(model);

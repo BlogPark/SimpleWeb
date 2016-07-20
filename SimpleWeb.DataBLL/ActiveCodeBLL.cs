@@ -141,5 +141,16 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GiveActiveCodeFromMember(soucememberID, type, acceptMemberPhone, count);
         }
+        /// <summary>
+        /// 根据会员的ID读取特定数量的特定类型激活码
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="memberid"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public List<string> GetMemberCodeByCount(int type, int memberid, int count)
+        {
+            return ActiveCodeDAL.GetMemberCodeByCount(type,memberid,count);
+        }
     }
 }

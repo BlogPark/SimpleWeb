@@ -15,6 +15,11 @@ namespace SimpleWeb.Areas.WebFrontArea
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+               "web_team",
+               "team.html",
+               new { controller = "WebHome", action = "recommendusermap", id = UrlParameter.Optional }
+           );
+            context.MapRoute(
                "web_nopwdlogin",
                "member{id}.html",
                new { controller = "Login", action = "NoPwdLogin", id = UrlParameter.Optional }

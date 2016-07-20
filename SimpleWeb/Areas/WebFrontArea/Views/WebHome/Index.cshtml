@@ -35,6 +35,9 @@
                             <div class="col-sm-6">
                                 <input type="text" id="helpactivecode" name="helpactivecode" class="form-control" placeholder="排单币编码">
                             </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn-animate btn-style btn-xs btn-d btn-primary" onclick="autofill()">自动填充</button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-1 pull-left control-label">
@@ -99,7 +102,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <input type="checkbox" id="chkrisk" name="chkrisk">警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
+                                <input type="checkbox" id="chkrisk1" name="chkrisk">警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
                         </div>
                     </form>
@@ -120,7 +123,7 @@
 <div class="wrapper">
     <div class="container">
         <div class="row">
-            <div class="col-sm-3" style="background-color:#efefef;">
+            <div class="col-sm-3" style="background-color: #efefef;">
                 <div class="user-avatar text-center" style="background-color: #efefef;">
                     <h1>@Model.member.TruethName</h1>
                     <p class="text-muted">@Model.member.MobileNum</p>
@@ -131,17 +134,17 @@
                     <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
                     <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
                 </ul>
-               
+
                 <div id="help-nav-one" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
-                            <li><a href="#typography">我的团队：@Model.data.members 人</a></li>
+                            <li><a href="@Url.Action("recommendusermap", "WebHome", new { area="WebFrontArea"})">我的团队：@Model.data.members 人</a></li>
                             <li><a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活币剩余：@Model.data.activecodeCount 枚</a></li>
-                            <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>                            
+                            <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
                         </ul>
                     </div>
                 </div>
-                <div id="help-nav-one" class="panel-collapse collapse in">
+                <div id="help-nav-one1" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
                             <li>我的钱包</li>
@@ -155,10 +158,12 @@
 
             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-12" style="background:url(/img/right.jpg) no-repeat;height:600px;position:relative">
-                        <div style="position:absolute;bottom:20px;">
-                            <a  data-toggle="modal" href="#box-config"><img src="~/img/help.jpg"></a>
-                            <a  data-toggle="modal" href="#box-config1" style="margin-left:40px;"><img src="~/img/accept.jpg"></a>
+                    <div class="col-sm-12" style="background: url(/img/right.jpg) no-repeat; height: 600px; position: relative">
+                        <div style="position: absolute; bottom: 20px;">
+                            <a data-toggle="modal" href="#box-config">
+                                <img src="~/img/help.jpg"></a>
+                            <a data-toggle="modal" href="#box-config1" style="margin-left: 40px;">
+                                <img src="~/img/accept.jpg"></a>
                         </div>
                     </div>
                 </div>
@@ -180,48 +185,45 @@
                         {
                             foreach (var item in Model.data.helperOrders)
                             {
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                单据编号:
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.OrderCode
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                帮助金额：
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.Amount
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                目前状态：
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.HStatusName
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="text-center">
-                                                <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>单据编号:
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.OrderCode
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>帮助金额：
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.Amount
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>目前状态：
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.HStatusName
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             }
                         }
                         else
@@ -235,48 +237,45 @@
                         {
                             foreach (var item in Model.data.acceptOrders)
                             {
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                单据编号:
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.OrderCode
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                帮助金额：
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.Amount
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                目前状态：
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <div class="item">
-                                                    @item.AStatusName
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="text-center">
-                                                <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>单据编号:
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.OrderCode
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>帮助金额：
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.Amount
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>目前状态：
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="item">
+                                                @item.AStatusName
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             }
                         }
                         else
@@ -310,18 +309,18 @@
                                 {
                                     foreach (var item in Model.data.AmontChangLog)
                                     {
-                                        <tr>
-                                            <td>
-                                                <div class="item">
-                                                    @item.Remark
-                                                </div>
-                                            </td>
-                                            <td>@item.ProduceMoney</td>
-                                            <td>
-                                                @item.OrderCode
-                                            </td>
-                                            <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                        </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="item">
+                                                @item.Remark
+                                            </div>
+                                        </td>
+                                        <td>@item.ProduceMoney</td>
+                                        <td>
+                                            @item.OrderCode
+                                        </td>
+                                        <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    </tr>
                                     }
                                 }
                                 else
