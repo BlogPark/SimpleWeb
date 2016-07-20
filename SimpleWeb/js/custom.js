@@ -478,3 +478,7 @@ function autofill() {
         }
     });
 }
+/*========login============*/
+$("#valiCode").bind("click", function() {
+    this.src = "/WebFrontArea/Login/GetImg?time=" + (new Date()).getTime();
+});

@@ -72,5 +72,19 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             }
             return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
         }
+        /// <summary>
+        /// 产生验证码图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetImg()
+        {
+            int width = 100;
+            int height = 40;
+            int fontsize = 20;
+            string code = string.Empty;
+            byte[] bytes = ValidateCode.CreateValidateGraphic(out code, 4, width, height, fontsize);
+            Session[AppContent.VALICODE] = code;
+            return File(bytes, @"image/jpeg");
+        }
     }
 }

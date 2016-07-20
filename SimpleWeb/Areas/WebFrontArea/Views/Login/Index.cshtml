@@ -20,14 +20,18 @@
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                 @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "form-control" })
                             </div>
+                            <br />
+                            <div class="input-group">
+                                <input type="text" placeholder = "验证码"  class = "form-control"  style="width:180px;"/>
+                                <img id="valiCode" style="cursor: pointer;" src="/WebFrontArea/Login/GetImg" alt="验证码" title="验证码"/> 
+                            </div>
                             @*<div class="checkbox">
                                     <label>
                                         <input type="checkbox">
                                         Remember me
                                     </label>
                                 </div>*@
-                            <div class="input-group">
-                            </div>
+                            <br />
                             <button href="#" type="submit" class="btn-animate btn-style btn-d btn-primary">Submit</button>
                             <hr>
                         </form>
