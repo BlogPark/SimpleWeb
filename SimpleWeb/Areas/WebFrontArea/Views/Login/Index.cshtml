@@ -21,10 +21,10 @@
                                 @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "form-control" })
                             </div>
                             <br />
-                            <div class="input-group">
-                                <input type="text" placeholder = "验证码"  class = "form-control"  style="width:180px;"/>
+                            @*<div class="input-group">
+                                <input type="text" placeholder = "验证码" id="logincheckcode" class = "form-control"   style="width:180px;ime-mode:disabled"/>
                                 <img id="valiCode" style="cursor: pointer;" src="/WebFrontArea/Login/GetImg" alt="验证码" title="验证码"/> 
-                            </div>
+                            </div>*@
                             @*<div class="checkbox">
                                     <label>
                                         <input type="checkbox">
@@ -32,7 +32,7 @@
                                     </label>
                                 </div>*@
                             <br />
-                            <button href="#" type="submit" class="btn-animate btn-style btn-d btn-primary">Submit</button>
+                            <button  type="submit" class="btn-animate btn-style btn-d btn-primary">Submit</button>
                             <hr>
                         </form>
                         <p class="errortext">@ViewBag.TempMsg</p>

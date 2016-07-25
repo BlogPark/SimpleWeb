@@ -1,11 +1,9 @@
 $(function () {
-    var linkurl = $("#linkurl").val();
     $('#qrcode').qrcode({
-        width: 200,
-        height: 200,
-        correctLevel: QRErrorCorrectLevel.H,
-        render: "table",
-        text: linkurl
+        width: 150,
+        height: 150,
+        render: "Canvas",
+        text: $("#linkurl").html()
 
     });
 });
@@ -479,6 +477,12 @@ function autofill() {
     });
 }
 /*========login============*/
-$("#valiCode").bind("click", function() {
-    this.src = "/WebFrontArea/Login/GetImg?time=" + (new Date()).getTime();
-});
+//$("#valiCode").bind("click", function() {
+//    this.src = "/WebFrontArea/Login/GetImg?time=" + (new Date()).getTime();
+//});
+//$("#logincheckcode").on("keyup", function () {
+//    var text = $("#logincheckcode").val();
+//    if (text.length == 4) {
+//        alert(text);
+//    }
+//})
