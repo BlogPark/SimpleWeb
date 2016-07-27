@@ -293,5 +293,47 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json(result.Substring(1));
             }
         }
+
+        /// <summary>
+        /// 会员资产一览
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult membercapitaldetail(MemberCapitalDetailModel smodel,int page=1)
+        {
+            membercapitaldetailViewModel model = new membercapitaldetailViewModel();
+            int totalrowcount = 0;
+            MemberCapitalDetailModel seachmodel = new MemberCapitalDetailModel();
+            seachmodel.PageSize = PageSize;
+            seachmodel.PageIndex = page;
+            seachmodel.MemberName = smodel.MemberName;
+            seachmodel.MemberPhone = smodel.MemberPhone;
+            List<MemberCapitalDetailModel> list = mcbll.GetMembercapitalList(seachmodel,out totalrowcount);
+            PagedList<MemberCapitalDetailModel> pageList = null;
+            if (list != null)
+            {
+                pageList = new PagedList<MemberCapitalDetailModel>(list, page, PageSize, totalrowcount);
+            }
+            model.list = pageList;
+            model.pagesize = PageSize;
+            model.currentpage = page;
+            model.totalcount = totalrowcount;
+            ViewBag.PageTitle = "会员资产";
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult punishmentmember(int id,decimal money,string reason)
+        {
+            string result = mcbll.punishmentDynamicMoney(id,money,reason);
+            if (result == "1")
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json(result.Substring(1));
+            }
+        }
+
     }
 }

@@ -66,7 +66,7 @@ namespace SimpleWeb.DataBLL
                     return result;
                 }
                 scope.Complete();
-                result ="1";
+                result = "1";
             }
             return result;
         }
@@ -124,7 +124,7 @@ namespace SimpleWeb.DataBLL
         /// <param name="memberphone"></param>
         /// <param name="money"></param>
         /// <returns></returns>
-        public string FenPaiMoney(string memberphone,decimal money)
+        public string FenPaiMoney(string memberphone, decimal money)
         {
             string result = "0";
             MemberInfoModel member = MemberInfoDAL.GetMember(memberphone);
@@ -146,7 +146,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderCode = "";
                 logmodel.OrderID = 0;
                 logmodel.ProduceMoney = money;
-                logmodel.Remark = "会员:"+member.MobileNum+" 得到系统派发的奖金";
+                logmodel.Remark = "会员:" + member.MobileNum + " 得到系统派发的奖金";
                 logmodel.Type = 3;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)
@@ -157,6 +157,56 @@ namespace SimpleWeb.DataBLL
                 result = "1";
             }
             return result;
+        }
+        /// <summary>
+        /// 惩罚会员动态金额
+        /// </summary>
+        /// <param name="memberphone"></param>
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public string punishmentDynamicMoney(int memberid, decimal money, string reason)
+        {
+            string result = "0";
+            MemberInfoModel member = MemberInfoDAL.GetMember(memberid);
+            if (member == null)
+            {
+                return "0无此会员";
+            }
+            using (TransactionScope scope = new TransactionScope())
+            {
+                int rowcount = MemberCapitalDetailDAL.UpdateDynamicPunishMoney(member.ID, money, member.TruethName, member.MobileNum);
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                logmodel.MemberID = member.ID;
+                logmodel.MemberName = member.TruethName;
+                logmodel.MemberPhone = member.MobileNum;
+                logmodel.OrderCode = "";
+                logmodel.OrderID = 0;
+                logmodel.ProduceMoney = (0 - money);
+                logmodel.Remark = "会员:" + member.MobileNum + " 被平台惩罚：" + money.ToString() + " 元，原因：" + reason;
+                logmodel.Type = 3;
+                rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                if (rowcount < 1)
+                {
+                    return "0操作失败";
+                }
+                scope.Complete();
+                result = "1";
+            }
+            return result;
+        }
+        /// <summary>
+        /// 得到会员的资产信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberCapitalDetailModel> GetMembercapitalList(MemberCapitalDetailModel model, out int totalrowcount)
+        {
+            return MemberCapitalDetailDAL.GetMemberCapitalByPage(model, out totalrowcount);
         }
     }
 }

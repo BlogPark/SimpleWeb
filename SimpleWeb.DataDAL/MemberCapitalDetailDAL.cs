@@ -171,6 +171,42 @@ ELSE
             return rowcount;
         }
         /// <summary>
+        /// 更新会员的动态惩罚金额,扣减动态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateDynamicPunishMoney(int memberid, decimal amont, string membername, string memberphone)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     DynamicPunishMoney=ISNULL(DynamicPunishMoney,0)+@Amount,
+                DynamicFunds=ISNULL(DynamicFunds,0)-@Amount,
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,MemberPhone,MemberName,
+                  DynamicPunishMoney,DynamicFunds
+                )
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
+                  @Amount,(0-@Amount)
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
         /// 更新会员的静态资金
         /// </summary>
         /// <param name="memberid"></param>
@@ -961,6 +997,98 @@ WHERE   OrderID = @orderid
                 return null;
             }
            
+        }
+
+        /// <summary>
+        /// 得到会员的资产信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<MemberCapitalDetailModel> GetMemberCapitalByPage(MemberCapitalDetailModel model, out int totalrowcount)
+        {
+            List<MemberCapitalDetailModel> list = new List<MemberCapitalDetailModel>();
+            string columms = @"MemberID,MemberPhone,MemberName,StaticCapital,DynamicFunds,StaticInterest,DynamicInterest,StaticPunishMoney,DynamicPunishMoney,StaticFreezeMoney,DynamicFreezeMoney,TotalStaticCapital,TotalDynamicFunds";
+            string where = "";
+            if (model != null)
+            {
+                if (!string.IsNullOrWhiteSpace(model.MemberName))
+                {
+                    where += "MemberName='" + model.MemberName + "'";
+                }
+                if (!string.IsNullOrWhiteSpace(model.MemberPhone)  && string.IsNullOrWhiteSpace(where))
+                {
+                    where += " MemberPhone='" + model.MemberPhone.ToString() + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(where) && !string.IsNullOrWhiteSpace(model.MemberPhone))
+                {
+                    where += @" AND MemberPhone='" + model.MemberPhone.ToString() + "'";
+                }               
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "SortIndex";
+            page.pageindex = model.PageIndex;
+            page.pagesize = model.PageSize;
+            page.tablename = @"dbo.MemberCapitalDetail";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                MemberCapitalDetailModel membermodel = new MemberCapitalDetailModel();
+                if (item["MemberID"].ToString() != "")
+                {
+                    membermodel.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                if (item["StaticFreezeMoney"].ToString() != "")
+                {
+                    membermodel.StaticFreezeMoney = decimal.Parse(item["StaticFreezeMoney"].ToString());
+                }
+                if (item["DynamicFreezeMoney"].ToString() != "")
+                {
+                    membermodel.DynamicFreezeMoney = decimal.Parse(item["DynamicFreezeMoney"].ToString());
+                }
+                if (item["TotalStaticCapital"].ToString() != "")
+                {
+                    membermodel.TotalStaticCapital = decimal.Parse(item["TotalStaticCapital"].ToString());
+                }
+                if (item["TotalDynamicFunds"].ToString() != "")
+                {
+                    membermodel.TotalDynamicFunds = decimal.Parse(item["TotalDynamicFunds"].ToString());
+                }
+                if (item["Interest"].ToString() != "")
+                {
+                    membermodel.Interest = decimal.Parse(item["Interest"].ToString());
+                }
+                membermodel.MemberPhone = item["MemberPhone"].ToString();
+                membermodel.MemberName = item["MemberName"].ToString();
+                if (item["StaticCapital"].ToString() != "")
+                {
+                    membermodel.StaticCapital = decimal.Parse(item["StaticCapital"].ToString());
+                }
+                if (item["DynamicFunds"].ToString() != "")
+                {
+                    membermodel.DynamicFunds = decimal.Parse(item["DynamicFunds"].ToString());
+                }
+                if (item["StaticInterest"].ToString() != "")
+                {
+                    membermodel.StaticInterest = decimal.Parse(item["StaticInterest"].ToString());
+                }
+                if (item["DynamicInterest"].ToString() != "")
+                {
+                    membermodel.DynamicInterest = decimal.Parse(item["DynamicInterest"].ToString());
+                }
+                if (item["StaticPunishMoney"].ToString() != "")
+                {
+                    membermodel.StaticPunishMoney = decimal.Parse(item["StaticPunishMoney"].ToString());
+                }
+                if (item["DynamicPunishMoney"].ToString() != "")
+                {
+                    membermodel.DynamicPunishMoney = decimal.Parse(item["DynamicPunishMoney"].ToString());
+                }
+                list.Add(membermodel);
+            }
+            return list;
         }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="Areas\AdminArea\Models\HelperOrderViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MatchedManageViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberActiveIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\membercapitaldetailViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberMsgViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\paymentinteristViewModel.cs" />
@@ -1890,6 +1891,7 @@
     <Content Include="Areas\WebFrontArea\Views\WebHome\recommendusermap.cshtml" />
     <Content Include="js\ztree\css\awesomeStyle\awesome.less" />
     <Content Include="js\ztree\css\awesomeStyle\fa.less" />
+    <Content Include="Areas\AdminArea\Views\Order\membercapitaldetail.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

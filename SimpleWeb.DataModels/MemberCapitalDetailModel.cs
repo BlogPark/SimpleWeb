@@ -159,6 +159,18 @@ namespace SimpleWeb.DataModels
         {
             get { return _interest; }
             set { _interest = value; }
-        }        
+        }
+        #region 扩展字段
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        [DataMember]
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        [DataMember]
+        public int PageIndex { get; set; }
+        #endregion
     }
 }
