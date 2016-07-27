@@ -349,11 +349,17 @@ function accepthelp() {
         alert("接受的帮助金额大于平台规定值");
         return false;
     }
+    var result = accamount % 100;
+    if (result != 0) {
+        alert("提供金额应为100的整数倍");
+        return false;
+    }
     var check = $("#chkrisk1").is(':checked');
     if (!check) {
         bootbox.alert("确保您已了解风险并接受平台协定");
         return false;
     }
+
     $.ajax({
         url: '/WebFrontArea/WebHome/addacceptorder',
         dataType: 'Json',
