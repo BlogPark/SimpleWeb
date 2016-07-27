@@ -351,7 +351,7 @@ function accepthelp() {
     }
     var result = accamount % 100;
     if (result != 0) {
-        alert("提供金额应为100的整数倍");
+        alert("金额应为100的整数倍");
         return false;
     }
     var check = $("#chkrisk1").is(':checked');
