@@ -62,6 +62,11 @@ namespace SimpleWeb.DataModels
         [DataMember]
         public string acceptmemberAlipayId { get; set; }
         /// <summary>
+        /// 接受会员支付宝
+        /// </summary>
+        [DataMember]
+        public string acceptmemberAlipayName { get; set; }
+        /// <summary>
         /// 接受会员微信
         /// </summary>
         [DataMember]

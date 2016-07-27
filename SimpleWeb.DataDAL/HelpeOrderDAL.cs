@@ -630,6 +630,7 @@ WHERE   id = @id";
         A.MemberName ,
         B.WeixinNum ,
         B.AliPayNum ,
+        B.AliPayName
          C.MemberID  as rememberid,
         C.MemberPhone as rememberphone,
         C.MemberTruthName as remembername,
@@ -647,6 +648,7 @@ WHERE   D.HelperOrderID = @orderid";
                 {
                     AcceptExtendInfoModel model = new AcceptExtendInfoModel();
                     model.acceptmemberAlipayId = item["AliPayNum"].ToString();
+                    model.acceptmemberAlipayName = item["AliPayName"].ToString();
                     model.acceptmemberid = item["MemberID"].ToString().ParseToInt(0);
                     model.acceptmemberName = item["MemberName"].ToString();
                     model.acceptmemberPhone = item["MemberPhone"].ToString();

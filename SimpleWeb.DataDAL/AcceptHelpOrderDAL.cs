@@ -499,6 +499,7 @@ WHERE   id = @id";
         A.MemberName ,
         B.WeixinNum ,
         B.AliPayNum ,
+        B.AliPayName,
         C.MemberID AS rememberid ,
         C.MemberPhone AS rememberphone ,
         C.MemberTruthName AS remembername ,
@@ -517,7 +518,8 @@ WHERE   D.AcceptOrderID = @orderid";
                 foreach (DataRow item in dt.Rows)
                 {
                     HelpOrderExtendInfoModel model = new HelpOrderExtendInfoModel();
-                    model.helpmemberAlipayId = item["AliPayNum"].ToString();//支付宝账户
+                    model.helpmemberAlipayId = item["AliPayNum"].ToString();//支付宝名称
+                    model.helpmemberAlipayName = item["AliPayName"].ToString();//支付宝ID
                     model.helpmemberid = item["MemberID"].ToString().ParseToInt(0);//会员id
                     model.helpmemberName = item["MemberName"].ToString();//会员名称
                     model.helpmemberPhone = item["MemberPhone"].ToString();//会员电话
