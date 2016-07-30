@@ -198,7 +198,8 @@ WHERE   MemberID = @memberid";
           WHEN 5 THEN '系统返还'
         END AS TypeName
 FROM    SimpleWebDataBase.dbo.AmountChangeLog
-WHERE   MemberID = @memberid";
+WHERE   MemberID = @memberid
+Order by ID desc";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@memberid",memberid),
                                       new SqlParameter("@topnum",top)

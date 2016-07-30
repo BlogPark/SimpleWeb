@@ -188,6 +188,50 @@ namespace SimpleWeb.DataModels
             get { return _IsFristOrder; }
             set { _IsFristOrder = value; }
         }
+
+        private decimal _PayedAmount;
+        /// <summary>
+        /// 已打款金额
+        /// </summary>
+        [DataMember]
+        public decimal PayedAmount
+        {
+            get { return _PayedAmount; }
+            set { _PayedAmount = value; }
+        }
+
+        private decimal _SchedulingAmount;
+        /// <summary>
+        /// 排单币返还金额
+        /// </summary>
+        [DataMember]
+        public decimal SchedulingAmount
+        {
+            get { return _SchedulingAmount; }
+            set { _SchedulingAmount = value; }
+        }
+
+        private int _IsLeaderBack;
+        /// <summary>
+        /// 是否已返还领导奖
+        /// </summary>
+        [DataMember]
+        public int IsLeaderBack
+        {
+            get { return _IsLeaderBack; }
+            set { _IsLeaderBack = value; }
+        }
+
+        private int _IsRecommendBack;
+        /// <summary>
+        /// 是否已返还推荐奖
+        /// </summary>
+        [DataMember]
+        public int IsRecommendBack
+        {
+            get { return _IsRecommendBack; }
+            set { _IsRecommendBack = value; }
+        }
         #endregion
 
         #region 扩展字段

@@ -198,25 +198,27 @@ namespace SimpleWeb.DataBLL
         {
             int result = 0;
             //List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
-            HelpeOrderModel helporder = HelpeOrderDAL.GetHelpOrderInfo(hid);
-            List<MatchOrderModel> matchinfo = MatchOrderDAL.GetMatchOrderInfo(hid,aid);
+            HelpeOrderModel helporder = HelpeOrderDAL.GetHelpOrderInfo(hid);//查询提供帮助的单据
+            List<MatchOrderModel> matchinfo = MatchOrderDAL.GetMatchOrderInfo(hid, aid);//单据的匹配信息
             string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额 
+            string scvalue = SysAdminConfigDAL.GetConfigsByID(6);//得到注册返还金额 
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改当前的接受单据状态和完成金额
-                int rowcount = AcceptHelpOrderDAL.UpdateStatusAndMoneyToComplete(aid,matchinfo[0].MatchedMoney);
+                int rowcount = AcceptHelpOrderDAL.UpdateStatusAndMoneyToComplete(aid, matchinfo[0].MatchedMoney);
                 if (rowcount < 1)
                 {
                     return 0;
                 }
                 //更改匹配的提供帮助订单的状态  
-                rowcount = HelpeOrderDAL.UpdateStatusForComplete(helporder.ID);
+                rowcount = HelpeOrderDAL.UpdateStatusForCompleteV1(helporder.ID, matchinfo[0].MatchedMoney);
                 if (rowcount < 1)
                 {
                     return 0;
                 }
-                if (helporder.DiffAmount == 0)
+                decimal diffamount = (helporder.Amount - helporder.PayedAmount - matchinfo[0].MatchedMoney);
+                if (diffamount == 0)
                 {
                     //返还匹配会员的静态冻结资金和利息
                     rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(helporder.MemberID, helporder.Amount, helporder.Interest);
@@ -225,7 +227,7 @@ namespace SimpleWeb.DataBLL
                         return 0;
                     }
                     //返还推荐奖
-                    if (helporder.IsFristOrder == 1)
+                    if (helporder.IsFristOrder == 1 && helporder.IsRecommendBack == 0)
                     {
                         decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率
                         decimal money = helporder.Amount * inster / 100;
@@ -237,9 +239,39 @@ namespace SimpleWeb.DataBLL
                         }
                         //返还激活码的钱
                         rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(helporder.MemberID, value.ParseToDecimal(0));
+                        //更改单据为已经派发推荐奖
+                        rowcount = HelpeOrderDAL.UpdateHelperOrderIsRecommendBack(helporder.ID);
                     }
-                    //返还领导奖
-                    rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID);
+                    if (helporder.IsLeaderBack == 0)
+                    {
+                        //返还领导奖
+                        rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID);
+                        rowcount = HelpeOrderDAL.UpdateHelperOrderIsLeaderBack(helporder.ID);
+                    }
+                    //返还该单据排单币的金额
+                    if (helporder.SchedulingAmount == 0)
+                    {
+                        rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(helporder.MemberID, scvalue.ParseToDecimal(0),helporder.MemberName,helporder.MemberPhone);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                        AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                        logmodel.MemberID = helporder.MemberID;
+                        logmodel.MemberName = helporder.MemberName;
+                        logmodel.MemberPhone = helporder.MemberPhone;
+                        logmodel.OrderCode = helporder.OrderCode;
+                        logmodel.OrderID = helporder.ID;
+                        logmodel.ProduceMoney = scvalue.ParseToDecimal(0);
+                        logmodel.Remark = "会员:" + helporder.MemberPhone + " 打款完成，返还排单币" + scvalue + "元";
+                        logmodel.Type = 5;
+                        rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                    }
+
                 }
                 scope.Complete();
                 result = 1;
@@ -346,7 +378,7 @@ namespace SimpleWeb.DataBLL
         /// 返回系统排单总金额
         /// </summary>
         /// <returns></returns>
-        public  decimal GetTotalAcceptMoney()
+        public decimal GetTotalAcceptMoney()
         {
             return AcceptHelpOrderDAL.GetTotalAcceptMoney();
         }

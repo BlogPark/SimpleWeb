@@ -254,11 +254,11 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// 分派利息页面
         /// </summary>
         /// <returns></returns>
-        public ActionResult PaymentInterist(int page=1)
+        public ActionResult PaymentInterist(int page = 1)
         {
             paymentinteristViewModel model = new paymentinteristViewModel();
-            int totalrowcount=0;
-            List<AmountChangeLogModel> list= mbll.GetAmountChangeLogByTypeForPage(page,PageSize,out totalrowcount);
+            int totalrowcount = 0;
+            List<AmountChangeLogModel> list = mbll.GetAmountChangeLogByTypeForPage(page, PageSize, out totalrowcount);
             PagedList<AmountChangeLogModel> pagedlist = null;
             if (list != null)
             {
@@ -270,7 +270,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult paymentinterist()
         {
-            string result=mcbll.PaymentInterestV3();
+            string result = mcbll.PaymentInterestV3();
             if (result == "1")
             {
                 return Json("1");
@@ -281,9 +281,30 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             }
         }
         [HttpPost]
-        public ActionResult paymentdymicmoney(string phone,decimal money)
+        public ActionResult paymentdymicmoney(string phone, decimal money)
         {
-            string result = mcbll.FenPaiMoney(phone,money);
+            string result = mcbll.FenPaiMoney(phone, money);
+            if (result == "1")
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json(result.Substring(1));
+            }
+        }
+        [HttpPost]
+        public ActionResult paymentdymicmoneyv1(int id, decimal money, int type)
+        {
+            string result = "";
+            if (type == 1)
+            {
+                result = mcbll.FenPaiMoneyToStatic(id, money);
+            }
+            else if (type == 2)
+            {
+                result = mcbll.FenPaiMoneyToDynamic(id, money);
+            }
             if (result == "1")
             {
                 return Json("1");
@@ -299,7 +320,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult membercapitaldetail(MemberCapitalDetailModel smodel,int page=1)
+        public ActionResult membercapitaldetail(MemberCapitalDetailModel smodel, int page = 1)
         {
             membercapitaldetailViewModel model = new membercapitaldetailViewModel();
             int totalrowcount = 0;
@@ -308,7 +329,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             seachmodel.PageIndex = page;
             seachmodel.MemberName = smodel.MemberName;
             seachmodel.MemberPhone = smodel.MemberPhone;
-            List<MemberCapitalDetailModel> list = mcbll.GetMembercapitalList(seachmodel,out totalrowcount);
+            List<MemberCapitalDetailModel> list = mcbll.GetMembercapitalList(seachmodel, out totalrowcount);
             PagedList<MemberCapitalDetailModel> pageList = null;
             if (list != null)
             {
@@ -322,9 +343,17 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult punishmentmember(int id,decimal money,string reason)
+        public ActionResult punishmentmember(int id, decimal money, string reason,int type)
         {
-            string result = mcbll.punishmentDynamicMoney(id,money,reason);
+            string result = "";
+            if (type == 1)
+            {
+                result = mcbll.punishmentStaticMoney(id, money, reason);
+            }
+            else
+            {
+                result = mcbll.punishmentDynamicMoney(id, money, reason);
+            }
             if (result == "1")
             {
                 return Json("1");

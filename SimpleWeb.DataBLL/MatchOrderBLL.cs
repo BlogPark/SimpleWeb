@@ -24,6 +24,7 @@ namespace SimpleWeb.DataBLL
             AcceptHelpOrderModel accept = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
             string helpsmscontent = SysAdminConfigDAL.GetConfigsByID(19);
             string acceptsmscontent = SysAdminConfigDAL.GetConfigsByID(20);
+            string issendsms = SysAdminConfigDAL.GetConfigsByID(21);
             if (help == null || accept == null)
             {
                 return 0;
@@ -79,10 +80,13 @@ namespace SimpleWeb.DataBLL
                     return 0;
                 }
                 #region 发送短信
-                string helpsms = string.Format(helpsmscontent, help.OrderCode);
-                string acceptsms = string.Format(acceptsmscontent, accept.OrderCode);
-                string resule = SendSMSClass.SendSMS(help.MemberPhone, helpsms);
-                resule = SendSMSClass.SendSMS(accept.MemberPhone, acceptsms);
+                if (issendsms == "1")
+                {
+                    string helpsms = string.Format(helpsmscontent, help.OrderCode);
+                    string acceptsms = string.Format(acceptsmscontent, accept.OrderCode);
+                    string resule = SendSMSClass.SendSMS(help.MemberPhone, helpsms);
+                    resule = SendSMSClass.SendSMS(accept.MemberPhone, acceptsms);
+                }
                 #endregion
                 scope.Complete();
                 result = 1;

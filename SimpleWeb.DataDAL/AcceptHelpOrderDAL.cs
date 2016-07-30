@@ -228,7 +228,7 @@ namespace SimpleWeb.DataDAL
         {
             List<AcceptHelpOrderModel> list = new List<AcceptHelpOrderModel>();
             string columms = @" ID, AddTime, AStatus, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, PayType, MatchedAmount, TurnOutOrder,CASE AStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销' WHEN 4 THEN '对方已打款' WHEN 5 THEN '已完成' END AS AStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday ";
-            string where = " AStatus <2 ";
+            string where = " AStatus not in (3,5) and (Amount-MatchedAmount)>0 ";
             PageProModel page = new PageProModel();
             page.colums = columms;
             page.orderby = " (DATEDIFF(DAY,AddTime,GETDATE())) ";
@@ -431,7 +431,7 @@ WHERE   ID = @id AND MemberID=@memberid";
         /// <param name="oid"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public static int UpdateStatusAndMoneyToComplete(int aid,decimal money)
+        public static int UpdateStatusAndMoneyToComplete(int aid, decimal money)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update AcceptHelpOrder set ");

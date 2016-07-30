@@ -410,7 +410,7 @@ VALUES  ( @MemberID ,
         {
             List<HelpeOrderModel> list = new List<HelpeOrderModel>();
             string columms = @"ID, MatchedAmount, AddTime, SortIndex, OrderCode, MemberID, MemberPhone, MemberName, Amount, Interest, PayType, HStatus,CASE HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '已打款'  WHEN 5 THEN '已确认' END AS HStatusName,DATEDIFF(DAY,AddTime,GETDATE()) AS diffday";
-            string where = " HStatus<2";
+            string where = " HStatus not in (3,5) and (Amount-MatchedAmount)>0";
             PageProModel page = new PageProModel();
             page.colums = columms;
             page.orderby = " (DATEDIFF(DAY,AddTime,GETDATE())) ";
@@ -547,10 +547,14 @@ WHERE   ID = @id
         MemberPhone ,
         MemberName ,
         Amount ,
+        ISNULL(PayedAmount, 0) PayedAmount,
         ( Amount - ISNULL(MatchedAmount, 0) ) AS DiffAmount ,
         Interest ,
         DATEDIFF(DAY, AddTime, GETDATE()) diffday ,
-        ISNULL(IsFristOrder, 0) IsFristOrder
+        ISNULL(IsFristOrder, 0) IsFristOrder,
+        ISNULL(SchedulingAmount,0) SchedulingAmount,
+        ISNULL(IsLeaderBack,0) IsLeaderBack,
+        ISNULL(IsRecommendBack,0) IsRecommendBack
 FROM    HelpeOrder
 WHERE   ID = @id";
             SqlParameter[] paramter ={
@@ -571,6 +575,10 @@ WHERE   ID = @id";
                 model.DiffDay = dt.Rows[0]["diffday"].ToString().ParseToInt(0);
                 model.HStatus = dt.Rows[0]["HStatus"].ToString().ParseToInt(0);
                 model.IsFristOrder = dt.Rows[0]["IsFristOrder"].ToString().ParseToInt(0);
+                model.PayedAmount = dt.Rows[0]["PayedAmount"].ToString().ParseToDecimal(0);
+                model.SchedulingAmount = dt.Rows[0]["SchedulingAmount"].ToString().ParseToDecimal(0);
+                model.IsLeaderBack = dt.Rows[0]["IsLeaderBack"].ToString().ParseToInt(0);
+                model.IsRecommendBack = dt.Rows[0]["IsRecommendBack"].ToString().ParseToInt(0);
                 return model;
             }
             else
@@ -596,6 +604,31 @@ WHERE   id = @id AND HStatus=4 ";
 			            new SqlParameter("@id", SqlDbType.Int) 
             };
             parameters[0].Value = hid;
+            int rows = helper.ExecuteSql(sqltxt, parameters);
+            return rows;
+        }
+        /// <summary>
+        /// 提供帮助订单的状态和已打款金额
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateStatusForCompleteV1(int hid, decimal money)
+        {
+            string sqltxt = @"UPDATE  HelpeOrder
+SET     HStatus = CASE ( Amount - ISNULL(PayedAmount, 0) - @amount )
+                    WHEN 0 THEN 5
+                    ELSE 1
+                  END ,
+        PayedAmount = ISNULL(PayedAmount, 0) + @amount ,
+        LastUpdateTime = GETDATE()
+WHERE   id = @id ";
+            SqlParameter[] parameters = {
+			            new SqlParameter("@id", SqlDbType.Int) ,
+                        new SqlParameter("@amount",SqlDbType.Decimal)
+            };
+            parameters[0].Value = hid;
+            parameters[1].Value = money;
             int rows = helper.ExecuteSql(sqltxt, parameters);
             return rows;
         }
@@ -630,7 +663,7 @@ WHERE   id = @id";
         A.MemberName ,
         B.WeixinNum ,
         B.AliPayNum ,
-        B.AliPayName
+        B.AliPayName,
          C.MemberID  as rememberid,
         C.MemberPhone as rememberphone,
         C.MemberTruthName as remembername,
@@ -795,9 +828,48 @@ WHERE   MemberID = @memberid
 FROM    SimpleWebDataBase.dbo.HelpeOrder
 WHERE   AddTime >= @starttime
         AND AddTime <= @endtime AND HStatus=0 ";
-            SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime",dataend) };
-            return helper.GetSingle(sqltxt,paramter).ToString().ParseToDecimal(0);
+            SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime", dataend) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToDecimal(0);
 
+        }
+        /// <summary>
+        /// 更改单据为已返还领导奖
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static int UpdateHelperOrderIsLeaderBack(int hid)
+        {
+            string sqltxt = @"UPDATE  dbo.HelpeOrder
+SET     IsLeaderBack = 1
+WHERE   ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@id",hid)};
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
+        /// <summary>
+        /// 更改单据为已返还推荐奖
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static int UpdateHelperOrderIsRecommendBack(int hid)
+        {
+            string sqltxt = @"UPDATE  dbo.HelpeOrder
+SET     IsRecommendBack = 1
+WHERE   ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@id", hid) };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改单据已返还的排单币金额
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static int UpdateHelperOrderIsRecommendBack(int hid,decimal amount)
+        {
+            string sqltxt = @"UPDATE  dbo.HelpeOrder
+SET     SchedulingAmount = @amount
+WHERE   ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@id", hid), new SqlParameter("@amount",amount) };
+            return helper.ExecuteSql(sqltxt, paramter);
         }
     }
 }

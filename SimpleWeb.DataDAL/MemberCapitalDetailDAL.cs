@@ -185,16 +185,54 @@ ELSE
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
         SET     DynamicPunishMoney=ISNULL(DynamicPunishMoney,0)+@Amount,
                 DynamicFunds=ISNULL(DynamicFunds,0)-@Amount,
+                TotalDynamicFunds=ISNULL(TotalDynamicFunds,0)-@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
         INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
-                  DynamicPunishMoney,DynamicFunds
+                  DynamicPunishMoney,DynamicFunds,TotalDynamicFunds
                 )
         VALUES  ( @MemberID ,@MemberPhone,@MemberName,
-                  @Amount,(0-@Amount)
+                  @Amount,(0-@Amount),(0-@Amount)
+                )
+    END";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                       new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername),
+                                      new SqlParameter("@Amount",amont)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
+        /// 更新会员的动态惩罚金额,扣减动态资金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amont"></param>
+        /// <returns></returns>
+        public static int UpdateStaticPunishMoney(int memberid, decimal amont, string membername, string memberphone)
+        {
+            string sqltxt = @"IF EXISTS ( SELECT  1
+            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            WHERE   MemberID = @MemberID )
+    BEGIN
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        SET     StaticPunishMoney=ISNULL(StaticPunishMoney,0)+@Amount,
+                StaticCapital=ISNULL(StaticCapital,0)-@Amount,
+                TotalStaticCapital=ISNULL(TotalStaticCapital,0)-@Amount
+        WHERE   MemberID = @MemberID
+    END
+ELSE
+    BEGIN
+        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+                ( MemberID ,MemberPhone,MemberName,
+                  StaticPunishMoney,StaticCapital,TotalStaticCapital
+                )
+        VALUES  ( @MemberID ,@MemberPhone,@MemberName,
+                  @Amount,(0-@Amount),(0-@Amount)
                 )
     END";
             SqlParameter[] paramter = { 
@@ -219,8 +257,8 @@ ELSE
             WHERE   MemberID = @MemberID )
     BEGIN
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     StaticCapital=@Amount,
-                   TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount
+        SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount,
+                TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
@@ -299,7 +337,7 @@ ELSE
             WHERE   MemberID = @MemberID )
     BEGIN
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
-        SET     DynamicFunds=@Amount,
+        SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount,
                    TotalDynamicFunds=ISNULL(TotalDynamicFunds,0)+@Amount
         WHERE   MemberID = @MemberID
     END
@@ -1027,7 +1065,7 @@ WHERE   OrderID = @orderid
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
-            page.orderby = "SortIndex";
+            page.orderby = "MemberID";
             page.pageindex = model.PageIndex;
             page.pagesize = model.PageSize;
             page.tablename = @"dbo.MemberCapitalDetail";
@@ -1055,10 +1093,6 @@ WHERE   OrderID = @orderid
                 if (item["TotalDynamicFunds"].ToString() != "")
                 {
                     membermodel.TotalDynamicFunds = decimal.Parse(item["TotalDynamicFunds"].ToString());
-                }
-                if (item["Interest"].ToString() != "")
-                {
-                    membermodel.Interest = decimal.Parse(item["Interest"].ToString());
                 }
                 membermodel.MemberPhone = item["MemberPhone"].ToString();
                 membermodel.MemberName = item["MemberName"].ToString();
