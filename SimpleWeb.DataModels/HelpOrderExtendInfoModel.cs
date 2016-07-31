@@ -39,5 +39,15 @@ namespace SimpleWeb.DataModels
         public string HStatusName { get; set; }
         [DataMember]
         public int HStatus { get; set; }
+        /// <summary>
+        /// 匹配单据状态
+        /// </summary>
+        [DataMember]
+        public int MatchStatus { get; set; }
+        /// <summary>
+        /// 匹配单据状态名称
+        /// </summary>
+        [DataMember]
+        public string MatchStatusName { get; set; }
     }
 }

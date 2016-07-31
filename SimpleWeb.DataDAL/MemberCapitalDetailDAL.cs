@@ -1124,5 +1124,21 @@ WHERE   OrderID = @orderid
             }
             return list;
         }
+
+        /// <summary>
+        /// 解冻高利息会员的利息
+        /// </summary>
+        /// <returns></returns>
+        public static int UpdateStaticCaptail()
+        {
+            string sqltxt = @"UPDATE  A
+SET     A.StaticCapital = ISNULL(A.StaticCapital, 0) + B.Interest ,
+        A.StaticInterest = ISNULL(A.StaticInterest, 0) - B.Interest
+FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A
+        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder B ON A.MemberID = B.MemberID
+WHERE   B.CurrentInterest = 2
+        AND B.HStatus = 5";
+            return helper.ExecuteSql(sqltxt);
+        }
     }
 }

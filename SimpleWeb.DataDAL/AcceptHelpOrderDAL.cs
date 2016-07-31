@@ -505,6 +505,8 @@ WHERE   id = @id";
         C.MemberTruthName AS remembername ,
         D.MatchedMoney,
         A.HStatus,
+        D.MatchStatus,
+        CASE D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已完成' END AS MatchStatusName,
         CASE A.HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '对方已打款'  WHEN 5 THEN '双方已确认' END AS HStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.HelpeOrder A ON D.HelperOrderID = A.ID
@@ -514,7 +516,7 @@ WHERE   D.AcceptOrderID = @orderid";
             SqlParameter[] paramter = { new SqlParameter("@orderid", aid) };
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
-            {
+            { 
                 foreach (DataRow item in dt.Rows)
                 {
                     HelpOrderExtendInfoModel model = new HelpOrderExtendInfoModel();
@@ -532,6 +534,8 @@ WHERE   D.AcceptOrderID = @orderid";
                     model.rememberphone = item["rememberphone"].ToString();
                     model.HStatusName = item["HStatusName"].ToString();
                     model.HStatus = item["HStatus"].ToString().ParseToInt(0);
+                    model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
+                    model.MatchStatusName = item["MatchStatusName"].ToString();
                     list.Add(model);
                 }
             }

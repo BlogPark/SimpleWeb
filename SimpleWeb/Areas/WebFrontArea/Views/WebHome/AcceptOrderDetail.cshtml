@@ -75,8 +75,9 @@
                                         <li><strong>提供帮助会员支付宝</strong>: @item.helpmemberAlipayName</li>
                                         <li><strong>推荐人名字</strong>: @item.remembername</li>
                                         <li><strong>推荐人电话</strong>: @item.rememberphone</li>
-                                        <li><strong>单据当前状态</strong>: @item.HStatusName</li>
-                                        @if (item.HStatus == 4) { 
+                                        <li><strong>单据当前状态</strong>: @item.MatchStatusName</li>
+                                        @if (item.MatchStatus == 3)
+                                        { 
                                         <li><button class="btn btn-lg btn-blue" onclick="updatesingleorder(@Model.acceptorder.ID,@item.helporderid)">确认已收款</button></li>
                                         }
                                     </ul>

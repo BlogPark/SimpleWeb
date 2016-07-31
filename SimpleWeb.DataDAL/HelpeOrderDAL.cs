@@ -667,7 +667,9 @@ WHERE   id = @id";
          C.MemberID  as rememberid,
         C.MemberPhone as rememberphone,
         C.MemberTruthName as remembername,
-        D.MatchedMoney
+        D.MatchedMoney,
+        D.MatchStatus,
+        Case  D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已确认' END AS MatchStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
         INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
@@ -692,6 +694,8 @@ WHERE   D.HelperOrderID = @orderid";
                     model.rememberid = item["rememberid"].ToString().ParseToInt(0);
                     model.remembername = item["remembername"].ToString();
                     model.rememberphone = item["rememberphone"].ToString();
+                    model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
+                    model.MatchStatusName = item["MatchStatusName"].ToString();
                     list.Add(model);
                 }
             }
@@ -869,6 +873,19 @@ WHERE   ID = @id";
 SET     SchedulingAmount = @amount
 WHERE   ID = @id";
             SqlParameter[] paramter = { new SqlParameter("@id", hid), new SqlParameter("@amount",amount) };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改单据累计利息为0
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static int UpdateHelperOrderClearInterest(int hid)
+        {
+            string sqltxt = @"UPDATE  dbo.HelpeOrder
+SET     Interest =0
+WHERE   ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@id", hid) };
             return helper.ExecuteSql(sqltxt, paramter);
         }
     }

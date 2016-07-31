@@ -211,6 +211,11 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                rowcount = MatchOrderDAL.UpdateStatusToComplete(hid,aid);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
                 //更改匹配的提供帮助订单的状态  
                 rowcount = HelpeOrderDAL.UpdateStatusForCompleteV1(helporder.ID, matchinfo[0].MatchedMoney);
                 if (rowcount < 1)
@@ -222,6 +227,12 @@ namespace SimpleWeb.DataBLL
                 {
                     //返还匹配会员的静态冻结资金和利息
                     rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(helporder.MemberID, helporder.Amount, helporder.Interest);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    //更改该单据的利息为0
+                    rowcount = HelpeOrderDAL.UpdateHelperOrderClearInterest(helporder.ID);
                     if (rowcount < 1)
                     {
                         return 0;
@@ -252,6 +263,11 @@ namespace SimpleWeb.DataBLL
                     if (helporder.SchedulingAmount == 0)
                     {
                         rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(helporder.MemberID, scvalue.ParseToDecimal(0),helporder.MemberName,helporder.MemberPhone);
+                        if (rowcount < 1)
+                        {
+                            return 0;
+                        }
+                        rowcount = HelpeOrderDAL.UpdateHelperOrderIsRecommendBack(helporder.ID,scvalue.ParseToDecimal(0));//更新单据的排单币金额
                         if (rowcount < 1)
                         {
                             return 0;

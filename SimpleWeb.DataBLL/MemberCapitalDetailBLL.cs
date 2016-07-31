@@ -95,6 +95,8 @@ namespace SimpleWeb.DataBLL
                     result = "0为会员更新利息总额失败";
                     return result;
                 }
+                //解冻单据利率为2，状态为5的单据的利息
+                rowcount = MemberCapitalDetailDAL.UpdateStaticCaptail();
                 scope.Complete();
                 result = "1";
             }

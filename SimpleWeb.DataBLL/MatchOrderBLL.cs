@@ -16,9 +16,9 @@ namespace SimpleWeb.DataBLL
         /// 单据匹配方法4
         /// </summary>
         /// <returns></returns>
-        public int OperateMatchOrder(int hid,int aid)
+        public int OperateMatchOrder(int hid, int aid)
         {
-            int result=0;
+            int result = 0;
             decimal money = 0;
             HelpeOrderModel help = HelpeOrderDAL.GetHelpOrderInfo(hid);
             AcceptHelpOrderModel accept = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);
@@ -29,14 +29,18 @@ namespace SimpleWeb.DataBLL
             {
                 return 0;
             }
-            if (help.HStatus > 2 || accept.AStatus > 2)
+            if (help.HStatus == 3 || help.HStatus == 5)
+            {
+                return 0;
+            }
+            if (accept.AStatus == 3 || accept.AStatus == 5)
             {
                 return 0;
             }
             if (help.DiffAmount == 0 || accept.DiffAmount == 0)
             {
                 return 0;
-            }            
+            }
             //系统计算匹配金额
             if (help.DiffAmount < accept.DiffAmount)
             {
@@ -50,7 +54,7 @@ namespace SimpleWeb.DataBLL
             {
                 money = help.DiffAmount;
             }
-            using (TransactionScope scope=new TransactionScope())
+            using (TransactionScope scope = new TransactionScope())
             {
                 //插入匹配表
                 MatchOrderModel matchmodel = new MatchOrderModel();
@@ -68,7 +72,7 @@ namespace SimpleWeb.DataBLL
                     return 0;
                 }
                 //更新提供订单表状态
-                rowcount = HelpeOrderDAL.UpdateHelpOrderMatch(hid,money);
+                rowcount = HelpeOrderDAL.UpdateHelpOrderMatch(hid, money);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -104,7 +108,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, out int totalrowcount)
         {
-            return OperateLogDAL.GetAmountChangeLogByTypeForPage(pageindex,pagesize,4,out totalrowcount);
+            return OperateLogDAL.GetAmountChangeLogByTypeForPage(pageindex, pagesize, 4, out totalrowcount);
         }
     }
 }

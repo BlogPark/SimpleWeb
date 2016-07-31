@@ -33,8 +33,7 @@
                                             <td>单据状态</td>
                                             <td></td>
                                             <td>排队天数</td>
-                                            <td></td>
-                                            <td>@(Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2 ? "操 作" : "")</td>
+                                            <td></td>                                            
                                         </tr>
                                         <tr>
                                             <td>@Model.helporder.OrderCode</td>
@@ -50,33 +49,11 @@
                                             <td>@Model.helporder.HStatusName</td>
                                             <td></td>
                                             <td>@Model.helporder.DiffDay 天</td>
-                                            <td></td>
-                                            <td>
-                                                @if (Model.helporder.HStatus == 1 || Model.helporder.HStatus == 2)
-                                                {
-                                                    <button class="btn btn-lg btn-blue" onclick="updatehelporder(@Model.helporder.ID)">已打款</button>
-                                                }
-                                            </td>
+                                            <td></td>                                            
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <h2><span>提供帮助会员基本信息</span></h2>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="info-board info-board-red">
-                            <ul class="checkout">
-                                <li><strong>会员名字</strong>: @Model.helperpeople.TruethName</li>
-                                <li><strong>会员手机</strong>: @Model.helperpeople.MobileNum</li>
-                                <li><strong>会员邮箱</strong>: @Model.helperpeople.Email</li>
-                                <li><strong>会员微信号</strong>: @Model.helperpeople.WeixinNum</li>
-                                <li><strong>会员支付宝ID</strong>: @Model.helperpeople.AliPayName</li>
-                                <li><strong>会员归属地</strong>: @(Model.helperpeople.Province + " " + Model.helperpeople.City + " " + Model.helperpeople.Area)</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
@@ -98,12 +75,32 @@
                                         <li><strong>接受帮助会员支付宝</strong>: @item.acceptmemberAlipayName</li>
                                         <li><strong>推荐人名字</strong>: @item.remembername</li>
                                         <li><strong>推荐人电话</strong>: @item.rememberphone</li>
+                                        <li><strong>当前匹配状态</strong>: @item.MatchStatusName</li>
+                                        @if (item.MatchStatus == 1) { 
+                                        <li><button class="btn btn-lg btn-blue" onclick="updatehelporder(@Model.helporder.ID,@item.acceptorderid)">已打款</button></li>
+                                        }
                                     </ul>
                                 </div>
                             </div>
                         }
                     </div>
                 }
+                <h2><span>提供帮助会员基本信息</span></h2>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="info-board info-board-red">
+                            <ul class="checkout">
+                                <li><strong>会员名字</strong>: @Model.helperpeople.TruethName</li>
+                                <li><strong>会员手机</strong>: @Model.helperpeople.MobileNum</li>
+                                <li><strong>会员邮箱</strong>: @Model.helperpeople.Email</li>
+                                <li><strong>会员微信号</strong>: @Model.helperpeople.WeixinNum</li>
+                                <li><strong>会员支付宝ID</strong>: @Model.helperpeople.AliPayName</li>
+                                <li><strong>会员归属地</strong>: @(Model.helperpeople.Province + " " + Model.helperpeople.City + " " + Model.helperpeople.Area)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

@@ -104,7 +104,7 @@ namespace SimpleWeb.DataModels
 
         private int _MatchStatus;
         /// <summary>
-        /// 匹配状态（1 匹配 2 取消）
+        /// 匹配状态（ 1 匹配 2 取消  3 已打款 4 已确认）
         /// </summary>
         [DataMember]
         public int MatchStatus

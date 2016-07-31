@@ -190,5 +190,35 @@ WHERE   A.AcceptOrderID = @aid
             }
             return list;
         }
+        /// <summary>
+        /// 更新匹配单据状态为已打款
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public static int UpdateStatusToPayed(int hid,int aid)
+        {
+            string sqltxt = @"UPDATE MatchOrder  
+                               SET MatchStatus=3  
+                               WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
+            SqlParameter[] paramter = { new SqlParameter("@hid",hid),
+                                      new SqlParameter("@aid",aid)};
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
+        /// <summary>
+        /// 更新匹配单据状态为已确认
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <param name="aid"></param>
+        /// <returns></returns>
+        public static int UpdateStatusToComplete(int hid, int aid)
+        {
+            string sqltxt = @"UPDATE MatchOrder  
+                               SET MatchStatus=4  
+                               WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
+            SqlParameter[] paramter = { new SqlParameter("@hid",hid),
+                                      new SqlParameter("@aid",aid)};
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
     }
 }

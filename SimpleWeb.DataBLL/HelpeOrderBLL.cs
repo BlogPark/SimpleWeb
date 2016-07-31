@@ -278,6 +278,44 @@ namespace SimpleWeb.DataBLL
             }
             return result;
         }
+
+        /// <summary>
+        /// 更新提供帮助订单为已打款
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public int UpdateToPlayMoneyV1(int hid, int aid)
+        {
+            int result = 0;
+            string value = SysAdminConfigDAL.GetConfigsByID(6);//得到打款后返还金额
+            string inteist = SysAdminConfigDAL.GetConfigsByID(7);//得到打款后利率
+            string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
+            HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(hid);
+            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //更改状态为已打款和更改利率为已打款后的利率
+                int rowcount = HelpeOrderDAL.UpdateStatusandinster(hid, 4, decimal.Parse(inteist));
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                rowcount = MatchOrderDAL.UpdateStatusToPayed(hid,aid);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                //更新匹配接受订单的状态为对方已打款
+                rowcount = AcceptHelpOrderDAL.UpdateStatus(aid, 4);
+                if (rowcount < 1)
+                {
+                    return 0;
+                }
+                scope.Complete();
+                result = 1;
+            }
+            return result;
+        }
         /// <summary>
         /// 取消提供帮助的订单
         /// </summary>
@@ -412,7 +450,7 @@ namespace SimpleWeb.DataBLL
         {
             string datastart = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             string dataend = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59";
-            return HelpeOrderDAL.GetTodayHelpMoney(datastart,dataend);
+            return HelpeOrderDAL.GetTodayHelpMoney(datastart, dataend);
         }
     }
 }

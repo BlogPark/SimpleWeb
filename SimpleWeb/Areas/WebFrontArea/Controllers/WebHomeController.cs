@@ -440,11 +440,33 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
                 return Json(result.Substring(1));
             }
         }
-
+        /// <summary>
+        /// 变更单据为已打款
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult paymoney(int id)
         {
             int result = hobll.UpdateToPlayMoney(id);
+            if (result > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 变更单据为已打款
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult paymoneysplit(int id,int aid)
+        {
+            int result = hobll.UpdateToPlayMoneyV1(id,aid);
             if (result > 0)
             {
                 return Json("1");

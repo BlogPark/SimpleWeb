@@ -428,11 +428,11 @@ function activegive() {
         }
     });
 }
-function updatehelporder(id) {
+function updatehelporder(id,aid) {
     $.ajax({
-        url: '/WebFrontArea/WebHome/paymoney',
+        url: '/WebFrontArea/WebHome/paymoneysplit',
         dataType: 'Json',
-        data: { 'id': id },
+        data: { 'id': id,'aid':aid },
         type: 'POST',
         success: function (data) {
             if (data == '1') {
