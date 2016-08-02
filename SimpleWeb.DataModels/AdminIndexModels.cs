@@ -47,6 +47,14 @@ namespace SimpleWeb.DataModels
         /// 当日接受帮助金额
         /// </summary>
         public decimal TodayAcceptMoney { get; set; }
+        /// <summary>
+        /// 当日匹配金额
+        /// </summary>
+        public decimal TodayMatchedMoney { get; set; }
+        /// <summary>
+        /// 共计匹配金额
+        /// </summary>
+        public decimal TotalMatchMoney { get; set; }
        
     }
 }

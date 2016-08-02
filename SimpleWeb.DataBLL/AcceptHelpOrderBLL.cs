@@ -203,6 +203,7 @@ namespace SimpleWeb.DataBLL
             string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额 
             string scvalue = SysAdminConfigDAL.GetConfigsByID(6);//得到注册返还金额 
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
+            int day = SysAdminConfigDAL.GetConfigsByID(22).ParseToInt(20);//得到领导奖推荐奖冻结天数
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改当前的接受单据状态和完成金额
@@ -211,7 +212,7 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
-                rowcount = MatchOrderDAL.UpdateStatusToComplete(hid,aid);
+                rowcount = MatchOrderDAL.UpdateStatusToComplete(hid, aid);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -240,13 +241,50 @@ namespace SimpleWeb.DataBLL
                     //返还推荐奖
                     if (helporder.IsFristOrder == 1 && helporder.IsRecommendBack == 0)
                     {
-                        decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率
+                        decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率                       
                         decimal money = helporder.Amount * inster / 100;
                         ReMemberRelationModel model = ReMemberRelationDAL.GetReMemberRelation(helporder.ID);
-                        rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(model.MemberID, money);
-                        if (rowcount < 1)
+                        if (day == 0)//若为0，则当时返还
                         {
-                            return 0;
+                            //返还推荐奖
+                            rowcount = MemberCapitalDetailDAL.UpdateDynamicInterestForComplete(model.MemberID, money);
+                            if (rowcount < 1)
+                            {
+                                return 0;
+                            }
+                            AmountChangeLogModel logmodel = new AmountChangeLogModel();
+                            logmodel.MemberID = model.MemberID;
+                            logmodel.MemberName = model.MemberTruthName;
+                            logmodel.MemberPhone = model.MemberPhone;
+                            logmodel.OrderCode = helporder.OrderCode;
+                            logmodel.OrderID = helporder.ID;
+                            logmodel.ProduceMoney = money;
+                            logmodel.Remark = "会员:" + model.MemberPhone + " 得到来自单据：" + helporder.OrderCode + "的推荐奖";
+                            logmodel.Type = 3;
+                            rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
+                            if (rowcount < 1)
+                            {
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            //返还推荐奖到待返还列表
+                            WaitFreeLeaderAmountModel waitfreemodel = new WaitFreeLeaderAmountModel();
+                            waitfreemodel.MemberID = model.MemberID;
+                            waitfreemodel.MemberName = model.MemberTruthName;
+                            waitfreemodel.MemberPhone = model.MemberPhone;
+                            waitfreemodel.Amount = money;
+                            waitfreemodel.AStatus = 1;
+                            waitfreemodel.TheoryFreeTime = DateTime.Now.AddDays(day);
+                            waitfreemodel.Type = 2;
+                            waitfreemodel.OrderCode = helporder.OrderCode;
+                            waitfreemodel.OrderID = helporder.ID;
+                            rowcount = MemberCapitalDetailDAL.AddWaitFreeMoney(waitfreemodel);
+                            if (rowcount < 1)
+                            {
+                                return 0;
+                            }
                         }
                         //返还激活码的钱
                         rowcount = MemberCapitalDetailDAL.UpdateStaticFreezeMoneyForReiger(helporder.MemberID, value.ParseToDecimal(0));
@@ -255,19 +293,28 @@ namespace SimpleWeb.DataBLL
                     }
                     if (helporder.IsLeaderBack == 0)
                     {
-                        //返还领导奖
-                        rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID);
+                        if (day == 0)
+                        {
+                            //返还领导奖
+                            rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID);
+                        }
+                        else
+                        {
+                            //返还领导奖到待返还列表
+                            rowcount = MemberCapitalDetailDAL.PaymentLeaderPrizeForComplete(helporder.MemberID, inteistlist, helporder.OrderCode, helporder.ID, day);
+                        }
+                        //更新单据状态
                         rowcount = HelpeOrderDAL.UpdateHelperOrderIsLeaderBack(helporder.ID);
                     }
                     //返还该单据排单币的金额
                     if (helporder.SchedulingAmount == 0)
                     {
-                        rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(helporder.MemberID, scvalue.ParseToDecimal(0),helporder.MemberName,helporder.MemberPhone);
+                        rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(helporder.MemberID, scvalue.ParseToDecimal(0), helporder.MemberName, helporder.MemberPhone);
                         if (rowcount < 1)
                         {
                             return 0;
                         }
-                        rowcount = HelpeOrderDAL.UpdateHelperOrderIsRecommendBack(helporder.ID,scvalue.ParseToDecimal(0));//更新单据的排单币金额
+                        rowcount = HelpeOrderDAL.UpdateHelperOrderIsRecommendBack(helporder.ID, scvalue.ParseToDecimal(0));//更新单据的排单币金额
                         if (rowcount < 1)
                         {
                             return 0;

@@ -523,7 +523,7 @@ WHERE   MemberID = @id";
         /// <param name="memberid"></param>
         /// <param name="interest"></param>
         /// <returns></returns>
-        public static int UpdateDynamicInterest(int memberid, decimal interestmoney, string membername, string memberphone,string ordercode,int orderid)
+        public static int UpdateDynamicInterest(int memberid, decimal interestmoney, string membername, string memberphone, string ordercode, int orderid)
         {
             string sqltxt = @"        
         UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
@@ -592,7 +592,7 @@ WHERE HStatus <3";
         public static int PaymentInterestForOrderWithLog(int day)
         {
             string sqltxt = @"UPDATE  A
-SET     Interest =ISNULL(Interest,0)+( CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > ( @days )
+SET     Interest =ISNULL(Interest,0)+( CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > ( @days-1 )
                         THEN 0
                         ELSE ( Amount * ( 0.01 * CurrentInterest ) )
                    END)
@@ -716,7 +716,7 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
                     money = members[i].Amount;
                 }
                 //int rowcount = UpdateMemberDynamicFunds(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone);
-                int rowcount = UpdateDynamicInterest(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone,ordercode,oid);
+                int rowcount = UpdateDynamicInterest(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone, ordercode, oid);
                 if (rowcount < 1)
                 {
                     return result;
@@ -909,7 +909,7 @@ WHERE   MemberID = @memberid";
             SqlParameter[] paramter = { new SqlParameter("@money",money),
                                           new SqlParameter("@memberid",memberid)
                                       };
-            result = helper.ExecuteSql(sqltxt,paramter);
+            result = helper.ExecuteSql(sqltxt, paramter);
             return result;
         }
         /// <summary>
@@ -976,7 +976,7 @@ WHERE   MemberID = @memberid";
             }
             for (int i = 0; i < members.Count; i++)
             {
-                LeaderAmountModel leaderamount = GetLeaderModel(members[i].MemberID,oid);
+                LeaderAmountModel leaderamount = GetLeaderModel(members[i].MemberID, oid);
                 if (leaderamount == null)
                     continue;
                 //int rowcount = UpdateMemberDynamicFunds(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone);
@@ -1002,10 +1002,82 @@ WHERE   MemberID = @memberid";
                 result++;
             }
             return result;
-
         }
 
-        public static LeaderAmountModel GetLeaderModel(int memberid,int oid)
+        /// <summary>
+        /// 为会员的推荐人分派奖金
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="amount"></param>
+        /// <param name="intereststr"></param>
+        /// <param name="ordercode"></param>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        public static int PaymentLeaderPrizeForComplete(int memberid, string intereststr, string ordercode, int oid, int day)
+        {
+            int result = 0;
+            List<int> interests = new List<int>();
+            if (!string.IsNullOrWhiteSpace(intereststr))
+            {
+                foreach (var item in intereststr.Split(','))
+                {
+                    interests.Add(item.ParseToInt(0));
+                }
+            }
+            if (interests.Count < 1)
+                return result;
+            //按照配置的利率查找推荐图谱
+            List<ReMemberRelationModel> members = new List<ReMemberRelationModel>();
+            for (int i = 0; i < interests.Count; i++)
+            {
+                if (i == 0)
+                {
+                    ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(memberid);
+                    if (member != null)
+                        members.Add(member);
+                }
+                else
+                {
+                    if (members.Count > (i - 1))
+                    {
+                        ReMemberRelationModel member = ReMemberRelationDAL.GetReMemberRelation(members[i - 1].MemberID);
+                        if (member != null)
+                            members.Add(member);
+                    }
+                }
+            }
+            for (int i = 0; i < members.Count; i++)
+            {
+                LeaderAmountModel leaderamount = GetLeaderModel(members[i].MemberID, oid);
+                if (leaderamount == null)
+                    continue;
+                //int rowcount = UpdateMemberDynamicFunds(members[i].MemberID, (money / 100 * interests[i]), members[i].MemberTruthName, members[i].MemberPhone);                
+                WaitFreeLeaderAmountModel waitfreemodel = new WaitFreeLeaderAmountModel();
+                waitfreemodel.MemberID = members[i].MemberID;
+                waitfreemodel.MemberName = members[i].MemberTruthName;
+                waitfreemodel.MemberPhone = members[i].MemberPhone;
+                waitfreemodel.Amount = leaderamount.Amount;
+                waitfreemodel.AStatus = 1;
+                waitfreemodel.TheoryFreeTime = DateTime.Now.AddDays(day);
+                waitfreemodel.Type = 1;
+                waitfreemodel.OrderID = oid;
+                waitfreemodel.OrderCode = ordercode;
+                int rowcount = MemberCapitalDetailDAL.AddWaitFreeMoney(waitfreemodel);
+                if (rowcount < 1)
+                {
+                    return result;
+                }
+                result++;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 得到会员的领导奖信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        public static LeaderAmountModel GetLeaderModel(int memberid, int oid)
         {
             LeaderAmountModel model = new LeaderAmountModel();
             string sqltxt = @"SELECT  ID ,
@@ -1031,10 +1103,11 @@ WHERE   OrderID = @orderid
                 model.OrderID = dt.Rows[0]["OrderID"].ToString().ParseToInt(0);
                 return model;
             }
-            else {
+            else
+            {
                 return null;
             }
-           
+
         }
 
         /// <summary>
@@ -1054,14 +1127,14 @@ WHERE   OrderID = @orderid
                 {
                     where += "MemberName='" + model.MemberName + "'";
                 }
-                if (!string.IsNullOrWhiteSpace(model.MemberPhone)  && string.IsNullOrWhiteSpace(where))
+                if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {
                     where += " MemberPhone='" + model.MemberPhone.ToString() + "'";
                 }
                 else if (!string.IsNullOrWhiteSpace(where) && !string.IsNullOrWhiteSpace(model.MemberPhone))
                 {
                     where += @" AND MemberPhone='" + model.MemberPhone.ToString() + "'";
-                }               
+                }
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
@@ -1124,7 +1197,6 @@ WHERE   OrderID = @orderid
             }
             return list;
         }
-
         /// <summary>
         /// 解冻高利息会员的利息
         /// </summary>
@@ -1139,6 +1211,44 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A
 WHERE   B.CurrentInterest = 2
         AND B.HStatus = 5";
             return helper.ExecuteSql(sqltxt);
+        }
+        /// <summary>
+        /// 插入等待解冻的资金表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int AddWaitFreeMoney(WaitFreeLeaderAmountModel model)
+        {
+            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.WaitFreeLeaderAmount
+        ( MemberID ,
+          MemberName ,
+          MemberPhone ,
+          Amount ,
+          [Type] ,
+          AStatus ,
+          TheoryFreeTime ,
+          Addtime,OrderCode,OrderID
+        )
+VALUES  ( @MemberID ,
+          @MemberName ,
+          @MemberPhone ,
+          @Amount ,
+          @Type ,
+          1 ,
+          @TheoryFreeTime ,
+          GETDATE(),@OrderCode,@OrderID
+        )";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@MemberID",model.MemberID),
+                                          new SqlParameter("@MemberName",model.MemberName),
+                                          new SqlParameter("@MemberPhone",model.MemberPhone),
+                                          new SqlParameter("@Amount",model.Amount),
+                                          new SqlParameter("@Type",model.Type),
+                                          new SqlParameter("@TheoryFreeTime",model.TheoryFreeTime),
+                                           new SqlParameter("@OrderCode",model.OrderCode),
+                                            new SqlParameter("@OrderID",model.OrderID)
+                                      };
+            return helper.ExecuteSql(sqltxt, paramter);
         }
     }
 }

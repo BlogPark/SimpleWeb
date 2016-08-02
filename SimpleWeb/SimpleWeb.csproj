@@ -129,6 +129,7 @@
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\HelperOrderViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MatchedManageViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MatchorderlistViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberActiveIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\membercapitaldetailViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />

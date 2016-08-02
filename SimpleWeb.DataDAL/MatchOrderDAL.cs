@@ -64,7 +64,7 @@ namespace SimpleWeb.DataDAL
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select ID, HelperOrderID, HelperOrderCode, HelperMemberID, AcceptOrderID, AcceptOrderCode, AcceptMemberID, MatchedMoney, MatchTime  ");
             strSql.Append("  from MatchOrder ");
-            strSql.Append("  where MatchStatus=1 ");
+            strSql.Append("  where MatchStatus<>2 ");
             if (hid > 0)
             {
                 strSql.Append(" AND HelperOrderID=@hid ");
@@ -215,10 +215,39 @@ WHERE   A.AcceptOrderID = @aid
         {
             string sqltxt = @"UPDATE MatchOrder  
                                SET MatchStatus=4  
-                               WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
+                               WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=3";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};
             return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 按天计算匹配金额
+        /// </summary>
+        /// <param name="datastart"></param>
+        /// <param name="dataend"></param>
+        /// <returns></returns>
+        public static decimal GetTotalMatchMoneyByDay(string datastart, string dataend)
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(MatchedMoney),0)
+FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
+WHERE   MatchTime >= @datastart
+        AND MatchTime <= @dataend
+        AND MatchStatus <> 2";
+            SqlParameter[] paramter = { new SqlParameter("@datastart", datastart), new SqlParameter("@dataend",dataend) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToDecimal(0);
+        }
+        /// <summary>
+        /// 计算已经匹配的所有金额
+        /// </summary>
+        /// <param name="datastart"></param>
+        /// <param name="dataend"></param>
+        /// <returns></returns>
+        public static decimal GetTotalMatchMoney()
+        {
+            string sqltxt = @"SELECT  ISNULL(SUM(MatchedMoney),0)
+FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
+WHERE   MatchStatus <> 2";
+            return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }
     }
 }

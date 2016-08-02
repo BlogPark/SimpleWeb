@@ -24,6 +24,8 @@ namespace SimpleWeb.DataBLL
             model.TotalMemberCount = MemberInfoDAL.GetTotalMemberCount(1);
             model.TodayAcceptMoney = AcceptHelpOrderDAL.GetTodayAcceptMoney(datastart,dataend);
             model.TodayHelpMoney = HelpeOrderDAL.GetTodayHelpMoney(datastart,dataend);
+            model.TodayMatchedMoney =MatchOrderDAL.GetTotalMatchMoneyByDay(datastart, dataend);
+            model.TotalMatchMoney = MatchOrderDAL.GetTotalMatchMoney();
             return model;
         }
     }

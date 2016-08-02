@@ -364,5 +364,12 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Matchorderlist(MatchOrderModel seachmodel,int page=1)
+        {
+            MatchorderlistViewModel model = new MatchorderlistViewModel();
+            return View(model);
+        }
+
     }
 }
