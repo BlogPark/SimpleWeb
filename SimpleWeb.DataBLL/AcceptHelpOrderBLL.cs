@@ -199,6 +199,7 @@ namespace SimpleWeb.DataBLL
             int result = 0;
             //List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(0, aid);
             HelpeOrderModel helporder = HelpeOrderDAL.GetHelpOrderInfo(hid);//查询提供帮助的单据
+            AcceptHelpOrderModel accorder = AcceptHelpOrderDAL.GetAcceptOrderInfo(aid);//查询接受单据的信息
             List<MatchOrderModel> matchinfo = MatchOrderDAL.GetMatchOrderInfo(hid, aid);//单据的匹配信息
             string value = SysAdminConfigDAL.GetConfigsByID(4);//得到注册返还金额 
             string scvalue = SysAdminConfigDAL.GetConfigsByID(6);//得到注册返还金额 
@@ -336,6 +337,21 @@ namespace SimpleWeb.DataBLL
                     }
 
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = accorder.OrderCode;
+                    log.BehaviorSource = 1;
+                    log.BehaviorType = 5;
+                    log.HOrderCode =helporder.OrderCode;
+                    log.MemberID = accorder.MemberID;
+                    log.MemberName = accorder.MemberName;
+                    log.MemberPhone = accorder.MemberPhone;
+                    log.ProcAmount = matchinfo[0].MatchedMoney;
+                    log.Remark = "会员："+accorder.MemberPhone+"为单据"+accorder.OrderCode+"确认收款";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = 1;
             }

@@ -111,21 +111,21 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@City", SqlDbType.NVarChar)         
             };
             parameters[0].Value = model.ID;
-            parameters[1].Value = model.Area;
-            parameters[2].Value = model.Address;
-            parameters[3].Value = model.WeixinNum;
-            parameters[4].Value = model.AliPayName;
-            parameters[5].Value = model.AliPayNum;
-            parameters[6].Value = model.SecurityQuestion;
-            parameters[7].Value = model.SecurityAnswer;
-            parameters[8].Value = model.TruethName;
+            parameters[1].Value = model.Area.Trim();
+            parameters[2].Value = model.Address.Trim();
+            parameters[3].Value = model.WeixinNum.Trim();
+            parameters[4].Value = model.AliPayName.Trim();
+            parameters[5].Value = model.AliPayNum.Trim();
+            parameters[6].Value = model.SecurityQuestion.Trim();
+            parameters[7].Value = model.SecurityAnswer.Trim();
+            parameters[8].Value = model.TruethName.Trim();
             parameters[9].Value = model.Sex;
-            parameters[10].Value = model.TelPhone;
-            parameters[11].Value = model.MobileNum;
-            parameters[12].Value = model.Email;
-            parameters[13].Value = model.IdentificationID;
-            parameters[14].Value = model.Province;
-            parameters[15].Value = model.City;
+            parameters[10].Value = model.TelPhone.Trim();
+            parameters[11].Value = model.MobileNum.Trim();
+            parameters[12].Value = model.Email.Trim();
+            parameters[13].Value = model.IdentificationID.Trim();
+            parameters[14].Value = model.Province.Trim();
+            parameters[15].Value = model.City.Trim();
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -622,6 +622,21 @@ WHERE MobileNum=@MobileNum";
                     model.City = dt.Rows[0]["City"].ToString();
                 }
                 logmsg = "1";
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 1;
+                    log.BehaviorType = 1;
+                    log.HOrderCode = "";
+                    log.MemberID = model.ID;
+                    log.MemberName = model.TruethName;
+                    log.MemberPhone = model.MobileNum;
+                    log.ProcAmount = 0;
+                    log.Remark = "会员：" + model.MobileNum + "登陆";
+                    int rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 return model;
             }
             else

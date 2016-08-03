@@ -17,6 +17,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         //
         // GET: /AdminArea/Order/
         private HelpeOrderBLL bll = new HelpeOrderBLL();
+        private MemberInfoBLL memberbll = new MemberInfoBLL();
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
         private MatchOrderBLL mbll = new MatchOrderBLL();
         private MemberCapitalDetailBLL mcbll = new MemberCapitalDetailBLL();
@@ -264,12 +265,23 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 pagedlist = new PagedList<AmountChangeLogModel>(list, page, PageSize, totalrowcount);
             }
+            string smsid = memberbll.SendRegisterSms("");
             model.logs = pagedlist;
+            model.smsid = smsid;
             return View(model);
         }
         [HttpPost]
-        public ActionResult paymentinterist()
+        public ActionResult paymentinterist(string vcode, string smsid)
         {
+            if (string.IsNullOrWhiteSpace(vcode))
+            {
+                return Json("请输入手机验证码");
+            }
+            string code = memberbll.SelectVerification(smsid.ParseToInt(0));
+            if (code != vcode)
+            {
+                return Json("输入的验证码不正确");
+            }
             string result = mcbll.PaymentInterestV3();
             if (result == "1")
             {
@@ -363,7 +375,6 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json(result.Substring(1));
             }
         }
-
         [HttpGet]
         public ActionResult Matchorderlist(MatchOrderModel seachmodel,int page=1)
         {

@@ -97,6 +97,21 @@ namespace SimpleWeb.DataBLL
                 }
                 //解冻单据利率为2，状态为5的单据的利息
                 rowcount = MemberCapitalDetailDAL.UpdateStaticCaptail();
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 11;
+                    log.HOrderCode = "";
+                    log.MemberID = 0;
+                    log.MemberName = "";
+                    log.MemberPhone = "";
+                    log.ProcAmount = 0;
+                    log.Remark = "系统派发利息";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }
@@ -161,7 +176,7 @@ namespace SimpleWeb.DataBLL
             return result;
         }
         /// <summary>
-        /// 为会员分派奖金
+        /// 为会员分派动态奖金
         /// </summary>
         /// <param name="memberphone"></param>
         /// <param name="money"></param>
@@ -195,13 +210,28 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 9;
+                    log.HOrderCode = "";
+                    log.MemberID = member.ID;
+                    log.MemberName = member.TruethName;
+                    log.MemberPhone = member.MobileNum;
+                    log.ProcAmount = money;
+                    log.Remark = "会员：" + member.MobileNum + " 获得系统奖励动态资金" + money + "元";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }
             return result;
         }
         /// <summary>
-        /// 为会员分派奖金
+        /// 为会员分派静态奖金
         /// </summary>
         /// <param name="memberphone"></param>
         /// <param name="money"></param>
@@ -235,6 +265,21 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 9;
+                    log.HOrderCode = "";
+                    log.MemberID = member.ID;
+                    log.MemberName = member.TruethName;
+                    log.MemberPhone = member.MobileNum;
+                    log.ProcAmount = money;
+                    log.Remark = "会员：" + member.MobileNum + " 获得系统奖励静态资金" + money + "元";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }
@@ -275,12 +320,26 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 10;
+                    log.HOrderCode = "";
+                    log.MemberID = member.ID;
+                    log.MemberName = member.TruethName;
+                    log.MemberPhone = member.MobileNum;
+                    log.ProcAmount = money;
+                    log.Remark = "会员：" + member.MobileNum + " 被惩罚动态资金" + money + "元";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }
             return result;
         }
-
         /// <summary>
         /// 惩罚会员静态金额
         /// </summary>
@@ -316,6 +375,21 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 10;
+                    log.HOrderCode = "";
+                    log.MemberID = member.ID;
+                    log.MemberName = member.TruethName;
+                    log.MemberPhone = member.MobileNum;
+                    log.ProcAmount = money;
+                    log.Remark = "会员：" + member.MobileNum + " 被惩罚静态资金" + money + "元";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }

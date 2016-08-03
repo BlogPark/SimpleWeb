@@ -291,7 +291,7 @@ namespace SimpleWeb.DataBLL
             string inteist = SysAdminConfigDAL.GetConfigsByID(7);//得到打款后利率
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             HelpeOrderModel order = HelpeOrderDAL.GetHelpOrderInfo(hid);
-            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, 0);
+            List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, aid);
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改状态为已打款和更改利率为已打款后的利率
@@ -311,6 +311,21 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = matchorders[0].AcceptOrderCode;
+                    log.BehaviorSource = 1;
+                    log.BehaviorType = 4;
+                    log.HOrderCode = matchorders[0].HelperOrderCode;
+                    log.MemberID = order.MemberID;
+                    log.MemberName = order.MemberName;
+                    log.MemberPhone = order.MemberPhone;
+                    log.ProcAmount = matchorders[0].MatchedMoney;
+                    log.Remark = "会员："+order.MemberPhone+" 变更单据为打款";
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = 1;
             }

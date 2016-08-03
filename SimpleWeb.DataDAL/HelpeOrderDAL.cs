@@ -143,7 +143,7 @@ namespace SimpleWeb.DataDAL
                 {
                     where += "OrderCode='" + model.OrderCode + "'";
                 }
-                if (model.MemberID != null && model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
+                if (model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
                 {
                     where += " MemberID=" + model.MemberID.ToString();
                 }

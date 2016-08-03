@@ -254,7 +254,7 @@ WHERE ActivationCode IN (" + codeliststr.TrimEnd(',') + ") AND AStatus=20";
         AType 
 FROM    SimpleWebDataBase.dbo.ActiveCode
 WHERE ActivationCode =@code  AND AStatus=20";
-            SqlParameter[] paramter = { new SqlParameter("@code",code)};
+            SqlParameter[] paramter = { new SqlParameter("@code", code) };
             DataTable dt = helper.Query(sqltxt).Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -364,6 +364,28 @@ WHERE   ID = @Mid";
                     {
                         return 0;
                     }
+                    try
+                    {
+                        UserBehaviorLogModel log = new UserBehaviorLogModel();
+                        log.AOrderCode = "";
+                        log.BehaviorSource = 2;
+                        if (codelist[0].AType == 1)
+                        {
+                            log.BehaviorType = 8;
+                        }
+                        else
+                        {
+                            log.BehaviorType = 7;
+                        }
+                        log.HOrderCode = "";
+                        log.MemberID = member.ID;
+                        log.MemberName = member.TruethName;
+                        log.MemberPhone = member.MobileNum;
+                        log.ProcAmount = 0;
+                        log.Remark = "系统派发激活码/排单币";
+                        UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                    }
+                    catch { }
                     scope.Complete();
                     result = 1;
                 }
@@ -628,7 +650,25 @@ WHERE   MemberID = @soucemid
                 {
                     return 0;
                 }
-                //记录系统操作日志(暂无)
+                //记录系统操作日志
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 1;
+                    if (type == 1)
+                        log.BehaviorType = 8;
+                    else
+                        log.BehaviorType = 7;
+                    log.HOrderCode = "";
+                    log.MemberID = member.ID;
+                    log.MemberName = member.TruethName;
+                    log.MemberPhone = member.MobileNum;
+                    log.ProcAmount = 0;
+                    log.Remark = "会员：" + member.MobileNum + " 得到来自" + sourcemodel.MobileNum + "转来的激活码/排单币";
+                    UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = 1;
             }
@@ -860,7 +900,7 @@ WHERE   AType = @atype ";
         /// </summary>
         /// <param name="typenum"></param>
         /// <returns></returns>
-        public static List<string> GetTypeCountActiveCode(int type,int count)
+        public static List<string> GetTypeCountActiveCode(int type, int count)
         {
             List<string> list = new List<string>();
             string sqltxt = @"SELECT TOP (@topnum) ActivationCode
@@ -870,7 +910,7 @@ WHERE   AType = @atype AND AStatus = 20";
                                           new SqlParameter("@atype",type),
                                           new SqlParameter("@topnum",count)
                                       };
-            DataTable dt= helper.Query(sqltxt, paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
@@ -900,7 +940,7 @@ WHERE   AMType = @type
             SqlParameter[] paramter = { new SqlParameter("@type",type),
                                       new SqlParameter("@topnum",count),
                                       new SqlParameter("@memberid",memberid)};
-            DataTable dt=helper.Query(sqltxt,paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)

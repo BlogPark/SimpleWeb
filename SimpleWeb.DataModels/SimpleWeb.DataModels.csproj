@@ -66,6 +66,7 @@
     <Compile Include="SysAdminUserGroupModel.cs" />
     <Compile Include="SysAdminUserModel.cs" />
     <Compile Include="UploadFileModel.cs" />
+    <Compile Include="UserBehaviorLogModel.cs" />
     <Compile Include="WaitFreeLeaderAmountModel.cs" />
     <Compile Include="WebContactMessageModel.cs" />
     <Compile Include="WebIndexModel.cs" />

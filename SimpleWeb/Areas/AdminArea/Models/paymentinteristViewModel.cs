@@ -13,5 +13,7 @@ namespace SimpleWeb.Areas.AdminArea.Models
         /// 操作日志
         /// </summary>
         public PagedList<AmountChangeLogModel> logs { get; set; }
+
+        public string smsid { get; set; }
     }
 }

@@ -68,6 +68,21 @@ WHERE LoginName=@loginname ";
                     return result;
                 }
                 UpdateLoginMsg(user.LastLoginTime, user.LastLoginIP, result.ID);
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 2;
+                    log.BehaviorType = 1;
+                    log.HOrderCode = "";
+                    log.MemberID = result.ID;
+                    log.MemberName = result.UserName;
+                    log.MemberPhone = result.UserPhone;
+                    log.ProcAmount = 0;
+                    log.Remark = "管理员：" + result.UserName + "登陆";
+                    int rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 result.LoginResult = "1";
             }
             else

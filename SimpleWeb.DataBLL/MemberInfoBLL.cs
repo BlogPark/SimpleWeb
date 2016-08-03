@@ -370,7 +370,7 @@ namespace SimpleWeb.DataBLL
             return MemberInfoDAL.UpdateVerification(sendid, id);
         }
         /// <summary>
-        /// 修改验证码发送结果
+        /// 按照ID查询验证码内容
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
