@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MatchOrder(");
-            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus");
+            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime");
             strSql.Append(") values (");
-            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE(),1");
+            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE(),1,GETDATE()");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -199,7 +199,7 @@ WHERE   A.AcceptOrderID = @aid
         public static int UpdateStatusToPayed(int hid,int aid)
         {
             string sqltxt = @"UPDATE MatchOrder  
-                               SET MatchStatus=3  
+                               SET MatchStatus=3,LastUpdateTime=GETDATE()  
                                WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};
@@ -214,7 +214,7 @@ WHERE   A.AcceptOrderID = @aid
         public static int UpdateStatusToComplete(int hid, int aid)
         {
             string sqltxt = @"UPDATE MatchOrder  
-                               SET MatchStatus=4  
+                               SET MatchStatus=4,LastUpdateTime=GETDATE()  
                                WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=3";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};
@@ -248,6 +248,94 @@ WHERE   MatchTime >= @datastart
 FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
 WHERE   MatchStatus <> 2";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
+        }
+        /// <summary>
+        /// 按页查询匹配的单据信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<MatchOrderModel> GetMatchedOrderListByPage(MatchOrderModel model,out int totalrowcount)
+        {
+            List<MatchOrderModel> list = new List<MatchOrderModel>();
+            string columms = @" ID,HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime,CASE MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款'  WHEN 4 THEN '已完成' END AS MatchStatusName ";
+            string where = "";
+            if (model != null)
+            {
+                if (model.MatchStatus>0)
+                {
+                    where += "MatchStatus='" + model.MatchStatus + "'";
+                }
+                if (!string.IsNullOrWhiteSpace(model.HelperOrderCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += " HelperOrderCode='" + model.HelperOrderCode.ToString()+"'";
+                }
+                else if (!string.IsNullOrWhiteSpace(where) && !string.IsNullOrWhiteSpace(model.HelperOrderCode))
+                {
+                    where += @" AND HelperOrderCode='" + model.HelperOrderCode.ToString()+"'";
+                }
+                if (!string.IsNullOrWhiteSpace(model.AcceptOrderCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AcceptOrderCode = '" + model.AcceptOrderCode + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(model.AcceptOrderCode) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND AcceptOrderCode = '" + model.AcceptOrderCode + "'";
+                }                
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "ID";
+            page.pageindex = model.PageIndex;
+            page.pagesize = model.PageSize;
+            page.tablename = @"dbo.MatchOrder";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                MatchOrderModel matchordermodel = new MatchOrderModel();
+                if (item["ID"].ToString() != "")
+                {
+                    matchordermodel.ID = int.Parse(item["ID"].ToString());
+                }
+                if (item["MatchStatus"].ToString() != "")
+                {
+                    matchordermodel.MatchStatus = int.Parse(item["MatchStatus"].ToString());
+                }
+                if (item["LastUpdateTime"].ToString() != "")
+                {
+                    matchordermodel.LastUpdateTime = DateTime.Parse(item["LastUpdateTime"].ToString());
+                }
+                if (item["HelperOrderID"].ToString() != "")
+                {
+                    matchordermodel.HelperOrderID = int.Parse(item["HelperOrderID"].ToString());
+                }
+                matchordermodel.HelperOrderCode = item["HelperOrderCode"].ToString();
+                if (item["HelperMemberID"].ToString() != "")
+                {
+                    matchordermodel.HelperMemberID = int.Parse(item["HelperMemberID"].ToString());
+                }
+                if (item["AcceptOrderID"].ToString() != "")
+                {
+                    matchordermodel.AcceptOrderID = int.Parse(item["AcceptOrderID"].ToString());
+                }
+                matchordermodel.AcceptOrderCode = item["AcceptOrderCode"].ToString();
+                if (item["AcceptMemberID"].ToString() != "")
+                {
+                    matchordermodel.AcceptMemberID = int.Parse(item["AcceptMemberID"].ToString());
+                }
+                if (item["MatchedMoney"].ToString() != "")
+                {
+                    matchordermodel.MatchedMoney = decimal.Parse(item["MatchedMoney"].ToString());
+                }
+                if (item["MatchTime"].ToString() != "")
+                {
+                    matchordermodel.MatchTime = DateTime.Parse(item["MatchTime"].ToString());
+                }
+                matchordermodel.MatchStatusName = item["MatchStatusName"].ToString();
+                list.Add(matchordermodel);
+            }
+            return list;
         }
     }
 }

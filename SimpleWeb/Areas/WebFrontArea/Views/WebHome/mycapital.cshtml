@@ -40,9 +40,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 pull-left control-label">
-                                <input type="checkbox" id="chkrisk" name="chkrisk" class="form-control"></label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-10">
+                                <input type="checkbox" id="chkrisk" name="chkrisk">
                                 警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
                         </div>
@@ -114,13 +113,18 @@
         </div>
     </div>
 </div>
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
+    <div class="container">
+        <div class="col-sm-12  col-xs-12">
+            <img class="img-responsive" src="~/img/banner.jpg" />
+        </div>
+    </div>
     <div class="container">
         @Html.Action("webmenu", "IndexPub", new { area = "" })
     </div>
 </div>
 <div class="wrapper">
-    
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -132,7 +136,7 @@
                         <ul class="checkout">
                             <li>静态资金：￥<span id="staticmoney">@Model.mycapitalinfo.StaticCapital</span></li>
                             <li>冻结金额：￥@Model.mycapitalinfo.StaticFreezeMoney</li>
-                            <li>利息金额：￥@Model.mycapitalinfo.StaticInterest</li>                            
+                            <li>利息金额：￥@Model.mycapitalinfo.StaticInterest</li>
                         </ul>
                     </div>
                 </div>

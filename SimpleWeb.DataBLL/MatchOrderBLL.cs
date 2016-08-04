@@ -108,7 +108,17 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, out int totalrowcount)
         {
-            return OperateLogDAL.GetAmountChangeLogByTypeForPage(pageindex, pagesize, 4, out totalrowcount);
+            return OperateLogDAL.GetAmountChangeLogByTypeForPage(pageindex, pagesize, 4,0, out totalrowcount);
+        }
+        /// <summary>
+        /// 按页查询匹配单据信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MatchOrderModel> GetMatchedOrderListByPage(MatchOrderModel model,out int totalrowcount)
+        {
+            return MatchOrderDAL.GetMatchedOrderListByPage(model, out totalrowcount);
         }
     }
 }

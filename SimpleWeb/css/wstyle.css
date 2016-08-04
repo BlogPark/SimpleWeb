@@ -4960,10 +4960,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-toggle {
     position: relative;
     float: right;
-    margin-right: 15px;
-    padding: 9px 10px;
-    margin-top: 15.5px;
-    margin-bottom: 15.5px;
+    margin-right: 25px;
+    padding: 9px 5px;
+    margin-top: 5.5px;
+    margin-bottom: 5.5px;
     background-color: transparent;
     background-image: none;
     border: 1px solid transparent;
@@ -8312,7 +8312,9 @@ body {
     height: auto !important;
     /* for older versions of IE */
     height: 100%;
-    padding-top: 13%;
+
+    /*padding-top: 13%;*/
+
     /* navbar height + margin */
     margin-bottom: -379px;
     /* footer height + margin */

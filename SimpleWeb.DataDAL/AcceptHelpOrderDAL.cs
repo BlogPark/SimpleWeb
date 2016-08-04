@@ -506,6 +506,7 @@ WHERE   id = @id";
         D.MatchedMoney,
         A.HStatus,
         D.MatchStatus,
+        D.LastUpdateTime,
         CASE D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已完成' END AS MatchStatusName,
         CASE A.HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '对方已打款'  WHEN 5 THEN '双方已确认' END AS HStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
@@ -536,6 +537,7 @@ WHERE   D.AcceptOrderID = @orderid";
                     model.HStatus = item["HStatus"].ToString().ParseToInt(0);
                     model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
                     model.MatchStatusName = item["MatchStatusName"].ToString();
+                    model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
                     list.Add(model);
                 }
             }

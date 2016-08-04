@@ -39,9 +39,10 @@
                                 <button type="button" class="btn-animate btn-style btn-xs btn-d btn-primary" onclick="autofill()">自动填充</button>
                             </div>
                         </div>
-                        <div class="form-group">                            
+
+                        <div class="form-group">
                             <div class="col-sm-10">
-                                <input type="checkbox" id="chkrisk" name="chkrisk" class="form-control">
+                                <input type="checkbox" id="chkrisk" name="chkrisk">
                                 警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度.
                             </div>
                         </div>
@@ -113,7 +114,12 @@
         </div>
     </div>
 </div>
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
+    <div class="container">
+        <div class="col-sm-12  col-xs-12">
+            <img class="img-responsive" src="~/img/banner.jpg" />
+        </div>
+    </div>
     <div class="container">
         @Html.Action("webmenu", "IndexPub", new { area = "" })
     </div>
@@ -136,7 +142,7 @@
                 <div id="help-nav-one" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
-                            <li><a href="@Url.Action("recommendusermap", "WebHome", new { area="WebFrontArea"})">我的团队：@Model.data.members 人</a></li>
+                            <li><a href="@Url.Action("recommendusermap", "WebHome", new { area = "WebFrontArea" })">我的团队：@Model.data.members 人</a></li>
                             <li><a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活币剩余：@Model.data.activecodeCount 枚</a></li>
                             <li><a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币剩余：@Model.data.paidancodeCount 枚</a></li>
                         </ul>
@@ -286,7 +292,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h3 class="text-muted">
-                            <a href="#">我的资金变动记录</a>
+                            <a href="@Url.Action("mycapitallist", "WebHome", new { area = "WebFrontArea" })">我的资金变动记录</a>
                         </h3>
                         <hr>
                     </div>

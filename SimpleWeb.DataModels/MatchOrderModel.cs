@@ -11,6 +11,7 @@ namespace SimpleWeb.DataModels
     [DataContract]
     public class MatchOrderModel
     {
+        #region 原始字段
         /// <summary>
         /// ID
         /// </summary>		
@@ -102,7 +103,7 @@ namespace SimpleWeb.DataModels
             set { _matchtime = value; }
         }
 
-        private int _MatchStatus;
+        private int _MatchStatus = 0;
         /// <summary>
         /// 匹配状态（ 1 匹配 2 取消  3 已打款 4 已确认）
         /// </summary>
@@ -112,5 +113,34 @@ namespace SimpleWeb.DataModels
             get { return _MatchStatus; }
             set { _MatchStatus = value; }
         }
+        /// <summary>
+        /// 最后修改时间
+        /// </summary>		
+        private DateTime _lastupdatetime;
+        [DataMember]
+        public DateTime LastUpdateTime
+        {
+            get { return _lastupdatetime; }
+            set { _lastupdatetime = value; }
+        }
+        #endregion
+
+        #region 扩展字段
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        [DataMember]
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        [DataMember]
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 匹配状态名称
+        /// </summary>
+        [DataMember]
+        public string MatchStatusName { get; set; }
+        #endregion
     }
 }

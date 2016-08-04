@@ -1,24 +1,30 @@
 ﻿@model SimpleWeb.Models.webmenuViewModel
-<div class="col-sm-12">
-    <img src="~/img/banner.jpg" />
+
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
 </div>
 <div class="collapse navbar-collapse">
-    <ul class="nav navbar-nav col-sm-12" style="background-color:#efefef"> 
+    <ul class="nav navbar-nav col-sm-12" style="background-color: #efefef">
         <!--navbar-right-->
         <li class="dropdown">
-            <a href="@Url.Action("Index", "WebHome", new { area="WebFrontArea"})">首页</a>
+            <a href="@Url.Action("Index", "WebHome", new { area = "WebFrontArea" })">首页</a>
         </li>
         <li class="dropdown">
-                <a href="@Url.Action("recommendusermap", "WebHome", new { area="WebFrontArea"})">团队</a>
-            </li>
-        <li class="dropdown">
-            <a href="@Url.Action("mycapital", "WebHome", new { area="WebFrontArea"})">钱包</a>
+            <a href="@Url.Action("recommendusermap", "WebHome", new { area = "WebFrontArea" })">团队</a>
         </li>
         <li class="dropdown">
-            <a href="@Url.Action("mylineation", "WebHome", new { area="WebFrontArea"})">排单币</a>
+            <a href="@Url.Action("mycapital", "WebHome", new { area = "WebFrontArea" })">钱包</a>
         </li>
         <li class="dropdown">
-            <a href="@Url.Action("myactivation", "WebHome", new { area="WebFrontArea"})">激活码</a>
+            <a href="@Url.Action("mylineation", "WebHome", new { area = "WebFrontArea" })">排单币</a>
+        </li>
+        <li class="dropdown">
+            <a href="@Url.Action("myactivation", "WebHome", new { area = "WebFrontArea" })">激活码</a>
         </li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">单据管理</a>
@@ -31,15 +37,16 @@
             <!--active-->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心</a>
             <ul class="dropdown-menu">
-                <li><a href="@Url.Action("userprofile", "WebHome", new { area="WebFrontArea"})">我的资料</a></li>
-                <li><a href="@Url.Action("exitsystem", "WebHome", new { area="WebFrontArea"})">退出系统</a></li>
+                <li><a href="@Url.Action("userprofile", "WebHome", new { area = "WebFrontArea" })">我的资料</a></li>
+                <li><a href="@Url.Action("mycapitallist", "WebHome", new { area = "WebFrontArea" })">资金变动记录</a></li>
+                <li><a href="@Url.Action("exitsystem", "WebHome", new { area = "WebFrontArea" })">退出系统</a></li>
             </ul>
         </li>
         <li class="dropdown">
-            <a href="@Url.Action("webnews", "WebHome", new { area="WebFrontArea"})">网站公告</a>
+            <a href="@Url.Action("webnews", "WebHome", new { area = "WebFrontArea" })">网站公告</a>
         </li>
         <li class="dropdown">
-            <a href="@Url.Action("contentus", "WebHome", new { area="WebFrontArea"})">联系客服</a>
+            <a href="@Url.Action("contentus", "WebHome", new { area = "WebFrontArea" })">联系客服</a>
         </li>
         @*<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">会员管理</a>

@@ -53,7 +53,7 @@
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center"></th>
+                                            <th class="text-center"><input type="checkbox" id="hchk_all" /></th>
                                             <th class="text-center">提供帮助</th>
                                             <th class="text-center">真实姓名</th>
                                             <th class="text-center">手机号</th>
@@ -98,7 +98,7 @@
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center"></th>
+                                            <th class="text-center"><input type="checkbox" id="achk_all" /></th>
                                             <th class="text-center">接受帮助</th>
                                             <th class="text-center">真实姓名</th>
                                             <th class="text-center">手机号</th>
@@ -186,6 +186,46 @@
                 }
                 $("#aid").val(aids);
                 $(".accept").html(newamount);
+            });
+            $("#hchk_all").click(function () {
+                if ($("#hchk_all").is(":checked")) {
+                    var hids = ''; var newamount = 0;
+                    $("input[type='checkbox'][name='hproList']").each(function () {
+                        hids = hids + $(this).val() + ",";
+                    });
+                    $("tr[id^=htr]").each(function () {
+                        var amount = $(this).children('td').eq(6).html();
+                        newamount = parseFloat(amount) + parseFloat(newamount);
+                    });
+                    $("#hid").val(hids);
+                    $(".help").html(newamount);
+                    $("input[type='checkbox'][name='hproList']").prop("checked", true);
+                }
+                else {                    
+                    $("#hid").val('');
+                    $(".help").html('0');
+                    $("input[type='checkbox'][name='hproList']").prop("checked", false);
+                }
+            });
+            $("#achk_all").click(function () {
+                if ($("#achk_all").is(":checked")) {
+                    var aids = ''; var newamount = 0;
+                    $("input[type='checkbox'][name='aproList']").each(function () {
+                        aids = aids + $(this).val() + ",";
+                    });
+                    $("tr[id^=atr]").each(function () {
+                        var amount = $(this).children('td').eq(6).html();
+                        newamount = parseFloat(amount) + parseFloat(newamount);
+                    });
+                    $("#aid").val(aids);
+                    $(".accept").html(newamount);
+                    $("input[type='checkbox'][name='aproList']").prop("checked", true);
+                }
+                else {                    
+                    $("#aid").val('');
+                    $(".accept").html('0');
+                    $("input[type='checkbox'][name='aproList']").prop("checked", false);
+                }
             });
         });
         function setmatched() {

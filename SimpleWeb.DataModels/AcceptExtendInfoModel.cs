@@ -81,5 +81,10 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public string MatchStatusName { get; set; }
+        /// <summary>
+        /// 最后更新时间
+        /// </summary>
+        [DataMember]
+        public DateTime LastUpdateTime { get; set; }
     }
 }

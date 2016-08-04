@@ -13,7 +13,7 @@ namespace SimpleWeb.Areas.AdminArea.Models
     public class MatchorderlistViewModel
     {
         [DataMember]
-        public MatchOrderModel seachmodel { get; set; }
+        public MatchOrderModel matchmodel { get; set; }
         [DataMember]
         public PagedList<MatchOrderModel> list { get; set; }
         /// <summary>

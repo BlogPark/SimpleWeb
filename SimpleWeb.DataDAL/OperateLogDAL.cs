@@ -198,12 +198,19 @@ Order by ID desc";
         /// <param name="type"></param>
         /// <param name="totalcount"></param>
         /// <returns></returns>
-        public static List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, int type, out int totalrowcount)
+        public static List<AmountChangeLogModel> GetAmountChangeLogByTypeForPage(int pageindex, int pagesize, int type,int memberid, out int totalrowcount)
         {
             List<AmountChangeLogModel> list = new List<AmountChangeLogModel>();
             string columms = @"ID ,MemberID ,MemberPhone ,MemberName ,ProduceMoney ,Remark ,AddTime ,OrderID ,[Type] ,OrderCode";
-            string where = " [Type]="+type.ToString();                
-            
+            string where = "";
+            if (type > 0)
+            {
+                where += " [Type]=" + type.ToString();
+            }
+            if (memberid > 0)
+            {
+                where += " [MemberID]=" + memberid.ToString();
+            }
             PageProModel page = new PageProModel();
             page.colums = columms;
             page.orderby = "AddTime";

@@ -265,7 +265,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 pagedlist = new PagedList<AmountChangeLogModel>(list, page, PageSize, totalrowcount);
             }
-            string smsid = memberbll.SendRegisterSms("");
+            string smsid = memberbll.SendRegisterSms("18765951910");//为此手机发短信
             model.logs = pagedlist;
             model.smsid = smsid;
             return View(model);
@@ -355,7 +355,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult punishmentmember(int id, decimal money, string reason,int type)
+        public ActionResult punishmentmember(int id, decimal money, string reason, int type)
         {
             string result = "";
             if (type == 1)
@@ -375,12 +375,50 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json(result.Substring(1));
             }
         }
+        /// <summary>
+        /// 匹配的历史纪录
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult Matchorderlist(MatchOrderModel seachmodel,int page=1)
+        public ActionResult Matchorderlist(MatchOrderModel matchmodel, int page = 1)
         {
             MatchorderlistViewModel model = new MatchorderlistViewModel();
+            int totalrowcount = 0;
+            MatchOrderModel seachmodel = new MatchOrderModel();
+            seachmodel.PageSize = PageSize;
+            seachmodel.PageIndex = page;
+            seachmodel.MatchStatus = matchmodel.MatchStatus;
+            seachmodel.HelperOrderCode = matchmodel.HelperOrderCode;
+            seachmodel.AcceptOrderCode = matchmodel.AcceptOrderCode;
+            List<MatchOrderModel> list = mbll.GetMatchedOrderListByPage(seachmodel, out totalrowcount);
+            PagedList<MatchOrderModel> pageList = null;
+            if (list != null)
+            {
+                pageList = new PagedList<MatchOrderModel>(list, page, PageSize, totalrowcount);
+            }
+            model.list = pageList;
+            model.pagesize = PageSize;
+            model.currentpage = page;
+            model.totalcount = totalrowcount;
+            ViewBag.PageTitle = "匹配列表";
+            this.ViewData["matchmodel.MatchStatus"] = GetMatchStatusListItem(0);
             return View(model);
         }
-
+        /// <summary>
+        /// 得到匹配状态列表
+        /// </summary>
+        /// <param name="defval"></param>
+        /// <returns></returns>
+        private List<SelectListItem> GetMatchStatusListItem(int defval = -10)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "全部", Value = "0", Selected = defval == 0 });
+            items.Add(new SelectListItem { Text = "已匹配", Value = "1", Selected = defval == 1 });
+            items.Add(new SelectListItem { Text = "已取消", Value = "2", Selected = defval == 2 });
+            items.Add(new SelectListItem { Text = "已打款", Value = "3", Selected = defval == 3 });
+            items.Add(new SelectListItem { Text = "已完成", Value = "4", Selected = defval == 4 });
+            return items;
+        }
     }
 }

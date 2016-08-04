@@ -3,20 +3,23 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
+    <div class="container">
+        <div class="col-sm-12  col-xs-12">
+            <img class="img-responsive" src="~/img/banner.jpg" />
+        </div>
+    </div>
     <div class="container">
         @Html.Action("webmenu", "IndexPub", new { area = "" })
     </div>
 </div>
 <div class="wrapper">
-    
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="text-muted">
-                            我拥有的排单币数量
+                        <h3 class="text-muted">我拥有的排单币数量
                         </h3>
                         <hr>
                     </div>

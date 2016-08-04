@@ -151,6 +151,7 @@
     <Compile Include="Areas\WebFrontArea\Models\HelpOrderViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\HomeViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\MyActiveIndexModel.cs" />
+    <Compile Include="Areas\WebFrontArea\Models\mycapitallistViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\mycapitalViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\RecommendUserMapViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\Models\UserProfileViewModel.cs" />
@@ -1893,6 +1894,8 @@
     <Content Include="js\ztree\css\awesomeStyle\awesome.less" />
     <Content Include="js\ztree\css\awesomeStyle\fa.less" />
     <Content Include="Areas\AdminArea\Views\Order\membercapitaldetail.cshtml" />
+    <Content Include="Areas\WebFrontArea\Views\WebHome\mycapitallist.cshtml" />
+    <Content Include="Areas\AdminArea\Views\Order\matchorderlist.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

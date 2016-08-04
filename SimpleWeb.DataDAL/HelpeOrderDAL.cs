@@ -668,6 +668,7 @@ WHERE   id = @id";
         C.MemberPhone as rememberphone,
         C.MemberTruthName as remembername,
         D.MatchedMoney,
+        D.LastUpdateTime,
         D.MatchStatus,
         Case  D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已确认' END AS MatchStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
@@ -696,6 +697,7 @@ WHERE   D.HelperOrderID = @orderid";
                     model.rememberphone = item["rememberphone"].ToString();
                     model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
                     model.MatchStatusName = item["MatchStatusName"].ToString();
+                    model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
                     list.Add(model);
                 }
             }

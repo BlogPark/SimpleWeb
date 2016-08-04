@@ -19,6 +19,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         //
         // GET: /WebFrontArea/WebHome/
         private MemberInfoBLL bll = new MemberInfoBLL();
+        private OperateLogBLL logbll = new OperateLogBLL();
         private ActiveCodeBLL activecodebll = new ActiveCodeBLL();
         private HelpeOrderBLL hobll = new HelpeOrderBLL();
         private AcceptHelpOrderBLL aobll = new AcceptHelpOrderBLL();
@@ -548,6 +549,30 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         {
             MemberInfoModel model = bll.GetModel(id);
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 会员的资金变动列表
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult mycapitallist(int page=1)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            mycapitallistViewModel model = new mycapitallistViewModel();
+            int totalrowcount = 0;
+            List<AmountChangeLogModel> list = logbll.GetAmountChangeLogByPage(page, pagesize, 0, logmember.ID, out totalrowcount);
+            PagedList<AmountChangeLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<AmountChangeLogModel>(list, page, pagesize, totalrowcount);
+            }
+            model.list = pagelist;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
         }
         
     }
