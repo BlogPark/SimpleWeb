@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SimpleWeb.Areas.AdminArea.Models;
+using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
 using SimpleWeb.Filters;
+using SimpleWeb.Models;
 using Webdiyer.WebControls.Mvc;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
@@ -21,6 +23,8 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         private AcceptHelpOrderBLL abll = new AcceptHelpOrderBLL();
         private MatchOrderBLL mbll = new MatchOrderBLL();
         private MemberCapitalDetailBLL mcbll = new MemberCapitalDetailBLL();
+        private SysMenuAndUserBLL userbll = new SysMenuAndUserBLL();
+        private OperateLogBLL logbll = new OperateLogBLL();
         private readonly int PageSize = 20;
         public ActionResult Index()
         {
@@ -265,23 +269,12 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             {
                 pagedlist = new PagedList<AmountChangeLogModel>(list, page, PageSize, totalrowcount);
             }
-            string smsid = memberbll.SendRegisterSms("18765951910");//为此手机发短信
             model.logs = pagedlist;
-            model.smsid = smsid;
             return View(model);
         }
         [HttpPost]
-        public ActionResult paymentinterist(string vcode, string smsid)
+        public ActionResult paymentinterist(string vcode)
         {
-            if (string.IsNullOrWhiteSpace(vcode))
-            {
-                return Json("请输入手机验证码");
-            }
-            string code = memberbll.SelectVerification(smsid.ParseToInt(0));
-            if (code != vcode)
-            {
-                return Json("输入的验证码不正确");
-            }
             string result = mcbll.PaymentInterestV3();
             if (result == "1")
             {
@@ -410,7 +403,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// </summary>
         /// <param name="defval"></param>
         /// <returns></returns>
-        private List<SelectListItem> GetMatchStatusListItem(int defval = -10)
+        private List<SelectListItem> GetMatchStatusListItem(int defval = 0)
         {
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "全部", Value = "0", Selected = defval == 0 });
@@ -418,6 +411,82 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             items.Add(new SelectListItem { Text = "已取消", Value = "2", Selected = defval == 2 });
             items.Add(new SelectListItem { Text = "已打款", Value = "3", Selected = defval == 3 });
             items.Add(new SelectListItem { Text = "已完成", Value = "4", Selected = defval == 4 });
+            return items;
+        }
+        /// <summary>
+        /// 检查二次密码
+        /// </summary>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult checkconfirmpwd(string pwd)
+        {
+            SessionLoginModel sysuser = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
+            if (sysuser == null)
+            {
+                return RedirectToAction("Login", "Default", new { area = "AdminArea" });
+            }
+            string cpwd = userbll.GetAdminConfirmPwd(sysuser.User.ID);
+            if (cpwd == pwd)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("验证二次密码失败");
+            }
+
+        }
+        /// <summary>
+        /// 查看系统操作日志
+        /// </summary>
+        /// <param name="seachmodel"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult behaviorloglist(UserBehaviorLogModel seachmodel, int page = 1)
+        {
+            behaviorloglistViewModel model = new behaviorloglistViewModel();
+            int totalrowcount = 0;
+            UserBehaviorLogModel seach = new UserBehaviorLogModel();
+            seach.PageIndex = page;
+            seach.PageSize = PageSize;
+            seach.BehaviorType = seachmodel.BehaviorType;
+            seach.MemberName = seachmodel.MemberName;
+            seach.MemberPhone = seachmodel.MemberPhone;
+            List<UserBehaviorLogModel> list = logbll.GetUserBehaviorLogByPage(seach, out totalrowcount);
+            PagedList<UserBehaviorLogModel> pagelist = null;
+            if (list.Count > 0)
+            {
+                pagelist = new PagedList<UserBehaviorLogModel>(list, page, PageSize, totalrowcount);
+            }
+            model.currentpage = page;
+            model.list = pagelist;
+            model.pagesize = PageSize;
+            model.totalcount = totalrowcount;
+            ViewBag.PageTitle = "操作日志";
+            this.ViewData["seachmodel.BehaviorType"] = GetBehaviorTypeListItem(1);
+            return View(model);
+        }
+        /// <summary>
+        /// 得到Log类型
+        /// </summary>
+        /// <param name="defval"></param>
+        /// <returns></returns>
+        private List<SelectListItem> GetBehaviorTypeListItem(int defval = 0)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "登陆", Value = "1", Selected = defval == 1 });
+            items.Add(new SelectListItem { Text = "提供帮助", Value = "2", Selected = defval == 2 });
+            items.Add(new SelectListItem { Text = "接受帮助", Value = "3", Selected = defval == 3 });
+            items.Add(new SelectListItem { Text = "变更打款", Value = "4", Selected = defval == 4 });
+            items.Add(new SelectListItem { Text = "确认单据", Value = "5", Selected = defval == 5 });
+            items.Add(new SelectListItem { Text = "撤销单据", Value = "6", Selected = defval == 6 });
+            items.Add(new SelectListItem { Text = "发放排单币", Value = "7", Selected = defval == 7 });
+            items.Add(new SelectListItem { Text = "发放激活币", Value = "8", Selected = defval == 8 });
+            items.Add(new SelectListItem { Text = "奖励会员", Value = "9", Selected = defval == 9 });
+            items.Add(new SelectListItem { Text = "惩罚会员", Value = "10", Selected = defval == 10 });
+            items.Add(new SelectListItem { Text = "手动派息", Value = "11", Selected = defval == 11 });
             return items;
         }
     }

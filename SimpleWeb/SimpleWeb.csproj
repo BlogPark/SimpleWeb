@@ -125,6 +125,7 @@
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\behaviorloglistViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\HelperOrderViewModel.cs" />
@@ -1227,6 +1228,12 @@
     <Content Include="js\index.js" />
     <Content Include="js\jquery-1.11.0.min.js" />
     <Content Include="js\jQuery-Cookie\jquery.cookie.min.js" />
+    <Content Include="js\jquery-downCount\jquery.downCount.js" />
+    <Content Include="js\jquery-iziModal\css\demo.css" />
+    <Content Include="js\jquery-iziModal\css\iziModal.css" />
+    <Content Include="js\jquery-iziModal\css\iziModal.min.css" />
+    <Content Include="js\jquery-iziModal\js\iziModal.js" />
+    <Content Include="js\jquery-iziModal\js\iziModal.min.js" />
     <Content Include="js\jquery-qrcode\jquery.qrcode.min.js" />
     <Content Include="js\jquery-ui-1.10.3.custom\css\custom-theme\images\animated-overlay.gif" />
     <Content Include="js\jquery-ui-1.10.3.custom\css\custom-theme\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
@@ -1896,6 +1903,7 @@
     <Content Include="Areas\AdminArea\Views\Order\membercapitaldetail.cshtml" />
     <Content Include="Areas\WebFrontArea\Views\WebHome\mycapitallist.cshtml" />
     <Content Include="Areas\AdminArea\Views\Order\matchorderlist.cshtml" />
+    <Content Include="Areas\AdminArea\Views\Order\behaviorloglist.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

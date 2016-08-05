@@ -198,6 +198,26 @@ namespace SimpleWeb.DataBLL
         {
             return dal.UpdateAdminPwd(newpwd,userid);
         }
+        /// <summary>
+        /// 更改系统管理员二次确认密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int UpdateAdminConfirmPwd(string newpwd, int userid)
+        {
+            return dal.UpdateAdminConfirmPwd(newpwd, userid);
+        }
+        /// <summary>
+        /// 更改系统管理员二次确认密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public string GetAdminConfirmPwd(int userid)
+        {
+            return dal.GetAdminConfirmPwd(userid);
+        }
         #endregion
 
     }

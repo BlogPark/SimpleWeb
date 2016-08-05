@@ -73,15 +73,15 @@ namespace SimpleWeb.DataDAL
             {
                 if (model.BehaviorType>0)
                 {
-                    where += "BehaviorType='" + model.BehaviorType + "'";
+                    where += @"BehaviorType='" + model.BehaviorType + "'";
                 }
-                if (model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
+                if (!string.IsNullOrWhiteSpace(model.MemberName) && string.IsNullOrWhiteSpace(where))
                 {
-                    where += " MemberID=" + model.MemberID.ToString();
+                    where += @" MemberName=" + model.MemberID.ToString();
                 }
-                else if (!string.IsNullOrWhiteSpace(where) && model.MemberID > 0)
+                else if (!string.IsNullOrWhiteSpace(where) && !string.IsNullOrWhiteSpace(model.MemberName))
                 {
-                    where += @" AND MemberID=" + model.MemberID.ToString();
+                    where += @" AND MemberName=" + model.MemberID.ToString();
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
                 {

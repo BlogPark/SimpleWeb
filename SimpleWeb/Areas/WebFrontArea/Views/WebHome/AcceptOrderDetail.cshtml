@@ -84,6 +84,26 @@
                                         @if (item.MatchStatus == 3)
                                         { 
                                             <li>
+                                                <ul class="countdown" data-date='@item.LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:dd")'>
+                                                    <li>
+                                                        <span class="days">00</span>
+                                                    </li>
+                                                    <li class="seperator">天</li>
+                                                    <li>
+                                                        <span class="hours">00</span>
+                                                    </li>
+                                                    <li class="seperator">小时</li>
+                                                    <li>
+                                                        <span class="minutes">00</span>
+                                                    </li>
+                                                    <li class="seperator">分</li>
+                                                    <li>
+                                                        <span class="seconds">00</span>
+                                                    </li>
+                                                    <li class="seperator">秒</li>
+                                                </ul>
+                                            </li>              
+                                            <li>
                                                 <button class="btn btn-lg btn-blue" onclick="updatesingleorder(@Model.acceptorder.ID,@item.helporderid)">确认已收款</button></li>
                                         }
                                     </ul>

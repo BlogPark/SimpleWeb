@@ -6,6 +6,15 @@ $(function () {
         text: $("#linkurl").html()
 
     });
+    $('.countdown').each(function () {
+        var endtime = $(this).data('date');
+        $(this).downCount({
+            date: endtime,
+            offset: +10
+        }, function () {
+            alert('µ¹¼ÆÊ±½áÊø!');
+        });
+    });
 });
 /* ===== Navbar Search ===== */
 
@@ -428,11 +437,11 @@ function activegive() {
         }
     });
 }
-function updatehelporder(id,aid) {
+function updatehelporder(id, aid) {
     $.ajax({
         url: '/WebFrontArea/WebHome/paymoneysplit',
         dataType: 'Json',
-        data: { 'id': id,'aid':aid },
+        data: { 'id': id, 'aid': aid },
         type: 'POST',
         success: function (data) {
             if (data == '1') {

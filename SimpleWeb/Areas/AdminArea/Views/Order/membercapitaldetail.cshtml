@@ -93,6 +93,24 @@
     </div>
 </div>
 <!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div id="modal-custom" class="iziModal">
+     <header>
+            <a href="" id="signin" class="active">输入确认密码</a>
+    </header>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">确认密码：</label>
+            <div class="col-sm-7">
+                <input type="password" id="confirmpwd" placeholder="确认密码">
+            </div>
+        </div>
+        <div class="form-group">            
+            <div class="col-sm-12 center">
+                <button type="button" class="btn btn-default submit">确认</button>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="container">
     <div class="row">
         <div id="content" class="col-lg-12">
@@ -197,8 +215,13 @@
         </div>
     </div>
 </div>
+@section mycss{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/jquery-iziModal/css/demo.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/jquery-iziModal/css/iziModal.css")">
+}
 @section scriptfiles{
     <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+    <script src="@Url.Content("/js/jquery-iziModal/js/iziModal.min.js")" type="text/javascript"></script>
 }
 @section myscript{
     <script type="text/javascript">
@@ -213,6 +236,36 @@
             //        $("input[type='checkbox'][name='proList']").prop("checked", false);
             //    }
             //});
+            $("#modal-custom").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: true,
+                closeOnEscape: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)'
+            });
+            $("#modal-custom").on('click', '.submit', function (event) {
+                event.preventDefault();
+                var pwd = $("#confirmpwd").val();
+                if (pwd == '') {
+                    bootbox.alert("请输入密码！");
+                    return false;
+                }
+                $.ajax({
+                    url: "@Url.Action("checkconfirmpwd", "Order", new { area = "AdminArea" })",
+                    datatype: "json",
+                    async: false,
+                    type: "POST",
+                    data: { 'pwd': pwd },
+                    success: function (data) {
+                        if (data == '1') {
+                            $('#modal-custom').iziModal('close');
+                        }
+                        else {
+                            bootbox.alert(data);
+                        }
+                    }
+                });
+            });
         });
         function aclick(id) {
             $("#memid").val(id);

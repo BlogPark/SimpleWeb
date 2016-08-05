@@ -279,7 +279,7 @@ WHERE ActivationCode =@code  AND AStatus=20";
         {
             string sqltxt = @"SELECT  ID ,
         TruethName ,
-        MobileNum
+        MobileNum,MStatus
 FROM    dbo.MemberInfo
 WHERE   MobileNum = @MobileNum";
             SqlParameter[] paramter = { 
@@ -292,6 +292,7 @@ WHERE   MobileNum = @MobileNum";
                 model.ID = int.Parse(dt.Rows[0]["ID"].ToString());
                 model.TruethName = dt.Rows[0]["TruethName"].ToString();
                 model.MobileNum = dt.Rows[0]["MobileNum"].ToString();
+                model.MStatus = dt.Rows[0]["MStatus"].ToString().ParseToInt(1);
                 return model;
             }
             else
@@ -337,6 +338,10 @@ WHERE   ID = @Mid";
             List<ActiveCodeModel> codelist = GetCodeMassage(codes);
             //得到被分配会员信息
             MemberInfoModel member = GetMember(memberphone);
+            if (member.MStatus != 2)
+            {
+                return 0;
+            }
             //开启事务，分配激活码
             try
             {

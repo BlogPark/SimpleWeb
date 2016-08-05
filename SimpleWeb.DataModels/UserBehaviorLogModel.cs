@@ -65,7 +65,7 @@ namespace SimpleWeb.DataModels
             get { return _behaviorsource; }
             set { _behaviorsource = value; }
         }
-        private int _behaviortype;
+        private int _behaviortype = 1;
         /// <summary>
         /// 行为类型（1 登陆 2 提供帮助 3 接受帮助 4 变更打款  5 确认单据 6 撤销单据 7 发放排单币 8 发放激活币 9 奖励会员 10 惩罚会员 11 系统派息）
         /// </summary>		
@@ -124,7 +124,7 @@ namespace SimpleWeb.DataModels
         {
             get { return _addtime; }
             set { _addtime = value; }
-        } 
+        }
         #endregion
 
         #region 扩展字段

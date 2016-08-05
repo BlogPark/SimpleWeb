@@ -938,6 +938,30 @@ WHERE   ID = @id";
             SqlParameter[] paramter = { new SqlParameter("@userpwd",newpwd),new SqlParameter("@id",userid)};
             return helper.ExecuteSql(sqltxt,paramter);
         }
+        /// <summary>
+        /// 更改系统管理员二次确认密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public int UpdateAdminConfirmPwd(string newpwd,int userid)
+        {
+            string sqltxt = @"UPDATE  dbo.SysAdminUser SET ConfirmPwd = @userpwd WHERE ID = @id";
+            SqlParameter[] paramter = { new SqlParameter("@userpwd",newpwd),new SqlParameter("@id",userid)};
+            return helper.ExecuteSql(sqltxt,paramter);
+        }
+        /// <summary>
+        /// 更改系统管理员二次确认密码
+        /// </summary>
+        /// <param name="newpwd"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public string GetAdminConfirmPwd(int userid)
+        {
+            string sqltxt = @"Select ISNULL(ConfirmPwd,'') as ConfirmPwd  from dbo.SysAdminUser WHERE ID = @id";
+            SqlParameter[] paramter = {new SqlParameter("@id",userid)};
+            return helper.GetSingle(sqltxt,paramter).ToString();
+        }
         #endregion
     }
 }
