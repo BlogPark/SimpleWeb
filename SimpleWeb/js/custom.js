@@ -86,6 +86,12 @@ $("#redrparea").change(function () {
     var areaid = $("#redrparea").val();
     $("#member_Area").val(areaname);
 });
+var raval = $("input:radio[name=reagerRadios1]:checked").val();
+$("#member_Sex").val(raval);
+$("input:radio[name=reagerRadios1]").change(function () {
+    var raval = $("input:radio[name=reagerRadios1]:checked").val();
+    $("#member_Sex").val(raval);
+});
 function webchang(id, control) {
     $.ajax({
         url: '/public/obtainreagin',
@@ -340,6 +346,7 @@ function accepthelp() {
     var accmin = parseFloat($("#accmin").html());//最少接受金额
     var accmax = parseFloat($("#accmax").html());//最大接受金额
     var accamount = parseFloat($("#acceptamont").val());//接受金额
+    var enableamount = parseFloat($("#acceptamontenable").val());//可用金额
     var paytype = $("#apaytype").val();
     var soucetype = $("#soucetype").val();
     if (soucetype == '') {
@@ -356,6 +363,10 @@ function accepthelp() {
     }
     if (accamount > helpmax) {
         alert("接受的帮助金额大于平台规定值");
+        return false;
+    }
+    if (accamount > enableamount) {
+        alert("接受的帮助金额超出了可用金额");
         return false;
     }
     var result = accamount % 100;

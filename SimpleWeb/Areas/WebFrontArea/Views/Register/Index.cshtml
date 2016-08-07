@@ -3,8 +3,10 @@
     Layout = "~/Views/_WebLayout.cshtml";
 }
 <div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
-    <div class="col-sm-12  col-xs-12">
-       <img  class="img-responsive" src="~/img/banner.jpg" />
+    <div class="container">
+        <div class="col-sm-12  col-xs-12">
+            <img class="img-responsive" src="~/img/banner.jpg" />
+        </div>
     </div>
     <div class="container">
         @Html.Action("webmenu", "IndexPub", new { area = "" })
@@ -51,9 +53,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="radio" class="uniform" name="optionsRadios1" value="1" checked>
+                                <input type="radio" class="uniform" name="reagerRadios1" value="1" checked>
                                 男
-                                <input type="radio" class="uniform" name="optionsRadios1" value="2">
+                                <input type="radio" class="uniform" name="reagerRadios1" value="2">
                                 女
                                 @Html.HiddenFor(m => m.member.Sex)
                             </div>

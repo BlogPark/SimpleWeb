@@ -350,7 +350,8 @@ namespace SimpleWeb.DataBLL
                 }
                 //返还会员追加的资金
                 HelpeOrderModel model = HelpeOrderDAL.GetHelpOrderInfo(hid);
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount), model.MemberName, model.MemberPhone);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoneyAndinster(model.MemberID, (0 - model.Amount),1, model.MemberName, model.MemberPhone);
+                //rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount), model.MemberName, model.MemberPhone);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -363,7 +364,7 @@ namespace SimpleWeb.DataBLL
                 logmodel.OrderCode = model.OrderCode;
                 logmodel.OrderID = hid;
                 logmodel.ProduceMoney = (0 - model.Amount);
-                logmodel.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减静态资金 " + model.Amount.ToString() + "元";
+                logmodel.Remark = "会员:" + model.MemberPhone + " 取消提供帮助，扣减静态冻结资金 " + model.Amount.ToString() + "元";
                 logmodel.Type = 1;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)

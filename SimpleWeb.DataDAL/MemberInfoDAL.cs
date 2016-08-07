@@ -111,21 +111,21 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@City", SqlDbType.NVarChar)         
             };
             parameters[0].Value = model.ID;
-            parameters[1].Value = model.Area.Trim();
-            parameters[2].Value = model.Address.Trim();
-            parameters[3].Value = model.WeixinNum.Trim();
-            parameters[4].Value = model.AliPayName.Trim();
-            parameters[5].Value = model.AliPayNum.Trim();
-            parameters[6].Value = model.SecurityQuestion.Trim();
-            parameters[7].Value = model.SecurityAnswer.Trim();
-            parameters[8].Value = model.TruethName.Trim();
+            parameters[1].Value = string.IsNullOrWhiteSpace(model.Area) ? "" : model.Area.Trim();
+            parameters[2].Value = string.IsNullOrWhiteSpace(model.Address) ? "" : model.Address.Trim();
+            parameters[3].Value = string.IsNullOrWhiteSpace(model.WeixinNum) ? "" : model.WeixinNum.Trim();
+            parameters[4].Value = string.IsNullOrWhiteSpace(model.AliPayName) ? "" : model.AliPayName.Trim();
+            parameters[5].Value = string.IsNullOrWhiteSpace(model.AliPayNum) ? "" : model.AliPayNum.Trim();
+            parameters[6].Value = string.IsNullOrWhiteSpace(model.SecurityQuestion) ? "" : model.SecurityQuestion.Trim();
+            parameters[7].Value = string.IsNullOrWhiteSpace(model.SecurityAnswer) ? "" : model.SecurityAnswer.Trim();
+            parameters[8].Value = string.IsNullOrWhiteSpace(model.TruethName) ? "" : model.TruethName.Trim();
             parameters[9].Value = model.Sex;
-            parameters[10].Value = model.TelPhone.Trim();
-            parameters[11].Value = model.MobileNum.Trim();
-            parameters[12].Value = model.Email.Trim();
-            parameters[13].Value = model.IdentificationID.Trim();
-            parameters[14].Value = model.Province.Trim();
-            parameters[15].Value = model.City.Trim();
+            parameters[10].Value = string.IsNullOrWhiteSpace(model.TelPhone) ? "" : model.TelPhone.Trim();
+            parameters[11].Value = string.IsNullOrWhiteSpace(model.MobileNum) ? "" : model.MobileNum.Trim();
+            parameters[12].Value = string.IsNullOrWhiteSpace(model.Email) ? "" : model.Email.Trim();
+            parameters[13].Value = string.IsNullOrWhiteSpace(model.IdentificationID) ? "" : model.IdentificationID.Trim();
+            parameters[14].Value = string.IsNullOrWhiteSpace(model.Province) ? "" : model.Province.Trim();
+            parameters[15].Value = string.IsNullOrWhiteSpace(model.City) ? "" : model.City.Trim();
             int rows = helper.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -446,7 +446,7 @@ WHERE   MobileNum = @MobileNum";
             }
             else
             {
-                return null; 
+                return null;
             }
         }
         /// <summary>
@@ -732,19 +732,19 @@ WHERE   AliPayNum = @alipaynum
         ( VerificationCode )
 VALUES  ( @VerificationCode )
 SELECT  @@IDENTITY;";
-            SqlParameter[] paramter = { new SqlParameter("@VerificationCode",code) };
-            return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
+            SqlParameter[] paramter = { new SqlParameter("@VerificationCode", code) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
         /// <summary>
         /// 修改验证码发送结果
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static int UpdateVerification(string sendid,int id)
+        public static int UpdateVerification(string sendid, int id)
         {
             string sqltxt = @"Update SimpleWebDataBase.dbo.Verification
         SET SendID=@SendID where ID=@id";
-            SqlParameter[] paramter = { new SqlParameter("@SendID", sendid),new SqlParameter("@id",id) };
+            SqlParameter[] paramter = { new SqlParameter("@SendID", sendid), new SqlParameter("@id", id) };
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>

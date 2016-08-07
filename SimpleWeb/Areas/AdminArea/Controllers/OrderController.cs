@@ -273,7 +273,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult paymentinterist(string vcode)
+        public ActionResult paymentinterist()
         {
             string result = mcbll.PaymentInterestV3();
             if (result == "1")
