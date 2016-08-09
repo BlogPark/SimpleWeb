@@ -155,6 +155,21 @@ namespace SimpleWeb.DataBLL
                         return "0操作失败";
                     }
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = "";
+                    log.BehaviorSource = 1;
+                    log.BehaviorType = 2;
+                    log.HOrderCode = model.OrderCode;
+                    log.MemberID = model.MemberID;
+                    log.MemberName = model.MemberName;
+                    log.MemberPhone = model.MemberPhone;
+                    log.ProcAmount =model.Amount;
+                    log.Remark = "会员：" + model.MemberPhone + "提供帮助单号为：" + model.OrderCode;
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }

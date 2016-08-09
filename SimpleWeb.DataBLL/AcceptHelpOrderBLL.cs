@@ -72,6 +72,21 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
+                try
+                {
+                    UserBehaviorLogModel log = new UserBehaviorLogModel();
+                    log.AOrderCode = model.OrderCode;
+                    log.BehaviorSource = 1;
+                    log.BehaviorType = 3;
+                    log.HOrderCode = "";
+                    log.MemberID = model.MemberID;
+                    log.MemberName = model.MemberName;
+                    log.MemberPhone = model.MemberPhone;
+                    log.ProcAmount = model.Amount;
+                    log.Remark = "会员：" + model.MemberPhone + "接受帮助单号为：" + model.OrderCode;
+                    rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
+                }
+                catch { }
                 scope.Complete();
                 result = "1";
             }
@@ -244,7 +259,7 @@ namespace SimpleWeb.DataBLL
                     {
                         decimal inster = SysAdminConfigDAL.GetConfigsByID(16).ParseToInt(10);//得到首次推荐的利率                       
                         decimal money = helporder.Amount * inster / 100;
-                        ReMemberRelationModel model = ReMemberRelationDAL.GetReMemberRelation(helporder.ID);
+                        ReMemberRelationModel model = ReMemberRelationDAL.GetReMemberRelation(helporder.MemberID);
                         if (day == 0)//若为0，则当时返还
                         {
                             //返还推荐奖

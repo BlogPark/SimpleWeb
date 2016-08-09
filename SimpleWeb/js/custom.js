@@ -369,10 +369,19 @@ function accepthelp() {
         alert("接受的帮助金额超出了可用金额");
         return false;
     }
-    var result = accamount % 100;
-    if (result != 0) {
-        alert("金额应为100的整数倍");
-        return false;
+    if (soucetype == '1') {
+        var result = accamount % 100;
+        if (result != 0) {
+            alert("金额应为100的整数倍");
+            return false;
+        }
+    }
+    else {
+        var result = accamount % 500;
+        if (result != 0) {
+            alert("金额应为500的整数倍");
+            return false;
+        }
     }
     var check = $("#chkrisk1").is(':checked');
     if (!check) {

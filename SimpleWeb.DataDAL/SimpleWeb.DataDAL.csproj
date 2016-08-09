@@ -52,6 +52,7 @@
     <Compile Include="MemberExtendInfoDAL.cs" />
     <Compile Include="MemberInfoDAL.cs" />
     <Compile Include="OperateLogDAL.cs" />
+    <Compile Include="OrderReportingDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicHelperDAL.cs" />
     <Compile Include="ReMemberRelationDAL.cs" />
