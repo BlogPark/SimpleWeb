@@ -121,7 +121,7 @@ namespace SimpleWeb.DataDAL
         /// <returns></returns>
         public List<OrderReportingModel> GetAllOrderReportingForPage(OrderReportingModel model, out int totalrowcount)
         {
-            List<HelpeOrderModel> list = new List<HelpeOrderModel>();
+            List<OrderReportingModel> list = new List<OrderReportingModel>();
             string columms = @"ID ,OrderID,OrderCode,OrderType,MemberID,MemberName,MemberPhone,Title,ReportingText,ReasonType,RStatus,CASE RStatus WHEN 1 THEN '新举报' WHEN  2 THEN '处理中' WHEN  3 THEN '已处理' WHEN  4 THEN '已取消' AS RStatusName,HandleResult,AddTime,LastUpdateTime";
             string where = "";
             if (model != null)
@@ -165,33 +165,33 @@ namespace SimpleWeb.DataDAL
             DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
             foreach (DataRow item in dt.Rows)
             {
-                HelpeOrderModel OrderReportingmodel = new HelpeOrderModel();
-                if (ds.Tables[0].Rows[0]["ID"].ToString() != "")
+                OrderReportingModel OrderReportingmodel = new OrderReportingModel();
+                if (item["ID"].ToString() != "")
                 {
-                    OrderReportingmodel.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
+                    OrderReportingmodel.ID = int.Parse(item["ID"].ToString());
                 }
-                OrderReportingmodel.HandleResult = ds.Tables[0].Rows[0]["HandleResult"].ToString();
-                if (ds.Tables[0].Rows[0]["AddTime"].ToString() != "")
+                OrderReportingmodel.HandleResult = item["HandleResult"].ToString();
+                if (item["AddTime"].ToString() != "")
                 {
-                    OrderReportingmodel.AddTime = DateTime.Parse(ds.Tables[0].Rows[0]["AddTime"].ToString());
+                    OrderReportingmodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
                 }
-                if (ds.Tables[0].Rows[0]["LastUpdateTime"].ToString() != "")
+                if (item["LastUpdateTime"].ToString() != "")
                 {
-                    OrderReportingmodel.LastUpdateTime = DateTime.Parse(ds.Tables[0].Rows[0]["LastUpdateTime"].ToString());
+                    OrderReportingmodel.LastUpdateTime = DateTime.Parse(item["LastUpdateTime"].ToString());
                 }
-                OrderReportingmodel.OrderCode = ds.Tables[0].Rows[0]["OrderCode"].ToString();
-                if (ds.Tables[0].Rows[0]["MemberID"].ToString() != "")
+                OrderReportingmodel.OrderCode = item["OrderCode"].ToString();
+                if (item["MemberID"].ToString() != "")
                 {
-                    OrderReportingmodel.MemberID = int.Parse(ds.Tables[0].Rows[0]["MemberID"].ToString());
+                    OrderReportingmodel.MemberID = int.Parse(item["MemberID"].ToString());
                 }
-                OrderReportingmodel.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
-                OrderReportingmodel.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
-                OrderReportingmodel.Title = ds.Tables[0].Rows[0]["Title"].ToString();
-                OrderReportingmodel.ReportingText = ds.Tables[0].Rows[0]["ReportingText"].ToString();
-                OrderReportingmodel.ReasonType = ds.Tables[0].Rows[0]["ReasonType"].ToString();
-                if (ds.Tables[0].Rows[0]["RStatus"].ToString() != "")
+                OrderReportingmodel.MemberName = item["MemberName"].ToString();
+                OrderReportingmodel.MemberPhone = item["MemberPhone"].ToString();
+                OrderReportingmodel.Title = item["Title"].ToString();
+                OrderReportingmodel.ReportingText = item["ReportingText"].ToString();
+                OrderReportingmodel.ReasonType = item["ReasonType"].ToString();
+                if (item["RStatus"].ToString() != "")
                 {
-                    OrderReportingmodel.RStatus = int.Parse(ds.Tables[0].Rows[0]["RStatus"].ToString());
+                    OrderReportingmodel.RStatus = int.Parse(item["RStatus"].ToString());
                 }
                 list.Add(OrderReportingmodel);
             }
