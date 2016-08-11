@@ -140,13 +140,26 @@ namespace SimpleWeb.DataBLL
                     {
                         return "0操作失败";
                     }
+                    LeaderAmountModel leadermodel = new LeaderAmountModel();//插入领导奖记录
+                    leadermodel.OrderID = orderid;
+                    leadermodel.OrderCode = model.OrderCode;
+                    leadermodel.MemberPhone = model.MemberPhone;
+                    leadermodel.MemberName = model.MemberName;
+                    leadermodel.MemberID = model.MemberID;
+                    leadermodel.Ltype = 1;
+                    leadermodel.Amount = (model.Amount * reinteist / 100);
+                    rowcount = MemberCapitalDetailDAL.AddLeaderAmount(leadermodel);
+                    if (rowcount < 1)
+                    {
+                        return "0操作失败";
+                    }
                     AmountChangeLogModel logmodel1 = new AmountChangeLogModel();
                     logmodel1.MemberID = remember.MemberID;
                     logmodel1.MemberName = remember.MemberTruthName;
                     logmodel1.MemberPhone = remember.MemberPhone;
                     logmodel1.OrderCode = model.OrderCode;
                     logmodel1.OrderID = orderid;
-                    logmodel1.ProduceMoney = model.Amount;
+                    logmodel1.ProduceMoney = (model.Amount * reinteist / 100);
                     logmodel1.Remark = "会员:" + remember.MemberPhone + " 得到来自 " + model.MemberPhone + "的首单推荐奖" + (model.Amount * reinteist / 100).ToString() + "元";
                     logmodel1.Type = 3;
                     rowcount = OperateLogDAL.AddAmountChangeLog(logmodel1);
@@ -165,7 +178,7 @@ namespace SimpleWeb.DataBLL
                     log.MemberID = model.MemberID;
                     log.MemberName = model.MemberName;
                     log.MemberPhone = model.MemberPhone;
-                    log.ProcAmount =model.Amount;
+                    log.ProcAmount = model.Amount;
                     log.Remark = "会员：" + model.MemberPhone + "提供帮助单号为：" + model.OrderCode;
                     rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
                 }
@@ -309,13 +322,14 @@ namespace SimpleWeb.DataBLL
             List<MatchOrderModel> matchorders = MatchOrderDAL.GetMatchOrderInfo(hid, aid);
             using (TransactionScope scope = new TransactionScope())
             {
-                //更改状态为已打款和更改利率为已打款后的利率
-                int rowcount = HelpeOrderDAL.UpdateStatusandinster(hid, 4, decimal.Parse(inteist));
+                //更改状态为已打款（此处不在变更利率为打款后利率）
+                //int rowcount = HelpeOrderDAL.UpdateStatusandinster(hid, 4, decimal.Parse(inteist));
+                int rowcount = HelpeOrderDAL.UpdateStatus(hid, 4);
                 if (rowcount < 1)
                 {
                     return 0;
                 }
-                rowcount = MatchOrderDAL.UpdateStatusToPayed(hid,aid);
+                rowcount = MatchOrderDAL.UpdateStatusToPayed(hid, aid);
                 if (rowcount < 1)
                 {
                     return 0;
@@ -337,7 +351,7 @@ namespace SimpleWeb.DataBLL
                     log.MemberName = order.MemberName;
                     log.MemberPhone = order.MemberPhone;
                     log.ProcAmount = matchorders[0].MatchedMoney;
-                    log.Remark = "会员："+order.MemberPhone+" 变更单据为打款";
+                    log.Remark = "会员：" + order.MemberPhone + " 变更单据为打款";
                     rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
                 }
                 catch { }
@@ -365,7 +379,7 @@ namespace SimpleWeb.DataBLL
                 }
                 //返还会员追加的资金
                 HelpeOrderModel model = HelpeOrderDAL.GetHelpOrderInfo(hid);
-                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoneyAndinster(model.MemberID, (0 - model.Amount),1, model.MemberName, model.MemberPhone);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberStaticFreezeMoneyAndinster(model.MemberID, (0 - model.Amount), 1, model.MemberName, model.MemberPhone);
                 //rowcount = MemberCapitalDetailDAL.UpdateMemberStaticCapital(model.MemberID, (0 - model.Amount), model.MemberName, model.MemberPhone);
                 if (rowcount < 1)
                 {

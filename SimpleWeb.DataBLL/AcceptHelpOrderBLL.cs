@@ -117,7 +117,7 @@ namespace SimpleWeb.DataBLL
             return dal.GetWaitAcceptOrderListForPage(model, out totalrowcount);
         }
         /// <summary>
-        /// 更新状态为已完成
+        /// 更新状态为已完成（遗弃）
         /// </summary>
         /// <returns></returns>
         public int UpdateStatusToComplete(int aid)
@@ -220,6 +220,7 @@ namespace SimpleWeb.DataBLL
             string scvalue = SysAdminConfigDAL.GetConfigsByID(6);//得到注册返还金额 
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             int day = SysAdminConfigDAL.GetConfigsByID(22).ParseToInt(20);//得到领导奖推荐奖冻结天数
+            string inteist = SysAdminConfigDAL.GetConfigsByID(7);//得到打款后利率
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改当前的接受单据状态和完成金额
@@ -228,11 +229,12 @@ namespace SimpleWeb.DataBLL
                 {
                     return 0;
                 }
+                //更改匹配信息
                 rowcount = MatchOrderDAL.UpdateStatusToComplete(hid, aid);
                 if (rowcount < 1)
                 {
                     return 0;
-                }
+                }              
                 //更改匹配的提供帮助订单的状态  
                 rowcount = HelpeOrderDAL.UpdateStatusForCompleteV1(helporder.ID, matchinfo[0].MatchedMoney);
                 if (rowcount < 1)
@@ -244,6 +246,12 @@ namespace SimpleWeb.DataBLL
                 {
                     //返还匹配会员的静态冻结资金和利息
                     rowcount = MemberCapitalDetailDAL.UpdateStaticInterestAndStaticFreezeMoney(helporder.MemberID, helporder.Amount, helporder.Interest);
+                    if (rowcount < 1)
+                    {
+                        return 0;
+                    }
+                    //更改单据利率为高利率
+                    rowcount = HelpeOrderDAL.UpdateCurrentInterest(hid, inteist.ParseToInt(2));
                     if (rowcount < 1)
                     {
                         return 0;

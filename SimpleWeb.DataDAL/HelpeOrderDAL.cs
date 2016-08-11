@@ -384,6 +384,25 @@ VALUES  ( @MemberID ,
             return rows;
         }
         /// <summary>
+        /// 更改利率
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static int UpdateCurrentInterest(int hid, decimal inster)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update HelpeOrder set ");
+            strSql.Append(" CurrentInterest = @CurrentInterest  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", hid) ,       
+                        new SqlParameter("@CurrentInterest", inster) 
+            };
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            return rows;
+        }
+        /// <summary>
         /// 更改置顶
         /// </summary>
         /// <param name="oid"></param>

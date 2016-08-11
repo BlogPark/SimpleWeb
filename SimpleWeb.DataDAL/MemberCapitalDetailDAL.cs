@@ -533,7 +533,8 @@ OUTPUT  @orderid ,
         DELETED.MemberID ,
         DELETED.MemberName ,
         DELETED.MemberPhone ,
-        @Amount
+        @Amount,
+        0
         INTO dbo.LeaderAmount
 WHERE   MemberID = @MemberID    
    ";
@@ -1249,6 +1250,42 @@ VALUES  ( @MemberID ,
                                             new SqlParameter("@OrderID",model.OrderID)
                                       };
             return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 添加领导奖记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int AddLeaderAmount(LeaderAmountModel model)
+        {
+            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.LeaderAmount
+        ( OrderID ,
+          OrderCode ,
+          MemberID ,
+          MemberName ,
+          MemberPhone ,
+          Amount ,
+          LType
+        )
+VALUES  ( @OrderID ,
+          @OrderCode ,
+          @MemberID ,
+          @MemberName ,
+          @MemberPhone ,
+          @Amount ,
+          @LType
+        )
+SELECT  @@IDENTITY;";
+            SqlParameter[] paramter ={
+                                        new SqlParameter("@OrderID",model.OrderID),
+                                        new SqlParameter("@OrderCode",model.OrderCode),
+                                        new SqlParameter("@MemberID",model.MemberID),
+                                        new SqlParameter("@MemberName",model.MemberName),
+                                        new SqlParameter("@MemberPhone",model.MemberPhone),
+                                        new SqlParameter("@Amount",model.Amount),
+                                        new SqlParameter("@LType",model.Ltype)
+                                  };
+            return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
         }
     }
 }
