@@ -52,6 +52,26 @@ namespace SimpleWeb.DataModels
             get { return _helpermemberid; }
             set { _helpermemberid = value; }
         }
+        private string _helpermembername;
+        /// <summary>
+        /// 提供帮助会员名字
+        /// </summary>		
+        [DataMember]
+        public string HelperMemberName
+        {
+            get { return _helpermembername; }
+            set { _helpermembername = value; }
+        }
+        private string _helpermemberphone;
+        /// <summary>
+        /// 提供帮助会员电话
+        /// </summary>		
+        [DataMember]
+        public string HelperMemberPhone
+        {
+            get { return _helpermemberphone; }
+            set { _helpermemberphone = value; }
+        }        
         /// <summary>
         /// 接受订单ID
         /// </summary>		
@@ -82,6 +102,26 @@ namespace SimpleWeb.DataModels
             get { return _acceptmemberid; }
             set { _acceptmemberid = value; }
         }
+        private string _acceptmembername;
+        /// <summary>
+        /// 接受会员名字
+        /// </summary>		
+        [DataMember]
+        public string AcceptMemberName
+        {
+            get { return _acceptmembername; }
+            set { _acceptmembername = value; }
+        }
+        private string _acceptmemberphone;
+        /// <summary>
+        /// 接受会员电话
+        /// </summary>		
+        [DataMember]
+        public string AcceptMemberPhone
+        {
+            get { return _acceptmemberphone; }
+            set { _acceptmemberphone = value; }
+        }        
         /// <summary>
         /// 匹配金额
         /// </summary>		

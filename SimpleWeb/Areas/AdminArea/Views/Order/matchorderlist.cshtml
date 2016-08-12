@@ -68,7 +68,11 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">提供帮助单据</th>
+                                    <th class="text-center">提供会员名字</th>
+                                    <th class="text-center">提供会员电话</th>
                                     <th class="text-center">接受帮助单据</th>
+                                    <th class="text-center">接受会员名字</th>
+                                    <th class="text-center">接受会员电话</th>
                                     <th class="text-center">匹配金额</th>
                                     <th class="text-center">当前状态</th>
                                     <th class="text-center">匹配时间</th>
@@ -80,7 +84,11 @@
                                 {
                                     <tr id="tr@(item.ID)" class="text-center">
                                         <td>@item.HelperOrderCode</td>
+                                        <td>@item.HelperMemberName</td>
+                                        <td>@item.HelperMemberPhone</td>
                                         <td>@item.AcceptOrderCode</td>
+                                        <td>@item.AcceptMemberName</td>
+                                        <td>@item.AcceptMemberPhone</td>
                                         <td>@item.MatchedMoney</td>
                                         <td>@item.MatchStatusName</td>
                                         <td>@item.MatchTime.ToString("yyyy-MM-dd HH:mm")</td>

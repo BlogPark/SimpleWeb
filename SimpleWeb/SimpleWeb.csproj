@@ -135,6 +135,7 @@
     <Compile Include="Areas\AdminArea\Models\membercapitaldetailViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberMsgViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\OrderReportingListViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\paymentinteristViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SiteMsgIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
@@ -1904,6 +1905,7 @@
     <Content Include="Areas\WebFrontArea\Views\WebHome\mycapitallist.cshtml" />
     <Content Include="Areas\AdminArea\Views\Order\matchorderlist.cshtml" />
     <Content Include="Areas\AdminArea\Views\Order\behaviorloglist.cshtml" />
+    <Content Include="Areas\AdminArea\Views\Order\orderreportinglist.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

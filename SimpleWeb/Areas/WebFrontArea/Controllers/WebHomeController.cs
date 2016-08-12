@@ -26,6 +26,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         private AdminSiteNewsBll newsbll = new AdminSiteNewsBll();
         private MemberCapitalDetailBLL cbll = new MemberCapitalDetailBLL();
         private WebSettingsBLL webbll = new WebSettingsBLL();
+        private OrderReportingBLL reportbll = new OrderReportingBLL();
         private readonly int pagesize = 10;
         private WebSettingsModel web;
 
@@ -543,7 +544,6 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             List<RecommendMap> list = bll.GetRecommendMap(id);
             return Json(list,JsonRequestBehavior.AllowGet);
         }
-
         [HttpGet]
         public ActionResult getmemberinfo(int id)
         {
@@ -574,6 +574,73 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             ViewBag.PageTitle = web.WebName;
             return View(model);
         }
-        
+        /// <summary>
+        /// 添加举报信息
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="reason"></param>
+        /// <param name="title"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddhelpReporting(int orderid,string reason,string title,string text)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            OrderReportingModel model = new OrderReportingModel();
+            model.OrderID = orderid;
+            model.MemberID = logmember.ID;
+            model.MemberName = logmember.TruethName;
+            model.MemberPhone = logmember.MobileNum;
+            model.Title = title;
+            model.ReportingText = text;
+            model.ReasonType = reason;
+            int row = reportbll.AddReportForHelperDetail(model);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 添加举报信息
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="reason"></param>
+        /// <param name="title"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddacceptReporting(int orderid, string reason, string title, string text)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            OrderReportingModel model = new OrderReportingModel();
+            model.OrderID = orderid;
+            model.MemberID = logmember.ID;
+            model.MemberName = logmember.TruethName;
+            model.MemberPhone = logmember.MobileNum;
+            model.Title = title;
+            model.ReportingText = text;
+            model.ReasonType = reason;
+            int row = reportbll.AddReportForAcceptDetail(model);
+            if (row > 0)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
     }
 }

@@ -722,6 +722,21 @@ WHERE   AliPayNum = @alipaynum
             return dt.Rows.Count;
         }
         /// <summary>
+        /// 根据AliPayName读取会员的个数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static int GetMemberCountInfoByAliPayName(string alipayname)
+        {
+            string sqltxt = @"SELECT  ID 
+FROM    SimpleWebDataBase.dbo.MemberInfo
+WHERE   AliPayName = @AliPayName
+        AND MStatus <> 3";
+            SqlParameter[] paramter = { new SqlParameter("@AliPayName", alipayname) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            return dt.Rows.Count;
+        }
+        /// <summary>
         /// 插入验证码
         /// </summary>
         /// <param name="code"></param>

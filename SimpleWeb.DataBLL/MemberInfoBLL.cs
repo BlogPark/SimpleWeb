@@ -31,10 +31,15 @@ namespace SimpleWeb.DataBLL
             {
                 return "0手机号已被注册";
             }
-            rows = MemberInfoDAL.GetMemberCountInfoByAlipayNum(model.AliPayNum.Trim());
+            //rows = MemberInfoDAL.GetMemberCountInfoByAlipayNum(model.AliPayNum.Trim());
+            //if (rows > 0)
+            //{
+            //    return "0支付宝ID已被注册";
+            //}
+            rows = MemberInfoDAL.GetMemberCountInfoByAliPayName(model.AliPayName.Trim());
             if (rows > 0)
             {
-                return "0支付宝ID已被注册";
+                return "0支付宝账户已被注册";
             }
             #endregion
             using (TransactionScope scope = new TransactionScope())
@@ -73,6 +78,10 @@ namespace SimpleWeb.DataBLL
                 }
                 //插入推荐人信息表
                 MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
+                if (soucemember.MStatus == 3)
+                {
+                    return "0推荐人账户被冻结";
+                }
                 ReMemberRelationModel remodel = new ReMemberRelationModel();
                 remodel.MemberID = soucemember.ID;
                 remodel.MemberTruthName = soucemember.TruethName;

@@ -21,9 +21,9 @@ namespace SimpleWeb.DataDAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MatchOrder(");
-            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime");
+            strSql.Append("HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime,HelperMemberName,HelperMemberPhone,AcceptMemberName,AcceptMemberPhone");
             strSql.Append(") values (");
-            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE(),1,GETDATE()");
+            strSql.Append("@HelperOrderID,@HelperOrderCode,@HelperMemberID,@AcceptOrderID,@AcceptOrderCode,@AcceptMemberID,@MatchedMoney,GETDATE(),1,GETDATE(),@HelperMemberName,@HelperMemberPhone,@AcceptMemberName,@AcceptMemberPhone");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -33,7 +33,11 @@ namespace SimpleWeb.DataDAL
                         new SqlParameter("@AcceptOrderID", SqlDbType.Int) ,            
                         new SqlParameter("@AcceptOrderCode", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AcceptMemberID", SqlDbType.Int) ,            
-                        new SqlParameter("@MatchedMoney", SqlDbType.Decimal) 
+                        new SqlParameter("@MatchedMoney", SqlDbType.Decimal) ,  
+                        new SqlParameter("@HelperMemberName", SqlDbType.NVarChar) , 
+                        new SqlParameter("@HelperMemberPhone", SqlDbType.NVarChar) , 
+                        new SqlParameter("@AcceptMemberName", SqlDbType.NVarChar) , 
+                        new SqlParameter("@AcceptMemberPhone", SqlDbType.NVarChar)
             };
             parameters[0].Value = model.HelperOrderID;
             parameters[1].Value = model.HelperOrderCode;
@@ -42,6 +46,10 @@ namespace SimpleWeb.DataDAL
             parameters[4].Value = model.AcceptOrderCode;
             parameters[5].Value = model.AcceptMemberID;
             parameters[6].Value = model.MatchedMoney;
+            parameters[7].Value = model.HelperMemberName;
+            parameters[8].Value = model.HelperMemberPhone;
+            parameters[9].Value = model.AcceptMemberName;
+            parameters[10].Value = model.AcceptMemberPhone;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -196,14 +204,14 @@ WHERE   A.AcceptOrderID = @aid
         /// <param name="hid"></param>
         /// <param name="aid"></param>
         /// <returns></returns>
-        public static int UpdateStatusToPayed(int hid,int aid)
+        public static int UpdateStatusToPayed(int hid, int aid)
         {
             string sqltxt = @"UPDATE MatchOrder  
                                SET MatchStatus=3,LastUpdateTime=GETDATE()  
                                WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};
-            return helper.ExecuteSql(sqltxt,paramter);
+            return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
         /// 更新匹配单据状态为已确认
@@ -233,7 +241,7 @@ FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
 WHERE   MatchTime >= @datastart
         AND MatchTime <= @dataend
         AND MatchStatus <> 2";
-            SqlParameter[] paramter = { new SqlParameter("@datastart", datastart), new SqlParameter("@dataend",dataend) };
+            SqlParameter[] paramter = { new SqlParameter("@datastart", datastart), new SqlParameter("@dataend", dataend) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToDecimal(0);
         }
         /// <summary>
@@ -255,24 +263,24 @@ WHERE   MatchStatus <> 2";
         /// <param name="model"></param>
         /// <param name="totalrowcount"></param>
         /// <returns></returns>
-        public static List<MatchOrderModel> GetMatchedOrderListByPage(MatchOrderModel model,out int totalrowcount)
+        public static List<MatchOrderModel> GetMatchedOrderListByPage(MatchOrderModel model, out int totalrowcount)
         {
             List<MatchOrderModel> list = new List<MatchOrderModel>();
-            string columms = @" ID,HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime,CASE MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款'  WHEN 4 THEN '已完成' END AS MatchStatusName ";
+            string columms = @" ID,HelperOrderID,HelperOrderCode,HelperMemberID,AcceptOrderID,AcceptOrderCode,AcceptMemberID,MatchedMoney,MatchTime,MatchStatus,LastUpdateTime,CASE MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款'  WHEN 4 THEN '已完成' END AS MatchStatusName,HelperMemberName,HelperMemberPhone,AcceptMemberName,AcceptMemberPhone ";
             string where = "";
             if (model != null)
             {
-                if (model.MatchStatus>0)
+                if (model.MatchStatus > 0)
                 {
                     where += "MatchStatus='" + model.MatchStatus + "'";
                 }
                 if (!string.IsNullOrWhiteSpace(model.HelperOrderCode) && string.IsNullOrWhiteSpace(where))
                 {
-                    where += " HelperOrderCode='" + model.HelperOrderCode.ToString()+"'";
+                    where += " HelperOrderCode='" + model.HelperOrderCode.ToString() + "'";
                 }
                 else if (!string.IsNullOrWhiteSpace(where) && !string.IsNullOrWhiteSpace(model.HelperOrderCode))
                 {
-                    where += @" AND HelperOrderCode='" + model.HelperOrderCode.ToString()+"'";
+                    where += @" AND HelperOrderCode='" + model.HelperOrderCode.ToString() + "'";
                 }
                 if (!string.IsNullOrWhiteSpace(model.AcceptOrderCode) && string.IsNullOrWhiteSpace(where))
                 {
@@ -281,7 +289,7 @@ WHERE   MatchStatus <> 2";
                 else if (!string.IsNullOrWhiteSpace(model.AcceptOrderCode) && !string.IsNullOrWhiteSpace(where))
                 {
                     where += @" AND AcceptOrderCode = '" + model.AcceptOrderCode + "'";
-                }                
+                }
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
@@ -294,6 +302,7 @@ WHERE   MatchStatus <> 2";
             foreach (DataRow item in dt.Rows)
             {
                 MatchOrderModel matchordermodel = new MatchOrderModel();
+                
                 if (item["ID"].ToString() != "")
                 {
                     matchordermodel.ID = int.Parse(item["ID"].ToString());
@@ -311,6 +320,10 @@ WHERE   MatchStatus <> 2";
                     matchordermodel.HelperOrderID = int.Parse(item["HelperOrderID"].ToString());
                 }
                 matchordermodel.HelperOrderCode = item["HelperOrderCode"].ToString();
+                matchordermodel.HelperMemberName = item["HelperMemberName"].ToString();
+                matchordermodel.HelperMemberPhone = item["HelperMemberPhone"].ToString();
+                matchordermodel.AcceptMemberName = item["AcceptMemberName"].ToString();
+                matchordermodel.AcceptMemberPhone = item["AcceptMemberPhone"].ToString();
                 if (item["HelperMemberID"].ToString() != "")
                 {
                     matchordermodel.HelperMemberID = int.Parse(item["HelperMemberID"].ToString());

@@ -117,7 +117,7 @@ namespace SimpleWeb.DataModels
             get { return _reasontype; }
             set { _reasontype = value; }
         }
-        private int _rstatus;
+        private int _rstatus = 0;
         /// <summary>
         /// 举报状态（1 新举报  2 处理中 3 已处理 4 已取消）
         /// </summary>		

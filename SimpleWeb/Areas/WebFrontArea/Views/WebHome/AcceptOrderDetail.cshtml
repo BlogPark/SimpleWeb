@@ -2,6 +2,47 @@
 @{
     Layout = "~/Views/_WebLayout.cshtml";
 }
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">投诉举报</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal" method="post" id="acceptreporting">
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">举报类型</label>
+                            <div class="col-sm-6">
+                                <select id="reasontype" name="reasontype" class="form-control">
+                                    <option value="超过确认时间">超过打款时间</option>
+                                    <option value="恶意不确认信息">虚假的提供信息</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">标题</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="title" name="title" placeholder="标题" class="form-control">
+                                <input type="hidden" id="model_orderid" name="model.orderid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 pull-left control-label">说明</label>
+                            <div class="col-sm-6">
+                                <textarea rows="3" class="form-control" placeholder="说明" id="reportingtext" name="reportingtext"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitacceptreporting()" data-dismiss="modal">确 定</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
     <div class="container">
         <div class="col-sm-12  col-xs-12">
@@ -109,7 +150,7 @@
                                         @if (item.MatchStatus == 1)
                                         {
                                             <li>
-                                                <a class="btn-animate btn-style btn-xs btn-d btn-red">48小时未打款投诉</a>
+                                                <a class="btn-animate btn-style btn-xs btn-d btn-red" onclick="areport(@item.helporderid)"  data-toggle="modal" href="#box-config">超时未打款投诉</a>
                                             </li>
                                         }
                                     </ul>

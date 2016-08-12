@@ -59,9 +59,13 @@ namespace SimpleWeb.DataBLL
                 //插入匹配表
                 MatchOrderModel matchmodel = new MatchOrderModel();
                 matchmodel.AcceptMemberID = accept.MemberID;
+                matchmodel.AcceptMemberName = accept.MemberName;
+                matchmodel.AcceptMemberPhone = accept.MemberPhone;
                 matchmodel.AcceptOrderCode = accept.OrderCode;
                 matchmodel.AcceptOrderID = aid;
                 matchmodel.HelperMemberID = help.MemberID;
+                matchmodel.HelperMemberName = help.MemberName;
+                matchmodel.HelperMemberPhone = help.MemberPhone;
                 matchmodel.HelperOrderCode = help.OrderCode;
                 matchmodel.HelperOrderID = hid;
                 matchmodel.MatchedMoney = money;

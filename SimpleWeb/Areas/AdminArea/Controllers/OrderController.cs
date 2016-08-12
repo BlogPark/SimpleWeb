@@ -25,6 +25,7 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         private MemberCapitalDetailBLL mcbll = new MemberCapitalDetailBLL();
         private SysMenuAndUserBLL userbll = new SysMenuAndUserBLL();
         private OperateLogBLL logbll = new OperateLogBLL();
+        private OrderReportingBLL reportbll = new OrderReportingBLL();
         private readonly int PageSize = 20;
         public ActionResult Index()
         {
@@ -488,6 +489,87 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
             items.Add(new SelectListItem { Text = "惩罚会员", Value = "10", Selected = defval == 10 });
             items.Add(new SelectListItem { Text = "手动派息", Value = "11", Selected = defval == 11 });
             return items;
+        }
+        /// <summary>
+        /// 投诉举报
+        /// </summary>
+        /// <param name="searchmodel"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult orderreportinglist(OrderReportingModel searchmodel, int page = 1)
+        {
+            OrderReportingListViewModel model = new OrderReportingListViewModel();
+            int totalrowcount = 0;
+            OrderReportingModel seach = new OrderReportingModel();
+            seach.PageIndex = page;
+            seach.PageSize = PageSize;
+            seach.OrderCode = searchmodel.OrderCode;
+            seach.MemberPhone = searchmodel.MemberPhone;
+            List<OrderReportingModel> list = reportbll.GetOrderReportListByPage(seach, out totalrowcount);
+            PagedList<OrderReportingModel> pagelist = null;
+            if (list.Count > 0)
+            {
+                pagelist = new PagedList<OrderReportingModel>(list, page, PageSize, totalrowcount);
+            }
+            model.currentpage = page;
+            model.list = pagelist;
+            model.pagesize = PageSize;
+            model.totalcount = totalrowcount;
+            ViewBag.PageTitle = "举报列表";
+            this.ViewData["searchmodel.RStatus"] = GetRStatusListItem(0);
+            return View(model);
+        }
+        /// <summary>
+        /// 得到状态类型
+        /// </summary>
+        /// <param name="defval"></param>
+        /// <returns></returns>
+        private List<SelectListItem> GetRStatusListItem(int defval = 0)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "--全部--", Value = "0", Selected = defval == 0 });
+            items.Add(new SelectListItem { Text = "新提交", Value = "1", Selected = defval == 1 });
+            items.Add(new SelectListItem { Text = "已处理", Value = "3", Selected = defval == 3 });
+            items.Add(new SelectListItem { Text = "已取消", Value = "4", Selected = defval == 4 });
+            return items;
+        }
+        /// <summary>
+        /// 取消举报信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult updatereportingtocancle(int id)
+        {
+            bool result = reportbll.UpdateToCancle(id);
+            if (result)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
+        }
+        /// <summary>
+        /// 处理结果
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult updatetohandle(int id,string result)
+        {
+            bool handleresult = reportbll.UpdateToHandle(id,result);
+            if (handleresult)
+            {
+                return Json("1");
+            }
+            else
+            {
+                return Json("0");
+            }
         }
     }
 }

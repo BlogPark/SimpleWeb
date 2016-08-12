@@ -521,6 +521,55 @@ function autofill() {
         }
     });
 }
+function hreport(id) {
+    $("#helpreporting")[0].reset();
+    $("#model_orderid").val(id);
+}
+function areport(id) {
+    $("#acceptreporting")[0].reset();
+    $("#model_orderid").val(id);
+}
+function submithelpereporting() {
+    var reasontype = $("#reasontype").val();
+    var title = $("#title").val();
+    var model_orderid = $("#model_orderid").val();
+    var reportingtext = $("#reportingtext").val();
+    $.ajax({
+        url: '/WebFrontArea/WebHome/AddhelpReporting',
+        dataType: 'Json',
+        type: 'POST',
+        data: { "orderid": model_orderid, "reason": reasontype, "title": title, "text": reportingtext },
+        success: function (data) {
+            if (data == '0') {
+                bootbox.alert("操作失败！请重试")
+            }
+            else {
+                bootbox.alert("举报成功！管理员会在第一时间处理")
+            }
+        }
+    });
+}
+function submitacceptreporting() {
+    var reasontype = $("#reasontype").val();
+    var title = $("#title").val();
+    var model_orderid = $("#model_orderid").val();
+    var reportingtext = $("#reportingtext").val();
+    $.ajax({
+        url: '/WebFrontArea/WebHome/AddacceptReporting',
+        dataType: 'Json',
+        type: 'POST',
+        data: { "orderid": model_orderid, "reason": reasontype, "title": title, "text": reportingtext },
+        success: function (data) {
+            if (data == '0') {
+                bootbox.alert("操作失败！请重试")
+            }
+            else {
+                bootbox.alert("举报成功！管理员会在第一时间处理")
+                //$("#").modal("hide");//隐藏当前面板
+            }
+        }
+    });
+}
 /*========login============*/
 //$("#valiCode").bind("click", function() {
 //    this.src = "/WebFrontArea/Login/GetImg?time=" + (new Date()).getTime();

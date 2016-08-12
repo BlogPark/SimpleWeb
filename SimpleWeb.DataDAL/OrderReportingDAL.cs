@@ -62,7 +62,7 @@ namespace SimpleWeb.DataDAL
         /// <param name="id"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool UpdateHandleResult(int id,string result)
+        public static bool UpdateHandleResult(int id, string result)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update OrderReporting set ");
@@ -93,7 +93,7 @@ namespace SimpleWeb.DataDAL
         /// <param name="id"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool UpdateToCancle(int id)
+        public static bool UpdateToCancle(int id)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update OrderReporting set ");
@@ -119,10 +119,10 @@ namespace SimpleWeb.DataDAL
         /// 查询所有的帮助订单
         /// </summary>
         /// <returns></returns>
-        public List<OrderReportingModel> GetAllOrderReportingForPage(OrderReportingModel model, out int totalrowcount)
+        public static List<OrderReportingModel> GetAllOrderReportingForPage(OrderReportingModel model, out int totalrowcount)
         {
             List<OrderReportingModel> list = new List<OrderReportingModel>();
-            string columms = @"ID ,OrderID,OrderCode,OrderType,MemberID,MemberName,MemberPhone,Title,ReportingText,ReasonType,RStatus,CASE RStatus WHEN 1 THEN '新举报' WHEN  2 THEN '处理中' WHEN  3 THEN '已处理' WHEN  4 THEN '已取消' AS RStatusName,HandleResult,AddTime,LastUpdateTime";
+            string columms = @"ID ,OrderID,OrderCode,OrderType,MemberID,MemberName,MemberPhone,Title,ReportingText,ReasonType,RStatus,CASE RStatus WHEN 1 THEN '新举报' WHEN  2 THEN '处理中' WHEN  3 THEN '已处理' WHEN  4 THEN '已取消' END AS RStatusName,HandleResult,AddTime,LastUpdateTime";
             string where = "";
             if (model != null)
             {
@@ -130,21 +130,13 @@ namespace SimpleWeb.DataDAL
                 {
                     where += "OrderCode='" + model.OrderCode + "'";
                 }
-                if (model.MemberID > 0 && string.IsNullOrWhiteSpace(where))
+                if (model.RStatus > 0 && string.IsNullOrWhiteSpace(where))
                 {
-                    where += " MemberID=" + model.MemberID.ToString();
+                    where += " RStatus=" + model.MemberID.ToString();
                 }
-                else if (!string.IsNullOrWhiteSpace(where) && model.MemberID > 0)
+                else if (!string.IsNullOrWhiteSpace(where) && model.RStatus > 0)
                 {
-                    where += @" AND MemberID=" + model.MemberID.ToString();
-                }
-                if (!string.IsNullOrWhiteSpace(model.MemberPhone) && string.IsNullOrWhiteSpace(where))
-                {
-                    where += @" MemberPhone = '" + model.MemberPhone + "'";
-                }
-                else if (!string.IsNullOrWhiteSpace(model.MemberPhone) && !string.IsNullOrWhiteSpace(where))
-                {
-                    where += @" AND MemberPhone = '" + model.MemberPhone + "'";
+                    where += @" AND RStatus=" + model.MemberID.ToString();
                 }
                 if (!string.IsNullOrWhiteSpace(model.MemberName) && string.IsNullOrWhiteSpace(where))
                 {
@@ -157,10 +149,10 @@ namespace SimpleWeb.DataDAL
             }
             PageProModel page = new PageProModel();
             page.colums = columms;
-            page.orderby = "SortIndex";
+            page.orderby = "AddTime";
             page.pageindex = model.PageIndex;
             page.pagesize = model.PageSize;
-            page.tablename = @"dbo.HelpeOrder";
+            page.tablename = @"dbo.OrderReporting";
             page.where = where;
             DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
             foreach (DataRow item in dt.Rows)
@@ -193,6 +185,7 @@ namespace SimpleWeb.DataDAL
                 {
                     OrderReportingmodel.RStatus = int.Parse(item["RStatus"].ToString());
                 }
+                OrderReportingmodel.RStatusName = item["RStatusName"].ToString();
                 list.Add(OrderReportingmodel);
             }
             return list;
