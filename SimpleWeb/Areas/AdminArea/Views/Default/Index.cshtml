@@ -29,6 +29,26 @@
             </div>
             <!-- /PAGE HEADER -->
             <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-block alert-info fade in">
+                        <h3>累计提供帮助金额：@Model.datamodel.TotalHelpAmont</h3>
+                        <h4>今日提供帮助金额：@Model.datamodel.TodayHelpMoney</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-block alert-danger fade in">
+                        <h3>累计接受帮助金额：@Model.datamodel.TotalAcceptAmont</h3>
+                        <h4>今日接受帮助金额：@Model.datamodel.TodayAcceptMoney</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-block alert-success fade in">
+                        <h3>累计匹配单据金额：@Model.datamodel.TotalMatchMoney</h3>
+                        <h4>今日匹配单据金额：@Model.datamodel.TodayMatchedMoney</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <!-- BOX -->
                     <div class="box border red">
@@ -39,7 +59,7 @@
                             <div class="tabbable header-tabs">
                                 <ul class="nav nav-tabs">
 
-                                    <li class="active"><a href="#box_tab2" data-toggle="tab"><i class="fa fa-user"></i><span class="hidden-inline-mobile">用户信息</span></a></li>
+                                    <li class="active"><a href="#box_tab2" data-toggle="tab"><i class="fa fa-user"></i><span class="hidden-inline-mobile">统计信息</span></a></li>
                                 </ul>
                                 <div class="tab-content">
 
@@ -62,7 +82,7 @@
                                                 <tr>
                                                     <td class="col-md-3">今日匹配金额</td>
                                                     <td class="col-md-9">@Model.datamodel.TodayMatchedMoney</td>
-                                                </tr> 
+                                                </tr>
                                                 <tr>
                                                     <td class="col-md-3">系统累计提供的帮助金额</td>
                                                     <td class="col-md-9">@Model.datamodel.TotalHelpAmont</td>
@@ -71,7 +91,7 @@
                                                     <td class="col-md-3">系统累计接受帮助的金额</td>
                                                     <td class="col-md-9">@Model.datamodel.TotalAcceptAmont</td>
                                                 </tr>
-                                                 <tr>
+                                                <tr>
                                                     <td class="col-md-3">系统累计匹配金额</td>
                                                     <td class="col-md-9">@Model.datamodel.TotalMatchMoney</td>
                                                 </tr>
@@ -109,9 +129,9 @@
     </div>
 </div>
 @section  myscript{
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-            App.init(); //Initialise plugins and elements
-        });
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        App.init(); //Initialise plugins and elements
+    });
     </script>
 }
