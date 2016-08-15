@@ -1,4 +1,5 @@
 $(function () {
+    $(".tousu").hide();
     $('#qrcode').qrcode({
         width: 150,
         height: 150,
@@ -8,11 +9,14 @@ $(function () {
     });
     $('.countdown').each(function () {
         var endtime = $(this).data('date');
+        var adul = $(this);
         $(this).downCount({
             date: endtime,
             offset: +10
         }, function () {
-            alert('倒计时结束!');
+            var ad = adul.parent().next().find("a");
+            ad.show();
+            //alert('倒计时结束!');
         });
     });
 });
@@ -357,11 +361,11 @@ function accepthelp() {
         alert("请选择支付方式");
         return false;
     }
-    if (accamount < helpmin) {
+    if (accamount < accmin) {
         alert("接受的帮助金额小于平台规定值");
         return false;
     }
-    if (accamount > helpmax) {
+    if (accamount > accmax) {
         alert("接受的帮助金额大于平台规定值");
         return false;
     }

@@ -123,6 +123,7 @@
                                         <li><strong>当前匹配状态</strong>: @item.MatchStatusName</li>
                                         @if (item.MatchStatus == 1)
                                         { 
+                                            <li><strong>匹配时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li>
                                             <li>
                                                 <ul class="countdown" data-date='@item.LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:dd")'>
                                                     <li>
@@ -142,16 +143,18 @@
                                                     </li>
                                                     <li class="seperator">秒</li>
                                                 </ul>
-                                            </li>                                        
+                                            </li>                                                       
                                             <li>
                                                 <button class="btn btn-lg btn-blue" onclick="updatehelporder(@Model.helporder.ID,@item.acceptorderid)">已打款</button>
                                             </li>
-                                        }
+                                        }                                        
                                         @if (item.MatchStatus == 3)
                                         {
+                                           
                                             <li>
                                                 <a class="btn-animate btn-style btn-xs btn-d btn-red" data-toggle="modal" href="#box-config" onclick="hreport(@item.acceptorderid)">超时未确认投诉</a>
                                             </li>
+                                            
                                         }
                                     </ul>
                                 </div>

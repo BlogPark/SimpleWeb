@@ -124,6 +124,7 @@
                                         <li><strong>单据当前状态</strong>: @item.MatchStatusName</li>
                                         @if (item.MatchStatus == 3)
                                         { 
+                                            <li><strong>对方打款时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li>
                                             <li>
                                                 <ul class="countdown" data-date='@item.LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:dd")'>
                                                     <li>
@@ -143,12 +144,13 @@
                                                     </li>
                                                     <li class="seperator">秒</li>
                                                 </ul>
-                                            </li>              
+                                            </li>    
+                                                      
                                             <li>
                                                 <button class="btn btn-lg btn-blue" onclick="updatesingleorder(@Model.acceptorder.ID,@item.helporderid)">确认已收款</button></li>
                                         }
                                         @if (item.MatchStatus == 1)
-                                        {
+                                        {                                           
                                             <li>
                                                 <a class="btn-animate btn-style btn-xs btn-d btn-red" onclick="areport(@item.helporderid)"  data-toggle="modal" href="#box-config">超时未打款投诉</a>
                                             </li>

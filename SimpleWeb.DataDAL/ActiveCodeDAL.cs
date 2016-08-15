@@ -597,6 +597,10 @@ WHERE   MemberID = @memberid
             {
                 return -1;
             }
+            if (member.MStatus != 2)
+            {
+                return -1;
+            }
             //开启事务
             using (TransactionScope scope = new TransactionScope())
             {
@@ -636,7 +640,7 @@ WHERE   MemberID = @soucemid
                 souce.MemberPhone = sourcemodel.MobileNum;
                 souce.ActiveCode = "";
                 souce.AID = 0;
-                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + count.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(souce);
                 if (row < 0)
                 {
@@ -644,12 +648,12 @@ WHERE   MemberID = @soucemid
                 }
                 //记录转入者名下日志
                 ActiveCodeLogModel accept = new ActiveCodeLogModel();
-                accept.MemberID = soucememberID;
-                accept.MemberName = sourcemodel.TruethName;
-                accept.MemberPhone = sourcemodel.MobileNum;
+                accept.MemberID = member.ID;
+                accept.MemberName = member.TruethName;
+                accept.MemberPhone = member.MobileNum;
                 accept.ActiveCode = "";
                 accept.AID = 0;
-                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + count.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(accept);
                 if (row < 0)
                 {
@@ -670,7 +674,7 @@ WHERE   MemberID = @soucemid
                     log.MemberName = member.TruethName;
                     log.MemberPhone = member.MobileNum;
                     log.ProcAmount = 0;
-                    log.Remark = "会员：" + member.MobileNum + " 得到来自" + sourcemodel.MobileNum + "转来的激活码/排单币";
+                    log.Remark = "会员：" + member.MobileNum + " 得到来自" + sourcemodel.MobileNum + "转来的" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                     UserBehaviorLogDAL.AddUserBehaviorLog(log);
                 }
                 catch { }

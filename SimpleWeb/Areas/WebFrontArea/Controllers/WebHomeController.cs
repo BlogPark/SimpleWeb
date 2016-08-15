@@ -345,7 +345,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             help.MemberID = logmember.ID;
             help.MemberName = logmember.TruethName;
             help.MemberPhone = logmember.MobileNum;
-            help.OrderCode = "H" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            help.OrderCode = "H" + getcodenum();
             help.PayType = paytype;
             string result = hobll.AddHelpeOrder(help);
             if (result == "1")
@@ -375,7 +375,7 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             accept.MemberID = logmember.ID;
             accept.MemberName = logmember.TruethName;
             accept.MemberPhone = logmember.MobileNum;
-            accept.OrderCode = "A" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            accept.OrderCode = "A" + getcodenum();
             accept.PayType = paytype;
             string result = aobll.AddAcceptHelpOrder(accept);
             if (result == "1")
@@ -641,6 +641,18 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             {
                 return Json("0");
             }
+        }
+        /// <summary>
+        /// 组装新的单据编号
+        /// </summary>
+        /// <returns></returns>
+        private string getcodenum()
+        {
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            int day = DateTime.Now.Day;
+            string code = (year + 1108).ToString() + (month + 87).ToString() + (day + 66).ToString() + DateTime.Now.ToString("HHmmss");
+            return code;
         }
     }
 }
