@@ -651,8 +651,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             int year = DateTime.Now.Year;
             int month = DateTime.Now.Month;
             int day = DateTime.Now.Day;
-            string code = (year + 1108).ToString() + (month + 87).ToString() + (day + 66).ToString() + DateTime.Now.ToString("HHmmss");
+            int re = new Random().Next(1111, 1899);
+            string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + 87).ToString() + (day + 66).ToString();
             return code;
         }
+
+
     }
 }

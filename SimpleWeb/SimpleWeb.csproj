@@ -122,6 +122,7 @@
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
     <Compile Include="Areas\AdminArea\Models\AcceptHelperViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\ActiveCodeIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\activecodeloglistViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
@@ -1906,6 +1907,7 @@
     <Content Include="Areas\AdminArea\Views\Order\matchorderlist.cshtml" />
     <Content Include="Areas\AdminArea\Views\Order\behaviorloglist.cshtml" />
     <Content Include="Areas\AdminArea\Views\Order\orderreportinglist.cshtml" />
+    <Content Include="Areas\AdminArea\Views\ActiveCode\activecodeloglist.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
   </ItemGroup>
   <PropertyGroup>

@@ -632,6 +632,7 @@ WHERE   MemberID = @soucemid
                 {
                     return 0;
                 }
+                int rowcount = row;
                 //记录转出者名下日志
                 MemberInfoModel sourcemodel = GetMember(soucememberID);
                 ActiveCodeLogModel souce = new ActiveCodeLogModel();
@@ -640,7 +641,7 @@ WHERE   MemberID = @soucemid
                 souce.MemberPhone = sourcemodel.MobileNum;
                 souce.ActiveCode = "";
                 souce.AID = 0;
-                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(souce);
                 if (row < 0)
                 {
@@ -653,7 +654,7 @@ WHERE   MemberID = @soucemid
                 accept.MemberPhone = member.MobileNum;
                 accept.ActiveCode = "";
                 accept.AID = 0;
-                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(accept);
                 if (row < 0)
                 {
@@ -674,7 +675,7 @@ WHERE   MemberID = @soucemid
                     log.MemberName = member.TruethName;
                     log.MemberPhone = member.MobileNum;
                     log.ProcAmount = 0;
-                    log.Remark = "会员：" + member.MobileNum + " 得到来自" + sourcemodel.MobileNum + "转来的" + row.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                    log.Remark = "会员：" + member.MobileNum + " 得到来自" + sourcemodel.MobileNum + "转来的" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                     UserBehaviorLogDAL.AddUserBehaviorLog(log);
                 }
                 catch { }
@@ -956,6 +957,59 @@ WHERE   AMType = @type
                 {
                     list.Add(item["ActiveCode"].ToString());
                 }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 查询分页的排单币使用信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<ActiveCodeLogModel> GetActiveCodeLogForPage(int memberid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            List<ActiveCodeLogModel> list = new List<ActiveCodeLogModel>();
+            string columms = @"ID,MemberID,MemberName,MemberPhone,ActiveCode,AID,Remark,Addtime";
+            string where = "";
+            if (memberid > 0)
+            {
+                where += "MemberID='" + memberid + "'";
+            }
+
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "Addtime";
+            page.pageindex = pageindex;
+            page.pagesize = pagesize;
+            page.tablename = @"dbo.ActiveCodeLog";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                ActiveCodeLogModel activecodelogmodel = new ActiveCodeLogModel();
+                if (item["ID"].ToString() != "")
+                {
+                    activecodelogmodel.ID = int.Parse(item["ID"].ToString());
+                }
+                if (item["AddTime"].ToString() != "")
+                {
+                    activecodelogmodel.Addtime = DateTime.Parse(item["Addtime"].ToString());
+                }
+                activecodelogmodel.ActiveCode = item["ActiveCode"].ToString();
+                if (item["MemberID"].ToString() != "")
+                {
+                    activecodelogmodel.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                activecodelogmodel.MemberPhone = item["MemberPhone"].ToString();
+                activecodelogmodel.MemberName = item["MemberName"].ToString();
+                if (item["AID"].ToString() != "")
+                {
+                    activecodelogmodel.AID = int.Parse(item["AID"].ToString());
+                }
+                activecodelogmodel.Remark = item["Remark"].ToString();
+                list.Add(activecodelogmodel);
             }
             return list;
         }

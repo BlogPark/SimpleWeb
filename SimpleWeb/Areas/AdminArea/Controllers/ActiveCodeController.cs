@@ -170,5 +170,28 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
                 return Json("0");
             }
         }
+        /// <summary>
+        /// 会员激活码使用日志
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult activecodeloglist(int page=1)
+        {
+            activecodeloglistViewModel model = new activecodeloglistViewModel();
+            int totalrowcount;
+            List<ActiveCodeLogModel> list = bll.GetActiveCodeLogForPage(0, page, PageSize, out totalrowcount);
+            PagedList<ActiveCodeLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<ActiveCodeLogModel>(list, page, PageSize, totalrowcount);
+            }
+            model.orderlist = pagelist;
+            model.totalcount = totalrowcount;
+            model.pagesize = PageSize;
+            model.currentpage = page;
+            ViewBag.PageTitle = "激活码日志列表";
+            return View(model);
+        }
     }
 }

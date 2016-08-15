@@ -152,5 +152,17 @@ namespace SimpleWeb.DataBLL
         {
             return ActiveCodeDAL.GetMemberCodeByCount(type,memberid,count);
         }
+        /// <summary>
+        /// 查询激活码的记录
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<ActiveCodeLogModel> GetActiveCodeLogForPage(int memberid,int pageindex,int pagesize,out int totalrowcount)
+        {
+            return ActiveCodeDAL.GetActiveCodeLogForPage(memberid,pageindex,pagesize,out totalrowcount);
+        }
     }
 }
