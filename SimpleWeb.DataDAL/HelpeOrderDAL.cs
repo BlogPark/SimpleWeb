@@ -689,6 +689,8 @@ WHERE   id = @id";
         D.MatchedMoney,
         D.LastUpdateTime,
         D.MatchStatus,
+        D.PaymentedTime,
+        D.CompleteTime,
         Case  D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已确认' END AS MatchStatusName
 FROM    SimpleWebDataBase.dbo.MatchOrder D
         INNER JOIN SimpleWebDataBase.dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
@@ -717,6 +719,8 @@ WHERE   D.HelperOrderID = @orderid";
                     model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
                     model.MatchStatusName = item["MatchStatusName"].ToString();
                     model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.PaymentedTime = item["PaymentedTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.CompleteTime = item["CompleteTime"].ToString().ParseToDateTime(DateTime.Now);
                     list.Add(model);
                 }
             }

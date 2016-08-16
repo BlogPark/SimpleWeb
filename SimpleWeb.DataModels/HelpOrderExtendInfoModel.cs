@@ -54,5 +54,15 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public DateTime LastUpdateTime { get; set; }
+        /// <summary>
+        /// 会员打款时间
+        /// </summary>
+        [DataMember]
+        public DateTime PaymentedTime { get; set; }
+        /// <summary>
+        /// 最后更新时间
+        /// </summary>
+        [DataMember]
+        public DateTime CompleteTime { get; set; }
     }
 }

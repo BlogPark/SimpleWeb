@@ -87,7 +87,7 @@ namespace SimpleWeb.DataModels
         /// 类型（0 领导奖 1 推荐奖）
         /// </summary>
         [DataMember]
-        public int Ltype
+        public int LType
         {
             get { return _ltype; }
             set { _ltype = value; }

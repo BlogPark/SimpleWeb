@@ -163,6 +163,36 @@ namespace SimpleWeb.DataModels
             get { return _lastupdatetime; }
             set { _lastupdatetime = value; }
         }
+        private int _isdebitovertime;
+        /// <summary>
+        /// 是否已经超时扣款
+        /// </summary>		
+        [DataMember]
+        public int IsDebitOverTime
+        {
+            get { return _isdebitovertime; }
+            set { _isdebitovertime = value; }
+        }
+        private DateTime _paymentedtime;
+        /// <summary>
+        /// 会员打款时间
+        /// </summary>		
+        [DataMember]
+        public DateTime PaymentedTime
+        {
+            get { return _paymentedtime; }
+            set { _paymentedtime = value; }
+        }
+        private DateTime _completetime;
+        /// <summary>
+        /// 单据确认时间
+        /// </summary>		
+        [DataMember]
+        public DateTime CompleteTime
+        {
+            get { return _completetime; }
+            set { _completetime = value; }
+        }        
         #endregion
 
         #region 扩展字段

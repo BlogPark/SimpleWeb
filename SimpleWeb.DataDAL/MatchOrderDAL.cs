@@ -207,7 +207,7 @@ WHERE   A.AcceptOrderID = @aid
         public static int UpdateStatusToPayed(int hid, int aid)
         {
             string sqltxt = @"UPDATE MatchOrder  
-                               SET MatchStatus=3,LastUpdateTime=GETDATE()  
+                               SET MatchStatus=3,LastUpdateTime=GETDATE(),PaymentedTime=GETDATE()
                                WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=1";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};
@@ -222,7 +222,7 @@ WHERE   A.AcceptOrderID = @aid
         public static int UpdateStatusToComplete(int hid, int aid)
         {
             string sqltxt = @"UPDATE MatchOrder  
-                               SET MatchStatus=4,LastUpdateTime=GETDATE()  
+                               SET MatchStatus=4,LastUpdateTime=GETDATE(),CompleteTime=GETDATE()
                                WHERE HelperOrderID=@hid AND AcceptOrderID=@aid AND MatchStatus=3";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid),
                                       new SqlParameter("@aid",aid)};

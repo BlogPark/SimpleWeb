@@ -121,6 +121,10 @@
                                         <li><strong>推荐人名字</strong>: @item.remembername</li>
                                         <li><strong>推荐人电话</strong>: @item.rememberphone</li>
                                         <li><strong>当前匹配状态</strong>: @item.MatchStatusName</li>
+                                        @if (item.MatchStatus == 4)
+                                        {
+                                            <li><strong>完成时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li> 
+                                        }
                                         @if (item.MatchStatus == 1)
                                         { 
                                             <li><strong>匹配时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li>
@@ -152,7 +156,7 @@
                                         {
                                            
                                             <li>
-                                                <a class="btn-animate btn-style btn-xs btn-d btn-red" data-toggle="modal" href="#box-config" onclick="hreport(@item.acceptorderid)">超时未确认投诉</a>
+                                                <a class="tousu btn-animate btn-style btn-xs btn-d btn-red" data-toggle="modal" href="#box-config" onclick="hreport(@item.acceptorderid)">超时未确认投诉</a>
                                             </li>
                                             
                                         }

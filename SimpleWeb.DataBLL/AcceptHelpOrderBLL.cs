@@ -24,6 +24,16 @@ namespace SimpleWeb.DataBLL
             {
                 return "0还有未完成的接受帮助单据";
             }
+            string maxacceptamont = SystemConfigs.GetmaxAcceptAmont();//得到最大的接受帮助限制
+            string minacceptamont = SystemConfigs.GetminAcceptAmont();//得到最小的接受帮助限制
+            if (model.Amount > maxacceptamont.ParseToDecimal(0))
+            {
+                return "0超出了平台规定的最大接受值";
+            }
+            if (model.Amount < minacceptamont.ParseToDecimal(0))
+            {
+                return "0超出了平台规定的最小接受值";
+            }
             using (TransactionScope scope = new TransactionScope())
             {
                 //插入表
@@ -234,7 +244,7 @@ namespace SimpleWeb.DataBLL
                 if (rowcount < 1)
                 {
                     return 0;
-                }              
+                }
                 //更改匹配的提供帮助订单的状态  
                 rowcount = HelpeOrderDAL.UpdateStatusForCompleteV1(helporder.ID, matchinfo[0].MatchedMoney);
                 if (rowcount < 1)
@@ -366,12 +376,12 @@ namespace SimpleWeb.DataBLL
                     log.AOrderCode = accorder.OrderCode;
                     log.BehaviorSource = 1;
                     log.BehaviorType = 5;
-                    log.HOrderCode =helporder.OrderCode;
+                    log.HOrderCode = helporder.OrderCode;
                     log.MemberID = accorder.MemberID;
                     log.MemberName = accorder.MemberName;
                     log.MemberPhone = accorder.MemberPhone;
                     log.ProcAmount = matchinfo[0].MatchedMoney;
-                    log.Remark = "会员："+accorder.MemberPhone+"为单据"+accorder.OrderCode+"确认收款";
+                    log.Remark = "会员：" + accorder.MemberPhone + "为单据" + accorder.OrderCode + "确认收款";
                     rowcount = UserBehaviorLogDAL.AddUserBehaviorLog(log);
                 }
                 catch { }

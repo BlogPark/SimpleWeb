@@ -16,6 +16,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="day"></param>
         /// <returns></returns>
+        [Obsolete]
         public int PaymentInterest()
         {
             int result = 0;
@@ -38,6 +39,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="day"></param>
         /// <returns></returns>
+        [Obsolete]
         public string PaymentInterestV2()
         {
             string result = "";

@@ -77,7 +77,7 @@ namespace SimpleWeb.DataModels
         }
         private int _astatus;
         /// <summary>
-        /// 状态（1 待释放 2 已释放）
+        /// 状态（1 待释放 2 已释放 3 单据取消不能释放）
         /// </summary>		
         [DataMember]
         public int AStatus

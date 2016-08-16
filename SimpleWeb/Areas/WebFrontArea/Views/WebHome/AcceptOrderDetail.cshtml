@@ -122,11 +122,15 @@
                                         <li><strong>推荐人名字</strong>: @item.remembername</li>
                                         <li><strong>推荐人电话</strong>: @item.rememberphone</li>
                                         <li><strong>单据当前状态</strong>: @item.MatchStatusName</li>
+                                        @if (item.MatchStatus == 4)
+                                        {
+                                            <li><strong>完成时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li> 
+                                        }
                                         @if (item.MatchStatus == 3)
                                         { 
                                             <li><strong>对方打款时间</strong>: @item.LastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss")</li>
                                             <li>
-                                                <ul class="countdown" data-date='@item.LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:dd")'>
+                                                <ul class="countdown" data-date='@item.LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:ss")'>
                                                     <li>
                                                         <span class="days">00</span>
                                                     </li>
@@ -152,9 +156,9 @@
                                         @if (item.MatchStatus == 1)
                                         {                                           
                                             <li>
-                                                <a class="btn-animate btn-style btn-xs btn-d btn-red" onclick="areport(@item.helporderid)"  data-toggle="modal" href="#box-config">超时未打款投诉</a>
+                                                <a class="tousu btn-animate btn-style btn-xs btn-d btn-red" onclick="areport(@item.helporderid)"  data-toggle="modal" href="#box-config">超时未打款投诉</a>
                                             </li>
-                                        }
+                                        }                                        
                                     </ul>
                                 </div>
                             </div>

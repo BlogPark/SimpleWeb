@@ -641,7 +641,7 @@ WHERE   MemberID = @soucemid
                 souce.MemberPhone = sourcemodel.MobileNum;
                 souce.ActiveCode = "";
                 souce.AID = 0;
-                souce.Remark = "为会员：" + member.TruethName + " 手机号：" + member.MobileNum + " 转账" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                souce.Remark = "为会员：" +  member.MobileNum + " 转账" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(souce);
                 if (row < 0)
                 {
@@ -654,7 +654,7 @@ WHERE   MemberID = @soucemid
                 accept.MemberPhone = member.MobileNum;
                 accept.ActiveCode = "";
                 accept.AID = 0;
-                accept.Remark = "接受来自会员：" + sourcemodel.TruethName + " 手机号：" + sourcemodel.MobileNum + " 转给的" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                accept.Remark = "接受来自会员：" + sourcemodel.MobileNum + " 转账的" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(accept);
                 if (row < 0)
                 {

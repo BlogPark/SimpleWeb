@@ -18,22 +18,23 @@ namespace SimpleWeb.DataBLL
         public string AddHelpeOrder(HelpeOrderModel model)
         {
             string result = "0";
+            string minhelpamont = SystemConfigs.GetminHelpAmont();//得到最小的提供帮助限制
+            string maxhelpamont = SystemConfigs.GetmaxHelpAmont();//得到最大的提供帮助限制
             string interest = SysAdminConfigDAL.GetConfigsByID(5);//得到排单后的利率
             string inteistlist = SysAdminConfigDAL.GetConfigsByID(11);//得到领导奖利率
             decimal reinteist = SysAdminConfigDAL.GetConfigsByID(16).ParseToDecimal(10);//得到首次推荐的利率
             decimal maxcount = SysAdminConfigDAL.GetConfigsByID(17).ParseToInt(1);//得到每日最大排单数
             MemberExtendInfoModel meinfo = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
-            //if (meinfo != null)
-            //{
-            //    TimeSpan ts1 = new TimeSpan(DateTime.Now.Ticks);
-            //    TimeSpan ts2 = new TimeSpan(meinfo.LastHelperTime.Ticks);
-            //    TimeSpan ts = ts1.Subtract(ts2).Duration();
-            //    if (ts.Days < 1 && ts.Days > -1)
-            //    {
-            //        return "0今天已经提供过帮助";
-            //    }
-            //}
             int helpcount = HelpeOrderDAL.GetTodayHelpCount(model.MemberID);
+            if (model.Amount < minhelpamont.ParseToDecimal(0))
+            {
+                return "0超出了平台规定的最小规定值";
+            }
+            if (model.Amount > maxhelpamont.ParseToDecimal(0))
+            {
+                return "0超出了平台规定的最大规定值";
+            }
+           
             if (helpcount >= maxcount)
             {
                 return "0今天已经提供过帮助";
@@ -47,6 +48,10 @@ namespace SimpleWeb.DataBLL
             {
                 isfirst = meinfo.MemberHelpCount == 0;
             }
+            if (string.IsNullOrWhiteSpace(model.ActiveCode))
+            {
+                return "0没有填写排单币";
+            }
             ActiveCodeModel activemodel = ActiveCodeDAL.GetActiveCodeExtendModel(model.ActiveCode);
             if (activemodel == null)//没有该激活码信息为失败
             {
@@ -55,6 +60,10 @@ namespace SimpleWeb.DataBLL
             if (activemodel.AStatus == 10)//改激活码已使用为失败
             {
                 return "0排单币已经被使用";
+            }
+            if (model.Amount % 100 > 0)
+            {
+                return "0提供金额应为100的整数倍";
             }
             ReMemberRelationModel remember = ReMemberRelationDAL.GetReMemberRelation(model.MemberID);
             using (TransactionScope scope = new TransactionScope())
@@ -143,10 +152,10 @@ namespace SimpleWeb.DataBLL
                     LeaderAmountModel leadermodel = new LeaderAmountModel();//插入领导奖记录
                     leadermodel.OrderID = orderid;
                     leadermodel.OrderCode = model.OrderCode;
-                    leadermodel.MemberPhone = model.MemberPhone;
-                    leadermodel.MemberName = model.MemberName;
-                    leadermodel.MemberID = model.MemberID;
-                    leadermodel.Ltype = 1;
+                    leadermodel.MemberPhone = remember.MemberPhone;
+                    leadermodel.MemberName = remember.MemberTruthName;
+                    leadermodel.MemberID = remember.MemberID;
+                    leadermodel.LType = 1;
                     leadermodel.Amount = (model.Amount * reinteist / 100);
                     rowcount = MemberCapitalDetailDAL.AddLeaderAmount(leadermodel);
                     if (rowcount < 1)
@@ -246,6 +255,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="hid"></param>
         /// <returns></returns>
+        [Obsolete]
         public int UpdateToPlayMoney(int hid)
         {
             int result = 0;
@@ -306,7 +316,6 @@ namespace SimpleWeb.DataBLL
             }
             return result;
         }
-
         /// <summary>
         /// 更新提供帮助订单为已打款
         /// </summary>
@@ -369,6 +378,7 @@ namespace SimpleWeb.DataBLL
         public int UpdateToCancle(int hid, int ispipei = 0)
         {
             int result = 0;
+            List<LeaderAmountModel> leaderlist = MemberCapitalDetailDAL.GetLeaderamountListByOrderID(hid);
             using (TransactionScope scope = new TransactionScope())
             {
                 //更改订单状态
@@ -424,6 +434,22 @@ namespace SimpleWeb.DataBLL
                         return 0;
                     }
                 }
+                //撤销对会员领导人的推荐奖和领导奖
+                if (leaderlist != null)
+                {
+                    foreach (var item in leaderlist)
+                    {
+                        if (item.LType == 0)
+                        {
+                            rowcount = MemberCapitalDetailDAL.UpdateDynamicInterest(item.MemberID, (0 - item.Amount), item.MemberName, item.MemberPhone);
+                        }
+                        else if (item.LType == 1)
+                        {
+                            rowcount = MemberCapitalDetailDAL.UpdateMemberDynamicFreezeMoney(item.MemberID, (0 - item.Amount), item.MemberName, item.MemberPhone);
+                        }
+                    }
+                }
+
                 //更新会员统计信息
                 rowcount = MemberExtendInfoDAL.CancleHelperOrder(model.MemberID, hid);
                 if (rowcount < 1)

@@ -550,6 +550,28 @@ WHERE   MemberID = @MemberID
             return rowcount;
         }
         /// <summary>
+        /// 更新会员的动态利息金额
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="interest"></param>
+        /// <returns></returns>
+        public static int UpdateDynamicInterest(int memberid, decimal interestmoney, string membername, string memberphone)
+        {
+            string sqltxt = @"        
+        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+SET     DynamicInterest = ISNULL(DynamicInterest, 0) + @Amount
+WHERE   MemberID = @MemberID    
+   ";
+            SqlParameter[] paramter = { 
+                                      new SqlParameter("@MemberID",memberid),
+                                      new SqlParameter("@Amount",interestmoney),
+                                      new SqlParameter("@MemberPhone",memberphone),
+                                      new SqlParameter("@MemberName",membername)
+                                      };
+            int rowcount = helper.ExecuteSql(sqltxt, paramter);
+            return rowcount;
+        }
+        /// <summary>
         /// 为会员派发利息
         /// </summary>
         /// <param name="day"></param>
@@ -1283,9 +1305,62 @@ SELECT  @@IDENTITY;";
                                         new SqlParameter("@MemberName",model.MemberName),
                                         new SqlParameter("@MemberPhone",model.MemberPhone),
                                         new SqlParameter("@Amount",model.Amount),
-                                        new SqlParameter("@LType",model.Ltype)
+                                        new SqlParameter("@LType",model.LType)
                                   };
             return helper.GetSingle(sqltxt,paramter).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 按照单据查询领导奖和推荐奖的记录
+        /// </summary>
+        /// <param name="hid"></param>
+        /// <returns></returns>
+        public static List<LeaderAmountModel> GetLeaderamountListByOrderID(int hid)
+        {
+            List<LeaderAmountModel> list = new List<LeaderAmountModel>();
+            string sqltxt = @"SELECT  ID ,
+        OrderID ,
+        OrderCode ,
+        MemberID ,
+        MemberName ,
+        MemberPhone ,
+        Amount ,
+        ISNULL(LType, 0) LType
+FROM    SimpleWebDataBase.dbo.LeaderAmount
+WHERE   OrderID = @hid";
+            SqlParameter[] paramter = { new SqlParameter("@hid",hid)};
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    LeaderAmountModel model = new LeaderAmountModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    if (item["OrderID"].ToString() != "")
+                    {
+                        model.OrderID = int.Parse(item["OrderID"].ToString());
+                    }
+                    model.OrderCode = item["OrderCode"].ToString();
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    if (item["Amount"].ToString() != "")
+                    {
+                        model.Amount = decimal.Parse(item["Amount"].ToString());
+                    }
+                    if (item["LType"].ToString() != "")
+                    {
+                        model.LType = int.Parse(item["LType"].ToString());
+                    }
+                    list.Add(model);
+                }
+            }
+            return list;
         }
     }
 }
