@@ -15,6 +15,27 @@ namespace SimpleWeb.Areas.WebFrontArea
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+              "web_capitaldetaillog_page",
+              "capitaldetaillog-{page}.html",
+              new { controller = "WebHome", action = "mycapitallist", page = 1, id = UrlParameter.Optional }
+          );
+            context.MapRoute(
+              "web_capitaldetaillog",
+              "capitaldetaillog.html",
+              new { controller = "WebHome", action = "mycapitallist", id = UrlParameter.Optional }
+          );
+            context.MapRoute(
+              "web_activecodelog_page",
+              "activecodelog-{page}.html",
+              new { controller = "WebHome", action = "ActiveCodeLog", page = 1, id = UrlParameter.Optional }
+          );
+            context.MapRoute(
+              "web_activecodelog",
+              "activecodelog.html",
+              new { controller = "WebHome", action = "ActiveCodeLog", id = UrlParameter.Optional }
+          );
+
+            context.MapRoute(
                "web_team",
                "team.html",
                new { controller = "WebHome", action = "recommendusermap", id = UrlParameter.Optional }
@@ -42,7 +63,7 @@ namespace SimpleWeb.Areas.WebFrontArea
             context.MapRoute(
                "web_news",
                "news.html",
-               new { controller = "WebHome", action = "webnews",  id = UrlParameter.Optional }
+               new { controller = "WebHome", action = "webnews", id = UrlParameter.Optional }
            );
             context.MapRoute(
              "web_home",

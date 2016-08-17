@@ -90,13 +90,15 @@ namespace SimpleWeb.DataBLL
                     result = "0为单据派发利息失败";
                     return result;
                 }
+                //更改会员的当前利率和利息
+                rowcount = MemberCapitalDetailDAL.ResetInster(days);
                 //汇总并加入到账户信息记录日志
                 rowcount = MemberCapitalDetailDAL.SumInterestMoneyWithoutLog();
                 if (rowcount < 1)
                 {
                     result = "0为会员更新利息总额失败";
                     return result;
-                }
+                }                
                 //解冻单据利率为2，状态为5的单据的利息
                 rowcount = MemberCapitalDetailDAL.UpdateStaticCaptail();
                 try

@@ -287,7 +287,7 @@ namespace SimpleWeb.DataDAL
         /// <returns></returns>
         public static int UpdateAcceptOrderMatch(int orderid, decimal money)
         {
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.AcceptHelpOrder
+            string sqltxt = @"UPDATE  dbo.AcceptHelpOrder
 SET  AStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
@@ -511,10 +511,10 @@ WHERE   id = @id";
         D.CompleteTime,
         CASE D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已完成' END AS MatchStatusName,
         CASE A.HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '对方已打款'  WHEN 5 THEN '双方已确认' END AS HStatusName
-FROM    SimpleWebDataBase.dbo.MatchOrder D
-        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder A ON D.HelperOrderID = A.ID
-        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
-        INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
+FROM   dbo.MatchOrder D
+        INNER JOIN dbo.HelpeOrder A ON D.HelperOrderID = A.ID
+        INNER JOIN dbo.MemberInfo B ON A.MemberID = B.ID
+        INNER JOIN dbo.ReMemberRelation C ON B.ID = C.RecommMID
 WHERE   D.AcceptOrderID = @orderid";
             SqlParameter[] paramter = { new SqlParameter("@orderid", aid) };
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
@@ -634,7 +634,7 @@ WHERE   MemberID = @memberid
         public static decimal GetTotalAcceptMoney()
         {
             string sqltxt = @"SELECT  ISNULL(SUM(Amount),0)
-  FROM SimpleWebDataBase.dbo.AcceptHelpOrder
+  FROM dbo.AcceptHelpOrder
   WHERE AStatus<>3 ";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }
@@ -647,7 +647,7 @@ WHERE   MemberID = @memberid
         public static decimal GetTodayAcceptMoney(string datastart, string dataend)
         {
             string sqltxt = @"SELECT  ISNULL(SUM(Amount), 0)
-FROM    SimpleWebDataBase.dbo.AcceptHelpOrder
+FROM    dbo.AcceptHelpOrder
 WHERE   AddTime >= @starttime
         AND AddTime <= @endtime AND AStatus=0 ";
             SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime", dataend) };

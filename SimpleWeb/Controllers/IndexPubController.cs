@@ -16,6 +16,7 @@ namespace SimpleWeb.Controllers
         // GET: /IndexPub/
         private SysMenuAndUserBLL bll = new SysMenuAndUserBLL();
         private WebSettingsBLL webbll = new WebSettingsBLL();
+        private MemberInfoBLL memberbll = new MemberInfoBLL();
         public ActionResult Index()
         {
             return View();
@@ -129,6 +130,24 @@ namespace SimpleWeb.Controllers
         {
             webmenuViewModel model = new webmenuViewModel();
             model.webname = "诚信创客";
+            return View(model);
+        }
+        public ActionResult newwebmenu()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            WebIndexModel webmodel=memberbll.GetIndexNeeddata(logmember.ID);
+            NewWebMenuViewModel model = new NewWebMenuViewModel();
+            model.ActionCodeCount = webmodel.activecodeCount;
+            model.CurrencyCodeCount = webmodel.paidancodeCount;
+            model.DynamicMoney = webmodel.zijinmodel.DynamicFunds;
+            model.StaticMoney = webmodel.zijinmodel.StaticCapital;
+            model.UserName = logmember.TruethName;
+            model.UserPhone = logmember.MobileNum;
+            model.TeamPersonCount = webmodel.members;
             return View(model);
         }
     }

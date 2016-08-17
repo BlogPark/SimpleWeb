@@ -1,0 +1,58 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model SimpleWeb.Areas.WebFrontArea.Models.ActiveCodeLogViewModel
+@{
+    Layout = "~/Views/_WebLayout.cshtml";
+}
+<div class="navbar navbar-default" role="navigation">@*navbar-fixed-top*@
+    <div class="container">
+        <div class="col-sm-12  col-xs-12">
+            <img class="img-responsive" src="~/img/banner.jpg" />
+        </div>
+    </div>
+    <div class="container">
+        @Html.Action("webmenu", "IndexPub", new { area = "" })
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="text-muted">我的资金变动列表</h3>
+                        <hr>
+                    </div>
+                    <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>会员名字</th>
+                                    <th>使用描述</th>
+                                    <th>排单币/激活码编号</th>
+                                    <th>变动时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.List)
+                                {
+                                    <tr>
+                                        <td>@item.MemberName</td>
+                                        <td>
+                                            <div class="item">
+                                                @item.Remark
+                                            </div>
+                                        </td>                                        
+                                        <td>@item.ActiveCode</td>
+                                        <td>@(item.Addtime == DateTime.MinValue ? "" : item.Addtime.ToString("yyyy-MM-dd HH:mm"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.Pager(Model.List, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

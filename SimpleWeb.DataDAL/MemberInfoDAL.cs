@@ -509,7 +509,7 @@ WHERE   id = @id and MStatus=1";
         /// <returns></returns>
         public int GetMemberInfoBycheck(string phone, string name, string alipay)
         {
-            string sqltxt = @"SELECT ID  FROM SimpleWebDataBase.dbo.MemberInfo   WHERE MStatus IN (1,2)";
+            string sqltxt = @"SELECT ID  FROM dbo.MemberInfo   WHERE MStatus IN (1,2)";
             if (!string.IsNullOrWhiteSpace(phone))
             {
                 sqltxt += @" AND MobileNum=@MobileNum";
@@ -668,7 +668,7 @@ WHERE id=@id";
         public static int GetTotalMemberCount(int status)
         {
             string sqltxt = @"SELECT  COUNT(0)
-FROM    SimpleWebDataBase.dbo.MemberInfo ";
+FROM    dbo.MemberInfo ";
             if (status == 2)
             {
                 sqltxt += @" WHERE MStatus=@mstatus";
@@ -684,7 +684,7 @@ FROM    SimpleWebDataBase.dbo.MemberInfo ";
         public static int GetMemberCountInfoByName(string name)
         {
             string sqltxt = @"SELECT  ID 
-FROM    SimpleWebDataBase.dbo.MemberInfo
+FROM    dbo.MemberInfo
 WHERE   TruethName = @name
         AND MStatus <> 3";
             SqlParameter[] paramter = { new SqlParameter("@name", name) };
@@ -699,7 +699,7 @@ WHERE   TruethName = @name
         public static int GetMemberCountInfoByMobile(string mobilenum)
         {
             string sqltxt = @"SELECT  ID 
-FROM    SimpleWebDataBase.dbo.MemberInfo
+FROM    dbo.MemberInfo
 WHERE   MobileNum = @mobilenum
         AND MStatus <> 3";
             SqlParameter[] paramter = { new SqlParameter("@mobilenum", mobilenum) };
@@ -714,7 +714,7 @@ WHERE   MobileNum = @mobilenum
         public static int GetMemberCountInfoByAlipayNum(string alipaynum)
         {
             string sqltxt = @"SELECT  ID 
-FROM    SimpleWebDataBase.dbo.MemberInfo
+FROM    dbo.MemberInfo
 WHERE   AliPayNum = @alipaynum
         AND MStatus <> 3";
             SqlParameter[] paramter = { new SqlParameter("@alipaynum", alipaynum) };
@@ -729,7 +729,7 @@ WHERE   AliPayNum = @alipaynum
         public static int GetMemberCountInfoByAliPayName(string alipayname)
         {
             string sqltxt = @"SELECT  ID 
-FROM    SimpleWebDataBase.dbo.MemberInfo
+FROM    dbo.MemberInfo
 WHERE   AliPayName = @AliPayName
         AND MStatus <> 3";
             SqlParameter[] paramter = { new SqlParameter("@AliPayName", alipayname) };
@@ -743,7 +743,7 @@ WHERE   AliPayName = @AliPayName
         /// <returns></returns>
         public static int AddVerification(string code)
         {
-            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.Verification
+            string sqltxt = @"INSERT  INTO dbo.Verification
         ( VerificationCode )
 VALUES  ( @VerificationCode )
 SELECT  @@IDENTITY;";
@@ -757,7 +757,7 @@ SELECT  @@IDENTITY;";
         /// <returns></returns>
         public static int UpdateVerification(string sendid, int id)
         {
-            string sqltxt = @"Update SimpleWebDataBase.dbo.Verification
+            string sqltxt = @"Update dbo.Verification
         SET SendID=@SendID where ID=@id";
             SqlParameter[] paramter = { new SqlParameter("@SendID", sendid), new SqlParameter("@id", id) };
             return helper.ExecuteSql(sqltxt, paramter);
@@ -770,7 +770,7 @@ SELECT  @@IDENTITY;";
         public static string SelectVerification(int id)
         {
             string sqltxt = @"select VerificationCode
-       from SimpleWebDataBase.dbo.Verification
+       from dbo.Verification
        where ID=@id";
             SqlParameter[] paramter = { new SqlParameter("@id", id) };
             return helper.GetSingle(sqltxt, paramter).ToString();

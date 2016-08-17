@@ -284,7 +284,7 @@ ELSE
         {
             string result = "";
             string sqltxt = @"SELECT  ConfigValue
-FROM    SimpleWebDataBase.dbo.SysAdminConfigs
+FROM    dbo.SysAdminConfigs
 WHERE   ID = @id
         AND ConfigStatus = 1";
             SqlParameter[] paramter = { 

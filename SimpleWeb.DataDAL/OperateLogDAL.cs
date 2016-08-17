@@ -112,7 +112,7 @@ namespace SimpleWeb.DataDAL
         AID ,
         Remark ,
         Addtime
-FROM    SimpleWebDataBase.dbo.ActiveCodeLog
+FROM    dbo.ActiveCodeLog
 WHERE   MemberID = @memberid";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@topnum", top) };
             DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
@@ -161,7 +161,7 @@ WHERE   MemberID = @memberid";
           WHEN 4 THEN '利息结余'
           WHEN 5 THEN '系统返还'
         END AS TypeName
-FROM    SimpleWebDataBase.dbo.AmountChangeLog
+FROM    dbo.AmountChangeLog
 WHERE   MemberID = @memberid
 Order by ID desc";
             SqlParameter[] paramter = { 

@@ -273,17 +273,17 @@ namespace SimpleWeb.DataDAL
                 int obj = int.Parse(helper.GetSingle(strSql.ToString(), parameters).ToString());
                 //修改会员的资金表
                 string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticCapital = @Amount ,
                 TotalStaticCapital = TotalStaticCapital + @StaticCapital
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,
                   StaticCapital ,
                   TotalStaticCapital
@@ -295,7 +295,7 @@ ELSE
     END";
                 int rowcount = helper.ExecuteSql(sqltxt, parameters);
                 //插入日志记录表
-                string sql = @"INSERT  INTO SimpleWebDataBase.dbo.AmountChangeLog
+                string sql = @"INSERT  INTO dbo.AmountChangeLog
         ( MemberID ,
           MemberPhone ,
           MemberName ,
@@ -491,7 +491,7 @@ VALUES  ( @MemberID ,
         /// <returns></returns>
         public static int UpdateHelpOrderMatch(int orderid, decimal money)
         {
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.HelpeOrder
+            string sqltxt = @"UPDATE  dbo.HelpeOrder
 SET   HStatus = CASE ( Amount - (ISNULL(MatchedAmount,0)+ @amount) )
                     WHEN 0 THEN 2
                     ELSE 1
@@ -692,10 +692,10 @@ WHERE   id = @id";
         D.PaymentedTime,
         D.CompleteTime,
         Case  D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已确认' END AS MatchStatusName
-FROM    SimpleWebDataBase.dbo.MatchOrder D
-        INNER JOIN SimpleWebDataBase.dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
-        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = B.ID
-        INNER JOIN SimpleWebDataBase.dbo.ReMemberRelation C ON B.ID = C.RecommMID
+FROM    dbo.MatchOrder D
+        INNER JOIN dbo.AcceptHelpOrder A ON D.AcceptOrderID = A.ID
+        INNER JOIN dbo.MemberInfo B ON A.MemberID = B.ID
+        INNER JOIN dbo.ReMemberRelation C ON B.ID = C.RecommMID
 WHERE   D.HelperOrderID = @orderid";
             SqlParameter[] paramter = { new SqlParameter("@orderid", hid) };
             DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
@@ -816,20 +816,20 @@ WHERE   MemberID = @memberid
         public static int GetTodayHelpCount(int memberid)
         {
             string sqltxt = @"SELECT COUNT(0)
-  FROM SimpleWebDataBase.dbo.HelpeOrder
+  FROM dbo.HelpeOrder
   WHERE MemberID=@memberid AND AddTime>='" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "' AND AddTime<=GETDATE()";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
 
         /// <summary>
-        /// 更新会员的高利率为0
+        /// 更新会员的高利率为0,单据利息为0
         /// </summary>
         /// <returns></returns>
         public static int UpdateCurrentInterestToClear(int memberid)
         {
-            string sqltxt = @"UPDATE SimpleWebDataBase.dbo.HelpeOrder
-  SET CurrentInterest=0
+            string sqltxt = @"UPDATE dbo.HelpeOrder
+  SET CurrentInterest=0,Interest=0
   WHERE MemberID=@memberid AND CurrentInterest=2 ";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
             return helper.ExecuteSql(sqltxt, paramter);
@@ -841,7 +841,7 @@ WHERE   MemberID = @memberid
         public static decimal GetTotalHelpMoney()
         {
             string sqltxt = @"SELECT  ISNULL(SUM(Amount),0)
-  FROM SimpleWebDataBase.dbo.HelpeOrder
+  FROM dbo.HelpeOrder
   WHERE HStatus<>3 ";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }
@@ -854,7 +854,7 @@ WHERE   MemberID = @memberid
         public static decimal GetTodayHelpMoney(string datastart, string dataend)
         {
             string sqltxt = @"SELECT  ISNULL(SUM(Amount), 0)
-FROM    SimpleWebDataBase.dbo.HelpeOrder
+FROM    dbo.HelpeOrder
 WHERE   AddTime >= @starttime
         AND AddTime <= @endtime AND HStatus=0 ";
             SqlParameter[] paramter = { new SqlParameter("@starttime", datastart), new SqlParameter("@endtime", dataend) };

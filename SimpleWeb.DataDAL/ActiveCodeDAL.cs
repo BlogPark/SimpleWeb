@@ -196,7 +196,7 @@ ELSE
         {
             int result = 0;
             string sqltxt = @"SELECT  AStatus
-FROM    SimpleWebDataBase.dbo.ActiveCode
+FROM    dbo.ActiveCode
 WHERE   ActivationCode = @ActivationCode";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@ActivationCode",code)
@@ -228,7 +228,7 @@ WHERE   ActivationCode = @ActivationCode";
             string sqltxt = @"SELECT  ID ,
         ActivationCode ,
         AType 
-FROM    SimpleWebDataBase.dbo.ActiveCode
+FROM    dbo.ActiveCode
 WHERE ActivationCode IN (" + codeliststr.TrimEnd(',') + ") AND AStatus=20";
             DataTable dt = helper.Query(sqltxt).Tables[0];
             foreach (DataRow item in dt.Rows)
@@ -252,7 +252,7 @@ WHERE ActivationCode IN (" + codeliststr.TrimEnd(',') + ") AND AStatus=20";
             string sqltxt = @"SELECT  ID ,
         ActivationCode ,
         AType 
-FROM    SimpleWebDataBase.dbo.ActiveCode
+FROM    dbo.ActiveCode
 WHERE ActivationCode =@code  AND AStatus=20";
             SqlParameter[] paramter = { new SqlParameter("@code", code) };
             DataTable dt = helper.Query(sqltxt).Tables[0];
@@ -545,7 +545,7 @@ WHERE   ID = @id";
         /// <returns></returns>
         public static int UpdateMemberActiveToUse(int memberid, string ordercode, string activecode)
         {
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberActiveCode
+            string sqltxt = @"UPDATE  dbo.MemberActiveCode
 SET     AMStatus = 2 ,
         UseCode = @usecode ,
         UserTime = GETDATE()
@@ -566,7 +566,7 @@ WHERE   MemberID = @memberid
         /// <returns></returns>
         public static int UpdateMemberActiveCodeToUse(int memberid, string ordercode, string activecode)
         {
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberActiveCode
+            string sqltxt = @"UPDATE  dbo.MemberActiveCode
 SET     AMStatus = 2 ,
         UseCode = @usecode ,
         UserTime = GETDATE()
@@ -688,7 +688,7 @@ WHERE   MemberID = @soucemid
         {
             List<MemberActiveCodeModel> list = new List<MemberActiveCodeModel>();
             string sqltxt = @"SELECT  ActiveCode
-FROM    SimpleWebDataBase.dbo.MemberActiveCode
+FROM    dbo.MemberActiveCode
 WHERE   AMType = @type
         AND MemberID = @memberid
         AND AMStatus = 1";
@@ -824,7 +824,7 @@ WHERE   AMType = @type
         public static int GetMemberActiveCodeCount(int memberid, int type)
         {
             string sqltxt = @"SELECT  COUNT(0)
-FROM    SimpleWebDataBase.dbo.MemberActiveCode
+FROM    dbo.MemberActiveCode
 WHERE   MemberID = @memberid
         AND AMStatus = 1
         AND AMType = @type";
@@ -849,8 +849,8 @@ WHERE   MemberID = @memberid
         B.MemberPhone,
         B.ID as mid,
         B.AMStatus
-FROM    SimpleWebDataBase.dbo.ActiveCode A 
-LEFT JOIN SimpleWebDataBase.dbo.MemberActiveCode B ON A.ActivationCode=B.ActiveCode
+FROM    dbo.ActiveCode A 
+LEFT JOIN dbo.MemberActiveCode B ON A.ActivationCode=B.ActiveCode
 WHERE A.ActivationCode=@code";
             SqlParameter[] paramter = { 
                                       new SqlParameter("@code",code)
@@ -884,7 +884,7 @@ WHERE A.ActivationCode=@code";
         {
             string sqltxt = @"SELECT TOP 1
         A.ActivationCode
-FROM    SimpleWebDataBase.dbo.ActiveCode A
+FROM    dbo.ActiveCode A
 WHERE   A.AType = @type
         AND A.AStatus = 20";
             SqlParameter[] paramter = { new SqlParameter("@type", type) };
@@ -898,7 +898,7 @@ WHERE   A.AType = @type
         public static int GetTotalCount(int typenum)
         {
             string sqltxt = @"SELECT COUNT(0)
-FROM    SimpleWebDataBase.dbo.ActiveCode
+FROM    dbo.ActiveCode
 WHERE   AType = @atype ";
             SqlParameter[] paramter = {
                                           new SqlParameter("@atype",typenum)
@@ -914,7 +914,7 @@ WHERE   AType = @atype ";
         {
             List<string> list = new List<string>();
             string sqltxt = @"SELECT TOP (@topnum) ActivationCode
-FROM    SimpleWebDataBase.dbo.ActiveCode
+FROM    dbo.ActiveCode
 WHERE   AType = @atype AND AStatus = 20";
             SqlParameter[] paramter = {
                                           new SqlParameter("@atype",type),
@@ -943,7 +943,7 @@ WHERE   AType = @atype AND AStatus = 20";
             List<string> list = new List<string>();
             string sqltxt = @"SELECT TOP ( @topnum )
         ActiveCode
-FROM    SimpleWebDataBase.dbo.MemberActiveCode
+FROM    dbo.MemberActiveCode
 WHERE   AMType = @type
         AND MemberID = @memberid
         AND AMStatus = 1";

@@ -655,7 +655,30 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
             string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + 87).ToString() + (day + 66).ToString();
             return code;
         }
-
+        /// <summary>
+        /// 激活码/排单币使用情况
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult ActiveCodeLog(int page=1)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            ActiveCodeLogViewModel model = new ActiveCodeLogViewModel();
+            int totalrowcount = 0;
+            List<ActiveCodeLogModel> list = activecodebll.GetActiveCodeLogForPage(logmember.ID,page,pagesize,out totalrowcount);
+            PagedList<ActiveCodeLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<ActiveCodeLogModel>(list, page, pagesize, totalrowcount);
+            }
+            model.List = pagelist;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
 
     }
 }

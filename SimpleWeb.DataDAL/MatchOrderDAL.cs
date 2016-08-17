@@ -176,8 +176,8 @@ namespace SimpleWeb.DataDAL
         b.MemberID,
         b.MemberName,
         b.MemberPhone
-FROM    SimpleWebDataBase.dbo.MatchOrder A
-        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder B ON A.HelperOrderID = B.ID
+FROM    dbo.MatchOrder A
+        INNER JOIN dbo.HelpeOrder B ON A.HelperOrderID = B.ID
 WHERE   A.AcceptOrderID = @aid
         AND MatchStatus = 1";
             SqlParameter[] paramter = { new SqlParameter("@aid", aid) };
@@ -237,7 +237,7 @@ WHERE   A.AcceptOrderID = @aid
         public static decimal GetTotalMatchMoneyByDay(string datastart, string dataend)
         {
             string sqltxt = @"SELECT  ISNULL(SUM(MatchedMoney),0)
-FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
+FROM    dbo.MatchOrder
 WHERE   MatchTime >= @datastart
         AND MatchTime <= @dataend
         AND MatchStatus <> 2";
@@ -253,7 +253,7 @@ WHERE   MatchTime >= @datastart
         public static decimal GetTotalMatchMoney()
         {
             string sqltxt = @"SELECT  ISNULL(SUM(MatchedMoney),0)
-FROM    [SimpleWebDataBase].[dbo].[MatchOrder]
+FROM    dbo.MatchOrder
 WHERE   MatchStatus <> 2";
             return helper.GetSingle(sqltxt).ToString().ParseToDecimal(0);
         }

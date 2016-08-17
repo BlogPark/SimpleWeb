@@ -303,7 +303,7 @@ WHERE   RecommMID = @RecommMID";
         public static int GetReMemberCount(int memberid)
         {
             string sqltxt = @"SELECT COUNT(0)
-  FROM SimpleWebDataBase.dbo.ReMemberRelation
+  FROM dbo.ReMemberRelation
   WHERE MemberID=@memberid AND RStatus=1";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(1);
@@ -319,13 +319,20 @@ WHERE   RecommMID = @RecommMID";
             List<RecommendMap> list = new List<RecommendMap>();
             string sqltxt = @"SELECT  MemberID AS pid ,
         RecommMID AS id ,
-        ( RecommMPhone + '(' + RecommMTruthName + ')' ) AS name ,
+        ( RecommMPhone + '(' + RecommMTruthName + ')' + '--'
+          + ( CASE B.MStatus
+                WHEN 1 THEN '待激活'
+                WHEN 2 THEN '已激活'
+                WHEN 3 THEN '已冻结'
+              END ) ) AS name ,
         ( SELECT    COUNT(0)
-          FROM      SimpleWebDataBase.dbo.ReMemberRelation
+          FROM      dbo.ReMemberRelation C
+          INNER JOIN dbo.MemberInfo D ON C.MemberID = D.ID AND D.MStatus<>3
           WHERE     MemberID = A.RecommMID
                     AND RStatus = 1
         ) AS childcount
-FROM    SimpleWebDataBase.dbo.ReMemberRelation A
+FROM    dbo.ReMemberRelation A
+        INNER JOIN dbo.MemberInfo B ON A.MemberID = B.ID AND B.MStatus<>3
 WHERE   MemberID = @memberid
         AND RStatus = 1";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid) };

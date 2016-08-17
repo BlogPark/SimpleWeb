@@ -72,16 +72,16 @@ namespace SimpleWeb.DataDAL
         public static int UpdateMemberStaticFreezeMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticFreezeMoney=ISNULL(StaticFreezeMoney,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID,MemberPhone,MemberName,
                   StaticFreezeMoney
                 )
@@ -107,17 +107,17 @@ ELSE
         public static int UpdateMemberStaticFreezeMoneyAndinster(int memberid, decimal amont, decimal inster, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticFreezeMoney=ISNULL(StaticFreezeMoney,0)+@Amount,
                 Interest=@interest
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID,MemberPhone,MemberName,
                   StaticFreezeMoney,Interest
                 )
@@ -144,16 +144,16 @@ ELSE
         public static int UpdateMemberDynamicFreezeMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     DynamicFreezeMoney=ISNULL(DynamicFreezeMoney,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   DynamicFreezeMoney
                 )
@@ -179,10 +179,10 @@ ELSE
         public static int UpdateDynamicPunishMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     DynamicPunishMoney=ISNULL(DynamicPunishMoney,0)+@Amount,
                 DynamicFunds=ISNULL(DynamicFunds,0)-@Amount,
                 TotalDynamicFunds=ISNULL(TotalDynamicFunds,0)-@Amount
@@ -190,7 +190,7 @@ ELSE
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   DynamicPunishMoney,DynamicFunds,TotalDynamicFunds
                 )
@@ -216,10 +216,10 @@ ELSE
         public static int UpdateStaticPunishMoney(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticPunishMoney=ISNULL(StaticPunishMoney,0)+@Amount,
                 StaticCapital=ISNULL(StaticCapital,0)-@Amount,
                 TotalStaticCapital=ISNULL(TotalStaticCapital,0)-@Amount
@@ -227,7 +227,7 @@ ELSE
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   StaticPunishMoney,StaticCapital,TotalStaticCapital
                 )
@@ -253,17 +253,17 @@ ELSE
         public static int UpdateMemberStaticCapital(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount,
                 TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   StaticCapital,
                   TotalStaticCapital
@@ -291,10 +291,10 @@ ELSE
         public static int UpdateMemberStaticCapital(int memberid, decimal amont, decimal interest, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticCapital=@Amount,
                    TotalStaticCapital=ISNULL(TotalStaticCapital,0)+@Amount,
                    Interest=@interest
@@ -302,7 +302,7 @@ ELSE
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   StaticCapital,
                   TotalStaticCapital,
@@ -333,17 +333,17 @@ ELSE
         public static int UpdateMemberDynamicFunds(int memberid, decimal amont, string membername, string memberphone)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+            FROM    dbo.MemberCapitalDetail
             WHERE   MemberID = @MemberID )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount,
                    TotalDynamicFunds=ISNULL(TotalDynamicFunds,0)+@Amount
         WHERE   MemberID = @MemberID
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberCapitalDetail
+        INSERT  INTO dbo.MemberCapitalDetail
                 ( MemberID ,MemberPhone,MemberName,
                   DynamicFunds,
                   TotalDynamicFunds
@@ -371,7 +371,7 @@ ELSE
         public static int DeductionMemberStaticCapital(int memberid, decimal amont)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount
         WHERE   MemberID = @MemberID
     ";
@@ -391,7 +391,7 @@ ELSE
         public static int DeductionMemberStaticCapital(int memberid, decimal amont, decimal interest)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticCapital=ISNULL(StaticCapital,0)+@Amount,Interest=@interest
         WHERE   MemberID = @MemberID
     ";
@@ -412,7 +412,7 @@ ELSE
         public static int DeductionMemberDynamicFunds(int memberid, decimal amont)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount
         WHERE   MemberID = @MemberID
    ";
@@ -432,7 +432,7 @@ ELSE
         public static int DeductionMemberDynamicFunds(int memberid, decimal amont, decimal interest)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     DynamicFunds=ISNULL(DynamicFunds,0)+@Amount,Interest=@interest
         WHERE   MemberID = @MemberID
    ";
@@ -453,7 +453,7 @@ ELSE
         public static int UpdateMemberInterest(int memberid, decimal interest)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     interest=@interest
         WHERE   MemberID = @MemberID
    ";
@@ -506,7 +506,7 @@ WHERE   MemberID = @id";
         public static int UpdateStaticInterest(int memberid, decimal interestmoney)
         {
             string sqltxt = @"
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
         SET     StaticInterest=ISNULL(StaticInterest,0)+@StaticInterest
         WHERE   MemberID = @MemberID
    ";
@@ -526,7 +526,7 @@ WHERE   MemberID = @id";
         public static int UpdateDynamicInterest(int memberid, decimal interestmoney, string membername, string memberphone, string ordercode, int orderid)
         {
             string sqltxt = @"        
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
 SET     DynamicInterest = ISNULL(DynamicInterest, 0) + @Amount
 OUTPUT  @orderid ,
         @ordercode ,
@@ -558,7 +558,7 @@ WHERE   MemberID = @MemberID
         public static int UpdateDynamicInterest(int memberid, decimal interestmoney, string membername, string memberphone)
         {
             string sqltxt = @"        
-        UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+        UPDATE  dbo.MemberCapitalDetail
 SET     DynamicInterest = ISNULL(DynamicInterest, 0) + @Amount
 WHERE   MemberID = @MemberID    
    ";
@@ -600,7 +600,7 @@ WHERE   MemberID = @MemberID
 SET     Interest = CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > (@days) THEN 0
                         ELSE ( Amount * ( 0.01 * CurrentInterest ) )
                    END
-FROM    SimpleWebDataBase.dbo.HelpeOrder A 
+FROM    dbo.HelpeOrder A 
 WHERE HStatus <3";
             SqlParameter[] paramter = { 
                                           new SqlParameter("@days",day)
@@ -629,7 +629,7 @@ OUTPUT  INSERTED.MemberID ,
         4 ,
         DELETED.OrderCode
         INTO dbo.AmountChangeLog
-FROM    SimpleWebDataBase.dbo.HelpeOrder A
+FROM    dbo.HelpeOrder A
 WHERE   HStatus <> 3";
             SqlParameter[] paramter = { 
                                           new SqlParameter("@days",day)
@@ -645,7 +645,7 @@ WHERE   HStatus <> 3";
             string sqltxt = @"UPDATE  A
 SET     A.StaticInterest = ISNULL(A.StaticInterest,0)
         + ( SELECT  SUM(Interest)
-            FROM    SimpleWebDataBase.dbo.HelpeOrder
+            FROM    dbo.HelpeOrder
             WHERE   MemberID = A.MemberID
           )
 OUTPUT  INSERTED.MemberID ,
@@ -658,7 +658,7 @@ OUTPUT  INSERTED.MemberID ,
         4 ,
         ''
         INTO dbo.AmountChangeLog
-FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
+FROM    dbo.MemberCapitalDetail A";
             return helper.ExecuteSql(sqltxt);
         }
         /// <summary>
@@ -669,11 +669,32 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
         {
             string sqltxt = @"UPDATE  A
 SET     A.StaticInterest = ( SELECT  SUM(Interest)
-            FROM    SimpleWebDataBase.dbo.HelpeOrder
-            WHERE   MemberID = A.MemberID
+            FROM    dbo.HelpeOrder
+            WHERE   MemberID = A.MemberID AND HStatus <> 3 AND CurrentInterest <> 0
           )
-FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
+FROM    dbo.MemberCapitalDetail A";
             return helper.ExecuteSql(sqltxt);
+        }
+        /// <summary>
+        /// 更改单据的当前利率和利息数据
+        /// </summary>
+        /// <returns></returns>
+        public static int ResetInster(int day)
+        {
+            string sqltxt = @"UPDATE  A
+        SET     CurrentInterest = CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > ( @day
+                                                              - 1 ) THEN 0
+                                       ELSE CurrentInterest
+                                  END,
+                Interest=CASE WHEN DATEDIFF(DAY, AddTime, GETDATE()) > ( @day
+                                                              - 1 ) THEN 0
+                                       ELSE Interest
+                                  END
+        FROM    dbo.HelpeOrder A
+        WHERE   HStatus <> 3
+                AND CurrentInterest <> 0";
+            SqlParameter[] paramter = { new SqlParameter("@day",day)};
+            return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
         /// 清空会员利率
@@ -784,7 +805,7 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A";
         TotalStaticCapital ,
         TotalDynamicFunds ,
         Interest
-FROM    SimpleWebDataBase.dbo.MemberCapitalDetail
+FROM    dbo.MemberCapitalDetail
 WHERE   MemberID = @memberid";
             SqlParameter[] paramter ={
                                     new SqlParameter("@memberid",memberid)
@@ -862,7 +883,7 @@ WHERE   MemberID = @memberid";
             dynamicTotal = 0;
             string sqltxt = @"SELECT  SUM(ISNULL(TotalStaticCapital,0)) as staticnum ,
         SUM(ISNULL(TotalDynamicFunds,0)) as dynamicnum
-FROM    SimpleWebDataBase.dbo.MemberCapitalDetail";
+FROM    dbo.MemberCapitalDetail";
             DataTable dt = helper.Query(sqltxt).Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -881,7 +902,7 @@ FROM    SimpleWebDataBase.dbo.MemberCapitalDetail";
         public static int UpdateStaticInterestAndStaticFreezeMoney(int memberid, decimal money, decimal instermoney)
         {
             int result = 0;
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
 SET     StaticCapital = ISNULL(StaticCapital, 0) + @money + @insertmoney ,
         StaticInterest = ISNULL(StaticInterest, 0) - @insertmoney ,
         StaticFreezeMoney = ISNULL(StaticFreezeMoney, 0) - @money,
@@ -904,7 +925,7 @@ WHERE   MemberID = @memberid";
         public static int UpdateStaticFreezeMoneyForReiger(int memberid, decimal money)
         {
             int result = 0;
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
 SET     StaticCapital = ISNULL(StaticCapital, 0) + @money ,
         StaticFreezeMoney = ISNULL(StaticFreezeMoney, 0) - @money,
         TotalStaticCapital=ISNULL(TotalStaticCapital, 0) + @money 
@@ -924,7 +945,7 @@ WHERE   MemberID = @memberid";
         public static int UpdateDynamicInterest(int memberid, decimal money)
         {
             int result = 0;
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
 SET     DynamicFunds = ISNULL(DynamicFunds, 0) + @money,
         DynamicInterest = ISNULL(DynamicInterest, 0) - @money,
         TotalDynamicFunds=ISNULL(TotalDynamicFunds, 0) + @money  
@@ -944,7 +965,7 @@ WHERE   MemberID = @memberid";
         public static int UpdateDynamicInterestForComplete(int memberid, decimal money)
         {
             int result = 0;
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberCapitalDetail
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
 SET     DynamicFunds = ISNULL(DynamicFunds, 0) + @money,
         DynamicFreezeMoney = ISNULL(DynamicFreezeMoney, 0) - @money,
         TotalDynamicFunds=ISNULL(TotalDynamicFunds, 0) + @money  
@@ -1110,7 +1131,7 @@ WHERE   MemberID = @memberid";
         MemberName ,
         MemberPhone ,
         Amount
-FROM    SimpleWebDataBase.dbo.LeaderAmount
+FROM    dbo.LeaderAmount
 WHERE   OrderID = @orderid
         AND MemberID = @memberid";
             SqlParameter[] paramter = { new SqlParameter("@orderid",oid),
@@ -1229,8 +1250,8 @@ WHERE   OrderID = @orderid
             string sqltxt = @"UPDATE  A
 SET     A.StaticCapital = ISNULL(A.StaticCapital, 0) + B.Interest ,
         A.StaticInterest = ISNULL(A.StaticInterest, 0) - B.Interest
-FROM    SimpleWebDataBase.dbo.MemberCapitalDetail A
-        INNER JOIN SimpleWebDataBase.dbo.HelpeOrder B ON A.MemberID = B.MemberID
+FROM    dbo.MemberCapitalDetail A
+        INNER JOIN dbo.HelpeOrder B ON A.MemberID = B.MemberID
 WHERE   B.CurrentInterest = 2
         AND B.HStatus = 5";
             return helper.ExecuteSql(sqltxt);
@@ -1242,7 +1263,7 @@ WHERE   B.CurrentInterest = 2
         /// <returns></returns>
         public static int AddWaitFreeMoney(WaitFreeLeaderAmountModel model)
         {
-            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.WaitFreeLeaderAmount
+            string sqltxt = @"INSERT  INTO dbo.WaitFreeLeaderAmount
         ( MemberID ,
           MemberName ,
           MemberPhone ,
@@ -1280,7 +1301,7 @@ VALUES  ( @MemberID ,
         /// <returns></returns>
         public static int AddLeaderAmount(LeaderAmountModel model)
         {
-            string sqltxt = @"INSERT  INTO SimpleWebDataBase.dbo.LeaderAmount
+            string sqltxt = @"INSERT  INTO dbo.LeaderAmount
         ( OrderID ,
           OrderCode ,
           MemberID ,
@@ -1325,7 +1346,7 @@ SELECT  @@IDENTITY;";
         MemberPhone ,
         Amount ,
         ISNULL(LType, 0) LType
-FROM    SimpleWebDataBase.dbo.LeaderAmount
+FROM    dbo.LeaderAmount
 WHERE   OrderID = @hid";
             SqlParameter[] paramter = { new SqlParameter("@hid",hid)};
             DataTable dt = helper.Query(sqltxt,paramter).Tables[0];

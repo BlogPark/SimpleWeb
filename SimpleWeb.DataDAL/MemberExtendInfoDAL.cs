@@ -21,10 +21,10 @@ namespace SimpleWeb.DataDAL
         public static int Update(int memberid, decimal money)
         {
             string sqltxt = @"IF EXISTS ( SELECT  1
-            FROM    SimpleWebDataBase.dbo.MemberExtendInfo
+            FROM    dbo.MemberExtendInfo
             WHERE   MemberID = @memberid )
     BEGIN
-        UPDATE  SimpleWebDataBase.dbo.MemberExtendInfo
+        UPDATE  dbo.MemberExtendInfo
         SET     LastHelperTime = GETDATE() ,
                 MemberHelpCount = MemberHelpCount + 1 ,
                 LastHelpMoney = @money
@@ -32,7 +32,7 @@ namespace SimpleWeb.DataDAL
     END
 ELSE
     BEGIN
-        INSERT  INTO SimpleWebDataBase.dbo.MemberExtendInfo
+        INSERT  INTO dbo.MemberExtendInfo
                 ( MemberID ,
                   LastHelperTime ,
                   MemberHelpCount ,
@@ -104,7 +104,7 @@ ELSE
         /// <returns></returns>
         public static int CancleHelperOrder(int memberid, int hid)
         {
-            string sqltxt = @"UPDATE  SimpleWebDataBase.dbo.MemberExtendInfo
+            string sqltxt = @"UPDATE  dbo.MemberExtendInfo
 SET     LastHelperTime = ( SELECT TOP 1
                                     Addtime
                            FROM     HelpeOrder
@@ -138,8 +138,8 @@ WHERE   MemberID = @memberid";
             string sqltxt = @"SELECT  MemberID ,
         b.MobileNum ,
         b.TruethName
-FROM    SimpleWebDataBase.dbo.MemberExtendInfo A
-        INNER JOIN SimpleWebDataBase.dbo.MemberInfo B ON A.MemberID = b.ID
+FROM    dbo.MemberExtendInfo A
+        INNER JOIN dbo.MemberInfo B ON A.MemberID = b.ID
 WHERE   ( DATEDIFF(DAY, LastHelperTime, GETDATE()) + 1 ) <=@days";
             SqlParameter[] paramter = {
                                           new SqlParameter("@days",day)
