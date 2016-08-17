@@ -145,6 +145,8 @@
     <Compile Include="Areas\AdminArea\Models\SysUserMenuViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\WebSiteViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Controllers\LoginController.cs" />
+    <Compile Include="Areas\NewTemplateArea\Controllers\RegisterController.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\NewRegisterViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\NewTemplateAreaAreaRegistration.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\RegisterController.cs" />
@@ -1722,7 +1724,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
-    <Folder Include="Areas\NewTemplateArea\Models\" />
     <Folder Include="Areas\NewTemplateArea\Views\Shared\" />
     <Folder Include="Areas\WebFrontArea\Views\Shared\" />
   </ItemGroup>
@@ -2005,6 +2006,8 @@
     <Content Include="assets\font\fontawesome-webfont.eot%40" />
     <Content Include="assets\font\fontawesome-webfont.ttf" />
     <Content Include="assets\font\fontawesome-webfont.woff" />
+    <Content Include="Areas\NewTemplateArea\Views\Login\Index.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\Register\Index.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
     <Content Include="Views\_NewTempleteLayout.cshtml" />
     <Content Include="Views\IndexPub\newwebmenu.cshtml" />
