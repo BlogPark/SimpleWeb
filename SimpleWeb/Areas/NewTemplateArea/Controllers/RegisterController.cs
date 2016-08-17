@@ -31,7 +31,7 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             model.regintable = bll.GetReginTableListModel(1);
             ViewBag.PageTitle = web.WebName;
             ViewData["Error"] = "";
-            return View(model);
+            return View(model);   
         }
         [HttpPost]
         public ActionResult Index(MemberInfoModel member)
