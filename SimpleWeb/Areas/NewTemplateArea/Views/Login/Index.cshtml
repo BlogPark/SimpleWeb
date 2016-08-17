@@ -1,0 +1,55 @@
+﻿@model SimpleWeb.DataModels.MemberInfoModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.PageTitle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bluth Company">
+    <link rel="shortcut icon" href="assets/ico/favicon.html">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/theme.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/alertify.css" rel="stylesheet">
+    <link rel="Favicon Icon" href="favicon.ico">
+    <link href="http://fonts.useso.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body class="bodyback">
+    <div id="wrap">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="row-fluid">
+                        <div class="widget container-narrowlogin">
+                            <div class="widget-header">
+                                <i class="icon-user"></i>
+                                <h5>登&nbsp;&nbsp;陆</h5>
+                            </div>
+                            <div class="widget-body clearfix" style="padding: 25px;">
+                                <form role="form" method="post">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.MobileNum, new { @placeholder = "手机号码", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.PasswordFor(m => m.LogPwd, new { @placeholder = "登陆密码", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn pull-right">登 陆</button>
+                                </form>
+                                <p class="errortext">@ViewBag.TempMsg</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
