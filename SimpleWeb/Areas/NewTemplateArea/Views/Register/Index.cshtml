@@ -30,84 +30,149 @@
                                 <h5>创建一个新账户</h5>
                             </div>
                             <div class="widget-body clearfix" style="padding: 25px;">
-                                @using (Html.BeginForm("Index", "Register", new { area = "WebFrontArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
-                                {	      				
+                                @using (Html.BeginForm("Index", "Register", new { area = "NewTemplateArea" }, FormMethod.Post, new { @id = "registerform", @class = "form-horizontal", @role = "form" }))
+                                {
+                                    if (!string.IsNullOrWhiteSpace(ViewData["Error"].ToString()))
+                                    {
+                                    <div class="control-group">
+                                        <lable style="color: red">@ViewData["Error"]</lable>
+                                    </div>
+                                    }				
                                     <div class="control-group ">
-                                        <label for="form_username">真实姓名:</label>
+                                        <label for="member_TruethName">真实姓名:</label>
                                         <div class="controls">
                                             @Html.TextBoxFor(m => m.member.TruethName, new { @placeholder = "真实姓名", @class = "btn-block" })
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_password">Choose Password:</label>
+                                        <label for="form_password">登陆密码:</label>
                                         <div class="controls">
-                                            <input class="span6" type="password" name="password" id="form_password">
-                                            <input class="span6" type="password" name="password" id="form_password">
+                                            <input class="span6" type="password" name="password" id="pwd" name="pwd" placeholder="登陆密码">
+                                            @Html.PasswordFor(m => m.member.LogPwd, new { @placeholder = "确认密码", @class = "span6" })
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_password">Choose Password:</label>
+                                        <label for="form_password">性 别:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="password" name="password" id="form_password">
+                                            <div class="span12">
+                                                <label class="radio span4">
+                                                    <input type="radio" checked="" value="1" id="reagerRadios1" name="reagerRadios1">
+                                                    男
+                                                </label>
+                                                <label class="radio span8">
+                                                    <input type="radio" value="2" id="reagerRadios2" name="reagerRadios1">
+                                                    女
+                                                </label>
+                                                @Html.HiddenFor(m => m.member.Sex)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group " style="display: none;">
+                                        <label for="form_password">固定电话:</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.member.TelPhone, new { @placeholder = "固定电话", @class = "btn-block" })
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_password">Choose Password:</label>
+                                        <label for="form_password">会员邮箱:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="password" name="password" id="form_password">
+                                            @Html.TextBoxFor(m => m.member.Email, new { @placeholder = "会员邮箱", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group " style="display: none;">
+                                        <label for="form_password">身份证号:</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.member.IdentificationID, new { @placeholder = "身份证号", @class = "btn-block" })
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_password">Choose Password:</label>
+                                        <label for="form_password">微信账号:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="password" name="password" id="form_password">
+                                            @Html.TextBoxFor(m => m.member.WeixinNum, new { @placeholder = "微信账号", @class = "btn-block" })
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_email">E-mail:</label>
+                                        <label for="form_password">支付宝账号:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="text" name="email" id="form_email"></div>
+                                            @Html.TextBoxFor(m => m.member.AliPayName, new { @placeholder = "支付宝账号", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group ">
+                                        <label for="form_password">支付宝姓名:</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.member.AliPayNum, new { @placeholder = "支付宝姓名", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group " style="display: none;">
+                                        <label for="form_password">密保问题:</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.member.SecurityQuestion, new { @placeholder = "密保问题", @class = "btn-block" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group" style="display: none;">
+                                        <label for="form_email">密保答案:</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.member.SecurityAnswer, new { @placeholder = "密保答案", @class = "btn-block" })
+                                        </div>
                                     </div>	
-                                    <div class="control-group ">   
+                                    <div class="control-group ">
                                         <label for="form_username">手机号码:</label>
                                         <div class="controls">
-                                            @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "btn-block span9",@type="tel" })
-                                            <a class="btn btn-primary" type="button">发送验证码</a>
+                                            @Html.TextBoxFor(m => m.member.MobileNum, new { @placeholder = "手机号码", @class = "btn-block span9", @type = "tel" })
+                                            <a class="btn btn-primary" href="javascript:void(0);" onclick="send()">发送验证码</a>
+                                            <input type="hidden" id="vid" value="0">
                                         </div>
                                     </div>
 
                                     <div class="control-group ">
-                                        <label for="form_password">Choose Password:</label>
+                                        <label for="form_password">手机验证码:</label>
                                         <div class="controls">
-                                            <input class="btn-block span8" type="password" name="password" id="form_password"></div>
+                                            <input class="btn-block span8" type="text" name="verifivationcode" id="verifivationcode" placeholder="手机验证码" onchange="checkvcode()"> <span id="resultmsg" style="margin-left:10px;color:red;"></span>   
+                                        </div>
                                     </div>
 
                                     <div class="control-group ">
-                                        <label for="form_email">E-mail:</label>
+                                        <label for="form_email">所在省市:</label>
                                         <div class="controls">
-                                            <input class="span4" type="text" name="email" id="form_email">
-                                            <input class="span4" type="text" name="email" id="form_email">
-                                            <input class="span4" type="text" name="email" id="form_email">
+                                            <select class="span4" id="redrpprovince">
+                                                <option value="0">选择省份</option>
+                                                @foreach (var item in Model.regintable)
+                                                {
+                                                    <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                                }
+                                            </select>
+                                            <select class="span4" id="redrpcity">
+                                                <option value="0"></option>
+                                            </select>
+                                            <select class="span4" id="redrparea">
+                                                <option value="0"></option>
+                                            </select>
+                                            @Html.HiddenFor(m => m.member.Province)
+                                            @Html.HiddenFor(m => m.member.City)
+                                            @Html.HiddenFor(m => m.member.Area)
+                                            <input id="checkv" name="checkv" type="hidden" value="e">
                                         </div>
                                     </div>
                                     <div class="control-group ">
-                                        <label for="form_username">Username:</label>
+                                        <label for="form_username">详细地址:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="text" name="username" id="form_username"></div>
+                                            @Html.TextBoxFor(m => m.member.Address, new { @placeholder = "详细地址", @class = "btn-block" })
+                                        </div>
                                     </div>						
 
                                     <div class="control-group ">
-                                        <label for="form_email">E-mail:</label>
+                                        <label for="form_email">推荐人手机:</label>
                                         <div class="controls">
-                                            <input class="btn-block" type="text" name="email" id="form_email"></div>
+                                            @Html.TextBoxFor(m => m.member.MemberPhone, new { @placeholder = "推荐人手机", @class = "btn-block", @readonly = "true" })
+                                        </div>
                                     </div>
                                     <div class="control-group ">
                                         <label class="checkbox">
-                                            <input type="checkbox" value="">
+                                            <input type="checkbox" value="" id="agreementchk">
                                             我已阅读并且充分了解投资的风险，无条件接受网站平台的一切决定
                                         </label>
                                     </div>
-                                    <button type="submit" class="btn btn-large btn-block">注 册</button>
+                                    <a href="javascript:void(0);" onclick="subchange()" class="btn btn-large btn-block">注&nbsp;&nbsp;&nbsp;&nbsp; 册</a>
                                 }
                             </div>
                         </div>

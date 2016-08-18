@@ -1,0 +1,124 @@
+﻿@model SimpleWeb.Areas.NewTemplateArea.Models.AcceptOrderViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div class="row-fluid">
+    <input type="hidden" value="@Model.acceptorder.ID" id="helporderid">
+</div>
+<div class="row-fluid">
+    <div class="widget span12" style="background-image: url('assets/img/gallery/zhanwei.jpg')">
+        <table class="table table-condensed center">
+            <thead>
+                <tr>
+                    <th>单据编号</th>
+                    <th>单据金额</th>
+                    <th>支付方式</th>
+                    <th>已匹金额</th>
+                    <th>单据状态</th>
+                    <th>排队天数</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.acceptorder.OrderCode</td>
+                    <td>@Model.acceptorder.Amount</td>
+                    <td>@Model.acceptorder.PayType</td>
+                    <td>@Model.acceptorder.MatchedAmount</td>
+                    <td>@Model.acceptorder.AStatusName</td>
+                    <td>@Model.acceptorder.DiffDay 天</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="widget span12">
+        <div class="widget-header">
+            <i class="icon-circle"></i>
+            <h5>匹配单据信息</h5>
+            <div class="widget-buttons">
+
+                <a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-body clearfix">
+            @foreach (var item in Model.helpOrderInfo)
+            {
+                <div class="widget span4" style="background-image: url('assets/img/gallery/zhanwei.jpg')">
+                    <div class="span12">
+                        <table class='offset2'>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <ul class="ulnotype">
+                                        <li><strong>匹配单据号</strong>: @item.helpordercode</li>
+                                        <li><strong>匹配金额</strong>: @item.MatchedMoney</li>
+                                        <li><strong>接受帮助会员名字</strong>: @item.helpmemberName</li>
+                                        <li><strong>接受帮助会员电话</strong>: @item.helpmemberPhone</li>
+                                        <li><strong>接受帮助会员支付宝</strong>: @item.helpmemberAlipayName</li>
+                                        <li><strong>接受帮助会员微信</strong>: @item.helpmemberweixin</li>
+                                        <li><strong>推荐人名字</strong>: @item.remembername</li>
+                                        <li><strong>推荐人电话</strong>: @item.rememberphone</li>
+                                        <li><strong>当前匹配状态</strong>: @item.MatchStatusName</li>
+                                        <li><strong>匹配时间</strong>: @item.MatchTime.ToString("yyyy-MM-dd HH:mm")</li>
+                                        @if (item.MatchStatus > 1)
+                                        {
+                                            <li><strong>打款时间</strong>: @item.PaymentedTime.ToString("yyyy-MM-dd HH:mm:ss")</li> 
+                                        }
+                                        @if (item.MatchStatus > 3)
+                                        {
+                                            <li><strong>完成时间</strong>: @item.CompleteTime.ToString("yyyy-MM-dd HH:mm:ss")</li> 
+                                        }
+                                    </ul>
+                                </td>
+                                <td></td>
+                            </tr>
+                            @if (item.MatchStatus == 3)
+                            { 
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <ul class="countdown" data-date='@item.PaymentedTime.AddDays(1).ToString("yyyy-MM-dd HH:mm:dd")'>
+                                            <li>
+                                                <span class="days">00</span>
+                                            </li>
+                                            <li class="seperator">天</li>
+                                            <li>
+                                                <span class="hours">00</span>
+                                            </li>
+                                            <li class="seperator">小时</li>
+                                            <li>
+                                                <span class="minutes">00</span>
+                                            </li>
+                                            <li class="seperator">分</li>
+                                            <li>
+                                                <span class="seconds">00</span>
+                                            </li>
+                                            <li class="seperator">秒</li>
+                                        </ul>
+                                    </td>
+                                    <td></td>
+                                </tr>                            
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-block btn-large btn-primary expand  span6 offset2" type="button"  onclick="updatehelporder(@Model.acceptorder.ID,@item.helporderid)">确认已收款</button></td>
+                                    <td></td>
+                                </tr>
+                            }
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <a class="btn btn-block btn-primary expand1">超时未打款投诉</a></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

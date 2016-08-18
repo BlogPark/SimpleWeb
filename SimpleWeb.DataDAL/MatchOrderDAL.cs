@@ -302,7 +302,7 @@ WHERE   MatchStatus <> 2";
             foreach (DataRow item in dt.Rows)
             {
                 MatchOrderModel matchordermodel = new MatchOrderModel();
-                
+
                 if (item["ID"].ToString() != "")
                 {
                     matchordermodel.ID = int.Parse(item["ID"].ToString());
@@ -347,6 +347,120 @@ WHERE   MatchStatus <> 2";
                 }
                 matchordermodel.MatchStatusName = item["MatchStatusName"].ToString();
                 list.Add(matchordermodel);
+            }
+            return list;
+        }
+        /// <summary>
+        /// 按照会员ID查询匹配的提供帮助信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="topnum"></param>
+        /// <returns></returns>
+        public static List<ExtendMatchOrdersModel> GetHelperMatchedOrderListByMemberID(int memberid, int topnum)
+        {
+            List<ExtendMatchOrdersModel> list = new List<ExtendMatchOrdersModel>();
+            string sqltxt = @"SELECT top (@topnum)  A.HelperOrderCode ,
+        A.HelperOrderID,
+        A.AcceptOrderCode,
+        A.AcceptOrderID,
+        A.ID ,
+        A.MatchedMoney ,
+        CASE A.MatchStatus
+          WHEN 1 THEN '已匹配'
+          WHEN 2 THEN '已取消'
+          WHEN 3 THEN '已打款'
+          WHEN 4 THEN '已完成'
+        END MatchStatusName ,
+        B.PayType ,
+        A.LastUpdateTime ,
+        A.PaymentedTime ,
+        A.CompleteTime ,
+        A.MatchStatus ,
+        B.AddTime,A.MatchTime
+FROM    dbo.MatchOrder A
+        INNER JOIN dbo.HelpeOrder B ON A.HelperOrderID = B.ID
+WHERE   HelperMemberID = @memberid
+ORDER BY A.LastUpdateTime DESC ";
+            SqlParameter[] paramter = { new SqlParameter("@topnum", topnum), new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    ExtendMatchOrdersModel model = new ExtendMatchOrdersModel();
+                    model.AcceptOrderCode = item["AcceptOrderCode"].ToString();
+                    model.AcceptOrderID = item["AcceptOrderID"].ToString().ParseToInt(0);
+                    model.AddTime = item["AddTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.CompleteTime = item["CompleteTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.HelperOrderCode = item["HelperOrderCode"].ToString();
+                    model.HelperOrderID = item["HelperOrderID"].ToString().ParseToInt(0);
+                    model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.MatchedMoney = item["MatchedMoney"].ToString().ParseToDecimal(0);
+                    model.MatchID = item["MatchID"].ToString().ParseToInt(0);
+                    model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
+                    model.MatchStatusName = item["MatchStatusName"].ToString();
+                    model.PaymentedTime = item["PaymentedTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.PayType = item["PayType"].ToString();
+                    model.MatchTime = item["MatchTime"].ToString().ParseToDateTime(DateTime.Now);
+                    list.Add(model);
+                }
+            }
+            return list;
+        }
+        /// <summary>
+        /// 按照会员ID查询匹配的接受帮助信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="topnum"></param>
+        /// <returns></returns>
+        public static List<ExtendMatchOrdersModel> GetAcceptMatchedOrderListByMemberID(int memberid, int topnum)
+        {
+            List<ExtendMatchOrdersModel> list = new List<ExtendMatchOrdersModel>();
+            string sqltxt = @"SELECT top (@topnum)  A.HelperOrderCode ,
+        A.HelperOrderID,
+        A.AcceptOrderCode,
+        A.AcceptOrderID,
+        A.ID ,
+        A.MatchedMoney ,
+        CASE A.MatchStatus
+          WHEN 1 THEN '已匹配'
+          WHEN 2 THEN '已取消'
+          WHEN 3 THEN '已打款'
+          WHEN 4 THEN '已完成'
+        END MatchStatusName ,
+        B.PayType ,
+        A.LastUpdateTime ,
+        A.PaymentedTime ,
+        A.CompleteTime ,
+        A.MatchStatus ,
+        B.AddTime,A.MatchTime
+FROM    dbo.MatchOrder A
+        INNER JOIN dbo.AcceptHelpOrder B ON A.AcceptOrderID = B.ID
+WHERE   AcceptMemberID = @memberid
+ORDER BY A.LastUpdateTime DESC ";
+            SqlParameter[] paramter = { new SqlParameter("@topnum", topnum), new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    ExtendMatchOrdersModel model = new ExtendMatchOrdersModel();
+                    model.AcceptOrderCode = item["AcceptOrderCode"].ToString();
+                    model.AcceptOrderID = item["AcceptOrderID"].ToString().ParseToInt(0);
+                    model.AddTime = item["AddTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.CompleteTime = item["CompleteTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.HelperOrderCode = item["HelperOrderCode"].ToString();
+                    model.HelperOrderID = item["HelperOrderID"].ToString().ParseToInt(0);
+                    model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.MatchedMoney = item["MatchedMoney"].ToString().ParseToDecimal(0);
+                    model.MatchID = item["MatchID"].ToString().ParseToInt(0);
+                    model.MatchStatus = item["MatchStatus"].ToString().ParseToInt(1);
+                    model.MatchStatusName = item["MatchStatusName"].ToString();
+                    model.PaymentedTime = item["PaymentedTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.PayType = item["PayType"].ToString();
+                    model.MatchTime = item["MatchTime"].ToString().ParseToDateTime(DateTime.Now);
+                    list.Add(model);
+                }
             }
             return list;
         }

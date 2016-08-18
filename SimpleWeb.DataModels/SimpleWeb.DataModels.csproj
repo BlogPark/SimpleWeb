@@ -46,6 +46,7 @@
     <Compile Include="ActiveCodeModel.cs" />
     <Compile Include="AdminIndexModels.cs" />
     <Compile Include="AdminSiteNewsModel.cs" />
+    <Compile Include="ExtendMatchOrdersModel.cs" />
     <Compile Include="HelpeOrderModel.cs" />
     <Compile Include="HelpOrderExtendInfoModel.cs" />
     <Compile Include="LeaderAmountModel.cs" />

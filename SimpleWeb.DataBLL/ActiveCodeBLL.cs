@@ -86,7 +86,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int AssignedMoreCode(int count, int type, string memberphone)
         {
-            List<string> codes = ActiveCodeDAL.GetTypeCountActiveCode(type,count);
+            List<string> codes = ActiveCodeDAL.GetTypeCountActiveCode(type, count);
             return dal.AssignedCode(codes, memberphone);
         }
 
@@ -150,7 +150,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public List<string> GetMemberCodeByCount(int type, int memberid, int count)
         {
-            return ActiveCodeDAL.GetMemberCodeByCount(type,memberid,count);
+            return ActiveCodeDAL.GetMemberCodeByCount(type, memberid, count);
         }
         /// <summary>
         /// 查询激活码的记录
@@ -160,9 +160,27 @@ namespace SimpleWeb.DataBLL
         /// <param name="pagesize"></param>
         /// <param name="totalrowcount"></param>
         /// <returns></returns>
-        public List<ActiveCodeLogModel> GetActiveCodeLogForPage(int memberid,int pageindex,int pagesize,out int totalrowcount)
+        public List<ActiveCodeLogModel> GetActiveCodeLogForPage(int memberid, int pageindex, int pagesize, out int totalrowcount)
         {
-            return ActiveCodeDAL.GetActiveCodeLogForPage(memberid,pageindex,pagesize,out totalrowcount);
+            return ActiveCodeDAL.GetActiveCodeLogForPage(memberid, pageindex, pagesize, out totalrowcount);
+        }
+        /// <summary>
+        /// 剩余激活币个数
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int GetMemberActiveCodeCount(int memberid)
+        {
+            return ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 1);//我的激活币的个数
+        }
+        /// <summary>
+        /// 剩余排单币个数
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int GetMemberPandanCodeCount(int memberid)
+        {
+            return ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 2);//我的排单币个数
         }
     }
 }

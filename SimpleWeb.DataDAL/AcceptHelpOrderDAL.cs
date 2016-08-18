@@ -509,6 +509,7 @@ WHERE   id = @id";
         D.LastUpdateTime,
         D.PaymentedTime,
         D.CompleteTime,
+        D.MatchTime,
         CASE D.MatchStatus WHEN 1 THEN '已匹配' WHEN 2 THEN '已取消' WHEN 3 THEN '已打款' WHEN 4 THEN '已完成' END AS MatchStatusName,
         CASE A.HStatus WHEN 0 THEN '未匹配' WHEN 1 THEN '部分匹配' WHEN 2 THEN '全部匹配' WHEN 3 THEN '已撤销'  WHEN 4 THEN '对方已打款'  WHEN 5 THEN '双方已确认' END AS HStatusName
 FROM   dbo.MatchOrder D
@@ -542,6 +543,7 @@ WHERE   D.AcceptOrderID = @orderid";
                     model.LastUpdateTime = item["LastUpdateTime"].ToString().ParseToDateTime(DateTime.Now);
                     model.PaymentedTime = item["PaymentedTime"].ToString().ParseToDateTime(DateTime.Now);
                     model.CompleteTime = item["CompleteTime"].ToString().ParseToDateTime(DateTime.Now);
+                    model.MatchTime = item["MatchTime"].ToString().ParseToDateTime(DateTime.Now);
                     list.Add(model);
                 }
             }

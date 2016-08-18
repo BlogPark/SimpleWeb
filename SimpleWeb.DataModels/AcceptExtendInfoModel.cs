@@ -96,5 +96,10 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public DateTime CompleteTime { get; set; }
+        /// <summary>
+        /// 匹配时间
+        /// </summary>
+        [DataMember]
+        public DateTime MatchTime { get; set; }
     }
 }

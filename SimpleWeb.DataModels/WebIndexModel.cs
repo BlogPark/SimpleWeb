@@ -52,5 +52,15 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public List<AmountChangeLogModel> AmontChangLog { get; set; }
+        /// <summary>
+        /// 匹配的提供帮助列表
+        /// </summary>
+        [DataMember]
+        public List<ExtendMatchOrdersModel> HelperMatchedList { get; set; }
+        /// <summary>
+        /// 匹配的接受帮助列表
+        /// </summary>
+        [DataMember]
+        public List<ExtendMatchOrdersModel> AcceptMatchedList { get; set; }
     }
 }

@@ -1,0 +1,70 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model SimpleWeb.Areas.NewTemplateArea.Models.HelpOrderListViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div class="row-fluid"></div>
+<div class="row-fluid">
+    <div class="widget span12">
+        <div class="widget-header">
+            <i class="icon-signal"></i>
+            <h5>我的激活码列表</h5>
+            <div class="widget-buttons">
+                <a data-collapsed="false" class="collapse" href="javascript:void(0)"><i class="icon-chevron-up" data-title="Collapse"></i></a>
+            </div>
+        </div>
+        <div style="min-height: 319px; display: block;" class="widget-body clearfix">
+            <div class="expand1520 span7" style="margin-left: 30px;">
+                <div class="widget-forms clearfix">
+                    @using (Html.BeginForm("helpOrderlist", "WebHome", new { area = "NewTemplateArea" }, FormMethod.Get, new { @id = "form1", @class = "form-inline" }))
+                    {
+                        @Html.TextBoxFor(m => m.seachmodel.OrderCode, new { @class = "span4", @placeholder = "单据号" })
+                        <button type="submit" class="btn btn-success">查询</button>
+                    }
+                </div>
+            </div>
+            <div class="span12">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>单据编号</th>
+                            <th>提供金额</th>
+                            <th>支付方式</th>
+                            <th>已匹金额</th>
+                            <th>单据状态</th>
+                            <th>排单天数</th>
+                            <th>使用激活码</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.orderlist)
+                        {
+                            <tr class="tablerow">
+                                <td>
+                                    @item.OrderCode
+                                </td>
+                                <td>
+                                    @item.Amount
+                                </td>
+                                <td>
+                                    @item.PayType
+                                </td>
+                                <td>@item.MatchedAmount</td>
+                                <td>@item.HStatusName</td>
+                                <td>@item.DiffDay</td>
+                                <td>@item.ActiveCode</td>
+                                <td><a href="@Url.Action("helporderDetail", "WebHome", new { area = "NewTemplateArea", orderid = item.ID })">详细信息>></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="span12">
+                    <div class="dataTables_paginate paging_bootstrap pagination center">
+                        @Html.Pager(Model.orderlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

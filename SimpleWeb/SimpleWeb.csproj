@@ -146,7 +146,14 @@
     <Compile Include="Areas\AdminArea\Models\WebSiteViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\NewTemplateArea\Controllers\RegisterController.cs" />
+    <Compile Include="Areas\NewTemplateArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\AcceptOrderListViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\AcceptOrderViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\HelpOrderListViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\HelpOrderViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\MyActiveIndexModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\NewRegisterViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\WebHomeViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\NewTemplateAreaAreaRegistration.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\RegisterController.cs" />
@@ -2008,6 +2015,12 @@
     <Content Include="assets\font\fontawesome-webfont.woff" />
     <Content Include="Areas\NewTemplateArea\Views\Login\Index.cshtml" />
     <Content Include="Areas\NewTemplateArea\Views\Register\Index.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\Index.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\myactivation.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\mylineation.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\helporderDetail.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\AcceptOrderDetail.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\helpOrderlist.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
     <Content Include="Views\_NewTempleteLayout.cshtml" />
     <Content Include="Views\IndexPub\newwebmenu.cshtml" />

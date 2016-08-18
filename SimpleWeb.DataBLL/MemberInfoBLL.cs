@@ -204,14 +204,16 @@ namespace SimpleWeb.DataBLL
             int count = 0;
             List<ReMemberRelationModel> rememberlist = ReMemberRelationDAL.GetMemberRecommendMap(memberid, out count);
             WebIndexModel model = new WebIndexModel();
-            model.acceptOrders = AcceptHelpOrderDAL.GetTopAcceptOrderListByMemberID(memberid, 4);//接受帮助的订单
+            model.helperOrders = HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid, 6);//我提供的帮助订单
+            model.acceptOrders = AcceptHelpOrderDAL.GetTopAcceptOrderListByMemberID(memberid, 6);//接受帮助的订单
             model.activecodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 1);//我的激活币的个数
             model.activecodelog = OperateLogDAL.GetActiveCodeLogByMemberID(memberid, 10);//我的激活币和排单币的使用状态
-            model.AmontChangLog = OperateLogDAL.GetAmontChangeLogByMemberID(memberid, 10);//我的资金变动日志
-            model.helperOrders = HelpeOrderDAL.GetTopHelpeOrderListByMemberID(memberid, 4);//我提供的帮助订单
+            model.AmontChangLog = OperateLogDAL.GetAmontChangeLogByMemberID(memberid, 10);//我的资金变动日志            
             model.members = count;//我下级会员的总人数
             model.paidancodeCount = ActiveCodeDAL.GetMemberActiveCodeCount(memberid, 2);//我的排单币个数
-            model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情    
+            model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情   
+            model.HelperMatchedList = MatchOrderDAL.GetHelperMatchedOrderListByMemberID(memberid, 5);//我的提供帮助匹配信息
+            model.AcceptMatchedList = MatchOrderDAL.GetAcceptMatchedOrderListByMemberID(memberid, 5);//我的接受帮助匹配信息
             return model;
         }
         /// <summary>
@@ -401,7 +403,7 @@ namespace SimpleWeb.DataBLL
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        public  List<RecommendMap> GetRecommendMap(int memberid)
+        public List<RecommendMap> GetRecommendMap(int memberid)
         {
             return ReMemberRelationDAL.GetRecommendMap(memberid);
         }
@@ -412,7 +414,7 @@ namespace SimpleWeb.DataBLL
         /// <returns></returns>
         public int recommendint(int memberid)
         {
-           return  ReMemberRelationDAL.GetReMemberCount(memberid);
+            return ReMemberRelationDAL.GetReMemberCount(memberid);
         }
     }
 }
