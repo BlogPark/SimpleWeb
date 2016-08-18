@@ -1,0 +1,59 @@
+﻿@model SimpleWeb.Areas.NewTemplateArea.Models.MemberNewsViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div id="example_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">新闻内容</h3>
+    </div>
+    <div class="modal-body">
+        <p>新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确 定</button>
+    </div>
+</div>
+<div class="row-fluid"></div>
+<div class="row-fluid">
+    <div class="widget span12">
+        <div class="widget-header">
+            <i class="icon-tasks"></i>
+            <h5>网站新闻公告</h5>
+            <div class="widget-buttons">
+                <a href="#" data-title="Collapse" data-collapsed="false" class="collapse"><i class="icon-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-body clearfix" style="height: 350px;">
+            <div class="widget-tasks-assigned">
+                <ul>
+                    @if (Model.news != null && Model.news.Any())
+                    {
+                        foreach (var item in Model.news)
+                        {
+                        <li class="priority-high-left">
+                            <a href="#" data-toggle="modal" data-target="#example_modal2">
+                                <div class="content">
+                                    <h4>FIX: Javascript error</h4>
+                                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut </span>
+                                </div>
+                                <ul class="rightboxes">
+                                    <li>13 days<span>deadline</span></li>
+                                    <li>35% <span>progress</span></li>
+                                </ul>
+                            </a>
+                            <div class="progress">
+                                <div style="width: 100%;" class="bar"></div>
+                            </div>
+                        </li>    
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">暂无系统公告</p>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

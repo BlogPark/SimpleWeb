@@ -1,5 +1,5 @@
 ﻿@using Webdiyer.WebControls.Mvc
-@model SimpleWeb.Areas.NewTemplateArea.Models.HelpOrderListViewModel
+@model SimpleWeb.Areas.NewTemplateArea.Models.AcceptOrderListViewModel
 @{
     Layout = "~/Views/_NewTempleteLayout.cshtml";
 }
@@ -8,7 +8,7 @@
     <div class="widget span12">
         <div class="widget-header">
             <i class="icon-signal"></i>
-            <h5>我提供的帮助</h5>
+            <h5>我接受的帮助</h5>
             <div class="widget-buttons">
                 <a data-collapsed="false" class="collapse" href="javascript:void(0)"><i class="icon-chevron-up" data-title="Collapse"></i></a>
             </div>
@@ -33,7 +33,7 @@
                             <th>已匹金额</th>
                             <th>单据状态</th>
                             <th>排单天数</th>
-                            <th>使用激活码</th>
+                            <th>接受来源</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -51,10 +51,10 @@
                                     @item.PayType
                                 </td>
                                 <td>@item.MatchedAmount</td>
-                                <td>@item.HStatusName</td>
+                                <td>@item.AStatusName</td>
                                 <td>@item.DiffDay</td>
-                                <td>@item.ActiveCode</td>
-                                <td><a href="@Url.Action("helporderDetail", "WebHome", new { area = "NewTemplateArea", orderid = item.ID })">详细信息>></a></td>
+                                <td>@item.SourceTypeName</td>
+                                <td><a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">详细信息>></a></td>
                             </tr>
                         }
                     </tbody>
@@ -68,3 +68,4 @@
         </div>
     </div>
 </div>
+

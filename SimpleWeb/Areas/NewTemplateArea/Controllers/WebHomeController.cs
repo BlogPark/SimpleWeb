@@ -213,5 +213,21 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             ViewBag.PageTitle = web.WebName;
             return View(model);
         }
+        /// <summary>
+        /// 网站公告页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult webnews()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            MemberNewsViewModel model = new MemberNewsViewModel();
+            model.news = newsbll.GetModelListByUserID(logmember.ID);
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
     }
 }
