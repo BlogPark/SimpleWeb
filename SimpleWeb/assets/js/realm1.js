@@ -19,7 +19,7 @@ $(function() {
 
   // prevent the top menu popover links to make the window scroll up because of href="#"
   $('.visible-desktop #messages, .visible-desktop #notifications').click(function(e){
-    e.preventDefault();
+    //e.preventDefault();
   });
     
     // header menu message
