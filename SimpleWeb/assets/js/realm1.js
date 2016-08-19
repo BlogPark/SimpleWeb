@@ -23,20 +23,7 @@ $(function() {
   });
     
     // header menu message
-    $('.top-menu #messages').popover({
-      html:true,
-      placement: 'bottom',
-      title: 'Messages',
-      content:'<ul><li><a href="#"><img src="assets/img/avatars/04.jpg"><span>Today</span><h4>Bill Fernando</h4>Hey John, have you finished the report yet?</a></li><li><a href="#"><img src="assets/img/avatars/05.jpg"><span>Yesterday</span><h4>Roger White</h4>Did you talk to Andrea? She was looking for you</a></li></ul><div class="popover_footer"><a href="">View all messages</a></div>'
-    });
-
-    // header menu notifications 
-    $('.top-menu #notifications').popover({
-      html:true,
-      placement: 'bottom',
-      title: 'Notifications',
-      content:'<ul><li><a href="#"><img src="assets/img/avatars/07.jpg"><span>Today</span><h4>Cody Negley</h4>Requested a vacation for 3 days.</a></li><li><a href="#"><img src="assets/img/avatars/09.jpg"><span>Yesterday</span><h4>Customer Support</h4>You have 3 new tickets assigned to you.</a></li></ul><div class="popover_footer"><a href="">View all notifications</a></div>'
-    });
+    
 
 
   // funtion to slide menu out from the left 
