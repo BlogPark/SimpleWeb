@@ -1,13 +1,5 @@
 
-$(function() {
-	$('.countdown').each(function(){ 
-	var endtime=$(this).data('date');
-	$(this).downCount({
-	date: endtime,
-	offset: +10
-}, function () {
-	alert('倒计时结束!');
-}); });
+$(function() {	
  
   // show the overview boxes on the dashboard once they are loaded
   $('.overview_boxes .box_row').css('display', 'inline-block');

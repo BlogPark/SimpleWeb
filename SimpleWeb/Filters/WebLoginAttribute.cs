@@ -13,7 +13,7 @@ namespace SimpleWeb.Filters
     public class WebLoginAttribute : System.Web.Mvc.ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext ctx)
-        {           
+        {
             //部分视图不做验证
             if (ctx.IsChildAction)
                 return;
@@ -31,14 +31,19 @@ namespace SimpleWeb.Filters
                 return;
             if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "public")
                 return;
+            string logurl = "/login.html";
+            if (AppContent.TempleteName == "NewTemplateArea")
+            {
+                logurl = "/user/login.html";
+            }
             if (ctx.HttpContext.Session[AppContent.SESSION_WEB_LOGIN] == null)
             {
                 var url = ctx.RequestContext.HttpContext.Request == null
                         ? ""
                         : ctx.RequestContext.HttpContext.Request.Url.ToString();
-                ctx.Result = new RedirectResult("/login.html");
+                ctx.Result = new RedirectResult(logurl);
                 return;
-            }          
+            }
         }
     }
 }

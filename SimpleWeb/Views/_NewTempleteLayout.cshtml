@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bluth Company">
     <link rel="shortcut icon" href="assets/ico/favicon.html">
-    <link href="@Url.Content("assets/css/bootstrap.css")" rel="stylesheet">
-    <link href="@Url.Content("assets/css/theme.css")" rel="stylesheet">
-    <link href="@Url.Content("assets/css/font-awesome.min.css")" rel="stylesheet">
-    <link href="@Url.Content("assets/css/alertify.css")" rel="stylesheet">
+    <link href="@Url.Content("/assets/css/bootstrap.css")" rel="stylesheet">
+    <link href="@Url.Content("/assets/css/theme.css")" rel="stylesheet">
+    <link href="@Url.Content("/assets/css/font-awesome.min.css")" rel="stylesheet">
+    <link href="@Url.Content("/assets/css/alertify.css")" rel="stylesheet">
+    <link href="@Url.Content("/js/ztree/css/zTreeStyle/zTreeStyle.css")" rel="stylesheet">
     <link href="http://fonts.useso.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="Favicon Icon" href="ico/favicon.ico">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -38,19 +39,19 @@
 
                     <div class="top-menu visible-desktop">
                         <ul class="pull-left">
-                            <li><a id="messages" data-notification="2" href="#"><i class="icon-envelope"></i>系统公告</a></li>
-                            <li><a id="notifications" data-notification="3" href="#"><i class="icon-globe"></i>系统通知</a></li>
+                            <li><a id="messages" data-notification="2" href="@Url.Action("webnews", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-envelope"></i>系统公告</a></li>
+                            <li><a id="notifications" data-notification="3" href="@Url.Action("contentus", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-globe"></i>系统通知</a></li>
                         </ul>
                         <ul class="pull-right">
-                            <li><a href="login.html"><i class="icon-off"></i>退出系统</a></li>
+                            <li><a href="@Url.Action("exitsystem", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-off"></i>退出系统</a></li>
                         </ul>
                     </div>
 
                     <div class="top-menu visible-phone visible-tablet">
                         <ul class="pull-right">
-                            <li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>
-                            <li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>
-                            <li><a href="login.html"><i class="icon-off"></i></a></li>
+                            <li><a title="显示系统公告" href="@Url.Action("webnews", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-envelope"></i></a></li>
+                            <li><a title="显示我的留言" href="@Url.Action("contentus", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-globe"></i></a></li>
+                            <li><a href="@Url.Action("exitsystem", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-off"></i></a></li>
                         </ul>
                     </div>
 
@@ -67,6 +68,7 @@
         </div>
     </div>
     <script type="text/javascript" src="@Url.Content("/assets/js/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/js/ztree/js/jquery.ztree.core.js")"></script>
     <script type="text/javascript" src="@Url.Content("/assets/js/jquery-ui.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("/assets/js/bootstrap.js")"></script>
     <script type="text/javascript" src="@Url.Content("/assets/js/jquery.dataTables.min.js")"></script>
@@ -75,7 +77,11 @@
     <script type="text/javascript" src="@Url.Content("/assets/js/jquery.facybox.js")"></script>
     <script type="text/javascript" src="@Url.Content("/assets/js/jquery.alertify.min.js")"></script>
     <script type='text/javascript' src="@Url.Content("/assets/js/jquery.gritter.min.js")"></script>
+     <script type="text/javascript" src="@Url.Content("/assets/js/jquery.slimscroll.min.js")"></script>
+    <script type="text/javascript" charset="gb2312"  src="@Url.Content("/js/jquery-qrcode/jquery.qrcode.min.js")"></script>
+    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+    @RenderSection("scriptcontent", required: false)    
+    <script type="text/javascript" src="@Url.Content("/js/js.custom.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("/assets/js/realm1.js")"></script>
-    <script type="text/javascript" src="@Url.Content("/assets/js/jquery.slimscroll.min.js")"></script>
 </body>
 </html>

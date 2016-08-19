@@ -1,26 +1,26 @@
 ﻿@model SimpleWeb.Models.NewWebMenuViewModel
-                <div class="user_side clearfix">
-                    <div class="span4">
-                        <h4>@Model.UserName</h4>
-                        <a href="#">@Model.UserPhone</a>
-                    </div>
-                </div>
-                <div class="user_side clearfix">
-                    <div class="span4">
-                        <h4>静态资金：@Model.StaticMoney</h4>
-                        <h4>动态资金：@Model.DynamicMoney</h4>
-                        <h4>激活码剩余：@(Model.ActionCodeCount)个</h4>
-                        <h4>排单币剩余：@(Model.CurrencyCodeCount)个</h4>
-                        <h4>我的团队：@(Model.TeamPersonCount)人</h4>
-                    </div>
-                </div>
-                <div class="accordion" id="accordion2">
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle active b_F79999" href="index-2.html"><i class="icon-dashboard"></i><span>首页</span></a>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
+<div class="user_side clearfix">
+    <div class="span4">
+        <h4>@Model.UserName</h4>
+        <a href="#">@Model.UserPhone</a>
+    </div>
+</div>
+<div class="user_side clearfix">
+    <div class="span4">
+        <h4>静态资金：@Model.StaticMoney</h4>
+        <h4>动态资金：@Model.DynamicMoney</h4>
+        <h4>激活码剩余：@(Model.ActionCodeCount)个</h4>
+        <h4>排单币剩余：@(Model.CurrencyCodeCount)个</h4>
+        <h4>我的团队：@(Model.TeamPersonCount)人</h4>
+    </div>
+</div>
+<div class="accordion" id="accordion2">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle active b_F79999" href="@Url.Action("Index", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-dashboard"></i><span>首页</span></a>
+        </div>
+    </div>
+    @*<div class="accordion-group">
                         <div class="accordion-heading">
                             <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i><span>团队</span></a>
                         </div>
@@ -32,37 +32,70 @@
                                 <a class="accordion-toggle" href="buttons.html"><i class="icon-circle"></i>Buttons</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i><span>单据管理</span></a>
-                        </div>
-                        <div id="collapse2" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <a class="accordion-toggle" href="notifications.html"><i class="icon-rss"></i>提供帮助</a>
-                                <a class="accordion-toggle" href="calendar.html"><i class="icon-calendar"></i>接受帮助</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_F6F1A2" href="tasks.html"><i class="icon-tasks"></i><span>激活码</span></a>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_C1F8A9" href="analytics.html"><i class="icon-bar-chart"></i><span>排单币</span></a>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_9FDDF6" href="tickets.html"><i class="icon-bullhorn"></i><span>钱包</span></a>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_F5C294" href="users.html"><i class="icon-user"></i><span>联系网站</span></a>
-                        </div>
-                    </div>
-                </div>
-            
+                    </div>*@
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_F6F1A2" href="@Url.Action("recommendusermap", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-tasks"></i><span>团队</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i><span>单据管理</span></a>
+        </div>
+        <div id="collapse2" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <a class="accordion-toggle" href="@Url.Action("helpOrderlist", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-rss"></i><span>提供帮助列表</span></a>
+                <a class="accordion-toggle" href="@Url.Action("acceptOrderlist", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-calendar"></i><span>接受帮助列表</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_F6F1A2" href="@Url.Action("myactivation", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-tasks"></i><span>激活码</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_C1F8A9" href="@Url.Action("mylineation", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-bar-chart"></i><span>排单币</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_9FDDF6" href="@Url.Action("mycapital", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-bullhorn"></i><span>钱包</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i><span>个人中心</span></a>
+        </div>
+        <div id="collapse1" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <a class="accordion-toggle" href="@Url.Action("userprofile", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-star"></i><span>我的资料</span></a>
+                <a class="accordion-toggle" href="@Url.Action("mycapitallist", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-list-alt"></i><span>资金变动记录</span></a>
+                <a class="accordion-toggle" href="@Url.Action("ActiveCodeLog", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-table"></i><span>激活码/排单币记录</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_F5C294" href="@Url.Action("webnews", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-user"></i><span>网站公告</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_F5C294" href="@Url.Action("contentus", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-user"></i><span>联系客服</span></a>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle b_F5C294" href="@Url.Action("exitsystem", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-user"></i><span>退出系统</span></a>
+        </div>
+    </div>
+</div>
+
+<div class="user_side clearfix">
+    <div class="span4">
+        <input type="hidden" value="@Model.linkurl" id="linkurl">
+        <div id="qrcode"></div>
+    </div>
+</div>

@@ -139,6 +139,7 @@ namespace SimpleWeb.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
             }
+            WebSettingsModel setting = webbll.GetWebSiteModel();
             WebIndexModel webmodel=memberbll.GetIndexNeeddata(logmember.ID);
             NewWebMenuViewModel model = new NewWebMenuViewModel();
             model.ActionCodeCount = webmodel.activecodeCount;
@@ -148,6 +149,7 @@ namespace SimpleWeb.Controllers
             model.UserName = logmember.TruethName;
             model.UserPhone = logmember.MobileNum;
             model.TeamPersonCount = webmodel.members;
+            model.linkurl = setting.DomainName + Url.Action("Index", "Register", new { area = "WebFrontArea", msd = logmember.MobileNum });
             return View(model);
         }
     }

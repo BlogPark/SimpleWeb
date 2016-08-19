@@ -26,6 +26,11 @@ namespace SimpleWeb.Areas.WebFrontArea.Controllers
         }
         public ActionResult Index(string msd)
         {
+            string name = SysAdminConfigBLL.GetConfigValue(23);
+            if (name == "NewTemplateArea")
+            {
+                return RedirectToAction("Index", "Register", new { area = "NewTemplateArea" });
+            }
             RegisterViewModel model = new RegisterViewModel();
             model.member = new MemberInfoModel();
             model.member.MemberPhone = msd;

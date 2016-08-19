@@ -5,10 +5,10 @@
 <div id="example_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">新闻内容</h3>
+        <h3 id="myModalLabel"></h3>
     </div>
     <div class="modal-body">
-        <p>新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容新闻内容</p>
+        <p id="newscontent"></p>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确 定</button>
@@ -24,7 +24,9 @@
                 <a href="#" data-title="Collapse" data-collapsed="false" class="collapse"><i class="icon-chevron-up"></i></a>
             </div>
         </div>
-        <div class="widget-body clearfix" style="height: 350px;">
+        @if (Model.news == null || Model.news.Count == 0)
+        {<div class="widget-header-under">当前没有系统公告</div>}
+        <div class="widget-body clearfix" >
             <div class="widget-tasks-assigned">
                 <ul>
                     @if (Model.news != null && Model.news.Any())
@@ -32,14 +34,15 @@
                         foreach (var item in Model.news)
                         {
                         <li class="priority-high-left">
-                            <a href="#" data-toggle="modal" data-target="#example_modal2">
+                            <a href="#" data-toggle="modal" data-target="#example_modal2" onclick="showmessage()">
                                 <div class="content">
-                                    <h4>FIX: Javascript error</h4>
-                                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut </span>
+                                    <h4 id="newtitle">@item.STitle</h4>
+                                    <span>@(item.SContent.Length > 50 ? item.SContent.Substring(0, 50) : item.SContent)</span>
                                 </div>
+                                <input type="hidden" id="newcontent" value="@item.SContent">
                                 <ul class="rightboxes">
-                                    <li>13 days<span>deadline</span></li>
-                                    <li>35% <span>progress</span></li>
+                                    <li>@item.SAddTime.ToString("yyyy-MM-dd HH:mm:ss")<span>发布时间</span></li>
+                                    <li>平台管理员<span>发布人</span></li>
                                 </ul>
                             </a>
                             <div class="progress">
@@ -47,10 +50,6 @@
                             </div>
                         </li>    
                         }
-                    }
-                    else
-                    {
-                        <p class="text-muted">暂无系统公告</p>
                     }
                 </ul>
             </div>

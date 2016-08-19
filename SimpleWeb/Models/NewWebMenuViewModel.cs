@@ -35,5 +35,9 @@ namespace SimpleWeb.Models
         /// 团队人数
         /// </summary>
         public int TeamPersonCount { get; set; }
+        /// <summary>
+        /// 链接地址
+        /// </summary>
+        public string linkurl { get; set; }
     }
 }

@@ -1,0 +1,148 @@
+﻿@model SimpleWeb.Areas.NewTemplateArea.Models.RecommendUserMapViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div class="row-fluid"></div>
+<div class="row-fluid">
+    <div class="widget widget-padding span7">
+        <h2 id="accordions"><span>团队信息</span></h2>
+        <hr />
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+    <div class="widget widget-padding span4">
+        <div class="widget-header">
+            <i class="icon-list-alt"></i>
+            <h5>转赠激活码/排单币</h5>
+        </div>
+        <div class="widget-body" style="height: 260px;">
+            <div class="widget-forms clearfix">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>姓名：</td>
+                            <td></td>
+                            <td>
+                                <lable id="truename">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>手机号：</td>
+                            <td></td>
+                            <td>
+                                <lable id="mobile">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>微信：</td>
+                            <td></td>
+                            <td>
+                                <lable id="weixin">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>支付宝名称</td>
+                            <td></td>
+                            <td>
+                                <lable id="zhifubao">请选择左侧会员</lable>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptcontent{
+    <script type="text/javascript">
+        var setting = {
+            async: {
+                enable: true,
+                type: "get",
+                url: getUrl
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                key: {
+                    name: "name"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid",
+                    rootPId: 0
+                }
+            },
+            view: {
+                expandSpeed: ""
+            },
+            callback: {
+                beforeExpand: beforeExpand,
+                onAsyncSuccess: onAsyncSuccess,
+                onAsyncError: onAsyncError,
+                onClick: function (event, treeId, treeNode) {
+                    $.ajax({
+                        url: '@Url.Action("getmemberinfo", "WebHome", new { area = "WebFrontArea" })',
+                        dataType: 'Json',
+                        Type: 'get',
+                        data: { 'id': treeNode.id },
+                        success: function (data) {
+                            $("#truename").html(data.TruethName);
+                            $("#mobile").html(data.MobileNum);
+                            $("#weixin").html(data.WeixinNum);
+                            $("#zhifubao").html(data.AliPayNum);
+                        }
+                    });
+                }
+            }
+        };
+        var zNodes = [
+			{ id: parseInt(@Model.member.ID), pid: 0, name: "@(Model.member.MobileNum + "(" + Model.member.TruethName + ")")", childcount: parseInt(@Model.childcount), isParent: new Boolean("@Model.isParent.ToString()") }
+        ];
+
+        var perTime = 100;
+        function getUrl(treeId, treeNode) {
+            return "/WebFrontArea/WebHome/getchildnote?id=" + treeNode.id;
+        }
+        function beforeExpand(treeId, treeNode) {
+            if (!treeNode.isAjaxing) {
+                ajaxGetNodes(treeNode, "refresh");
+                return true;
+            } else {
+                alert("zTree 正在下载数据中，请稍后展开节点。。。");
+                return false;
+            }
+        }
+        function onAsyncSuccess(event, treeId, treeNode, msg) {
+            if (!msg || msg.length == 0) {
+                return;
+            }
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			totalCount = treeNode.childcount;
+            if (treeNode.children.length < totalCount) {
+                setTimeout(function () { ajaxGetNodes(treeNode); }, perTime);
+            } else {
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.selectNode(treeNode.children[0]);
+            }
+        }
+        function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            alert("异步获取数据出现异常。");
+            treeNode.icon = "";
+            zTree.updateNode(treeNode);
+        }
+        function ajaxGetNodes(treeNode, reloadType) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            if (reloadType == "refresh") {
+                zTree.updateNode(treeNode);
+            }
+            zTree.reAsyncChildNodes(treeNode, reloadType, true);
+        }
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+    </script>
+}

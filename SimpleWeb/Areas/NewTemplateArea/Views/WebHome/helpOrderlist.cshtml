@@ -38,8 +38,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.orderlist)
+                        @if (Model.orderlist != null && Model.orderlist.Any())
                         {
+                            foreach (var item in Model.orderlist)
+                            {
                             <tr class="tablerow">
                                 <td>
                                     @item.OrderCode
@@ -55,6 +57,15 @@
                                 <td>@item.DiffDay</td>
                                 <td>@item.ActiveCode</td>
                                 <td><a href="@Url.Action("helporderDetail", "WebHome", new { area = "NewTemplateArea", orderid = item.ID })">详细信息>></a></td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                             <tr class="tablerow">
+                                <td colspan="8">
+                                    暂无数据
+                                </td>
                             </tr>
                         }
                     </tbody>

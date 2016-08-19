@@ -38,7 +38,7 @@
             // set new Date object
             var new_date = new Date(utc + (3600000*settings.offset))
 
-            return new_date;
+            return date;
         };
 
         /**

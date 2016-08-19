@@ -1,0 +1,85 @@
+﻿@model SimpleWeb.Areas.NewTemplateArea.Models.ContactUsViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div class="row-fluid"></div>
+<div class="row-fluid">
+    <div class="widget widget-padding span12">
+        <div class="widget-header">
+            <i class="icon-list-alt"></i>
+            <h5>留言</h5>
+            <div class="widget-buttons">
+                <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="widget-forms clearfix">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">标题</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.message.MessageTitle, new { @placeholder = "留言标题", @class = "span7" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">留言内容</label>
+                        <div class="controls">
+                            @Html.TextAreaFor(m => m.message.MessageContent, new { @placeholder = "留言内容", @class = "span7", @rows = "3", @style = "height: 100px;" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="widget-footer">
+            <button class="btn btn-primary" type="submit">保存</button>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="widget span12">
+        <div class="widget-header">
+            <i class="icon-tasks"></i>
+            <h5>我的留言</h5>
+            <div class="widget-buttons">
+                <a href="#" data-title="Collapse" data-collapsed="false" class="collapse"><i class="icon-chevron-up"></i></a>
+            </div>
+        </div>
+        @if (Model.list == null || Model.list.Count == 0)
+        {<div class="widget-header-under">当前没有留言</div>}
+        <div class="widget-body clearfix" >
+            <div class="widget-tasks-assigned">
+                <ul>
+                    @if (Model.list != null)
+                    {
+                        foreach (var item in Model.list)
+                        {
+                        <li class="priority-high-left">
+                            <a href="#" data-toggle="modal" data-target="#example_modal2">
+                                <div class="content">
+                                    <h4>@item.MessageTitle</h4>
+                                    @if (!string.IsNullOrWhiteSpace(item.ReplyContent))
+                                    {
+                                        <span>回复内容：@item.ReplyContent</span>
+                                    }
+                                    else
+                                    {
+                                        <span>留言内容：@item.MessageContent </span>
+                                    }
+
+                                </div>
+                                <ul class="rightboxes">
+                                    <li>@item.AddTime.ToString("yyyy-MM-dd HH:mm")<span>留言时间</span></li>
+                                </ul>
+                            </a>
+                            <div class="progress">
+                                <div style="width: 100%;" class="bar"></div>
+                            </div>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

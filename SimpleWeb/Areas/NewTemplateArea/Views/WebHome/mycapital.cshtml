@@ -1,0 +1,199 @@
+﻿@model SimpleWeb.Areas.NewTemplateArea.Models.mycapitalViewModel
+@{
+    Layout = "~/Views/_NewTempleteLayout.cshtml";
+}
+<div id="example_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabelHelper">提供帮助</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="helpform">
+            <div class="control-group">
+                <label class="formcontrollable control-label ">帮助金额</label>
+                <div class="formcontrol controls ">
+                    <div class="input-append">
+                        <span class="add-on">￥</span><input class="span3" type="text" id="helpamount" name="helpamount" placeholder="@Model.extendinfo.LastHelpMoney">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="formcontrol controls ">
+                    <span class="dengertext">最低可帮助金额<span id="helpmin">@Model.minhelpamont</span>元   最高可帮助金额<span id="helpmax">@Model.maxhelpamont</span>元</span><input type="hidden" id="lasthelp" name="lasthelp" value="@Model.extendinfo.LastHelpMoney">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="formcontrollable control-label ">排单币编码</label>
+                <div class="formcontrol controls ">
+                    <input class="span3" type="text" id="helpactivecode" name="helpactivecode" placeholder="排单币编码">
+                    <span class="help-inline"><a class="btn btn-mini btn-primary" onclick="autofill()">自动填充</a></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="formcontrollable control-label ">支付方式</label>
+                <div class="formcontrol controls ">
+                    <label class="checkbox">
+                        <input type="checkbox" id="chkweixin" name="chkweixin" value="微信">
+                        微信
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="chkalipay" name="chkalipay" value="支付宝">
+                        支付宝
+                    </label>
+                    <input type="hidden" id="paytype" name="paytype">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls formcontrol">
+                    <label class="checkbox">
+                        <input type="checkbox" id="chkrisk" name="chkrisk">
+                        警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度. 
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取 消</button>
+        <button class="btn btn-primary" onclick="providehelp()">确 定</button>
+    </div>
+</div>
+
+<div id="example_modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabelAccept">接受帮助</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="acceptform">
+            <div class="control-group">
+                <label class="formcontrollable control-label ">可用金额</label>
+                <div class="formcontrol controls ">
+                    <div class="input-append">
+                        <input class="span3" type="text" id="acceptamontenable" name="acceptamontenable" readonly="readonly"  placeholder="3,000" value="@Model.mycapitalinfo.StaticCapital">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="formcontrollable control-label ">申请金额</label>
+                <div class="formcontrol controls ">
+                    <div class="input-append">
+                        <span class="add-on">￥</span><input class="span3" type="text" id="acceptamont" name="acceptamont" placeholder="申请金额">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="formcontrol controls ">
+                    <span class="dengertext">最低可接受金额<span id="accmin">@Model.minacceptamont</span>元 &nbsp;&nbsp;&nbsp; 最高可接受金额<span id="accmax">@Model.maxacceptamont</span>元</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="formcontrollable control-label ">接受来源</label>
+                <div class="formcontrol controls ">
+                    <label class="radio">
+                        <input type="radio" id="optionsRadios1" name="optionsRadios1" value="1" checked>
+                        静态钱包
+                    </label>
+                    <label class="radio">
+                        <input type="radio" id="optionsRadios2" name="optionsRadios1" value="2">
+                        动态钱包
+                    </label>
+                    <input type="hidden" id="soucetype" name="soucetype" value="1">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="formcontrollable control-label ">支付方式</label>
+                <div class="formcontrol controls ">
+                    <label class="checkbox">
+                        <input type="checkbox" id="achkweixin" name="achkweixin" value="微信">
+                        微信
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="achkalipay" name="achkalipay" value="支付宝">
+                        支付宝
+                    </label>
+                    <input type="hidden" id="apaytype" name="apaytype">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls formcontrol">
+                    <label class="checkbox">
+                        <input type="checkbox" id="chkrisk1" name="chkrisk">
+                        警告，我已完全了解所有风险。我决定参与诚信创客,尊重诚信创客规章和制度. 
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取 消</button>
+        <button class="btn btn-primary" onclick="accepthelp()">确 定</button>
+    </div>
+</div>
+<div class="row-fluid"></div>
+<div class="row-fluid">
+    <div class="widget span6" style="background-image: url('/assets/img/gallery/zhanwei.jpg')">
+        <div class=" offset4 span4">
+            <h3>静态钱包信息</h3>
+            <h4>静态资金：￥<span id="staticmoney">@Model.mycapitalinfo.StaticCapital</span></h4>
+            <h4>利息金额：￥@Model.mycapitalinfo.StaticInterest</h4>
+            <h4>冻结金额：￥@Model.mycapitalinfo.StaticFreezeMoney</h4>
+        </div>
+        <a data-title="" data-toggle="modal" data-target="#example_modal2" class="btn btn-small btn-box offset4 span3 expand15" onclick="clearform('helpform')"><i class="icon-search"></i><span>提供帮助</span></a>
+    </div>
+    <div class="widget span6" style="background-image: url('/assets/img/gallery/zhanwei.jpg')">
+        <div class=" offset4 span4">
+            <h3>动态钱包信息</h3>
+            <h4>动态资金：￥<span id="dymicmoney">@Model.mycapitalinfo.DynamicFunds</span></h4>
+            <h4>冻结领导奖：￥@Model.mycapitalinfo.DynamicInterest</h4>
+            <h4>冻结推荐奖：￥@Model.mycapitalinfo.DynamicFreezeMoney</h4>
+        </div>
+        <a data-title="" data-toggle="modal" data-target="#example_modal1" class="btn btn-small btn-box offset4 span3 expand15" onclick="clearform('acceptform')"><i class="icon-search"></i><span>接受帮助</span></a>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="widget span12">
+        <div class="widget-header">
+            <i class="icon-circle"></i>
+            <h5>资金变动列表</h5>
+            <div class="widget-buttons">
+                <a class="btn btn-info btn-small" href="@Url.Action("mycapitallist", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-plus"></i>查看更多</a>
+                <a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="widget-body clearfix">
+            <table class="table table-striped indextable center">
+                <thead>
+                    <tr>
+                        <th>变动描述</th>
+                        <th>变动金额</th>
+                        <th>涉及单号</th>
+                        <th>变动时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.changlog.Count > 0)
+                    {
+                        foreach (var item in Model.changlog)
+                        {
+                        <tr>
+                            <td class="span4">@item.Remark </td>
+                            <td class="span1">@item.ProduceMoney</td>
+                            <td class="span4">@item.OrderCode</td>
+                            <td class="span3">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr> 
+                        }
+
+                    }
+                    else
+                    { 
+                        <tr>
+                            <td colspan="4">暂时没有资金变动</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

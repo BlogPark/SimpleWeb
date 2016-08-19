@@ -73,5 +73,10 @@ namespace SimpleWeb.DataBLL
         {
             return dal.GetAllConfigsDic();
         }
+
+        public static string GetConfigValue(int id)
+        {
+            return SysAdminConfigDAL.GetConfigsByID(id);
+        }
     }
 }

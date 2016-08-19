@@ -16,7 +16,7 @@
         <div style="min-height: 319px; display: block;" class="widget-body clearfix">
             <div class="expand1520 span7" style="margin-left: 30px;">
                 <div class="widget-forms clearfix">
-                    @using (Html.BeginForm("helpOrderlist", "WebHome", new { area = "NewTemplateArea" }, FormMethod.Get, new { @id = "form1", @class = "form-inline" }))
+                    @using (Html.BeginForm("acceptOrderlist", "WebHome", new { area = "NewTemplateArea" }, FormMethod.Get, new { @id = "form1", @class = "form-inline" }))
                     {
                         @Html.TextBoxFor(m => m.seachmodel.OrderCode, new { @class = "span4", @placeholder = "单据号" })
                         <button type="submit" class="btn btn-success">搜索</button>
@@ -54,7 +54,7 @@
                                 <td>@item.AStatusName</td>
                                 <td>@item.DiffDay</td>
                                 <td>@item.SourceTypeName</td>
-                                <td><a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">详细信息>></a></td>
+                                <td><a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "NewTemplateArea", orderid = item.ID })">详细信息>></a></td>
                             </tr>
                         }
                     </tbody>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using SimpleWeb.DataBLL;
 using SimpleWeb.WebClass;
 
 namespace SimpleWeb.Controllers
@@ -34,5 +35,9 @@ namespace SimpleWeb.Controllers
         /// 网站加密字符串
         /// </summary>
         public static string SecrectStr = SysAdminConfigHelper.GetConfigValue("网站加密字符串");
+        /// <summary>
+        /// 网站使用模板名称
+        /// </summary>
+        public static string TempleteName = string.IsNullOrWhiteSpace(SysAdminConfigBLL.GetConfigValue(23)) ? "WebFrontArea" : SysAdminConfigBLL.GetConfigValue(23);
     }
 }

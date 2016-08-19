@@ -149,11 +149,17 @@
     <Compile Include="Areas\NewTemplateArea\Controllers\WebHomeController.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\AcceptOrderListViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\AcceptOrderViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\ActiveCodeLogViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\ContactUsViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\HelpOrderListViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\HelpOrderViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\MemberNewsViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\MyActiveIndexModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\mycapitallistViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\mycapitalViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\NewRegisterViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\RecommendUserMapViewModel.cs" />
+    <Compile Include="Areas\NewTemplateArea\Models\UserProfileViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\Models\WebHomeViewModel.cs" />
     <Compile Include="Areas\NewTemplateArea\NewTemplateAreaAreaRegistration.cs" />
     <Compile Include="Areas\WebFrontArea\Controllers\LoginController.cs" />
@@ -177,6 +183,7 @@
     <Compile Include="Areas\WebFrontArea\Models\RegisterViewModel.cs" />
     <Compile Include="Areas\WebFrontArea\WebFrontAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
+    <Compile Include="Controllers\CustomOperateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -1387,6 +1394,7 @@
     <Content Include="js\jquery\jquery-1.9.1.min.js" />
     <Content Include="js\jquery\jquery-2.0.3.min.js" />
     <Content Include="js\jquery\jquery-migrate-1.2.1.min.js" />
+    <Content Include="js\js.custom.min.js" />
     <Content Include="js\js.js" />
     <Content Include="js\lightbox-2.6.min.js" />
     <Content Include="js\portfolio.js" />
@@ -2024,6 +2032,12 @@
     <Content Include="Areas\NewTemplateArea\Views\WebHome\helpOrderlist.cshtml" />
     <Content Include="Areas\NewTemplateArea\Views\WebHome\acceptOrderlist.cshtml" />
     <Content Include="Areas\NewTemplateArea\Views\WebHome\webnews.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\contentus.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\userprofile.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\mycapital.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\ActiveCodeLog.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\mycapitallist.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\recommendusermap.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
     <Content Include="Views\_NewTempleteLayout.cshtml" />
     <Content Include="Views\IndexPub\newwebmenu.cshtml" />

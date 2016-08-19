@@ -15,7 +15,7 @@ namespace SimpleWeb.Controllers
         [WebLoginAttribute]
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            return RedirectToAction("Index", "Login", new { area = AppContent.TempleteName });
         }
         /// <summary>
         /// 网站维护页面

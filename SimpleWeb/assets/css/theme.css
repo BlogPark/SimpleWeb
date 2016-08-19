@@ -781,14 +781,13 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
     width: 40px;
 }
 .widget-header a{
-    color: #777777;
-    cursor: pointer;
-    font-size: 16px;
+    /*color: #777777; font-size: 16px;*/
+    cursor: pointer;   
     margin: 0 0 0 8px;
     text-decoration: none;
 }
 .widget-header a:hover{
-    color: #333;
+    /*color: #333;*/
 }
 .widget-header a.widget-hidden i{
     -moz-transform:rotate(180deg);

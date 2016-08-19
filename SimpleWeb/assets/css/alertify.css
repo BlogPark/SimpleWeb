@@ -448,3 +448,27 @@ ul .notype
     height: 40px;
     font-size: 15px;
 }
+.table th .center, .table td .center{
+    text-align: center;
+}
+.accordion-heading .accordion-toggle span
+{
+    margin-left:10px;
+    font-size:15px;
+}
+.accordion-toggle span
+{
+    margin-left:10px;
+    font-size:14px;
+}
+.widget-buttons .collapse{
+    color:#777777;
+    font-size:16px;
+}
+.widget-buttons .collapse:hover{
+    color:#333;
+}
+.span4 a
+{
+    margin:5px 0px;
+}

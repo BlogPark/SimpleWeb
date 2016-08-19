@@ -33,5 +33,15 @@ namespace SimpleWeb.DataBLL
         {
             return UserBehaviorLogDAL.GetUserBehaviorLogByPage(model,out totalrowcount);
         }
+        /// <summary>
+        /// 得到最新的资金变动日志
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        public List<AmountChangeLogModel> GetAmountChangeLogByTop(int memberid, int top)
+        {
+            return OperateLogDAL.GetAmontChangeLogByMemberID(memberid, top);//我的资金变动日志
+        }
     }
 }

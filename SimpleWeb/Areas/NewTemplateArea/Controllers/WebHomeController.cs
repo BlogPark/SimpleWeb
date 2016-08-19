@@ -222,12 +222,163 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
             }
             MemberNewsViewModel model = new MemberNewsViewModel();
             model.news = newsbll.GetModelListByUserID(logmember.ID);
             ViewBag.PageTitle = web.WebName;
             return View(model);
+        }
+        /// <summary>
+        /// 联系我们页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult contentus()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            ContactUsViewModel model = new ContactUsViewModel();
+            model.list = newsbll.GetContractMessage(logmember.ID);
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult contentus(WebContactMessageModel message)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+            }
+            if (message != null)
+            {
+                message.MemberID = logmember.ID;
+                message.MemberName = logmember.TruethName;
+                message.MemberPhone = logmember.MobileNum;
+                int row = newsbll.AddContactMessage(message);
+            }
+            return RedirectToAction("contentus", "WebHome", new { area = "WebFrontArea" });
+        }
+        /// <summary>
+        /// 用户中心页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult userprofile()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            UserProfileViewModel model = new UserProfileViewModel();
+            model.member = logmember;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
+        /// 我的资产页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult mycapital()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            mycapitalViewModel model = new mycapitalViewModel();
+            model.mycapitalinfo = cbll.GetMemberStaticCapital(logmember.ID);
+            model.maxacceptamont = SystemConfigs.GetmaxAcceptAmont();//得到最大的接受帮助限制
+            model.minacceptamont = SystemConfigs.GetminAcceptAmont();//得到最小的接受帮助限制
+            model.minhelpamont = SystemConfigs.GetminHelpAmont();//得到最小的提供帮助限制
+            model.maxhelpamont = SystemConfigs.GetmaxHelpAmont();//得到最大的提供帮助限制
+            model.extendinfo = cbll.GetMemberExtendInfo(logmember.ID);//得到会员的扩展信息
+            model.changlog = logbll.GetAmountChangeLogByTop(logmember.ID,20);//得到最新20条资金变动日志
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
+        /// 激活码/排单币使用情况
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult ActiveCodeLog(int page = 1)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            ActiveCodeLogViewModel model = new ActiveCodeLogViewModel();
+            int totalrowcount = 0;
+            List<ActiveCodeLogModel> list = activecodebll.GetActiveCodeLogForPage(logmember.ID, page, pagesize, out totalrowcount);
+            PagedList<ActiveCodeLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<ActiveCodeLogModel>(list, page, pagesize, totalrowcount);
+            }
+            model.List = pagelist;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
+        /// 会员的资金变动列表
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult mycapitallist(int page = 1)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            mycapitallistViewModel model = new mycapitallistViewModel();
+            int totalrowcount = 0;
+            List<AmountChangeLogModel> list = logbll.GetAmountChangeLogByPage(page, pagesize, 0, logmember.ID, out totalrowcount);
+            PagedList<AmountChangeLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<AmountChangeLogModel>(list, page, pagesize, totalrowcount);
+            }
+            model.list = pagelist;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
+        /// 我的团队页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult recommendusermap()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            RecommendUserMapViewModel model = new RecommendUserMapViewModel();
+            int count = bll.recommendint(logmember.ID);
+            model.member = logmember;
+            model.childcount = count;
+            model.isParent = count > 0;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
+        /// 退出系统
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult exitsystem()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember != null)
+            {
+                Session.Remove(AppContent.SESSION_WEB_LOGIN);
+            }
+            return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
         }
     }
 }

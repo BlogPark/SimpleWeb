@@ -8,9 +8,11 @@ using SimpleWeb.Common;
 using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
+using SimpleWeb.Filters;
 
 namespace SimpleWeb.Areas.NewTemplateArea.Controllers
 {
+    [WebLoginAttribute]
     public class RegisterController : Controller
     {
         //注册页面
@@ -25,6 +27,11 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
         }
         public ActionResult Index(string msd)
         {
+            string name = SysAdminConfigBLL.GetConfigValue(23);
+            if (name == "WebFrontArea")
+            {
+                return RedirectToAction("Index", "Register", new { area = "WebFrontArea" });
+            }
             NewRegisterViewModel model = new NewRegisterViewModel();
             model.member = new MemberInfoModel();
             model.member.MemberPhone = msd;
