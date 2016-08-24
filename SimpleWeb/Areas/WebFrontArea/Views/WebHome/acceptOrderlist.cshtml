@@ -43,6 +43,7 @@
                             <th>单据状态</th>
                             <th>排单天数</th>
                             <th>接受来源</th>
+                            <th>创建时间</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -64,6 +65,7 @@
                                 <td>@item.DiffDay</td>
                                 <td>@item.SourceTypeName</td>
                                 <td><a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">详细信息>></a></td>
+                                <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
                             </tr>
                         }
                     </tbody>

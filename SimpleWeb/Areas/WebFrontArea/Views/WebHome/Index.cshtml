@@ -158,6 +158,17 @@
                         </ul>
                     </div>
                 </div>
+                <div id="help-nav-one2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul>
+                            <li>网站公告</li>
+                            @foreach (var item in Model.data.SysNewsList)
+                            {
+                                <li><a href="@Url.Action("webnews", "WebHome", new { area = "WebFrontArea" })">@(item.STitle.Length > 10 ? item.STitle.Substring(0, 10) : item.STitle)</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="col-sm-9">
@@ -212,8 +223,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            创建时间：
+                                        <td>创建时间：
                                         </td>
                                         <td></td>
                                         <td>
@@ -275,8 +285,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            创建时间：
+                                        <td>创建时间：
                                         </td>
                                         <td></td>
                                         <td>

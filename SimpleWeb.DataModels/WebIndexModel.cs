@@ -36,7 +36,6 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public List<AcceptHelpOrderModel> acceptOrders { get; set; }
-
         /// <summary>
         /// 我的资金情况
         /// </summary>
@@ -62,5 +61,25 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public List<ExtendMatchOrdersModel> AcceptMatchedList { get; set; }
+        /// <summary>
+        /// 系统公告列表
+        /// </summary>
+        [DataMember]
+        public List<AdminSiteNewsModel> SysNewsList { get; set; }
+        /// <summary>
+        /// 我的留言列表
+        /// </summary>
+        [DataMember]
+        public List<WebContactMessageModel> ContactList { get; set; }
+        /// <summary>
+        /// 我的留言数量
+        /// </summary>
+        [DataMember]
+        public int ContactCount { get; set; }
+        /// <summary>
+        /// 系统公告数量
+        /// </summary>
+        [DataMember]
+        public int NewsCount { get; set; }
     }
 }

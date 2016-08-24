@@ -11,7 +11,7 @@ namespace SimpleWeb.DataDAL
 {
     public class AdminSiteNewsDal
     {
-        DbHelperSQL helper = new DbHelperSQL();
+        static DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
         /// 增加一条数据
         /// </summary>
@@ -185,15 +185,16 @@ namespace SimpleWeb.DataDAL
             }
         }
         /// <summary>
-        /// 根据ID得到对象实体
+        /// 根据用户ID得到对应的系统公告
         /// </summary>
-        public List<AdminSiteNewsModel> GetModelListByUserID(int userid)
+        public static List<AdminSiteNewsModel> GetModelListByUserID(int userid, int topnum = 100)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP 100  ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus,case SStatus  when 1 then '发布' when 2 then '已阅' when 3 then '已删除' end as SStatusName , SAddTime  ");
+            strSql.Append("select TOP " + topnum);
+            strSql.Append(" ID, IsUrgent, IsTop, STitle, SContent, SendUserID, SendUserName, ReceiveUserID, ReceiveUserName, SStatus,case SStatus  when 1 then '发布' when 2 then '已阅' when 3 then '已删除' end as SStatusName , SAddTime  ");
             strSql.Append("  from AdminSiteNews ");
-            strSql.Append(" where ReceiveUserID IN ("+userid.ToString()+",0) ");
-            strSql.Append(" ORDER BY  IsUrgent DESC,IsTop DESC,ID DESC ");          
+            strSql.Append(" where ReceiveUserID IN (" + userid.ToString() + ",0) ");
+            strSql.Append(" ORDER BY  IsUrgent DESC,IsTop DESC,ID DESC ");
             List<AdminSiteNewsModel> list = new List<AdminSiteNewsModel>();
             DataSet ds = helper.Query(strSql.ToString());
             if (ds.Tables[0].Rows.Count > 0)
@@ -354,7 +355,7 @@ namespace SimpleWeb.DataDAL
             {
                 return null;
             }
-        }       
+        }
         /// <summary>
         /// 查询所有的会员留言信息
         /// </summary>
@@ -444,7 +445,6 @@ namespace SimpleWeb.DataDAL
                 return Convert.ToInt32(obj);
             }
         }
-
         /// <summary>
         /// 回复会员留言
         /// </summary>
@@ -494,6 +494,34 @@ namespace SimpleWeb.DataDAL
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 得到系统公告的条目数
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public static int GetSysNewsCount(int userid)
+        {
+            string sqltxt = @"SELECT  COUNT(0) AS con
+FROM    dbo.AdminSiteNews
+WHERE  SStatus <> 3 AND ReceiveUserID IN (" + userid + @",0)";
+            return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 得到会员留言的最新回复数
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public static int GetNewWebContentCount(int userid)
+        {
+            string sqltxt = @"SELECT  COUNT(0) AS con
+FROM    dbo.WebContactMessage
+WHERE   MStatus = 2
+        AND ISNULL(IsReaded, 0) = 0
+        AND MemberID=@id";
+            SqlParameter[] paramter = { new SqlParameter("@id", userid) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
     }
 }

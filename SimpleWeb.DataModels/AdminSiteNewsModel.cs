@@ -66,7 +66,7 @@ namespace SimpleWeb.DataModels
         /// 是否置顶
         /// </summary>       
         [DataMember]
-        public int IsTop { get; set; }
+        public int IsTop { get; set; }        
         #endregion
 
         #region 扩展字段

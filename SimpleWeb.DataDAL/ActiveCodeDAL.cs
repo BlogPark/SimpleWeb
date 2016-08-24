@@ -369,6 +369,15 @@ WHERE   ID = @Mid";
                     {
                         return 0;
                     }
+                    ActiveCodeLogModel activemodel = new ActiveCodeLogModel();
+                    activemodel.ActiveCode = "";
+                    activemodel.Addtime = DateTime.Now;
+                    activemodel.AID = 0;
+                    activemodel.MemberID = member.ID;
+                    activemodel.MemberName = member.TruethName;
+                    activemodel.MemberPhone = member.MobileNum;
+                    activemodel.Remark = "接收" + codelist.Count + "个" + (codelist[0].AType == 1 ? "激活币" : "排单币");
+                    OperateLogDAL.AddActiveCodeLog(activemodel);
                     try
                     {
                         UserBehaviorLogModel log = new UserBehaviorLogModel();
@@ -387,7 +396,7 @@ WHERE   ID = @Mid";
                         log.MemberName = member.TruethName;
                         log.MemberPhone = member.MobileNum;
                         log.ProcAmount = 0;
-                        log.Remark = "系统派发激活码/排单币";
+                        log.Remark = "系统派发激活码/排单币" + codelist.Count + "个";
                         UserBehaviorLogDAL.AddUserBehaviorLog(log);
                     }
                     catch { }
@@ -641,7 +650,7 @@ WHERE   MemberID = @soucemid
                 souce.MemberPhone = sourcemodel.MobileNum;
                 souce.ActiveCode = "";
                 souce.AID = 0;
-                souce.Remark = "为会员：" +  member.MobileNum + " 转账" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                souce.Remark = " 转出" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(souce);
                 if (row < 0)
                 {
@@ -654,7 +663,7 @@ WHERE   MemberID = @soucemid
                 accept.MemberPhone = member.MobileNum;
                 accept.ActiveCode = "";
                 accept.AID = 0;
-                accept.Remark = "接受来自会员：" + sourcemodel.MobileNum + " 转账的" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
+                accept.Remark = "接收" + rowcount.ToString() + "个" + (type == 1 ? "激活币" : "排单币");
                 row = OperateLogDAL.AddActiveCodeLog(accept);
                 if (row < 0)
                 {

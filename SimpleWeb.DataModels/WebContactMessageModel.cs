@@ -61,6 +61,11 @@ namespace SimpleWeb.DataModels
         /// </summary>       
         [DataMember]
         public DateTime ReplyTime { get; set; }
+        /// <summary>
+        ///是否已读
+        /// </summary>
+        [DataMember]
+        public int IsReaded { get; set; }
 
         #region 扩展字段
         /// <summary>

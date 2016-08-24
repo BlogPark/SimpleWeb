@@ -49,9 +49,9 @@ namespace SimpleWeb.DataBLL
         /// <summary>
         /// 根据ID得到一个对象实体
         /// </summary>
-        public List<AdminSiteNewsModel> GetModelListByUserID(int userid)
+        public List<AdminSiteNewsModel> GetModelListByUserID(int userid,int topnum=100)
         {
-            return dal.GetModelListByUserID(userid);
+            return AdminSiteNewsDal.GetModelListByUserID(userid,topnum);
         }
         /// <summary>
         /// 根据ID得到一个对象实体

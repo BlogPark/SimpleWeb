@@ -214,6 +214,9 @@ namespace SimpleWeb.DataBLL
             model.zijinmodel = MemberCapitalDetailDAL.GetMemberStaticCapital(memberid);//我的资金状况详情   
             model.HelperMatchedList = MatchOrderDAL.GetHelperMatchedOrderListByMemberID(memberid, 5);//我的提供帮助匹配信息
             model.AcceptMatchedList = MatchOrderDAL.GetAcceptMatchedOrderListByMemberID(memberid, 5);//我的接受帮助匹配信息
+            model.NewsCount = AdminSiteNewsDal.GetSysNewsCount(memberid);//系统公告数量
+            model.SysNewsList = AdminSiteNewsDal.GetModelListByUserID(memberid, 5);//系统公告列表
+            model.ContactCount = AdminSiteNewsDal.GetNewWebContentCount(memberid);//我的留言数量
             return model;
         }
         /// <summary>
