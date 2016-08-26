@@ -276,14 +276,15 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         [HttpPost]
         public ActionResult paymentinterist()
         {
-            string result = mcbll.PaymentInterestV3();
-            if (result == "1")
+            //string result = mcbll.PaymentInterestV3();
+            int result = mcbll.PaymentInterestV4();
+            if (result >0)
             {
                 return Json("1");
             }
             else
             {
-                return Json(result.Substring(1));
+                return Json("操作错误");
             }
         }
         [HttpPost]

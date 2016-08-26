@@ -122,6 +122,14 @@ namespace SimpleWeb.DataBLL
             return result;
         }
         /// <summary>
+        /// 为会员派发利息(V4版)
+        /// </summary>
+        /// <returns></returns>
+        public int PaymentInterestV4()
+        {
+            return MemberCapitalDetailDAL.PaymentInterest();
+        }
+        /// <summary>
         /// 查询会员的个人资产信息
         /// </summary>
         /// <param name="memberid"></param>

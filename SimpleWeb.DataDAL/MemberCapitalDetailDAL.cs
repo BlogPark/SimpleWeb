@@ -637,6 +637,16 @@ WHERE   HStatus <> 3";
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
+        /// 分派利息
+        /// </summary>
+        /// <returns></returns>
+        public static int PaymentInterest()
+        {
+            string sqltxt = "exec dbo.PaymentInsiter;";
+            return helper.ExecuteSql(sqltxt);
+        }
+
+        /// <summary>
         /// 汇总会员的本次利息
         /// </summary>
         /// <returns></returns>
