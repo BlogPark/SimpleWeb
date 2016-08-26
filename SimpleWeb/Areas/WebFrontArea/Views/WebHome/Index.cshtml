@@ -183,19 +183,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <h3 class="text-muted">
                             <a href="@Url.Action("helpOrderlist", "WebHome", new { area = "WebFrontArea" })">我提供的帮助</a>
                         </h3>
                         <hr>
                     </div>
-                    <div class="col-sm-6">
-                        <h3 class="text-muted">
-                            <a href="@Url.Action("acceptOrderlist", "WebHome", new { area = "WebFrontArea" })">我接受的帮助</a>
-                        </h3>
-                        <hr>
-                    </div>
-                    <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+
+                    <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
                         @if (Model.data.helperOrders != null)
                         {
                             foreach (var item in Model.data.helperOrders)
@@ -205,50 +200,37 @@
                                     <tr>
                                         <td>单据编号:
                                         </td>
-                                        <td></td>
                                         <td>
                                             <div class="item">
                                                 @item.OrderCode
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>帮助金额：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.Amount
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>创建时间：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.AddTime.ToString("yyyy/MM/dd HH:mm")
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>目前状态：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.HStatusName
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-center">
+                                        <td>帮助金额</td>
+                                        <td>@item.Amount</td>
+                                        <td>当前状态</td>
+                                        <td>@item.HStatusName</td>
+                                        <td class="text-center" rowspan="2">
                                             <a href="@Url.Action("helporderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>创建时间:
+                                        </td>
+                                        <td>
+                                            <div class="item">
+                                                @item.AddTime.ToString("yyyy-MM-dd HH:mm")
+                                            </div>
+                                        </td>
+                                        <td>已匹金额</td>
+                                        <td>@item.MatchedAmount</td>
+                                        <td>支付方式</td>
+                                        <td>@item.PayType</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"></td>
+                                    </tr>
                                 </tbody>
-                            </table>
+                            </table>                            
                             }
                         }
                         else
@@ -257,7 +239,15 @@
                         }
                     </div>
 
-                    <div class="col-sm-6 col-xs-12 shopping-cart user-cart">
+
+                    <div class="col-sm-12">
+                        <h3 class="text-muted">
+                            <a href="@Url.Action("acceptOrderlist", "WebHome", new { area = "WebFrontArea" })">我接受的帮助</a>
+                        </h3>
+                        <hr>
+                    </div>
+
+                    <div class="col-sm-12 col-xs-12 shopping-cart user-cart">
                         @if (Model.data.acceptOrders != null)
                         {
                             foreach (var item in Model.data.acceptOrders)
@@ -267,47 +257,34 @@
                                     <tr>
                                         <td>单据编号:
                                         </td>
-                                        <td></td>
                                         <td>
                                             <div class="item">
                                                 @item.OrderCode
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>帮助金额：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.Amount
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>创建时间：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.AddTime.ToString("yyyy/MM/dd HH:mm")
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>目前状态：
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="item">
-                                                @item.AStatusName
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-center">
+                                        <td>接受金额</td>
+                                        <td>@item.Amount</td>
+                                        <td>当前状态</td>
+                                        <td>@item.AStatusName</td>
+                                        <td class="text-center" rowspan="2">
                                             <a href="@Url.Action("AcceptOrderDetail", "WebHome", new { area = "WebFrontArea", orderid = item.ID })">查看明细>></a>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>创建时间:
+                                        </td>
+                                        <td>
+                                            <div class="item">
+                                                @item.AddTime.ToString("yyyy-MM-dd HH:mm")
+                                            </div>
+                                        </td>
+                                        <td>已匹金额</td>
+                                        <td>@item.MatchedAmount</td>
+                                        <td>支付方式</td>
+                                        <td>@item.PayType</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"></td>
                                     </tr>
                                 </tbody>
                             </table>
