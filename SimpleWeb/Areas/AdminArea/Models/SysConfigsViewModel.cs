@@ -34,5 +34,10 @@ namespace SimpleWeb.Areas.AdminArea.Models
         /// </summary>
         [DataMember]
         public List<SysAdminConfigsModel> FatherConfigs { get; set; }
+        /// <summary>
+        /// 是否指定用户可见
+        /// </summary>
+        [DataMember]
+        public int isadmin { get; set; }
     }
 }

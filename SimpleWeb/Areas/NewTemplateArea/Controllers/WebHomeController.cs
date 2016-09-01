@@ -142,13 +142,13 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
             }
             AcceptOrderViewModel model = new AcceptOrderViewModel();
             AcceptHelpOrderModel order = aobll.GetAcceptOrderInfo(orderid, logmember.ID);
             if (order == null)
             {
-                return RedirectToAction("Index", "WebHome", new { area = "WebFrontArea" });
+                return RedirectToAction("Index", "WebHome", new { area = "NewTemplateArea" });
             }
             //本人的信息
             model.acceptpeople = logmember;
@@ -251,7 +251,7 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
-                return RedirectToAction("Index", "Login", new { area = "WebFrontArea" });
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
             }
             if (message != null)
             {
@@ -260,7 +260,7 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
                 message.MemberPhone = logmember.MobileNum;
                 int row = newsbll.AddContactMessage(message);
             }
-            return RedirectToAction("contentus", "WebHome", new { area = "WebFrontArea" });
+            return RedirectToAction("contentus", "WebHome", new { area = "NewTemplateArea" });
         }
         /// <summary>
         /// 用户中心页面

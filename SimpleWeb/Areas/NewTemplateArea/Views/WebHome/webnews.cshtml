@@ -37,7 +37,7 @@
                             <a href="#" data-toggle="modal" data-target="#example_modal2" onclick="showmessage()">
                                 <div class="content">
                                     <h4 id="newtitle">@item.STitle</h4>
-                                    <span>@(item.SContent.Length > 50 ? item.SContent.Substring(0, 50) : item.SContent)</span>
+                                    <span>@(item.SContent.Length > 50 ? item.SContent.Substring(0, 50).MyReplace(@"<[\s\S]*?>","") : item.SContent.MyReplace(@"<[\s\S]*?>",""))</span>
                                 </div>
                                 <input type="hidden" id="newcontent" value="@item.SContent">
                                 <ul class="rightboxes">

@@ -106,6 +106,11 @@ namespace SimpleWeb.DataModels
         /// </summary>
         [DataMember]
         public DateTime LastLoginTime { get; set; }
+        /// <summary>
+        /// 是否特定用户
+        /// </summary>
+        [DataMember]
+        public int IsAdmin { get; set; }
         #endregion
 
         /// <summary>

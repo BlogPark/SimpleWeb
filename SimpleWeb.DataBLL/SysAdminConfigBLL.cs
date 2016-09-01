@@ -15,9 +15,9 @@ namespace SimpleWeb.DataBLL
         /// 得到所有的系统配置
         /// </summary>
         /// <returns></returns>
-        public List<SysAdminConfigsModel> GetAllConfigs()
+        public List<SysAdminConfigsModel> GetAllConfigs(int isadmin=0)
         {
-            return dal.GetAllConfigs();
+            return dal.GetAllConfigs(isadmin);
         }
         /// <summary>
         /// 插入配置信息
@@ -25,7 +25,9 @@ namespace SimpleWeb.DataBLL
         /// <param name="model"></param>
         /// <returns></returns>
         public int AddConfigInfo(SysAdminConfigsModel model)
-        { return dal.AddConfigInfo(model); }
+        { 
+            return dal.AddConfigInfo(model);
+        }
         /// <summary>
         /// 根据ID得到配置信息
         /// </summary>
@@ -56,7 +58,9 @@ namespace SimpleWeb.DataBLL
         /// <param name="id"></param>
         /// <returns></returns>
         public int DelConfig(int id)
-        { return dal.DelConfig(id); }
+        { 
+            return dal.DelConfig(id); 
+        }
 
         /// <summary>
         /// 得到一个对象实体

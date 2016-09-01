@@ -9,6 +9,7 @@ using SimpleWeb.Controllers;
 using SimpleWeb.DataBLL;
 using SimpleWeb.DataModels;
 using SimpleWeb.Filters;
+using SimpleWeb.Models;
 
 namespace SimpleWeb.Areas.AdminArea.Controllers
 {
@@ -101,9 +102,11 @@ namespace SimpleWeb.Areas.AdminArea.Controllers
         /// <returns></returns>
         public ActionResult SysConfigs()
         {
+            SessionLoginModel sysuser = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
             SysConfigsViewModel model = new SysConfigsViewModel();
-            model.Allconfigs = configbll.GetAllConfigs();
+            model.Allconfigs = configbll.GetAllConfigs(sysuser.User.IsAdmin);
             model.FatherConfigs = configbll.GetFirstConfigs();
+            model.isadmin = sysuser.User.IsAdmin;
             ViewBag.PageTitle = "系统配置";
             return View(model);
         }

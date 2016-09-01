@@ -31,7 +31,7 @@ namespace SimpleWeb.DataDAL
         Answer ,
         GID ,
         GName,
-        LoginName,HeaderImg,WebSkin,LastLoginIP,LastLoginTime
+        LoginName,HeaderImg,WebSkin,LastLoginIP,LastLoginTime,IsAdmin
 FROM    dbo.SysAdminUser
 WHERE LoginName=@loginname ";
             SqlParameter[] paramter ={
@@ -57,6 +57,7 @@ WHERE LoginName=@loginname ";
                 result.WebSkin = string.IsNullOrWhiteSpace(dt.Rows[0]["WebSkin"].ToString()) ? "default" : dt.Rows[0]["WebSkin"].ToString();
                 result.LastLoginIP = string.IsNullOrWhiteSpace(dt.Rows[0]["LastLoginIP"].ToString()) ? "" : dt.Rows[0]["LastLoginIP"].ToString();
                 result.LastLoginTime = string.IsNullOrWhiteSpace(dt.Rows[0]["LastLoginTime"].ToString()) ? DateTime.MinValue : DateTime.Parse(dt.Rows[0]["LastLoginTime"].ToString());
+                result.IsAdmin = dt.Rows[0]["IsAdmin"].ToString().ParseToInt(0);
                 if (result.UserPwd != user.UserPwd)
                 {
                     result.LoginResult = "0用户密码不正确";
@@ -109,7 +110,6 @@ WHERE   ID = @id";
                                       new SqlParameter("@LastLoginIP",ip),
                                       new SqlParameter("@LastLoginTime",lasttime)};
             helper.ExecuteSql(sqltxt, paramter);
-
         }
         /// <summary>
         /// 查询用户拥有的菜单权限
@@ -170,6 +170,7 @@ ORDER BY b.SortIndex ASC";
         /// <summary>
         /// 根据ID查询菜单
         /// </summary>
+        /// <param name="idstr"></param>
         /// <returns></returns>
         public List<SysAdminMenuModel> GetSysMenuByIds(string idstr)
         {

@@ -47,6 +47,11 @@ namespace SimpleWeb.DataModels
         /// </summary>       
         [DataMember]
         public int ConfigStatus { get; set; }
+        /// <summary>
+        /// 是否指定用户可见
+        /// </summary>
+        [DataMember]
+        public int IsAdmin { get; set; }
         #endregion
         /// <summary>
         /// 状态名称

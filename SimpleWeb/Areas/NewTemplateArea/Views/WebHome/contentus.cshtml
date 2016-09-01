@@ -2,6 +2,22 @@
 @{
     Layout = "~/Views/_NewTempleteLayout.cshtml";
 }
+<div id="example_modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"></h3>
+    </div>
+    <div class="modal-body">
+        <h4>留言内容：</h4>
+        <p id="msgcontent"></p>
+        <h4>回复内容：</h4>
+        <p id="recontent"></p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确 定</button>
+    </div>
+</div>
+
 <div class="row-fluid"></div>
 <div class="row-fluid">
     <div class="widget widget-padding span12">
@@ -14,7 +30,7 @@
         </div>
         <div class="widget-body">
             <div class="widget-forms clearfix">
-                <form class="form-horizontal">
+                <form class="form-horizontal" method="post">
                     <div class="control-group">
                         <label class="control-label">标题</label>
                         <div class="controls">
@@ -27,11 +43,13 @@
                             @Html.TextAreaFor(m => m.message.MessageContent, new { @placeholder = "留言内容", @class = "span7", @rows = "3", @style = "height: 100px;" })
                         </div>
                     </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-primary" type="submit">留  言</button>
+                        </div>
+                    </div>
                 </form>
             </div>
-        </div>
-        <div class="widget-footer">
-            <button class="btn btn-primary" type="submit">保存</button>
         </div>
     </div>
 </div>
@@ -54,9 +72,9 @@
                         foreach (var item in Model.list)
                         {
                         <li class="priority-high-left">
-                            <a href="#" data-toggle="modal" data-target="#example_modal2">
+                            <a href="#" data-toggle="modal" data-target="#example_modal2" onclick="showcontentus(@item.ID)">
                                 <div class="content">
-                                    <h4>@item.MessageTitle</h4>
+                                    <h4 id="@("id"+item.ID)title">@item.MessageTitle</h4>
                                     @if (!string.IsNullOrWhiteSpace(item.ReplyContent))
                                     {
                                         <span>回复内容：@item.ReplyContent</span>
@@ -65,8 +83,9 @@
                                     {
                                         <span>留言内容：@item.MessageContent </span>
                                     }
-
                                 </div>
+                                <input type="hidden" id="@("id"+item.ID)msgcontent" value="@item.MessageContent">
+                                <input type="hidden" id="@("id"+item.ID)recontent" value="@item.ReplyContent">
                                 <ul class="rightboxes">
                                     <li>@item.AddTime.ToString("yyyy-MM-dd HH:mm")<span>留言时间</span></li>
                                 </ul>

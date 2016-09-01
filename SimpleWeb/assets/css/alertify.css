@@ -432,17 +432,21 @@ ul.countdown
     font-size: 14px;
 }
 
-ul .notype
+ul.notype
 {
     list-style-type: none;
     margin-top: 30px;
+    font-size: 16px;
 }
 
-    ul .notype li
+    ul.notype li
     {
         line-height: 25px;
     }
-
+.marginbuttom
+{
+    margin-bottom:20px;
+}
 .tablerow
 {
     height: 40px;

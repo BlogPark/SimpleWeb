@@ -11,12 +11,12 @@ namespace SimpleWeb.DataDAL
 {
     public class SysAdminConfigDAL
     {
-       static  DbHelperSQL helper = new DbHelperSQL();
+        static DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
         /// 得到所有的系统配置
         /// </summary>
         /// <returns></returns>
-        public List<SysAdminConfigsModel> GetAllConfigs()
+        public List<SysAdminConfigsModel> GetAllConfigs(int isadmin = 0)
         {
             List<SysAdminConfigsModel> list = new List<SysAdminConfigsModel>();
             string sqltxt = @"SELECT  ID ,
@@ -30,7 +30,11 @@ namespace SimpleWeb.DataDAL
           WHEN 1 THEN '启用'
           ELSE '禁用'
         END AS ConfigStatusName
-FROM    dbo.SysAdminConfigs WITH(NOLOCK)";
+FROM    dbo.SysAdminConfigs WITH(NOLOCK) ";
+            if (isadmin == 0)
+            {
+                sqltxt += "where ISNULL(IsAdmin,0)=0 ";
+            }
             DataTable dt = helper.Query(sqltxt).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
@@ -80,21 +84,24 @@ WHERE ConfigStatus=1 ";
           ConfigValue ,
           ConfigRemark ,
           AddTime ,
-          ConfigStatus
+          ConfigStatus,
+          IsAdmin
         )
 VALUES  ( @ConfigName ,
           @ConfigFID ,
           @ConfigValue ,
           @ConfigRemark ,
           GETDATE() ,
-          @ConfigStatus
+          @ConfigStatus,
+          @IsAdmin
         )";
             SqlParameter[] paramter ={
                                     new SqlParameter("@ConfigName",model.ConfigName),
                                     new SqlParameter("@ConfigFID",model.ConfigFID),
                                     new SqlParameter("@ConfigValue",model.ConfigValue),
                                     new SqlParameter("@ConfigRemark",model.ConfigRemark),
-                                    new SqlParameter("@ConfigStatus",model.ConfigStatus)
+                                    new SqlParameter("@ConfigStatus",model.ConfigStatus),
+                                    new SqlParameter("@IsAdmin",model.IsAdmin)
                                     };
             rowcount = helper.ExecuteSql(sqltxt, paramter);
             return rowcount;
@@ -290,7 +297,7 @@ WHERE   ID = @id
             SqlParameter[] paramter = { 
                                       new SqlParameter("@id",id)
                                       };
-            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 result = dt.Rows[0]["ConfigValue"].ToString();
