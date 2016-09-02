@@ -279,6 +279,24 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             return View(model);
         }
         /// <summary>
+        /// 用户中心页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult userprofile(MemberInfoModel member)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            bool result = bll.UpdateMemberInfo(member);
+            UserProfileViewModel model = new UserProfileViewModel();
+            model.member = member;
+            ViewBag.PageTitle = web.WebName;
+            return View(model);
+        }
+        /// <summary>
         /// 我的资产页面
         /// </summary>
         /// <returns></returns>

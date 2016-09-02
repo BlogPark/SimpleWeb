@@ -119,6 +119,13 @@ namespace SimpleWeb.DataBLL
             return dal.UpdateMemberInfo(model);
         }
         /// <summary>
+        /// 前端会员自己更新资料
+        /// </summary>
+        public bool UpdateMemberInfoBySelf(MemberInfoModel model)
+        {
+            return dal.UpdateMemberInfoBySelf(model);
+        }
+        /// <summary>
         /// 得到一个对象实体
         /// </summary>
         public MemberInfoModel GetModel(int ID)

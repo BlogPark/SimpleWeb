@@ -137,6 +137,43 @@ namespace SimpleWeb.DataDAL
             }
         }
         /// <summary>
+        /// 前端会员自己更新资料
+        /// </summary>
+        public bool UpdateMemberInfoBySelf(MemberInfoModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" WeixinNum = @WeixinNum , ");
+            strSql.Append(" AliPayName = @AliPayName , ");
+            strSql.Append(" AliPayNum = @AliPayNum , ");
+            strSql.Append(" TruethName = @TruethName , ");
+            strSql.Append(" MobileNum = @MobileNum , ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,              
+                        new SqlParameter("@WeixinNum", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@AliPayName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@AliPayNum", SqlDbType.NVarChar) ,
+                        new SqlParameter("@TruethName", SqlDbType.NVarChar) ,       
+                        new SqlParameter("@MobileNum", SqlDbType.NVarChar) ,  
+            };
+            parameters[0].Value = model.ID;
+            parameters[1].Value = string.IsNullOrWhiteSpace(model.WeixinNum) ? "" : model.WeixinNum.Trim();
+            parameters[2].Value = string.IsNullOrWhiteSpace(model.AliPayName) ? "" : model.AliPayName.Trim();
+            parameters[3].Value = string.IsNullOrWhiteSpace(model.AliPayNum) ? "" : model.AliPayNum.Trim();
+            parameters[4].Value = string.IsNullOrWhiteSpace(model.TruethName) ? "" : model.TruethName.Trim();
+            parameters[5].Value = string.IsNullOrWhiteSpace(model.MobileNum) ? "" : model.MobileNum.Trim();
+            int rows = helper.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// 得到一个对象实体
         /// </summary>
         public MemberInfoModel GetModel(int ID)
