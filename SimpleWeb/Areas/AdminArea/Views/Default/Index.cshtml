@@ -31,24 +31,27 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="alert alert-block alert-info fade in">
-                        <h3>累计提供帮助金额：@Model.datamodel.TotalHelpAmont</h3><br/>
+                        <h3>累计提供帮助金额：@Model.datamodel.TotalHelpAmont</h3>
+                        <br />
                         <h4>今日提供帮助金额：@Model.datamodel.TodayHelpMoney</h4>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="alert alert-block alert-danger fade in">
-                        <h3>累计接受帮助金额：@Model.datamodel.TotalAcceptAmont</h3><br/>
+                        <h3>累计接受帮助金额：@Model.datamodel.TotalAcceptAmont</h3>
+                        <br />
                         <h4>今日接受帮助金额：@Model.datamodel.TodayAcceptMoney</h4>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="alert alert-block alert-success fade in">
                         <h3>累计匹配单据金额：@Model.datamodel.TotalMatchMoney</h3>
-                        <br/>
+                        <br />
                         <h4>今日匹配单据金额：@Model.datamodel.TodayMatchedMoney</h4>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <!-- BOX -->
@@ -98,7 +101,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col-md-3">系统总会员数</td>
-                                                    <td class="col-md-9">@Model.datamodel.TotalMemberCount</td>
+                                                    <td class="col-md-9" id="TotalMemberCount">@Model.datamodel.TotalMemberCount</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="col-md-3">系统活动会员数</td>
@@ -129,10 +132,34 @@
         </div>
     </div>
 </div>
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+}
 @section  myscript{
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        App.init(); //Initialise plugins and elements
-    });
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init(); //Initialise plugins and elements
+            if ($("#TotalMemberCount").html() == '0') {
+                bootbox.dialog({
+                    message: "欢迎使用本系统，是否现在为系统添加初始会员？",
+                    title: "初始化系统会员",
+                    buttons: {
+                        Cancel: {
+                            label: "下次吧",
+                            className: "btn-default",
+                            callback: function () {
+                            }
+                        }
+                        , OK: {
+                            label: "现在去创建",
+                            className: "btn-primary",
+                            callback: function () {
+                                alert("OK");
+                            }
+                        }
+                    }
+                });
+            }
+        });
     </script>
 }

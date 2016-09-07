@@ -51,6 +51,8 @@ namespace SimpleWeb.DataBLL
                         return "0操作失败";
                     }
                     rowcount = MemberCapitalDetailDAL.DeductionMemberStaticCapital(model.MemberID, 0 - model.Amount, 0);
+                    //清空会员的利率(不判断结果，不排除没有这样单据的可能，因为存在特殊账户)
+                    int rowcounts = HelpeOrderDAL.UpdateCurrentInterestToClear(model.MemberID);
                 }
                 else
                 {
@@ -64,9 +66,7 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0操作失败";
                 }
-                //点击接受帮助后不再为会员计算利息
-                //清空会员的利率(不判断结果，不排除没有这样单据的可能，因为存在特殊账户)
-                rowcount = HelpeOrderDAL.UpdateCurrentInterestToClear(model.MemberID);
+                //点击接受帮助后不再为会员计算利息                
                 //增加会员的资金变动记录
                 AmountChangeLogModel logmodel = new AmountChangeLogModel();
                 logmodel.MemberID = model.MemberID;
