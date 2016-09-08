@@ -7,6 +7,8 @@ $(function() {
   // init tooltips on .tips class elements, text for the tooltip is in the data-title attribute on the element itself
   $('.tip').tooltip();
 
+  $('.fancybox').fancybox();
+
   // init popover on .pop class elements
   $('.pop').popover({
     title:$(this).data('title'),

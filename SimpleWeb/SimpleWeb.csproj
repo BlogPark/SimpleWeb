@@ -220,10 +220,10 @@
     <Content Include="assets\css\bootstrap.css" />
     <Content Include="assets\css\colorpicker.css" />
     <Content Include="assets\css\datepicker.css" />
-    <Content Include="assets\css\facybox.css" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\fullcalendar.css" />
     <Content Include="assets\css\fullcalendar.print.css" />
+    <Content Include="assets\css\jquery.fancybox.css" />
     <Content Include="assets\css\select2.css" />
     <Content Include="assets\css\theme.css" />
     <Content Include="assets\css\timepicker.css" />
@@ -245,7 +245,13 @@
     <Content Include="assets\img\avatars\zt1.jpg" />
     <Content Include="assets\img\avatars\zt2.jpg" />
     <Content Include="assets\img\avatars\zt3.jpg" />
+    <Content Include="assets\img\blank.gif" />
     <Content Include="assets\img\dotted.png" />
+    <Content Include="assets\img\fancybox_loading%402x.gif" />
+    <Content Include="assets\img\fancybox_loading.gif" />
+    <Content Include="assets\img\fancybox_overlay.png" />
+    <Content Include="assets\img\fancybox_sprite%402x.png" />
+    <Content Include="assets\img\fancybox_sprite.png" />
     <Content Include="assets\img\gallery\1.jpg" />
     <Content Include="assets\img\gallery\10.jpg" />
     <Content Include="assets\img\gallery\11.jpg" />
@@ -288,7 +294,7 @@
     <Content Include="assets\js\jquery.dataTables.min.js" />
     <Content Include="assets\js\jquery.downCount.js" />
     <Content Include="assets\js\jquery.elfinder.min.html" />
-    <Content Include="assets\js\jquery.facybox.js" />
+    <Content Include="assets\js\jquery.fancybox.js" />
     <Content Include="assets\js\jquery.gritter.min.js" />
     <Content Include="assets\js\jquery.imagesloaded.min.js" />
     <Content Include="assets\js\jquery.knob.js" />
@@ -2038,6 +2044,7 @@
     <Content Include="Areas\NewTemplateArea\Views\WebHome\ActiveCodeLog.cshtml" />
     <Content Include="Areas\NewTemplateArea\Views\WebHome\mycapitallist.cshtml" />
     <Content Include="Areas\NewTemplateArea\Views\WebHome\recommendusermap.cshtml" />
+    <Content Include="Areas\NewTemplateArea\Views\WebHome\Agreement.cshtml" />
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
     <Content Include="Views\_NewTempleteLayout.cshtml" />
     <Content Include="Views\IndexPub\newwebmenu.cshtml" />

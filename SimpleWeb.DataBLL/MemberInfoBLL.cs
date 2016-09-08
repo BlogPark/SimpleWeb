@@ -76,23 +76,26 @@ namespace SimpleWeb.DataBLL
                 {
                     return "0注册失败";
                 }
-                //插入推荐人信息表
-                MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
-                if (soucemember.MStatus == 3)
+                if (model.MemberPhone != model.MobileNum)
                 {
-                    return "0推荐人账户被冻结";
-                }
-                ReMemberRelationModel remodel = new ReMemberRelationModel();
-                remodel.MemberID = soucemember.ID;
-                remodel.MemberTruthName = soucemember.TruethName;
-                remodel.MemberPhone = soucemember.MobileNum;
-                remodel.RecommMID = memberid;
-                remodel.RecommMPhone = model.MobileNum;
-                remodel.RecommMTruthName = model.TruethName;
-                rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
-                if (rowcount < 1)
-                {
-                    return "0注册失败";
+                    //插入推荐人信息表
+                    MemberInfoModel soucemember = MemberInfoDAL.GetMember(model.MemberPhone);
+                    if (soucemember.MStatus == 3)
+                    {
+                        return "0推荐人账户被冻结";
+                    }
+                    ReMemberRelationModel remodel = new ReMemberRelationModel();
+                    remodel.MemberID = soucemember.ID;
+                    remodel.MemberTruthName = soucemember.TruethName;
+                    remodel.MemberPhone = soucemember.MobileNum;
+                    remodel.RecommMID = memberid;
+                    remodel.RecommMPhone = model.MobileNum;
+                    remodel.RecommMTruthName = model.TruethName;
+                    rowcount = ReMemberRelationDAL.AddReMemberRelation(remodel);
+                    if (rowcount < 1)
+                    {
+                        return "0注册失败";
+                    }
                 }
                 //初始化会员扩展信息表
                 MemberExtendInfoModel extendinfo = new MemberExtendInfoModel();

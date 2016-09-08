@@ -398,5 +398,13 @@ namespace SimpleWeb.Areas.NewTemplateArea.Controllers
             }
             return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
         }
+        /// <summary>
+        /// 协议内容页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Agreement()
+        {
+            return View();
+        }
     }
 }

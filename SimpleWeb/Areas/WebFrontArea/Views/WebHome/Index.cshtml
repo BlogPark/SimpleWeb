@@ -135,8 +135,16 @@
                 <ul class="user-info">
                     <li>邮箱: <span class="text-muted">@Model.member.Email</span></li>
                     <li>注册时间: <span class="text-muted">@Model.member.AddTime.ToString("yyyy/MM/dd")</span></li>
-                    <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
-                    <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
+                    @if (Model.recommend != null)
+                    {
+                        <li>推荐人: <span class="text-muted">@Model.recommend.MemberTruthName</span></li>
+                        <li>推荐人手机: <span class="text-muted">@Model.recommend.MemberPhone</span></li>
+                    }
+                    else
+                    {
+                         <li>推荐人: <span class="text-muted">无</span></li>
+                        <li>推荐人手机: <span class="text-muted">无</span></li>
+                    }
                 </ul>
 
                 <div id="help-nav-one" class="panel-collapse collapse in">
