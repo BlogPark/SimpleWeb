@@ -1,0 +1,3 @@
+﻿@model SimpleWeb.Models.notificationspviewmodel
+<li><a id="messages" data-notification="@Model.NotificationCount" href="@Url.Action("webnews", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-envelope"></i>系统公告</a></li>
+<li><a id="notifications" data-notification="@Model.MessageCount" href="@Url.Action("contentus", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-globe"></i>系统通知</a></li>

@@ -103,5 +103,23 @@ namespace SimpleWeb.DataBLL
         {
             return dal.deleteMsg(id);
         }
+        /// <summary>
+        /// 查询系统公告数目
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int GetSysNewsCount(int memberid)
+        {
+            return AdminSiteNewsDal.GetSysNewsCount(memberid);
+        }
+        /// <summary>
+        /// 查询我的留言数目
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int GetNewWebContentCount(int memberid)
+        {
+            return AdminSiteNewsDal.GetNewWebContentCount(memberid);
+        }
     }
 }

@@ -1453,7 +1453,7 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
         left: 0!important;
     }
     .logo {
-      margin: 0 90px 0 15px;
+      margin: 0 50px 0 15px;
     }    
     .overview_boxes .box_row:last-child > div:last-child{
       margin-right:25px;

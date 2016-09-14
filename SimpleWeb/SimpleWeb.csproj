@@ -197,6 +197,7 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\NewWebMenuViewModel.cs" />
+    <Compile Include="Models\notificationspviewmodel.cs" />
     <Compile Include="Models\partMessageViewModel.cs" />
     <Compile Include="Models\SessionLoginModel.cs" />
     <Compile Include="Models\webfooterViewModel.cs" />
@@ -267,8 +268,8 @@
     <Content Include="assets\img\gallery\7.jpg" />
     <Content Include="assets\img\gallery\8.jpg" />
     <Content Include="assets\img\gallery\9.jpg" />
-    <Content Include="assets\img\gallery\guanggao.jpg" />
     <Content Include="assets\img\gallery\login.jpg" />
+    <Content Include="assets\img\gallery\zggt.jpg" />
     <Content Include="assets\img\gallery\zhanwei.jpg" />
     <Content Include="assets\img\glyphicons-halflings-white.png" />
     <Content Include="assets\img\glyphicons-halflings.png" />
@@ -2048,6 +2049,7 @@
     <None Include="Properties\PublishProfiles\cxck.pubxml" />
     <Content Include="Views\_NewTempleteLayout.cshtml" />
     <Content Include="Views\IndexPub\newwebmenu.cshtml" />
+    <Content Include="Views\IndexPub\notifications.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

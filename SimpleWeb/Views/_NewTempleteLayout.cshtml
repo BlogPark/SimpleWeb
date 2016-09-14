@@ -41,8 +41,7 @@
 
                     <div class="top-menu visible-desktop">
                         <ul class="pull-left">
-                            <li><a id="messages" data-notification="2" href="@Url.Action("webnews", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-envelope"></i>系统公告</a></li>
-                            <li><a id="notifications" data-notification="3" href="@Url.Action("contentus", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-globe"></i>系统通知</a></li>
+                           @Html.Action("notifications", "IndexPub", new { area = "" })
                         </ul>
                         <ul class="pull-right">
                             <li><a href="@Url.Action("exitsystem", "WebHome", new { area = "NewTemplateArea" })"><i class="icon-off"></i>退出系统</a></li>

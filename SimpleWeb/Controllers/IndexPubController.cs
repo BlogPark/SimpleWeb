@@ -17,6 +17,7 @@ namespace SimpleWeb.Controllers
         private SysMenuAndUserBLL bll = new SysMenuAndUserBLL();
         private WebSettingsBLL webbll = new WebSettingsBLL();
         private MemberInfoBLL memberbll = new MemberInfoBLL();
+        private AdminSiteNewsBll adminbll = new AdminSiteNewsBll();
         public ActionResult Index()
         {
             return View();
@@ -150,6 +151,19 @@ namespace SimpleWeb.Controllers
             model.UserPhone = logmember.MobileNum;
             model.TeamPersonCount = webmodel.members;
             model.linkurl = setting.DomainName + Url.Action("Index", "Register", new { area = "WebFrontArea", msd = logmember.MobileNum });
+            return View(model);
+        }
+
+        public ActionResult notifications()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
+            }
+            notificationspviewmodel model = new notificationspviewmodel();
+            model.NotificationCount = adminbll.GetSysNewsCount(logmember.ID);//系统公告数量
+            model.MessageCount = adminbll.GetNewWebContentCount(logmember.ID);//我的留言数量
             return View(model);
         }
     }
