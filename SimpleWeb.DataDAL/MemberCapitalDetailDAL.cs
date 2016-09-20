@@ -782,7 +782,7 @@ FROM    dbo.MemberCapitalDetail A";
                 logmodel.OrderCode = ordercode;
                 logmodel.OrderID = oid;
                 logmodel.ProduceMoney = (money / 100 * interests[i]);
-                logmodel.Remark = "会员:" + members[i].MemberPhone + " 得到来自单据：" + ordercode + "的领导奖";
+                logmodel.Remark = "会员:" + members[i].MemberPhone + " 得到来自单据：" + ordercode + "的领导奖(已冻结)";
                 logmodel.Type = 3;
                 rowcount = OperateLogDAL.AddAmountChangeLog(logmodel);
                 if (rowcount < 1)

@@ -169,7 +169,7 @@ namespace SimpleWeb.DataBLL
                     logmodel1.OrderCode = model.OrderCode;
                     logmodel1.OrderID = orderid;
                     logmodel1.ProduceMoney = (model.Amount * reinteist / 100);
-                    logmodel1.Remark = "会员:" + remember.MemberPhone + " 得到来自 " + model.MemberPhone + "的首单推荐奖" + (model.Amount * reinteist / 100).ToString() + "元";
+                    logmodel1.Remark = "会员:" + remember.MemberPhone + " 得到来自 " + model.MemberPhone + "的首单推荐奖(已冻结)" + (model.Amount * reinteist / 100).ToString() + "元";
                     logmodel1.Type = 3;
                     rowcount = OperateLogDAL.AddAmountChangeLog(logmodel1);
                     if (rowcount < 1)

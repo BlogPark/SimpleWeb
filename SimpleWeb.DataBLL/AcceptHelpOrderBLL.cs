@@ -34,6 +34,12 @@ namespace SimpleWeb.DataBLL
             {
                 return "0超出了平台规定的最小接受值";
             }
+            int daynum = SysAdminConfigBLL.GetConfigValue(24).ParseToInt(15);
+            MemberExtendInfoModel extentmember = MemberExtendInfoDAL.GetMemberExtendInfo(model.MemberID);
+            if (DateTime.Now < extentmember.LastHelperTime.AddDays(daynum))
+            {
+                return "0会员提供帮助单据仍处于冻结期";
+            }
             using (TransactionScope scope = new TransactionScope())
             {
                 //插入表
